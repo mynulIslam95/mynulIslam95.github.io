@@ -1,5 +1,29 @@
 [
   {
+    "title": "it-ops-automation",
+    "slug": "it-ops-automation",
+    "problem": "Windows and Linux support, tickets, AD and Entra procedures.",
+    "skills": ["Windows", "Linux", "PowerShell", "Ansible"],
+    "caseStudy": "case-studies/it-ops-automation.html",
+    "repo": "https://github.com/mynulIslam95/it-ops-automation"
+  },
+  {
+    "title": "azure-infra-foundation",
+    "slug": "azure-infra-foundation",
+    "problem": "Terraform Azure network, storage and monitor. Validate without deploy.",
+    "skills": ["Azure", "Terraform", "GitHub Actions"],
+    "caseStudy": "case-studies/azure-infra-foundation.html",
+    "repo": "https://github.com/mynulIslam95/azure-infra-foundation"
+  },
+  {
+    "title": "status-service-delivery",
+    "slug": "status-service-delivery",
+    "problem": "Status service with Compose, metrics, CI, rollback and Kubernetes.",
+    "skills": ["Docker", "CI/CD", "Kubernetes", "Python"],
+    "caseStudy": "case-studies/status-service-delivery.html",
+    "repo": "https://github.com/mynulIslam95/status-service-delivery"
+  },
+  {
     "title": "ops-duty-scripts",
     "slug": "ops-duty-scripts",
     "problem": "Shift checks for health, logs and handover.",
@@ -16,32 +40,11 @@
     "repo": "https://github.com/mynulIslam95/custom-profile-service"
   },
   {
-    "title": "linux-db-ops-toolkit",
-    "slug": "linux-db-ops-toolkit",
-    "problem": "Linux MySQL health, backup and restore dry-run.",
-    "skills": ["Bash", "Linux", "MySQL"],
-    "repo": "https://github.com/mynulIslam95/linux-db-ops-toolkit"
-  },
-  {
     "title": "azure-functions-ts-lab",
     "slug": "azure-functions-ts-lab",
     "problem": "Azure Functions API with Bicep and CI.",
     "skills": ["Azure", "Bicep", "TypeScript"],
     "caseStudy": "case-studies/azure-functions-ts-lab.html",
     "repo": "https://github.com/mynulIslam95/azure-functions-ts-lab"
-  },
-  {
-    "title": "relational-db-ops-lab",
-    "slug": "relational-db-ops-lab",
-    "problem": "Database ops notes: health, backup, failover.",
-    "skills": ["SQL", "Monitoring", "DR"],
-    "repo": "https://github.com/mynulIslam95/relational-db-ops-lab"
-  },
-  {
-    "title": "ci-test-reporting",
-    "slug": "ci-test-reporting",
-    "problem": "JUnit XML triage after a pipeline run.",
-    "skills": ["JUnit", "Python", "CI/CD"],
-    "repo": "https://github.com/mynulIslam95/ci-test-reporting"
   }
 ]

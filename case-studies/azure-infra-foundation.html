@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>azure-infra-foundation — Mynul Islam</title>
+  <meta name="description" content="Terraform for a small Azure environment: VNet, NSG, storage, Log Analytics. Validate without deploy."/>
+  <link rel="stylesheet" href="../assets/css/styles.css?v=8"/>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap nav">
+      <a class="brand" href="../index.html">Mynul Islam</a>
+      <input id="nav-toggle" class="nav-toggle" type="checkbox"/>
+      <label class="burger" for="nav-toggle" aria-label="Open menu"><span></span><span></span><span></span></label>
+      <nav class="nav-panel" aria-label="Primary">
+        <ul class="nav-links">
+          <li><a href="../index.html#projects">Projects</a></li>
+          <li><a href="../index.html#skills">Skills</a></li>
+          <li><a href="../index.html#experience">Experience</a></li>
+          <li><a href="../index.html#education">Education</a></li>
+          <li><a href="../index.html#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <a class="btn btn-primary btn-nav" href="../cv.pdf" download="Mynul_Islam_CV.pdf">Download CV</a>
+    </div>
+  </header>
+  <main id="main" class="wrap page-header prose">
+    <p><a href="../index.html#projects">Back to projects</a></p>
+    <h1>azure-infra-foundation</h1>
+    <p><a class="ext" href="https://github.com/mynulIslam95/azure-infra-foundation" target="_blank" rel="noopener noreferrer">View repository</a></p>
+
+    <h2>Problem</h2>
+    <p>Northfield needs a small Azure environment that can be described in Git: network separation, locked-down management, storage, monitoring and a cleanup path. Deploy is optional and costs money.</p>
+
+    <h2>What is in the repo</h2>
+    <ul>
+      <li>Terraform: resource group, VNet module, subnet, NSG (443 from office CIDR, deny SSH from Internet), storage, Log Analytics.</li>
+      <li>GitHub Actions: <code>terraform fmt</code>, <code>init -backend=false</code>, <code>validate</code>.</li>
+      <li>RBAC table, cost checklist, Monitor diagnostic settings, blob restore, remote-state backend example, destroy steps.</li>
+    </ul>
+    <p><code>terraform validate</code> is not a successful deploy. <code>terraform plan</code> needs Azure credentials. The README table states what is files-only and what needs apply.</p>
+
+    <h2>How to check it</h2>
+    <p>Run the three Terraform commands in <code>terraform/</code>. Open the Actions tab after the first push. If <code>evidence/</code> has no apply or cleanup files, the subscription apply has not been run yet — do not treat the lab as deployed.</p>
+  </main>
+  <footer>
+    <div class="wrap"><p>Mynul Islam · Hamburg</p></div>
+  </footer>
+  <script src="../assets/js/main.js?v=8" defer></script>
+</body>
+</html>

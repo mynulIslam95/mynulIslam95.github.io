@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>status-service-delivery — Mynul Islam</title>
+  <meta name="description" content="Status HTTP service with Compose, Prometheus, Grafana, CI, failure drill, rollback and Kubernetes."/>
+  <link rel="stylesheet" href="../assets/css/styles.css?v=8"/>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap nav">
+      <a class="brand" href="../index.html">Mynul Islam</a>
+      <input id="nav-toggle" class="nav-toggle" type="checkbox"/>
+      <label class="burger" for="nav-toggle" aria-label="Open menu"><span></span><span></span><span></span></label>
+      <nav class="nav-panel" aria-label="Primary">
+        <ul class="nav-links">
+          <li><a href="../index.html#projects">Projects</a></li>
+          <li><a href="../index.html#skills">Skills</a></li>
+          <li><a href="../index.html#experience">Experience</a></li>
+          <li><a href="../index.html#education">Education</a></li>
+          <li><a href="../index.html#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <a class="btn btn-primary btn-nav" href="../cv.pdf" download="Mynul_Islam_CV.pdf">Download CV</a>
+    </div>
+  </header>
+  <main id="main" class="wrap page-header prose">
+    <p><a href="../index.html#projects">Back to projects</a></p>
+    <h1>status-service-delivery</h1>
+    <p><a class="ext" href="https://github.com/mynulIslam95/status-service-delivery" target="_blank" rel="noopener noreferrer">View repository</a></p>
+
+    <h2>Problem</h2>
+    <p>Northfield needs a tiny internal status service that can be released the same way every time, watched with metrics, broken on purpose, recovered, rolled back, and run on a local Kubernetes cluster.</p>
+
+    <h2>What is in the repo</h2>
+    <ul>
+      <li>Python HTTP app: <code>/health</code>, <code>/ready</code>, <code>/metrics</code>. Non-root Docker image.</li>
+      <li>Compose: app, Prometheus, Grafana with a Northfield dashboard.</li>
+      <li>Unittest for 200 health, metrics text, and 503 when fail mode is on.</li>
+      <li>GitHub Actions: tests, image build, compose health. Image build is not a production deploy.</li>
+      <li><code>scripts/break.sh</code>, <code>recover.sh</code>, <code>rollback.sh</code>.</li>
+      <li>Kubernetes Deployment, Service, ConfigMap, live and ready probes.</li>
+    </ul>
+
+    <h2>How to check it</h2>
+    <p><code>python -m unittest tests/test_health.py</code> then <code>docker compose up --build</code> and curl <code>/health</code>. Run break then recover. Apply <code>k8s/status.yaml</code> on kind or minikube and wait for rollout. If CI is red, do not call the pipeline green.</p>
+  </main>
+  <footer>
+    <div class="wrap"><p>Mynul Islam · Hamburg</p></div>
+  </footer>
+  <script src="../assets/js/main.js?v=8" defer></script>
+</body>
+</html>

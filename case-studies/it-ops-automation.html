@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>it-ops-automation — Mynul Islam</title>
+  <meta name="description" content="Windows and Linux support lab: scripts, five tickets, Ansible, AD and Entra procedures."/>
+  <link rel="stylesheet" href="../assets/css/styles.css?v=8"/>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap nav">
+      <a class="brand" href="../index.html">Mynul Islam</a>
+      <input id="nav-toggle" class="nav-toggle" type="checkbox"/>
+      <label class="burger" for="nav-toggle" aria-label="Open menu"><span></span><span></span><span></span></label>
+      <nav class="nav-panel" aria-label="Primary">
+        <ul class="nav-links">
+          <li><a href="../index.html#projects">Projects</a></li>
+          <li><a href="../index.html#skills">Skills</a></li>
+          <li><a href="../index.html#experience">Experience</a></li>
+          <li><a href="../index.html#education">Education</a></li>
+          <li><a href="../index.html#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <a class="btn btn-primary btn-nav" href="../cv.pdf" download="Mynul_Islam_CV.pdf">Download CV</a>
+    </div>
+  </header>
+  <main id="main" class="wrap page-header prose">
+    <p><a href="../index.html#projects">Back to projects</a></p>
+    <h1>it-ops-automation</h1>
+    <p><a class="ext" href="https://github.com/mynulIslam95/it-ops-automation" target="_blank" rel="noopener noreferrer">View repository</a></p>
+
+    <h2>Problem</h2>
+    <p>A fictional office, Northfield, needs one Windows workstation, one Ubuntu host, repeatable support, a backup that has been restored, and identity that is more than a local laptop account.</p>
+
+    <h2>What is in the repo</h2>
+    <ul>
+      <li>PowerShell inventory to CSV (no passwords, no personal files) and a Bash health check with fail exit codes.</li>
+      <li>Five tickets with symptoms, checks, cause, fix and verification: DNS, stopped spooler, share permissions, low disk, locked account.</li>
+      <li>Backup and restore of a synthetic share; sample restore transcript.</li>
+      <li>Ansible playbook: packages, office group, share mode 2770, UFW SSH, health script.</li>
+      <li>Active Directory script and notes for forest <code>northfield.lab</code>, OU, group, three users, GPO. Needs a Windows Server evaluation VM.</li>
+      <li>Entra, Microsoft 365 and Intune commands. They need a tenant. Evidence goes in <code>evidence/entra/</code> when run.</li>
+    </ul>
+
+    <h2>How to check it</h2>
+    <p>On Ubuntu or WSL2: <code>./tests/test_scripts.sh</code> runs health, backup and restore. On Windows: <code>.\scripts\Get-DeviceInventory.ps1</code>. Compare your output to <code>evidence/</code>. Read each runbook and confirm the verification command is there. If AD or Entra evidence folders are empty, that work is still in the scripts — run it on the VM or tenant and add the files.</p>
+  </main>
+  <footer>
+    <div class="wrap"><p>Mynul Islam · Hamburg</p></div>
+  </footer>
+  <script src="../assets/js/main.js?v=8" defer></script>
+</body>
+</html>
