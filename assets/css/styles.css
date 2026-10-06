@@ -236,6 +236,13 @@ section { scroll-margin-top: calc(var(--nav-h) + 28px); padding-block: var(--spa
   color: var(--heading);
   max-width: 38rem;
 }
+.place {
+  font-family: var(--sans);
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--muted);
+  margin: 0 0 var(--space-4);
+}
 .meta-row {
   display: flex; flex-wrap: wrap; gap: 8px;
   margin: 0 0 var(--space-4);
