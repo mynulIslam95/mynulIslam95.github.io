@@ -24,7 +24,7 @@
       "hero.cta": "Projects",
       "duty.loc": "Location",
       "duty.role": "Focus",
-      "duty.roleval": "DevOps, cloud, IT operations",
+      "duty.roleval": "DevOps · Cloud · IT Operations · System Administration",
       "duty.prev": "Experience",
       "duty.lang": "Languages",
       "duty.langval": "English fluent · German B1 · Bengali native",
@@ -95,7 +95,7 @@
       "hero.cta": "Projekte",
       "duty.loc": "Ort",
       "duty.role": "Fokus",
-      "duty.roleval": "DevOps, Cloud, IT-Betrieb",
+      "duty.roleval": "DevOps · Cloud · IT-Betrieb · Systemadministration",
       "duty.prev": "Erfahrung",
       "duty.lang": "Sprachen",
       "duty.langval": "Englisch fließend · Deutsch B1 · Bengalisch",
@@ -221,13 +221,11 @@
     var termPlay = {
       en: [
         { cmd: "whoami", out: "The person who writes the note before closing the ticket." },
-        { cmd: "uptime", out: "Desk: Mondia IT operations. GitHub: Azure, Terraform, Docker, CI." },
-        { cmd: "ls projects", out: "six repos you can clone.", go: "#projects" }
+        { cmd: "uptime", out: "Desk: Mondia IT operations. GitHub: Azure, Terraform, Docker, CI." }
       ],
       de: [
         { cmd: "whoami", out: "Der, der die Notiz schreibt, bevor das Ticket zu ist." },
-        { cmd: "uptime", out: "Schreibtisch: Mondia IT-Betrieb. GitHub: Azure, Terraform, Docker, CI." },
-        { cmd: "ls projekte", out: "sechs Repos zum Klonen.", go: "#projects" }
+        { cmd: "uptime", out: "Schreibtisch: Mondia IT-Betrieb. GitHub: Azure, Terraform, Docker, CI." }
       ]
     };
     var packOf = function () { return termPlay[termLang] || termPlay.en; };
@@ -291,10 +289,6 @@
         setNext();
         termBusy = false;
         termBtn.disabled = false;
-        if (item.go) {
-          var target = document.querySelector(item.go);
-          if (target) target.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
-        }
       });
     };
     window.__termLang = function (lang) {
