@@ -333,6 +333,15 @@ section { scroll-margin-top: calc(var(--nav-h) + 28px); padding-block: var(--spa
 .term-done .term-out { min-height: 0; margin-bottom: 10px; }
 .term-runbar {
   margin-top: 12px;
+  overflow: hidden;
+  transition: opacity 0.45s ease, max-height 0.45s ease, margin 0.45s ease;
+  max-height: 140px;
+}
+.term-runbar.is-off {
+  opacity: 0;
+  max-height: 0;
+  margin: 0;
+  pointer-events: none;
 }
 .term-ask {
   margin: 0 0 8px;

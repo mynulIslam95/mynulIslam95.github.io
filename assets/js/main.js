@@ -214,8 +214,11 @@
     var termLive = document.getElementById("term-live-cmd");
     var termOut = document.getElementById("term-out");
     var termNext = document.getElementById("term-next");
+    var termBar = document.getElementById("term-runbar");
+    var termCursor = document.querySelector(".term-cursor");
     var termStep = 0;
     var termBusy = false;
+    var termDone = false;
     var termTimer = null;
     var termLang = start;
     var termPlay = {
@@ -260,9 +263,10 @@
       termBtn.classList.add("is-lit");
     };
     var runTerm = function () {
-      if (termBusy) return;
+      if (termBusy || termDone) return;
       var pack = packOf();
-      var item = pack[termStep % pack.length];
+      var item = pack[termStep];
+      if (!item) return;
       termBusy = true;
       termBtn.disabled = true;
       termBtn.classList.remove("is-lit");
@@ -281,11 +285,22 @@
           done.appendChild(line);
           done.appendChild(out);
           termLog.appendChild(done);
-          while (termLog.children.length > 3) termLog.removeChild(termLog.firstChild);
+        }
+        if (termOut) termOut.textContent = "";
+        termStep += 1;
+        if (termStep >= pack.length) {
+          termDone = true;
+          if (termLive) termLive.textContent = "exit";
+          if (termCursor) termCursor.style.display = "none";
+          if (termBar) termBar.classList.add("is-off");
+          window.scrollBy({
+            top: Math.min(240, Math.round(window.innerHeight * 0.28)),
+            left: 0,
+            behavior: reduce ? "auto" : "smooth"
+          });
+          return;
         }
         if (termLive) termLive.textContent = "";
-        if (termOut) termOut.textContent = "";
-        termStep = (termStep + 1) % pack.length;
         setNext();
         termBusy = false;
         termBtn.disabled = false;
@@ -293,7 +308,7 @@
     };
     window.__termLang = function (lang) {
       termLang = lang;
-      setNext();
+      if (!termDone) setNext();
     };
     setNext();
     termBtn.addEventListener("click", runTerm);
