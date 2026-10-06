@@ -1,11 +1,5 @@
 (function () {
   var nav = document.querySelector(".site-header");
-  if (nav) {
-    var onScroll = function () { nav.classList.toggle("scrolled", window.scrollY > 12); };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-  }
-
   var toggle = document.getElementById("nav-toggle");
   document.querySelectorAll(".nav-links a").forEach(function (link) {
     link.addEventListener("click", function () {
@@ -20,9 +14,13 @@
       "nav.closed": "Experience",
       "nav.runbooks": "Education",
       "nav.escalate": "Contact",
-      "hero.title": "DevOps and Cloud.",
+      "hero.title": "Mynul Islam. Hamburg. Open to relocate for DevOps, cloud, IT operations and system administration.",
       "hero.place": "Based in Hamburg.",
-      "hero.lede": "IT operations on the desk. Azure, Terraform, Docker and CI on GitHub. Open to relocate for a full-time DevOps or cloud job.",
+      "term.hint": "Tap to run the next command",
+      "hero.lede": "On the desk I run IT operations. A ticket comes in, I reproduce the fault, write a clear note for the next person, and close it only after retest. That daily work is Windows, user access and first-line support.",
+      "hero.lede2": "In GitHub the same habit is DevOps and cloud: Azure networks and storage in Terraform, services in Docker, Kubernetes probes, and GitHub Actions that format, test and validate before anything is called done.",
+      "hero.open": "Open to relocate",
+      "hero.openroles": "DevOps · Cloud · IT Operations · System Administration",
       "hero.cta": "Projects",
       "duty.loc": "Location",
       "duty.role": "Focus",
@@ -33,7 +31,7 @@
       "queue.kicker": "GitHub",
       "queue.title": "Projects",
       "t.open": "open in git",
-      "t.note": "Handover note",
+      "t.note": "Case study",
       "p1": "Windows inventory, Linux health check, five tickets with verification, backup restore, Ansible, Active Directory and Entra procedures.",
       "p2": "Terraform for a resource group, VNet, NSG, storage and Log Analytics. CI formats and validates. No deploy until a subscription apply.",
       "p3": "Status HTTP service with Compose, Prometheus, Grafana, tests, CI health check, failure drill, rollback and Kubernetes probes.",
@@ -53,7 +51,7 @@
       "job.ws": "Working student",
       "job.m.title": "IT Operations, Mondia Group",
       "job.m.dates": "Hamburg · June 2024 - July 2026",
-      "job.m.body": "Incident intake, reproduce, follow-up and close after retest. Handover notes for the next shift. User accounts and access rights. First-line support by email and on site.",
+      "job.m.body": "Incident intake, reproduce, follow-up and close after retest. Shift notes for the next person. User accounts and access rights. First-line support by email and on site.",
       "job.mo.title": "Operations, Motion E-Commerce GmbH",
       "job.mo.dates": "Hamburg · November 2021 - September 2023",
       "job.mo.body": "Production failures tracked to close. Excel control reports and operating notes for the team.",
@@ -78,7 +76,7 @@
       "edu.b.l6": "Bachelor thesis: Python data pipelines for day-ahead renewable energy forecasting",
       "esc.kicker": "Contact",
       "esc.title": "Get in touch.",
-      "esc.body": "Based in Hamburg. Open to hybrid, relocate, and a full-time DevOps or cloud role. English fluent, German B1.",
+      "esc.body": "Based in Hamburg. Open to relocate for DevOps, cloud, IT operations and system administration. English fluent, German B1.",
       "foot": "Mynul Islam · Hamburg"
     },
     de: {
@@ -87,20 +85,24 @@
       "nav.closed": "Erfahrung",
       "nav.runbooks": "Ausbildung",
       "nav.escalate": "Kontakt",
-      "hero.title": "DevOps und Cloud.",
+      "hero.title": "Mynul Islam. Hamburg. Offen für Umzug für DevOps, Cloud, IT-Betrieb und Systemadministration.",
       "hero.place": "In Hamburg.",
-      "hero.lede": "IT-Betrieb am Schreibtisch. Azure, Terraform, Docker und CI auf GitHub. Offen für Umzug für eine Vollzeitstelle in DevOps oder Cloud.",
+      "term.hint": "Tippen für den nächsten Befehl",
+      "hero.lede": "Am Schreibtisch mache ich IT-Betrieb. Ein Ticket kommt, ich stelle die Störung nach, schreibe eine klare Notiz für die nächste Person und schließe erst nach dem Retest. Der Alltag ist Windows, Zugriffsrechte und First-Level-Support.",
+      "hero.lede2": "Auf GitHub ist dieselbe Arbeitsweise DevOps und Cloud: Azure-Netze und Storage in Terraform, Dienste in Docker, Kubernetes-Probes und GitHub Actions, die formatieren, testen und validieren, bevor etwas als fertig gilt.",
+      "hero.open": "Offen für Umzug",
+      "hero.openroles": "DevOps · Cloud · IT-Betrieb · Systemadministration",
       "hero.cta": "Projekte",
       "duty.loc": "Ort",
       "duty.role": "Fokus",
       "duty.roleval": "DevOps, Cloud, IT-Betrieb",
       "duty.prev": "Erfahrung",
       "duty.lang": "Sprachen",
-      "duty.langval": "Englisch fließend · Deutsch B1 · Bengalisch Muttersprache",
+      "duty.langval": "Englisch fließend · Deutsch B1 · Bengalisch",
       "queue.kicker": "GitHub",
       "queue.title": "Projekte",
       "t.open": "offen in git",
-      "t.note": "Übergabenotiz",
+      "t.note": "Fallstudie",
       "p1": "Windows-Inventar, Linux-Check, fünf Tickets mit Prüfung, Backup/Restore, Ansible, Active Directory und Entra-Abläufe.",
       "p2": "Terraform für Ressourcengruppe, VNet, NSG, Storage und Log Analytics. CI prüft Format und Validate. Deploy erst nach Freigabe im Abo.",
       "p3": "Status-HTTP-Dienst mit Compose, Prometheus, Grafana, Tests, CI-Check, Störungsübung, Rollback und Kubernetes-Probes.",
@@ -145,7 +147,7 @@
       "edu.b.l6": "Bachelorarbeit: Python-Datenpipelines für die Prognose erneuerbarer Erzeugung am Vortag",
       "esc.kicker": "Kontakt",
       "esc.title": "Schreib mir.",
-      "esc.body": "In Hamburg. Offen für hybrid, Umzug und eine Vollzeitstelle in DevOps oder Cloud. Englisch fließend, Deutsch B1.",
+      "esc.body": "In Hamburg. Offen für Umzug für DevOps, Cloud, IT-Betrieb und Systemadministration. Englisch fließend, Deutsch B1.",
       "foot": "Mynul Islam · Hamburg"
     }
   };
@@ -161,6 +163,7 @@
       btn.classList.toggle("is-on", btn.getAttribute("data-lang") === lang);
     });
     try { localStorage.setItem("mynul-lang", lang); } catch (e) {}
+    if (window.__termLang) window.__termLang(lang);
   }
 
   document.querySelectorAll(".lang-switch button").forEach(function (btn) {
@@ -172,4 +175,107 @@
   var start = "en";
   try { start = localStorage.getItem("mynul-lang") || "en"; } catch (e) {}
   applyLang(start);
+
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var ticking = false;
+  var onMove = function () {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(function () {
+      var y = window.scrollY || 0;
+      if (nav) nav.classList.toggle("scrolled", y > 12);
+      if (!reduce) {
+        document.body.style.setProperty("--scroll-shift", String(Math.round(y * -0.14)) + "px");
+        document.body.style.setProperty("--card-shift", String(Math.round(y * 0.05)) + "px");
+      }
+      ticking = false;
+    });
+  };
+  window.addEventListener("scroll", onMove, { passive: true });
+  onMove();
+
+  if (!reduce && "IntersectionObserver" in window) {
+    document.documentElement.classList.add("motion");
+    var revealSel = ".hero-grid > *, .ticket, .skill-groups > .panel, .job-card, .edu-card, .contact-card, section .section-kicker, section h2, .page-header, .prose";
+    document.querySelectorAll(revealSel).forEach(function (el) { el.classList.add("reveal"); });
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-in");
+        io.unobserve(entry.target);
+      });
+    }, { threshold: 0.14, rootMargin: "0px 0px -8% 0px" });
+    document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
+  }
+
+  var termBox = document.getElementById("term-run");
+  if (termBox) {
+    var termCmd = document.getElementById("term-cmd");
+    var termOut = document.getElementById("term-out");
+    var termStep = 0;
+    var termTimer = null;
+    var termLang = start;
+    var termPlay = {
+      en: [
+        { cmd: "whoami", out: "The person who writes the note before closing the ticket." },
+        { cmd: "uptime", out: "Desk: Mondia IT operations. GitHub: Azure, Terraform, Docker, CI." },
+        { cmd: "ls projects", out: "six repos you can clone.", go: "#projects" }
+      ],
+      de: [
+        { cmd: "whoami", out: "Der, der die Notiz schreibt, bevor das Ticket zu ist." },
+        { cmd: "uptime", out: "Schreibtisch: Mondia IT-Betrieb. GitHub: Azure, Terraform, Docker, CI." },
+        { cmd: "ls projekte", out: "sechs Repos zum Klonen.", go: "#projects" }
+      ]
+    };
+    var stopType = function () {
+      if (termTimer) { clearInterval(termTimer); termTimer = null; }
+    };
+    var typeOut = function (text, then) {
+      stopType();
+      if (!termOut) return;
+      if (reduce) {
+        termOut.textContent = text;
+        if (then) then();
+        return;
+      }
+      var i = 0;
+      termOut.textContent = "";
+      termTimer = setInterval(function () {
+        i += 1;
+        termOut.textContent = text.slice(0, i);
+        if (i >= text.length) {
+          stopType();
+          if (then) then();
+        }
+      }, 16);
+    };
+    var showTerm = function (step, jump) {
+      var pack = termPlay[termLang] || termPlay.en;
+      var item = pack[step % pack.length];
+      if (termCmd) termCmd.textContent = item.cmd;
+      typeOut(item.out, function () {
+        if (jump && item.go) {
+          var target = document.querySelector(item.go);
+          if (target) target.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+        }
+      });
+    };
+    window.__termLang = function (lang) {
+      termLang = lang;
+      showTerm(termStep, false);
+    };
+    showTerm(0, false);
+    var runTerm = function () {
+      var pack = termPlay[termLang] || termPlay.en;
+      termStep = (termStep + 1) % pack.length;
+      showTerm(termStep, true);
+    };
+    termBox.addEventListener("click", runTerm);
+    termBox.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        runTerm();
+      }
+    });
+  }
 })();

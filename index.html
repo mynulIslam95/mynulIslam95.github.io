@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="assets/css/styles.css?v=14"/>
+  <link rel="stylesheet" href="assets/css/styles.css?v=17"/>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -34,9 +34,9 @@
           <img class="flag" src="assets/icons/flag-de.svg" width="22" height="15" alt=""/>
         </button>
       </div>
-      <div class="cv-pair">
-        <a href="cv-en.pdf" download="Mynul_Islam_CV_EN.pdf">CV-English</a>
-        <a href="cv-de.pdf" download="Mynul_Islam_CV_DE.pdf">CV-Deutsch</a>
+      <div class="cv-pair nav-cv">
+        <a href="cv-en.pdf" download="Mynul_Islam_CV_EN.pdf"><span class="cv-long">CV-English</span><span class="cv-tiny">EN</span></a>
+        <a href="cv-de.pdf" download="Mynul_Islam_CV_DE.pdf"><span class="cv-long">CV-Deutsch</span><span class="cv-tiny">DE</span></a>
       </div>
     </div>
   </header>
@@ -45,9 +45,30 @@
     <section class="hero" id="top">
       <div class="wrap hero-grid">
         <div>
-          <h1 data-i18n="hero.title">DevOps and Cloud.</h1>
+          <h1 class="visually-hidden" data-i18n="hero.title">Mynul Islam. Hamburg. Open to relocate for DevOps, cloud, IT operations and system administration.</h1>
+          <div class="term" aria-label="Short terminal">
+            <div class="term-chrome">
+              <span class="term-dot d1"></span>
+              <span class="term-dot d2"></span>
+              <span class="term-dot d3"></span>
+              <span class="term-name">mynul@hamburg</span>
+            </div>
+            <div class="term-screen" id="term-run" role="button" tabindex="0">
+              <p class="term-line"><span class="term-prompt">mynul@hamburg ~ %</span> <span id="term-cmd">whoami</span><span class="term-cursor" aria-hidden="true"></span></p>
+              <p class="term-out" id="term-out"></p>
+              <p class="term-hint" data-i18n="term.hint">Tap to run the next command</p>
+            </div>
+          </div>
           <p class="place" data-i18n="hero.place">Based in Hamburg.</p>
-          <p class="lede" data-i18n="hero.lede">IT operations on the desk. Azure, Terraform, Docker and CI on GitHub. Open to relocate for a full-time DevOps or cloud job.</p>
+          <p class="lede" data-i18n="hero.lede">On the desk I run IT operations. A ticket comes in, I reproduce the fault, write a clear note for the next person, and close it only after retest. That daily work is Windows, user access and first-line support.</p>
+          <p class="lede lede-more" data-i18n="hero.lede2">In GitHub the same habit is DevOps and cloud: Azure networks and storage in Terraform, services in Docker, Kubernetes probes, and GitHub Actions that format, test and validate before anything is called done.</p>
+          <p class="open-work" role="status">
+            <span class="open-dot" aria-hidden="true"></span>
+            <span class="open-copy">
+              <strong data-i18n="hero.open">Open to relocate</strong>
+              <span data-i18n="hero.openroles">DevOps · Cloud · IT Operations · System Administration</span>
+            </span>
+          </p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="#projects" data-i18n="hero.cta">Projects</a>
             <a class="btn btn-secondary ext" href="https://github.com/mynulIslam95" target="_blank" rel="noopener noreferrer">GitHub</a>
@@ -81,7 +102,7 @@
             </div>
             <div>
               <dt data-i18n="duty.lang">Languages</dt>
-              <dd data-i18n="duty.langval">English fluent · German B1 · Bengali native</dd>
+              <dd class="lang-line" data-i18n="duty.langval">English fluent · German B1 · Bengali native</dd>
             </div>
           </dl>
         </aside>
@@ -99,7 +120,7 @@
             <p data-i18n="p1">Windows inventory, Linux health check, five tickets with verification, backup restore, Ansible, Active Directory and Entra procedures.</p>
             <ul class="tech"><li>Windows</li><li>Linux</li><li>PowerShell</li><li>Ansible</li></ul>
             <div class="card-links">
-              <a href="case-studies/it-ops-automation.html" data-i18n="t.note">Handover note</a>
+              <a href="case-studies/it-ops-automation.html" data-i18n="t.note">Case study</a>
               <a class="ext" href="https://github.com/mynulIslam95/it-ops-automation" target="_blank" rel="noopener noreferrer">GitHub</a>
             </div>
           </article>
@@ -109,7 +130,7 @@
             <p data-i18n="p2">Terraform for a resource group, VNet, NSG, storage and Log Analytics. CI formats and validates. No deploy until a subscription apply.</p>
             <ul class="tech"><li>Azure</li><li>Terraform</li><li>GitHub Actions</li></ul>
             <div class="card-links">
-              <a href="case-studies/azure-infra-foundation.html" data-i18n="t.note">Handover note</a>
+              <a href="case-studies/azure-infra-foundation.html" data-i18n="t.note">Case study</a>
               <a class="ext" href="https://github.com/mynulIslam95/azure-infra-foundation" target="_blank" rel="noopener noreferrer">GitHub</a>
             </div>
           </article>
@@ -119,7 +140,7 @@
             <p data-i18n="p3">Status HTTP service with Compose, Prometheus, Grafana, tests, CI health check, failure drill, rollback and Kubernetes probes.</p>
             <ul class="tech"><li>Docker</li><li>CI/CD</li><li>Kubernetes</li><li>Python</li></ul>
             <div class="card-links">
-              <a href="case-studies/status-service-delivery.html" data-i18n="t.note">Handover note</a>
+              <a href="case-studies/status-service-delivery.html" data-i18n="t.note">Case study</a>
               <a class="ext" href="https://github.com/mynulIslam95/status-service-delivery" target="_blank" rel="noopener noreferrer">GitHub</a>
             </div>
           </article>
@@ -129,7 +150,7 @@
             <p data-i18n="p4">Shift toolkit: HTTP health poll, ERROR/WARN log scan, duty checklist, runbook when /health is down.</p>
             <ul class="tech"><li>Python</li><li>pytest</li><li>Runbooks</li></ul>
             <div class="card-links">
-              <a href="case-studies/ops-duty-scripts.html" data-i18n="t.note">Handover note</a>
+              <a href="case-studies/ops-duty-scripts.html" data-i18n="t.note">Case study</a>
               <a class="ext" href="https://github.com/mynulIslam95/ops-duty-scripts" target="_blank" rel="noopener noreferrer">GitHub</a>
             </div>
           </article>
@@ -139,7 +160,7 @@
             <p data-i18n="p5">FastAPI with pytest on every push, Docker image, Jenkinsfile, Kubernetes Deployment with live and ready probes.</p>
             <ul class="tech"><li>CI/CD</li><li>Docker</li><li>Kubernetes</li></ul>
             <div class="card-links">
-              <a href="case-studies/custom-profile-service.html" data-i18n="t.note">Handover note</a>
+              <a href="case-studies/custom-profile-service.html" data-i18n="t.note">Case study</a>
               <a class="ext" href="https://github.com/mynulIslam95/custom-profile-service" target="_blank" rel="noopener noreferrer">GitHub</a>
             </div>
           </article>
@@ -149,7 +170,7 @@
             <p data-i18n="p6">TypeScript Azure Functions API, tests, Bicep for Storage, App Insights and Function App, GitHub Actions for typecheck and lint.</p>
             <ul class="tech"><li>Azure</li><li>Bicep</li><li>TypeScript</li></ul>
             <div class="card-links">
-              <a href="case-studies/azure-functions-ts-lab.html" data-i18n="t.note">Handover note</a>
+              <a href="case-studies/azure-functions-ts-lab.html" data-i18n="t.note">Case study</a>
               <a class="ext" href="https://github.com/mynulIslam95/azure-functions-ts-lab" target="_blank" rel="noopener noreferrer">GitHub</a>
             </div>
           </article>
@@ -203,7 +224,7 @@
           <p class="edu-level" data-i18n="job.ws">Working student</p>
           <h3 data-i18n="job.m.title">IT Operations, Mondia Group</h3>
           <span class="muted" data-i18n="job.m.dates">Hamburg · June 2024 - July 2026</span>
-          <p data-i18n="job.m.body">Incident intake, reproduce, follow-up and close after retest. Handover notes for the next shift. User accounts and access rights. First-line support by email and on site.</p>
+          <p data-i18n="job.m.body">Incident intake, reproduce, follow-up and close after retest. Shift notes for the next person. User accounts and access rights. First-line support by email and on site.</p>
         </article>
         <article class="panel job-card">
           <p class="edu-level" data-i18n="job.ws">Working student</p>
@@ -257,7 +278,7 @@
         <div class="panel contact-card">
         <p class="section-kicker" data-i18n="esc.kicker">Contact</p>
         <h2 data-i18n="esc.title">Get in touch.</h2>
-        <p data-i18n="esc.body">Based in Hamburg. Open to hybrid, relocate, and a full-time DevOps or cloud role. English fluent, German B1.</p>
+        <p data-i18n="esc.body">Based in Hamburg. Open to relocate for DevOps, cloud, IT operations and system administration. English fluent, German B1.</p>
         <div class="contact-links">
           <div class="cv-pair">
             <a href="cv-en.pdf" download="Mynul_Islam_CV_EN.pdf">CV-English</a>
@@ -277,6 +298,6 @@
       <p data-i18n="foot">Mynul Islam · Hamburg</p>
     </div>
   </footer>
-  <script src="assets/js/main.js?v=14" defer></script>
+  <script src="assets/js/main.js?v=17" defer></script>
 </body>
 </html>
