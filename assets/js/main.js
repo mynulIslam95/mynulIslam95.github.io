@@ -16,7 +16,7 @@
       "nav.escalate": "Contact",
       "hero.title": "Mynul Islam. Hamburg. Open to relocate for DevOps, cloud, IT operations and system administration.",
       "hero.place": "Based in Hamburg.",
-      "term.hint": "Tap to run the next command",
+      "term.ask": "Click the command",
       "hero.lede": "On the desk I run IT operations. A ticket comes in, I reproduce the fault, write a clear note for the next person, and close it only after retest. That daily work is Windows, user access and first-line support.",
       "hero.lede2": "In GitHub the same habit is DevOps and cloud: Azure networks and storage in Terraform, services in Docker, Kubernetes probes, and GitHub Actions that format, test and validate before anything is called done.",
       "hero.open": "Open to relocate",
@@ -87,7 +87,7 @@
       "nav.escalate": "Kontakt",
       "hero.title": "Mynul Islam. Hamburg. Offen für Umzug für DevOps, Cloud, IT-Betrieb und Systemadministration.",
       "hero.place": "In Hamburg.",
-      "term.hint": "Tippen für den nächsten Befehl",
+      "term.ask": "Klick auf den Befehl",
       "hero.lede": "Am Schreibtisch mache ich IT-Betrieb. Ein Ticket kommt, ich stelle die Störung nach, schreibe eine klare Notiz für die nächste Person und schließe erst nach dem Retest. Der Alltag ist Windows, Zugriffsrechte und First-Level-Support.",
       "hero.lede2": "Auf GitHub ist dieselbe Arbeitsweise DevOps und Cloud: Azure-Netze und Storage in Terraform, Dienste in Docker, Kubernetes-Probes und GitHub Actions, die formatieren, testen und validieren, bevor etwas als fertig gilt.",
       "hero.open": "Offen für Umzug",
@@ -208,11 +208,14 @@
     document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
   }
 
-  var termBox = document.getElementById("term-run");
-  if (termBox) {
-    var termCmd = document.getElementById("term-cmd");
+  var termBtn = document.getElementById("term-run");
+  if (termBtn) {
+    var termLog = document.getElementById("term-log");
+    var termLive = document.getElementById("term-live-cmd");
     var termOut = document.getElementById("term-out");
+    var termNext = document.getElementById("term-next");
     var termStep = 0;
+    var termBusy = false;
     var termTimer = null;
     var termLang = start;
     var termPlay = {
@@ -227,6 +230,7 @@
         { cmd: "ls projekte", out: "sechs Repos zum Klonen.", go: "#projects" }
       ]
     };
+    var packOf = function () { return termPlay[termLang] || termPlay.en; };
     var stopType = function () {
       if (termTimer) { clearInterval(termTimer); termTimer = null; }
     };
@@ -249,12 +253,45 @@
         }
       }, 16);
     };
-    var showTerm = function (step, jump) {
-      var pack = termPlay[termLang] || termPlay.en;
-      var item = pack[step % pack.length];
-      if (termCmd) termCmd.textContent = item.cmd;
+    var setNext = function () {
+      var pack = packOf();
+      var item = pack[termStep % pack.length];
+      if (termNext) termNext.textContent = item.cmd;
+      termBtn.classList.remove("is-lit");
+      void termBtn.offsetWidth;
+      termBtn.classList.add("is-lit");
+    };
+    var runTerm = function () {
+      if (termBusy) return;
+      var pack = packOf();
+      var item = pack[termStep % pack.length];
+      termBusy = true;
+      termBtn.disabled = true;
+      termBtn.classList.remove("is-lit");
+      if (termLive) termLive.textContent = item.cmd;
       typeOut(item.out, function () {
-        if (jump && item.go) {
+        if (termLog) {
+          var done = document.createElement("div");
+          done.className = "term-done";
+          var line = document.createElement("p");
+          line.className = "term-line";
+          line.innerHTML = '<span class="term-prompt">mynul@IT ~ %</span> ';
+          line.appendChild(document.createTextNode(item.cmd));
+          var out = document.createElement("p");
+          out.className = "term-out";
+          out.textContent = item.out;
+          done.appendChild(line);
+          done.appendChild(out);
+          termLog.appendChild(done);
+          while (termLog.children.length > 3) termLog.removeChild(termLog.firstChild);
+        }
+        if (termLive) termLive.textContent = "";
+        if (termOut) termOut.textContent = "";
+        termStep = (termStep + 1) % pack.length;
+        setNext();
+        termBusy = false;
+        termBtn.disabled = false;
+        if (item.go) {
           var target = document.querySelector(item.go);
           if (target) target.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
         }
@@ -262,20 +299,9 @@
     };
     window.__termLang = function (lang) {
       termLang = lang;
-      showTerm(termStep, false);
+      setNext();
     };
-    showTerm(0, false);
-    var runTerm = function () {
-      var pack = termPlay[termLang] || termPlay.en;
-      termStep = (termStep + 1) % pack.length;
-      showTerm(termStep, true);
-    };
-    termBox.addEventListener("click", runTerm);
-    termBox.addEventListener("keydown", function (e) {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        runTerm();
-      }
-    });
+    setNext();
+    termBtn.addEventListener("click", runTerm);
   }
 })();

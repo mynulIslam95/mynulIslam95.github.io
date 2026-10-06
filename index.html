@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="assets/css/styles.css?v=17"/>
+  <link rel="stylesheet" href="assets/css/styles.css?v=18"/>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -46,17 +46,26 @@
       <div class="wrap hero-grid">
         <div>
           <h1 class="visually-hidden" data-i18n="hero.title">Mynul Islam. Hamburg. Open to relocate for DevOps, cloud, IT operations and system administration.</h1>
-          <div class="term" aria-label="Short terminal">
-            <div class="term-chrome">
-              <span class="term-dot d1"></span>
-              <span class="term-dot d2"></span>
-              <span class="term-dot d3"></span>
-              <span class="term-name">mynul@hamburg</span>
+          <div class="term-wrap">
+            <div class="term" aria-label="Terminal">
+              <div class="term-chrome">
+                <span class="term-dot d1"></span>
+                <span class="term-dot d2"></span>
+                <span class="term-dot d3"></span>
+                <span class="term-name">mynul@IT</span>
+              </div>
+              <div class="term-screen" id="term-screen">
+                <div id="term-log"></div>
+                <p class="term-line"><span class="term-prompt">mynul@IT ~ %</span> <span id="term-live-cmd"></span><span class="term-cursor" aria-hidden="true"></span></p>
+                <p class="term-out" id="term-out"></p>
+              </div>
             </div>
-            <div class="term-screen" id="term-run" role="button" tabindex="0">
-              <p class="term-line"><span class="term-prompt">mynul@hamburg ~ %</span> <span id="term-cmd">whoami</span><span class="term-cursor" aria-hidden="true"></span></p>
-              <p class="term-out" id="term-out"></p>
-              <p class="term-hint" data-i18n="term.hint">Tap to run the next command</p>
+            <div class="term-runbar">
+              <p class="term-ask" data-i18n="term.ask">Click the command</p>
+              <button type="button" class="term-cmdbtn is-lit" id="term-run">
+                <span class="term-cmdbtn-prompt">mynul@IT ~ %</span>
+                <span class="term-cmdbtn-cmd" id="term-next">whoami</span>
+              </button>
             </div>
           </div>
           <p class="place" data-i18n="hero.place">Based in Hamburg.</p>
@@ -298,6 +307,6 @@
       <p data-i18n="foot">Mynul Islam · Hamburg</p>
     </div>
   </footer>
-  <script src="assets/js/main.js?v=17" defer></script>
+  <script src="assets/js/main.js?v=18" defer></script>
 </body>
 </html>
