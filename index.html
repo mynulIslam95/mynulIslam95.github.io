@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="assets/css/styles.css?v=21"/>
+  <link rel="stylesheet" href="assets/css/styles.css?v=29"/>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -45,7 +45,7 @@
     <section class="hero" id="top">
       <div class="wrap hero-grid">
         <div>
-          <h1 class="visually-hidden" data-i18n="hero.title">Mynul Islam. Hamburg. Open to relocate for DevOps, cloud, IT operations and system administration.</h1>
+          <h1 class="visually-hidden" data-i18n="hero.title">Mynul Islam. Hamburg. Open to full-time work and relocation inside Germany for DevOps, cloud, IT operations and system administration.</h1>
           <div class="term-wrap">
             <div class="term" aria-label="Terminal">
               <div class="term-chrome">
@@ -68,15 +68,13 @@
               </button>
             </div>
           </div>
-          <p class="place" data-i18n="hero.place">Based in Hamburg.</p>
-          <p class="lede" data-i18n="hero.lede">On the desk I run IT operations. A ticket comes in, I reproduce the fault, write a clear note for the next person, and close it only after retest. That daily work is Windows, user access and first-line support.</p>
-          <p class="lede lede-more" data-i18n="hero.lede2">In GitHub the same habit is DevOps and cloud: Azure networks and storage in Terraform, services in Docker, Kubernetes probes, and GitHub Actions that format, test and validate before anything is called done.</p>
           <div class="open-work" role="status">
             <div class="open-head">
               <span class="open-dot" aria-hidden="true"></span>
-              <strong data-i18n="hero.open">Open to relocate</strong>
+              <strong data-i18n="hero.open">Open to:</strong>
             </div>
-            <p class="open-kicker" data-i18n="hero.roles">Roles</p>
+            <p class="open-note" data-i18n="hero.opennote">Full-time work and relocation inside Germany</p>
+            <p class="open-kicker" data-i18n="hero.roles">Job roles:</p>
             <ul class="open-list">
               <li data-i18n="role.devops">DevOps</li>
               <li data-i18n="role.cloud">Cloud</li>
@@ -95,12 +93,12 @@
               <source type="image/webp" srcset="assets/images/mynul.webp"/>
               <img class="photo-sm" src="assets/images/mynul.jpg" width="84" height="84" alt="Portrait of Mynul Islam"/>
             </picture>
-            <img class="orbit-icon o1" src="assets/icons/linux.svg?v=12" alt="" width="26" height="26"/>
-            <img class="orbit-icon o2" src="assets/icons/azure.svg?v=12" alt="" width="26" height="26"/>
-            <img class="orbit-icon o3" src="assets/icons/python.svg?v=12" alt="" width="26" height="26"/>
-            <img class="orbit-icon o4" src="assets/icons/docker.svg?v=12" alt="" width="26" height="26"/>
-            <img class="orbit-icon o5" src="assets/icons/git.svg?v=12" alt="" width="26" height="26"/>
-            <img class="orbit-icon o6" src="assets/icons/windows.svg?v=12" alt="" width="26" height="26"/>
+            <div class="orbit-ring" aria-hidden="true">
+              <span class="orbit-badge o1"><img src="assets/icons/role-devops.svg?v=26" alt="" width="20" height="20"/></span>
+              <span class="orbit-badge o2"><img src="assets/icons/role-cloud.svg?v=26" alt="" width="20" height="20"/></span>
+              <span class="orbit-badge o3"><img src="assets/icons/role-ops.svg?v=26" alt="" width="20" height="20"/></span>
+              <span class="orbit-badge o4"><img src="assets/icons/role-sysadmin.svg?v=26" alt="" width="20" height="20"/></span>
+            </div>
           </div>
           <dl>
             <div>
@@ -108,35 +106,14 @@
               <dd>Hamburg, Germany</dd>
             </div>
             <div>
-              <dt data-i18n="duty.role">Focus</dt>
+              <dt data-i18n="duty.lang">Languages</dt>
               <dd>
-                <ul class="role-list">
-                  <li>
-                    <span class="role-icon"><img src="assets/icons/docker.svg?v=12" alt="" width="22" height="22"/></span>
-                    <span data-i18n="role.devops">DevOps</span>
-                  </li>
-                  <li>
-                    <span class="role-icon"><img src="assets/icons/azure.svg?v=12" alt="" width="22" height="22"/></span>
-                    <span data-i18n="role.cloud">Cloud</span>
-                  </li>
-                  <li>
-                    <span class="role-icon"><img src="assets/icons/windows.svg?v=12" alt="" width="22" height="22"/></span>
-                    <span data-i18n="role.ops">IT Operations</span>
-                  </li>
-                  <li>
-                    <span class="role-icon"><img src="assets/icons/linux.svg?v=12" alt="" width="22" height="22"/></span>
-                    <span data-i18n="role.sys">System Administration</span>
-                  </li>
+                <ul class="lang-list">
+                  <li data-i18n="duty.en">English : C1</li>
+                  <li data-i18n="duty.de">German : B1</li>
+                  <li data-i18n="duty.bn">Bengali : Native</li>
                 </ul>
               </dd>
-            </div>
-            <div>
-              <dt data-i18n="duty.prev">Experience</dt>
-              <dd>Mondia Group · Motion E-Commerce</dd>
-            </div>
-            <div>
-              <dt data-i18n="duty.lang">Languages</dt>
-              <dd class="lang-line" data-i18n="duty.langval">English fluent · German B1 · Bengali native</dd>
             </div>
           </dl>
         </aside>
@@ -147,7 +124,7 @@
       <div class="wrap">
         <p class="section-kicker" data-i18n="queue.kicker">GitHub</p>
         <h2 data-i18n="queue.title">Projects</h2>
-        <div class="ticket-grid">
+        <div class="ticket-grid queue">
           <article class="ticket">
             <div class="ticket-head"><span class="tid">NF-01</span><span class="tstate" data-i18n="t.open">open in git</span></div>
             <h3>it-ops-automation</h3>
@@ -232,7 +209,7 @@
             <ul class="skill-list">
               <li class="skill"><span class="skill-icon"><img src="assets/icons/azure.svg?v=12" alt="" width="26" height="26"/></span><span>Azure</span></li>
               <li class="skill"><span class="skill-icon"><img src="assets/icons/bicep.svg?v=12" alt="" width="26" height="26"/></span><span>Bicep</span></li>
-              <li class="skill"><span class="skill-icon"><img src="assets/icons/network.svg?v=12" alt="" width="26" height="26"/></span><span data-i18n="sk.net">Networking</span></li>
+              <li class="skill"><span class="skill-icon"><img src="assets/icons/network.svg?v=24" alt="" width="26" height="26"/></span><span data-i18n="sk.net">Networking</span></li>
               <li class="skill"><span class="skill-icon"><img src="assets/icons/kubernetes.svg?v=12" alt="" width="26" height="26"/></span><span>Kubernetes</span></li>
             </ul>
           </article>
@@ -272,7 +249,6 @@
     <section id="runbooks">
       <div class="wrap">
         <p class="section-kicker" data-i18n="edu.kicker">Education</p>
-        <h2 data-i18n="edu.title">Two degrees.</h2>
         <div class="edu-grid">
           <article class="panel edu-card">
             <p class="edu-level" data-i18n="edu.m.lvl">Master of Science · in progress</p>
@@ -312,7 +288,7 @@
         <div class="panel contact-card">
         <p class="section-kicker" data-i18n="esc.kicker">Contact</p>
         <h2 data-i18n="esc.title">Get in touch.</h2>
-        <p data-i18n="esc.body">Based in Hamburg. Open to relocate for DevOps, cloud, IT operations and system administration. English fluent, German B1.</p>
+        <p data-i18n="esc.body">Based in Hamburg. Open to full-time work and relocation inside Germany. English C1, German B1.</p>
         <div class="contact-links">
           <div class="cv-pair">
             <a href="cv-en.pdf" download="Mynul_Islam_CV_EN.pdf">CV-English</a>
@@ -332,6 +308,6 @@
       <p data-i18n="foot">Mynul Islam · Hamburg</p>
     </div>
   </footer>
-  <script src="assets/js/main.js?v=21" defer></script>
+  <script src="assets/js/main.js?v=31" defer></script>
 </body>
 </html>

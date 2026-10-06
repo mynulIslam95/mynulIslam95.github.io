@@ -14,23 +14,24 @@
       "nav.closed": "Experience",
       "nav.runbooks": "Education",
       "nav.escalate": "Contact",
-      "hero.title": "Mynul Islam. Hamburg. Open to relocate for DevOps, cloud, IT operations and system administration.",
+      "hero.title": "Mynul Islam. Hamburg. Open to full-time work and relocation inside Germany for DevOps, cloud, IT operations and system administration.",
       "hero.place": "Based in Hamburg.",
       "term.ask": "Click the command",
       "hero.lede": "On the desk I run IT operations. A ticket comes in, I reproduce the fault, write a clear note for the next person, and close it only after retest. That daily work is Windows, user access and first-line support.",
       "hero.lede2": "In GitHub the same habit is DevOps and cloud: Azure networks and storage in Terraform, services in Docker, Kubernetes probes, and GitHub Actions that format, test and validate before anything is called done.",
-      "hero.open": "Open to relocate",
-      "hero.roles": "Roles",
+      "hero.open": "Open to:",
+      "hero.opennote": "Full-time work and relocation inside Germany",
+      "hero.roles": "Job roles:",
       "role.devops": "DevOps",
       "role.cloud": "Cloud",
       "role.ops": "IT Operations",
       "role.sys": "System Administration",
       "hero.cta": "Projects",
       "duty.loc": "Location",
-      "duty.role": "Focus",
-      "duty.prev": "Experience",
       "duty.lang": "Languages",
-      "duty.langval": "English fluent · German B1 · Bengali native",
+      "duty.en": "English : C1",
+      "duty.de": "German : B1",
+      "duty.bn": "Bengali : Native",
       "queue.kicker": "GitHub",
       "queue.title": "Projects",
       "t.open": "open in git",
@@ -59,7 +60,6 @@
       "job.mo.dates": "Hamburg · November 2021 - September 2023",
       "job.mo.body": "Production failures tracked to close. Excel control reports and operating notes for the team.",
       "edu.kicker": "Education",
-      "edu.title": "Two degrees.",
       "edu.m.lvl": "Master of Science · in progress",
       "edu.m.dates": "April 2026 - present",
       "edu.m.body": "Started April 2026. Own graduate programme: information and communication systems, networks, digital infrastructure.",
@@ -79,7 +79,7 @@
       "edu.b.l6": "Bachelor thesis: Python data pipelines for day-ahead renewable energy forecasting",
       "esc.kicker": "Contact",
       "esc.title": "Get in touch.",
-      "esc.body": "Based in Hamburg. Open to relocate for DevOps, cloud, IT operations and system administration. English fluent, German B1.",
+      "esc.body": "Based in Hamburg. Open to full-time work and relocation inside Germany. English C1, German B1.",
       "foot": "Mynul Islam · Hamburg"
     },
     de: {
@@ -88,23 +88,24 @@
       "nav.closed": "Erfahrung",
       "nav.runbooks": "Ausbildung",
       "nav.escalate": "Kontakt",
-      "hero.title": "Mynul Islam. Hamburg. Offen für Umzug für DevOps, Cloud, IT-Betrieb und Systemadministration.",
+      "hero.title": "Mynul Islam. Hamburg. Offen für Vollzeit und Umzug innerhalb Deutschlands für DevOps, Cloud, IT-Betrieb und Systemadministration.",
       "hero.place": "In Hamburg.",
       "term.ask": "Klick auf den Befehl",
       "hero.lede": "Am Schreibtisch mache ich IT-Betrieb. Ein Ticket kommt, ich stelle die Störung nach, schreibe eine klare Notiz für die nächste Person und schließe erst nach dem Retest. Der Alltag ist Windows, Zugriffsrechte und First-Level-Support.",
       "hero.lede2": "Auf GitHub ist dieselbe Arbeitsweise DevOps und Cloud: Azure-Netze und Storage in Terraform, Dienste in Docker, Kubernetes-Probes und GitHub Actions, die formatieren, testen und validieren, bevor etwas als fertig gilt.",
-      "hero.open": "Offen für Umzug",
-      "hero.roles": "Rollen",
+      "hero.open": "Offen für:",
+      "hero.opennote": "Vollzeit und Umzug innerhalb Deutschlands",
+      "hero.roles": "Jobrollen:",
       "role.devops": "DevOps",
       "role.cloud": "Cloud",
       "role.ops": "IT-Betrieb",
       "role.sys": "Systemadministration",
       "hero.cta": "Projekte",
       "duty.loc": "Ort",
-      "duty.role": "Fokus",
-      "duty.prev": "Erfahrung",
       "duty.lang": "Sprachen",
-      "duty.langval": "Englisch fließend · Deutsch B1 · Bengalisch",
+      "duty.en": "Englisch : C1",
+      "duty.de": "Deutsch : B1",
+      "duty.bn": "Bengalisch : Native",
       "queue.kicker": "GitHub",
       "queue.title": "Projekte",
       "t.open": "offen in git",
@@ -133,7 +134,6 @@
       "job.mo.dates": "Hamburg · November 2021 - September 2023",
       "job.mo.body": "Fehlgeschlagene Produktionsläufe bis zum Abschluss. Excel-Kontrollberichte und kurze Betriebsnotizen.",
       "edu.kicker": "Ausbildung",
-      "edu.title": "Zwei Abschlüsse.",
       "edu.m.lvl": "Master of Science · laufend",
       "edu.m.dates": "April 2026 - heute",
       "edu.m.body": "Beginn April 2026. Eigenständiges Masterprogramm: Informations- und Kommunikationssysteme, Netze, digitale Infrastruktur.",
@@ -153,7 +153,7 @@
       "edu.b.l6": "Bachelorarbeit: Python-Datenpipelines für die Prognose erneuerbarer Erzeugung am Vortag",
       "esc.kicker": "Kontakt",
       "esc.title": "Schreib mir.",
-      "esc.body": "In Hamburg. Offen für Umzug für DevOps, Cloud, IT-Betrieb und Systemadministration. Englisch fließend, Deutsch B1.",
+      "esc.body": "In Hamburg. Offen für Vollzeit und Umzug innerhalb Deutschlands. Englisch C1, Deutsch B1.",
       "foot": "Mynul Islam · Hamburg"
     }
   };
@@ -220,24 +220,15 @@
     var termLive = document.getElementById("term-live-cmd");
     var termOut = document.getElementById("term-out");
     var termNext = document.getElementById("term-next");
-    var termBar = document.getElementById("term-runbar");
     var termCursor = document.querySelector(".term-cursor");
-    var termStep = 0;
     var termBusy = false;
-    var termDone = false;
     var termTimer = null;
     var termLang = start;
-    var termPlay = {
-      en: [
-        { cmd: "whoami", out: "The person who writes the note before closing the ticket." },
-        { cmd: "uptime", out: "Desk: Mondia IT operations. GitHub: Azure, Terraform, Docker, CI." }
-      ],
-      de: [
-        { cmd: "whoami", out: "Der, der die Notiz schreibt, bevor das Ticket zu ist." },
-        { cmd: "uptime", out: "Schreibtisch: Mondia IT-Betrieb. GitHub: Azure, Terraform, Docker, CI." }
-      ]
+    var termMode = "whoami";
+    var whoamiOut = function () {
+      var p = i18n[termLang] || i18n.en;
+      return p["hero.lede"] + "\n\n" + p["hero.lede2"];
     };
-    var packOf = function () { return termPlay[termLang] || termPlay.en; };
     var stopType = function () {
       if (termTimer) { clearInterval(termTimer); termTimer = null; }
     };
@@ -250,63 +241,68 @@
         return;
       }
       var i = 0;
+      var step = text.length > 80 ? 4 : 1;
+      var ms = text.length > 80 ? 10 : 16;
       termOut.textContent = "";
       termTimer = setInterval(function () {
-        i += 1;
+        i += step;
         termOut.textContent = text.slice(0, i);
+        var screen = document.getElementById("term-screen");
+        if (screen) screen.scrollTop = screen.scrollHeight;
         if (i >= text.length) {
+          termOut.textContent = text;
           stopType();
           if (then) then();
         }
-      }, 16);
+      }, ms);
     };
     var setNext = function () {
-      var pack = packOf();
-      var item = pack[termStep % pack.length];
-      if (termNext) termNext.textContent = item.cmd;
+      if (termNext) termNext.textContent = termMode;
       termBtn.classList.remove("is-lit");
       void termBtn.offsetWidth;
       termBtn.classList.add("is-lit");
     };
+    var resetTerm = function () {
+      stopType();
+      if (termLog) termLog.innerHTML = "";
+      if (termLive) termLive.textContent = "";
+      if (termOut) termOut.textContent = "";
+      if (termCursor) termCursor.style.display = "";
+      var screen = document.getElementById("term-screen");
+      if (screen) screen.scrollTop = 0;
+      termMode = "whoami";
+      setNext();
+      termBusy = false;
+      termBtn.disabled = false;
+    };
     var runTerm = function () {
-      if (termBusy || termDone) return;
-      var pack = packOf();
-      var item = pack[termStep];
-      if (!item) return;
+      if (termBusy) return;
+      if (termMode === "clear") {
+        resetTerm();
+        return;
+      }
       termBusy = true;
       termBtn.disabled = true;
       termBtn.classList.remove("is-lit");
-      if (termLive) termLive.textContent = item.cmd;
-      typeOut(item.out, function () {
+      if (termLive) termLive.textContent = "whoami";
+      typeOut(whoamiOut(), function () {
         if (termLog) {
           var done = document.createElement("div");
           done.className = "term-done";
           var line = document.createElement("p");
           line.className = "term-line";
           line.innerHTML = '<span class="term-prompt">mynul@IT ~ %</span> ';
-          line.appendChild(document.createTextNode(item.cmd));
+          line.appendChild(document.createTextNode("whoami"));
           var out = document.createElement("p");
           out.className = "term-out";
-          out.textContent = item.out;
+          out.textContent = whoamiOut();
           done.appendChild(line);
           done.appendChild(out);
           termLog.appendChild(done);
         }
         if (termOut) termOut.textContent = "";
-        termStep += 1;
-        if (termStep >= pack.length) {
-          termDone = true;
-          if (termLive) termLive.textContent = "exit";
-          if (termCursor) termCursor.style.display = "none";
-          if (termBar) termBar.classList.add("is-off");
-          window.scrollBy({
-            top: Math.min(240, Math.round(window.innerHeight * 0.28)),
-            left: 0,
-            behavior: reduce ? "auto" : "smooth"
-          });
-          return;
-        }
         if (termLive) termLive.textContent = "";
+        termMode = "clear";
         setNext();
         termBusy = false;
         termBtn.disabled = false;
@@ -314,7 +310,7 @@
     };
     window.__termLang = function (lang) {
       termLang = lang;
-      if (!termDone) setNext();
+      setNext();
     };
     setNext();
     termBtn.addEventListener("click", runTerm);
