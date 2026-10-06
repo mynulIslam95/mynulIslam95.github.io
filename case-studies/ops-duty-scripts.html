@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>ops-duty-scripts — Mynul Islam</title>
+  <meta name="description" content="Python shift toolkit: health poll, log scan, duty checklist and incident runbook."/>
+  <link rel="stylesheet" href="../assets/css/styles.css?v=7"/>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap nav">
+      <a class="brand" href="../index.html">Mynul Islam</a>
+      <input id="nav-toggle" class="nav-toggle" type="checkbox"/>
+      <label class="burger" for="nav-toggle" aria-label="Open menu"><span></span><span></span><span></span></label>
+      <nav class="nav-panel" aria-label="Primary">
+        <ul class="nav-links">
+          <li><a href="../index.html#projects">Projects</a></li>
+          <li><a href="../index.html#skills">Skills</a></li>
+          <li><a href="../index.html#experience">Experience</a></li>
+          <li><a href="../index.html#education">Education</a></li>
+          <li><a href="../index.html#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <a class="btn btn-primary btn-nav" href="../cv.pdf" download="Mynul_Islam_CV.pdf">Download CV</a>
+    </div>
+  </header>
+  <main id="main" class="wrap page-header prose">
+    <p><a href="../index.html#projects">Back to projects</a></p>
+    <h1>ops-duty-scripts</h1>
+    <p><a class="ext" href="https://github.com/mynulIslam95/ops-duty-scripts" target="_blank" rel="noopener noreferrer">View repository</a></p>
+
+    <h2>Problem</h2>
+    <p>A support shift needs the same checks every time: is the service up, did the log grow ERROR/WARN lines, and is the handover written before the next person sits down.</p>
+
+    <h2>Implementation</h2>
+    <p>Python CLIs for HTTP health poll with jsonl history, regex scan of logs, and a duty checklist. Dry-run is the default. An incident runbook covers /health down.</p>
+
+    <h2>Verification</h2>
+    <p>pytest covers the scripts. Sample log and health history are in the repository.</p>
+  </main>
+  <footer>
+    <div class="wrap"><p>Mynul Islam · Hamburg</p></div>
+  </footer>
+  <script src="../assets/js/main.js?v=7" defer></script>
+</body>
+</html>

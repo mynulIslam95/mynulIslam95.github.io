@@ -1,850 +1,270 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Mynul Islam - DevOps, Cloud &amp; IT Operations</title>
-  <meta name="description" content="Mynul Islam - M.Sc. Information and Communication Engineering, HAW Hamburg. Working student in IT operations. CI/CD, Linux, Azure, application support."/>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Marcellus&family=Old+Standard+TT:ital,wght@0,400;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; font-size: 17px; }
-
-    :root {
-      --pine:        #143930;
-      --cedar:       #456859;
-      --parchment:   #f8f2de;
-      --tan:         #bead89;
-      --bg:          #143930;
-      --bg-2:        #143930;
-      --bg-3:        rgba(248,242,222,0.035);
-      --surface:     transparent;
-      --border:      rgba(248,242,222,0.16);
-      --border-cool: rgba(69,104,89,0.5);
-      --text:        #f8f2de;
-      --text-muted:  #bead89;
-      --accent:      #bead89;
-      --accent-dim:  rgba(190,173,137,0.10);
-      --accent-glow: rgba(190,173,137,0.28);
-      --cool:        #7fa38f;
-      --cool-dim:    rgba(69,104,89,0.16);
-      --cool-glow:   rgba(127,163,143,0.4);
-      --green:       #7fa38f;
-      --radius:      0px;
-      --radius-lg:   0px;
-      --nav-h:       60px;
-      --ease:        cubic-bezier(0.4, 0, 0.2, 1);
-      --t:           0.3s;
-    }
-
-    body {
-      background: var(--pine);
-      color: var(--text);
-      font-family: 'Cormorant Garamond', 'Old Standard TT', Georgia, serif;
-      font-weight: 300;
-      font-size: 1.12rem;
-      line-height: 1.6;
-      letter-spacing: 0.004em;
-      overflow-x: hidden;
-    }
-    body::before {
-      content: '';
-      position: fixed; inset: 0; pointer-events: none; z-index: 999;
-      opacity: 0.03;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    }
-
-    h1, h2, h3, .serif { font-family: 'Marcellus', Georgia, serif; font-weight: 400; letter-spacing: 0.005em; }
-    h1 { font-family: 'Marcellus', serif; font-size: clamp(3rem, 8vw, 6rem); line-height: 1.0; letter-spacing: -0.01em; }
-    h2 { font-size: clamp(1.9rem, 3.8vw, 2.9rem); line-height: 1.1; }
-    h3 { font-size: 1.3rem; line-height: 1.3; }
-    p { color: var(--text); font-weight: 300; }
-    a { color: inherit; text-decoration: none; }
-    em { font-style: italic; color: var(--parchment); }
-    .mono { font-family: 'JetBrains Mono', monospace; }
-
-    .container { max-width: 1180px; margin: 0 auto; padding: 0 clamp(1.5rem, 5vw, 3.25rem); }
-    .section { padding: clamp(3.5rem, 8vw, 6.5rem) 0; }
-
-    .section-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem; font-weight: 400; letter-spacing: 0.22em; text-transform: uppercase;
-      color: var(--tan); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;
-    }
-    .section-label::before { content: '+'; color: var(--parchment); font-size: 0.9rem; opacity: 0.8; }
-    .section-label::after { content: ''; flex: 1; max-width: 3rem; height: 1px; background: var(--parchment); opacity: 0.35; }
-
-    .tag, .tag.cool {
-      display: inline-block; font-family: 'JetBrains Mono', monospace;
-      font-size: 0.66rem; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase;
-      padding: 0; background: none; border: none; color: var(--tan);
-    }
-    .tag + .tag::before { content: '· '; opacity: 0.5; }
-
-    .card {
-      background: transparent; border: 1px solid var(--border);
-      border-radius: 0; padding: 1.6rem;
-      transition: border-color var(--t) var(--ease);
-    }
-    .card:hover { border-color: var(--parchment); transform: none; box-shadow: none; }
-
-    .btn {
-      display: inline-flex; align-items: center; gap: 0.6rem;
-      padding: 0.6rem 1.4rem; border-radius: 4.8px; font-size: 0.9rem; font-weight: 400;
-      font-family: 'Cormorant Garamond', serif; letter-spacing: 0.02em;
-      cursor: pointer; transition: all var(--t) var(--ease); text-decoration: none;
-      background: transparent; border: 1px solid var(--parchment); color: var(--parchment);
-    }
-    .btn-primary, .btn-outline { background: transparent; border: 1px solid var(--parchment); color: var(--parchment); }
-    .btn:hover { background: rgba(248,242,222,0.06); transform: none; box-shadow: none; }
-
-    .divider {
-      position: relative; height: 1px; background: rgba(248,242,222,0.22);
-      margin: 0 clamp(1.5rem, 5vw, 3.25rem);
-    }
-    .divider::before, .divider::after {
-      content: '+'; position: absolute; top: 50%; transform: translateY(-50%);
-      color: var(--parchment); font-size: 0.85rem; line-height: 1;
-    }
-    .divider::before { left: -5px; }
-    .divider::after { right: -5px; }
-
-    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
-    .reveal.visible { opacity: 1; transform: none; }
-    .reveal-delay-1 { transition-delay: 0.08s; }
-    .reveal-delay-2 { transition-delay: 0.16s; }
-    .reveal-delay-3 { transition-delay: 0.24s; }
-    .reveal-delay-4 { transition-delay: 0.32s; }
-
-    nav#navbar {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 200; height: var(--nav-h);
-      display: flex; align-items: center;
-      background: rgba(20,57,48,0.82); backdrop-filter: blur(14px);
-      border-bottom: 1px solid transparent;
-      transition: border-color var(--t);
-    }
-    nav#navbar.scrolled { border-bottom-color: var(--border); }
-    nav#navbar .container { display: flex; align-items: center; justify-content: space-between; width: 100%; }
-    .nav-logo { display: flex; align-items: center; gap: 0.7rem; font-family: 'Marcellus', serif; font-size: 1rem; color: var(--parchment); }
-    .nav-avatar { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; object-position: center top; border: 1px solid var(--border); }
-    .nav-links { display: flex; align-items: center; gap: 1.15rem; }
-    .nav-links a { font-size: 0.88rem; font-weight: 400; color: var(--parchment); opacity: 0.8; transition: opacity var(--t); letter-spacing: 0.01em; white-space: nowrap; }
-    .nav-links a:hover { opacity: 1; text-decoration: underline; text-underline-offset: 3px; }
-    .nav-actions { display: flex; align-items: center; gap: 0.75rem; }
-    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; background: none; border: none; }
-    .hamburger span { display: block; width: 22px; height: 1.5px; background: var(--parchment); border-radius: 2px; transition: all var(--t); }
-    .mobile-menu {
-      display: none; position: fixed; top: var(--nav-h); left: 0; right: 0; z-index: 199;
-      background: var(--pine); border-bottom: 1px solid var(--border);
-      padding: 1.5rem; flex-direction: column; gap: 0.75rem;
-    }
-    .mobile-menu.open { display: flex; }
-    .mobile-menu a { font-size: 1.1rem; font-weight: 400; color: var(--parchment); padding: 0.5rem 0; border-bottom: 1px solid var(--border); }
-    @media (max-width: 900px) {
-      .nav-links { gap: 0.85rem; }
-      .nav-links a { font-size: 0.8rem; }
-    }
-    @media (max-width: 768px) {
-      .nav-links, .nav-actions .btn { display: none; }
-      .hamburger { display: flex; }
-    }
-
-    #hero {
-      min-height: 100svh; position: relative; overflow: hidden;
-      display: flex; flex-direction: column; justify-content: flex-end;
-      padding-top: var(--nav-h);
-    }
-    #hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
-    .hero-gradient { display: none; }
-    .hero-inner { position: relative; z-index: 2; padding-bottom: clamp(3rem, 8vh, 6rem); }
-    .hero-status { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.75rem; }
-    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 10px var(--green); animation: pulse 2.2s ease-in-out infinite; }
-    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.55;transform:scale(1.5)} }
-    .status-text { font-family: 'JetBrains Mono', monospace; font-size: 0.73rem; font-weight: 400; color: var(--tan); letter-spacing: 0.02em; }
-    .hero-title { margin-bottom: 1.5rem; }
-    .hero-title em { font-style: italic; color: var(--parchment); }
-    .hero-sub { font-size: clamp(1.05rem, 1.8vw, 1.25rem); color: var(--parchment); opacity: 0.85; max-width: 560px; margin-bottom: 2.5rem; line-height: 1.6; }
-    .hero-cta { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 3rem; }
-    .scroll-cue {
-      position: absolute; bottom: 1.75rem; left: 50%; transform: translateX(-50%);
-      display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
-      font-size: 0.65rem; font-family: 'JetBrains Mono', monospace;
-      color: var(--tan); letter-spacing: 0.15em; text-transform: uppercase; z-index: 2;
-    }
-    .scroll-line { width: 1px; height: 36px; background: linear-gradient(to bottom, var(--tan), transparent); animation: scrollAnim 1.9s ease-in-out infinite; }
-    @keyframes scrollAnim { 0%,100%{opacity:0;transform:translateY(-8px)}50%{opacity:1;transform:translateY(0)} }
-
-    .timeline { display: flex; flex-direction: column; }
-    .tl-item { display: grid; grid-template-columns: auto 1fr; gap: 0 1.5rem; }
-    .tl-line { display: flex; flex-direction: column; align-items: center; }
-    .tl-dot { width: 9px; height: 9px; border-radius: 50%; background: transparent; border: 1px solid var(--parchment); flex-shrink: 0; margin-top: 0.5rem; }
-    .tl-connector { flex: 1; width: 1px; background: var(--border); margin: 0.4rem 0; min-height: 1.5rem; }
-    .tl-item:last-child .tl-connector { display: none; }
-    .tl-body { padding-bottom: 2.5rem; }
-    .tl-head { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.9rem; }
-    .tl-logo {
-      width: 104px; min-width: 104px; height: 52px;
-      border: 1px solid var(--border); border-radius: 4.8px;
-      background: #fbf9f3; padding: 8px 12px;
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Marcellus', serif; font-size: 0.85rem; color: #143930; letter-spacing: 0.04em;
-    }
-    .tl-role { font-family: 'Marcellus', serif; font-size: 1.3rem; color: var(--parchment); margin-bottom: 0.2rem; }
-    .tl-meta { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; }
-    .tl-company { font-size: 1rem; color: var(--tan); font-style: italic; }
-    .tl-period { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--tan); letter-spacing: 0.04em; }
-    .tl-list { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
-    .tl-list li { font-size: 1.02rem; color: var(--parchment); opacity: 0.82; padding-left: 1.4rem; position: relative; line-height: 1.55; }
-    .tl-list li::before { content: '+'; position: absolute; left: 0; color: var(--cedar); font-size: 0.85rem; top: 0.15rem; }
-
-    .edu-main {
-      background: var(--bg-3); border: 1px solid var(--border); border-radius: 0;
-      padding: 1.75rem 2rem; margin-bottom: 1px;
-    }
-    .edu-degree { font-size: 1.9rem; margin-bottom: 0.3rem; color: var(--parchment); }
-    .edu-uni { color: var(--tan); font-size: 1rem; font-style: italic; margin-bottom: 0.4rem; }
-    .edu-tags { display: flex; flex-wrap: wrap; gap: 0.6rem 0.9rem; margin-top: 1rem; }
-
-    .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
-    .proj-card { position: relative; overflow: hidden; border: none; }
-    .proj-title { font-family: 'Marcellus', serif; font-size: 1.35rem; color: var(--parchment); margin-bottom: 0.5rem; }
-    .proj-desc { font-size: 1rem; color: var(--parchment); opacity: 0.8; line-height: 1.55; margin-bottom: 1rem; }
-    .proj-tags { display: flex; flex-wrap: wrap; gap: 0.3rem 0.6rem; margin-bottom: 1rem; }
-    .proj-link { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; letter-spacing: 0.04em; color: var(--tan); display: inline-flex; align-items: center; gap: 0.3rem; transition: gap var(--t); border-bottom: 1px solid var(--tan); padding-bottom: 1px; }
-    .proj-link:hover { gap: 0.55rem; color: var(--parchment); border-color: var(--parchment); }
-    .placeholder-card { opacity: 0.7; }
-    .in-dev {
-      font-size: 0.7rem; font-family: 'JetBrains Mono', monospace; color: var(--tan);
-      font-weight: 400; white-space: nowrap; margin-left: 0.4rem;
-    }
-    .nav-actions { flex-shrink: 0; }
-
-    .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
-    .skills-grid .card { border: none; }
-    .skill-group-label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; font-weight: 400; letter-spacing: 0.16em; text-transform: uppercase; color: var(--tan); margin-bottom: 1rem; }
-    .skill-pills { display: flex; flex-wrap: wrap; gap: 0.45rem; }
-    .skill-pill {
-      font-size: 0.92rem; font-weight: 400; padding: 0.25rem 0.85rem; border-radius: 64px;
-      background: transparent; border: 1px solid var(--border-cool); color: var(--parchment);
-      transition: all var(--t);
-    }
-    .skill-pill:hover { border-color: var(--parchment); }
-
-    .about-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 3rem; align-items: start; }
-    @media (max-width: 700px) { .about-grid { grid-template-columns: 1fr; } }
-    .photo-frame {
-      aspect-ratio: 3/4; border-radius: 0;
-      border: 1px solid var(--border); overflow: hidden; position: relative;
-      background: var(--bg-3);
-    }
-    .interest-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.25rem; }
-    .interest-chip {
-      font-size: 0.92rem; font-weight: 400; padding: 0.3rem 0.9rem; border-radius: 64px;
-      background: transparent; border: 1px solid var(--border-cool); color: var(--parchment);
-    }
-
-    #contact { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-    .contact-wrap { text-align: center; max-width: 560px; margin: 0 auto; }
-    .contact-email { font-family: 'Marcellus', serif; font-size: 1.7rem; color: var(--parchment); display: block; margin: 1.5rem 0; border-bottom: 1px solid var(--parchment); padding-bottom: 0.3rem; }
-    .contact-links { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; }
-    .contact-link {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      padding: 0.6rem 1.4rem; border-radius: 4.8px; font-size: 0.9rem; font-weight: 400;
-      border: 1px solid var(--parchment); color: var(--parchment); transition: all var(--t);
-    }
-    .contact-link:hover { background: rgba(248,242,222,0.06); transform: none; }
-
-    footer { padding: 2rem 0; border-top: 1px solid var(--border); text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--tan); letter-spacing: 0.04em; }
-    footer a { color: var(--parchment); border-bottom: 1px solid var(--parchment); }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Mynul Islam — IT Operations &amp; Cloud</title>
+  <meta name="description" content="IT operations, cloud and DevOps. Hamburg. Incident handling, Linux, Azure, CI/CD."/>
+  <link rel="stylesheet" href="assets/css/styles.css?v=7"/>
 </head>
 <body>
-
-<nav id="navbar">
-  <div class="container">
-    <a href="#hero" class="nav-logo">
-      <img src="mynul_photo.JPG" alt="Mynul Islam" class="nav-avatar"/>
-      Mynul Islam
-    </a>
-    <div class="nav-links">
-      <a href="#experience">Experience</a>
-      <a href="#projects">Projects</a>
-      <a href="#upcoming">Upcoming</a>
-      <a href="#skills">Skills</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap nav">
+      <a class="brand" href="#top">Mynul Islam</a>
+      <input id="nav-toggle" class="nav-toggle" type="checkbox"/>
+      <label class="burger" for="nav-toggle" aria-label="Open menu"><span></span><span></span><span></span></label>
+      <nav class="nav-panel" aria-label="Primary">
+        <ul class="nav-links">
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#education">Education</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <a class="btn btn-primary btn-nav" href="cv.pdf" download="Mynul_Islam_CV.pdf">Download CV</a>
     </div>
-    <div class="nav-actions">
-      <a href="cv.pdf" download class="btn" style="font-size:0.82rem;padding:0.45rem 1.05rem;">Download CV</a>
-    </div>
-    <button class="hamburger" id="hamburger" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-</nav>
+  </header>
 
-<div class="mobile-menu" id="mobileMenu">
-  <a href="#experience">Experience</a>
-  <a href="#education">Education</a>
-  <a href="#projects">Projects</a>
-  <a href="#upcoming">Upcoming</a>
-  <a href="#skills">Skills</a>
-  <a href="#about">About</a>
-  <a href="#why-me">Why Me</a>
-  <a href="#contact">Contact</a>
-</div>
-
-<section id="hero">
-  <canvas id="hero-canvas"></canvas>
-  <div class="hero-gradient"></div>
-  <div class="container hero-inner">
-    <div class="hero-status reveal">
-      <div class="status-dot"></div>
-      <span class="status-text">M.Sc. student · DevOps / Cloud / IT ops · Hamburg</span>
-    </div>
-    <h1 class="hero-title reveal reveal-delay-1">
-      Hi, I'm<br/>
-      <em>Mynul</em>,<br/>
-      here for ops.
-    </h1>
-    <p class="hero-sub reveal reveal-delay-2">
-      Information Engineering at HAW Hamburg. I take incidents, put tests in CI, build Docker images, and write the scripts I used to do by hand. Aiming at junior DevOps, cloud, systems admin, and IT support roles.
-    </p>
-    <div class="hero-cta reveal reveal-delay-3">
-      <a href="#projects" class="btn">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-        See My Work
-      </a>
-      <a href="cv.pdf" download class="btn">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Download CV
-      </a>
-    </div>
-  </div>
-  <div class="scroll-cue">
-    <div class="scroll-line"></div>
-    scroll
-  </div>
-</section>
-
-<section id="experience" class="section">
-  <div class="container">
-    <p class="section-label reveal">Work Experience</p>
-    <h2 class="reveal reveal-delay-1" style="margin-bottom:3rem;">Where I've<br/><em>kept things running</em></h2>
-    <div class="timeline">
-
-      <div class="tl-item reveal">
-        <div class="tl-line"><div class="tl-dot"></div><div class="tl-connector"></div></div>
-        <div class="tl-body">
-          <div class="tl-head">
-            <div class="tl-logo">Mondia</div>
-            <div>
-              <div class="tl-role">Working Student - IT Operations</div>
-              <div class="tl-meta">
-                <span class="tl-company">Mondia Group, Hamburg</span>
-                <span class="tl-period">Jun 2024 – Jul 2026</span>
-              </div>
-            </div>
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="hero-rings" aria-hidden="true"></div>
+      <div class="wrap hero-grid">
+        <div>
+          <p class="section-kicker">IT Operations &amp; Cloud</p>
+          <h1>IT Support &amp; Systems Management</h1>
+          <p class="lede">I’m Mynul Islam, an IT operations professional in Hamburg. I handle user support, Windows, access administration and incidents, and I deliver Linux, Azure, Docker and CI/CD work that teams can run from GitHub.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#projects">View projects</a>
+            <a class="btn btn-secondary ext" href="https://github.com/mynulIslam95" target="_blank" rel="noopener noreferrer">GitHub profile</a>
+            <a class="btn btn-secondary" href="cv.pdf" download="Mynul_Islam_CV.pdf">Download CV</a>
           </div>
-          <ul class="tl-list">
-            <li>Took incoming incidents, reproduced them, followed up with developers, closed after retest.</li>
-            <li>Wrote handover notes so the next shift was not blocked. Raised recurring faults instead of only closing tickets.</li>
-            <li>15–20 hours next to studies. Linux and Windows on the desk, tickets in a live operations queue.</li>
-          </ul>
         </div>
-      </div>
-
-      <div class="tl-item reveal reveal-delay-1">
-        <div class="tl-line"><div class="tl-dot"></div></div>
-        <div class="tl-body">
-          <div class="tl-head">
-            <div class="tl-logo">Motion</div>
-            <div>
-              <div class="tl-role">Working Student - Operations</div>
-              <div class="tl-meta">
-                <span class="tl-company">Motion E-Commerce GmbH, Hamburg</span>
-                <span class="tl-period">Nov 2021 – Sep 2023</span>
-              </div>
-            </div>
+        <aside class="panel profile-card" aria-label="Profile">
+          <div class="photo-orbit">
+            <picture>
+              <source type="image/webp" srcset="assets/images/mynul.webp"/>
+              <img class="photo-sm" src="assets/images/mynul.jpg" width="92" height="92" alt="Portrait of Mynul Islam"/>
+            </picture>
+            <img class="orbit-icon o1" src="assets/icons/linux.svg" alt="" width="26" height="26"/>
+            <img class="orbit-icon o2" src="assets/icons/azure.svg" alt="" width="26" height="26"/>
+            <img class="orbit-icon o3" src="assets/icons/python.svg" alt="" width="26" height="26"/>
+            <img class="orbit-icon o4" src="assets/icons/docker.svg" alt="" width="26" height="26"/>
+            <img class="orbit-icon o5" src="assets/icons/git.svg" alt="" width="26" height="26"/>
+            <img class="orbit-icon o6" src="assets/icons/windows.svg" alt="" width="26" height="26"/>
           </div>
-          <ul class="tl-list">
-            <li>Watched production for failed runs, tracked the cause, stayed on the case until it was closed.</li>
-            <li>Excel control reports and short operating notes for the team.</li>
-          </ul>
+          <dl>
+            <div>
+              <dt>Location</dt>
+              <dd>Hamburg, Germany</dd>
+            </div>
+            <div>
+              <dt>Focus</dt>
+              <dd>IT operations, cloud, DevOps</dd>
+            </div>
+            <div>
+              <dt>Experience</dt>
+              <dd>Mondia Group · Motion E-Commerce</dd>
+            </div>
+            <div>
+              <dt>Languages</dt>
+              <dd>English fluent · German A2 · Bengali native</dd>
+            </div>
+          </dl>
+        </aside>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="wrap">
+        <p class="section-kicker">Projects</p>
+        <h2>Selected work</h2>
+        <div class="project-grid">
+          <article class="card">
+            <h3>ops-duty-scripts</h3>
+            <p>Shift toolkit for application support: HTTP health poll with history, ERROR/WARN log scan, duty checklist with dry-run, and an incident runbook when /health is down.</p>
+            <ul class="tech">
+              <li>Python</li><li>pytest</li><li>Runbooks</li><li>IT Support</li>
+            </ul>
+            <div class="card-links">
+              <a href="case-studies/ops-duty-scripts.html">Case study</a>
+              <a class="ext" href="https://github.com/mynulIslam95/ops-duty-scripts" target="_blank" rel="noopener noreferrer">View repository</a>
+            </div>
+          </article>
+          <article class="card">
+            <h3>custom-profile-service</h3>
+            <p>FastAPI service with pytest on every push, Docker image, Jenkinsfile, Kubernetes Deployment with live and ready probes, and a smoke check after a new version.</p>
+            <ul class="tech">
+              <li>CI/CD</li><li>Docker</li><li>Kubernetes</li><li>Jenkins</li>
+            </ul>
+            <div class="card-links">
+              <a href="case-studies/custom-profile-service.html">Case study</a>
+              <a class="ext" href="https://github.com/mynulIslam95/custom-profile-service" target="_blank" rel="noopener noreferrer">View repository</a>
+            </div>
+          </article>
+          <article class="card">
+            <h3>linux-db-ops-toolkit</h3>
+            <p>Bash on Linux for MySQL/MariaDB: health check, backup, restore dry-run, monitoring and a daily report.</p>
+            <ul class="tech">
+              <li>Bash</li><li>Linux</li><li>MySQL</li>
+            </ul>
+            <div class="card-links">
+              <a class="ext" href="https://github.com/mynulIslam95/linux-db-ops-toolkit" target="_blank" rel="noopener noreferrer">View repository</a>
+            </div>
+          </article>
+          <article class="card">
+            <h3>azure-functions-ts-lab</h3>
+            <p>TypeScript Azure Functions API for cost summary, tests, Bicep for Storage, App Insights and Function App, GitHub Actions for typecheck, tests, build and template lint.</p>
+            <ul class="tech">
+              <li>Azure</li><li>Bicep</li><li>TypeScript</li><li>GitHub Actions</li>
+            </ul>
+            <div class="card-links">
+              <a href="case-studies/azure-functions-ts-lab.html">Case study</a>
+              <a class="ext" href="https://github.com/mynulIslam95/azure-functions-ts-lab" target="_blank" rel="noopener noreferrer">View repository</a>
+            </div>
+          </article>
+          <article class="card">
+            <h3>relational-db-ops-lab</h3>
+            <p>Operations model for database environments: health SQL, incident status, operating standard, backup and failover notes.</p>
+            <ul class="tech">
+              <li>SQL</li><li>Monitoring</li><li>DR</li>
+            </ul>
+            <div class="card-links">
+              <a class="ext" href="https://github.com/mynulIslam95/relational-db-ops-lab" target="_blank" rel="noopener noreferrer">View repository</a>
+            </div>
+          </article>
+          <article class="card">
+            <h3>ci-test-reporting</h3>
+            <p>Reads JUnit XML after a pipeline run and prints totals, fail rate and failed-case messages for fast triage when CI is red.</p>
+            <ul class="tech">
+              <li>JUnit</li><li>Python</li><li>CI/CD</li>
+            </ul>
+            <div class="card-links">
+              <a class="ext" href="https://github.com/mynulIslam95/ci-test-reporting" target="_blank" rel="noopener noreferrer">View repository</a>
+            </div>
+          </article>
         </div>
       </div>
+    </section>
 
+    <section id="skills">
+      <div class="wrap">
+        <p class="section-kicker">Skills</p>
+        <h2>Tools I work with</h2>
+        <div class="skill-groups">
+          <article class="panel">
+            <h3>Systems &amp; Support</h3>
+            <ul class="skill-list">
+              <li class="skill"><span class="skill-icon"><img src="assets/icons/windows.svg" alt="" width="22" height="22"/></span><span>Windows</span></li>
+              <li class="skill"><span class="skill-icon"><img src="assets/icons/linux.svg" alt="" width="22" height="22"/></span><span>Linux</span></li>
+              <li class="skill"><span class="skill-icon"><img src="assets/icons/tickets.svg" alt="" width="22" height="22"/></span><span>Incident &amp; tickets</span></li>
+              <li class="skill"><span class="skill-icon"><img src="assets/icons/identity.svg" alt="" width="22" height="22"/></span><span>Access administration</span></li>
+              <li class="skill"><span class="skill-icon"><img src="assets/icons/office.svg" alt="" width="22" height="22"/></span><span>Microsoft Office</span></li>
+            </ul>
+          </article>
+          <article class="panel">
+            <h3>Cloud &amp; Identity</h3>
+            <ul class="skill-list">
+              <li class="skill"><span class="skill-icon"><img src="assets/icons/azure.svg" alt="" width="22" height="22"/></span><span>Azure</span></li>
+              <li class="skill"><span class="skill-icon"><img src="assets/icons/bicep.svg" alt="" width="22" height="22"/></span><span>Bicep</span></li>
+              <li class="skill"><span class="skill-icon"><img src="assets/icons/network.svg" alt="" width="22" height="22"/></span><span>Networking</span></li>
+              <li class="skill"><span class="skill-icon"><img src="assets/icons/kubernetes.svg" alt="" width="22" height="22"/></span><span>Kubernetes</span></li>
+            </ul>
+          </article>
+          <article class="panel">
+            <h3>Automation &amp; Delivery</h3>
+            <ul class="skill-list">
+              <li class="skill"><span class="skill-icon"><img src="assets/icons/git.svg" alt="" width="22" height="22"/></span><span>Git</span></li>
+              <li class="skill"><span class="skill-icon"><img src="assets/icons/github-actions.svg" alt="" width="22" height="22"/></span><span>GitHub Actions</span></li>
+              <li class="skill"><span class="skill-icon"><img src="assets/icons/python.svg" alt="" width="22" height="22"/></span><span>Python</span></li>
+              <li class="skill"><span class="skill-icon"><img src="assets/icons/docker.svg" alt="" width="22" height="22"/></span><span>Docker</span></li>
+              <li class="skill"><span class="skill-icon"><img src="assets/icons/bash.svg" alt="" width="22" height="22"/></span><span>Bash</span></li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="experience">
+      <div class="wrap">
+        <p class="section-kicker">Work experience</p>
+        <h2>Where I have worked</h2>
+        <article class="panel job-card">
+          <p class="edu-level">Working student</p>
+          <h3>IT Operations — Mondia Group</h3>
+          <span class="muted">Hamburg · June 2024 – July 2026</span>
+          <p>Incident intake, reproduce, follow-up and close after retest. Handover notes for the next shift. User accounts and access rights. First-line support by email and on site.</p>
+        </article>
+        <article class="panel job-card">
+          <p class="edu-level">Working student</p>
+          <h3>Operations — Motion E-Commerce GmbH</h3>
+          <span class="muted">Hamburg · November 2021 – September 2023</span>
+          <p>Production failures tracked to close. Excel control reports and operating notes for the team.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="education">
+      <div class="wrap">
+        <p class="section-kicker">Education</p>
+        <h2>Degrees</h2>
+        <div class="edu-grid">
+          <article class="panel edu-card">
+            <p class="edu-level">Master of Science · in progress</p>
+            <h3>Information and Communication Engineering</h3>
+            <span class="muted">HAW Hamburg</span>
+            <span class="muted">April 2026 – present</span>
+            <p>I started this master’s at HAW Hamburg in April 2026. It is a full graduate programme in its own right: information and communication systems, networks, and the engineering of digital infrastructure.</p>
+            <p class="edu-learn">What I am studying</p>
+            <ul class="edu-topics">
+              <li>Information and communication systems</li>
+              <li>Communication networks and digital infrastructure</li>
+              <li>Engineering methods that build on my Information Engineering bachelor</li>
+            </ul>
+          </article>
+          <article class="panel edu-card">
+            <p class="edu-level">Bachelor of Science · completed</p>
+            <h3>Information Engineering</h3>
+            <span class="muted">HAW Hamburg</span>
+            <span class="muted">October 2023 – February 2026</span>
+            <p>A completed undergraduate degree in information engineering at HAW Hamburg, finished with a bachelor thesis.</p>
+            <p class="edu-learn">What I studied</p>
+            <ul class="edu-topics">
+              <li>Operating systems</li>
+              <li>Computer networks</li>
+              <li>Software engineering</li>
+              <li>IT systems</li>
+              <li>Databases</li>
+              <li>Bachelor thesis: Python data pipelines for day-ahead renewable energy forecasting</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="wrap">
+        <div class="panel contact-card">
+        <p class="section-kicker">Contact</p>
+        <h2>Get in touch</h2>
+        <p>Hamburg or hybrid. English for daily work. German A2.</p>
+        <div class="contact-links">
+          <a class="btn btn-primary" href="cv.pdf" download="Mynul_Islam_CV.pdf">Download CV</a>
+          <a class="btn btn-secondary" href="mailto:mynulislam042@gmail.com">Email</a>
+          <a class="btn btn-secondary ext" href="https://linkedin.com/in/mynulislam95" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a class="btn btn-secondary ext" href="https://github.com/mynulIslam95" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p>Mynul Islam · Hamburg · IT Operations &amp; Cloud</p>
     </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<section id="education" class="section">
-  <div class="container">
-    <p class="section-label reveal">Education</p>
-    <h2 class="reveal reveal-delay-1" style="margin-bottom:2rem;">What I'm<br/><em>studying</em></h2>
-
-    <div class="edu-main reveal reveal-delay-2">
-      <div class="edu-degree serif">M.Sc. Information and Communication Engineering</div>
-      <div class="edu-uni">HAW Hamburg - Hochschule für Angewandte Wissenschaften</div>
-      <p style="font-size:1rem;color:var(--tan);">April 2026 – Present · Hamburg, Germany</p>
-    </div>
-    <div class="edu-main reveal reveal-delay-3">
-      <div class="edu-degree serif">B.Sc. Information Engineering</div>
-      <div class="edu-uni">HAW Hamburg - Hochschule für Angewandte Wissenschaften</div>
-      <p style="font-size:1rem;color:var(--tan);">Graduated February 2026 · Hamburg · Originally from Bangladesh</p>
-      <div class="edu-tags">
-        <span class="tag cool">Operating Systems</span>
-        <span class="tag cool">Computer Networks</span>
-        <span class="tag">Software Engineering</span>
-        <span class="tag">IT Systems</span>
-        <span class="tag">Databases</span>
-        <span class="tag">Python pipelines</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<section id="projects" class="section">
-  <div class="container">
-    <p class="section-label reveal">Projects</p>
-    <h2 class="reveal reveal-delay-1" style="margin-bottom:1rem;">Labs that match<br/><em>the jobs I want</em></h2>
-    <p class="reveal" style="max-width:640px;margin-bottom:2.5rem;opacity:0.82;">Junior DevOps, cloud, systems admin, and IT support. These are the repos I can walk through on a call.</p>
-    <div class="projects-grid">
-
-      <div class="card proj-card reveal">
-        <div class="proj-title">ops-duty-scripts</div>
-        <div class="proj-desc">Shift toolkit for application support: HTTP health poll with a jsonl history, ERROR/WARN log scan, duty checklist with dry-run by default. Incident runbook when /health is down. Built for IT support and ops seats.</div>
-        <div class="proj-tags">
-          <span class="tag cool">Python</span>
-          <span class="tag">pytest</span>
-          <span class="tag">Runbooks</span>
-          <span class="tag cool">IT Support</span>
-        </div>
-        <a href="https://github.com/mynulIslam95/ops-duty-scripts" target="_blank" rel="noopener" class="proj-link">GitHub →</a>
-      </div>
-
-      <div class="card proj-card reveal reveal-delay-1">
-        <div class="proj-title">custom-profile-service</div>
-        <div class="proj-desc">FastAPI service with pytest on every push, Docker image, Jenkinsfile (Test + Package), Kubernetes Deployment/Service/ConfigMap with live and ready probes, smoke check after a new version. Local kind cluster. Junior DevOps.</div>
-        <div class="proj-tags">
-          <span class="tag cool">CI/CD</span>
-          <span class="tag cool">Docker</span>
-          <span class="tag cool">Kubernetes</span>
-          <span class="tag">Jenkins</span>
-          <span class="tag">FastAPI</span>
-        </div>
-        <a href="https://github.com/mynulIslam95/custom-profile-service" target="_blank" rel="noopener" class="proj-link">GitHub →</a>
-      </div>
-
-      <div class="card proj-card reveal reveal-delay-2">
-        <div class="proj-title">linux-db-ops-toolkit</div>
-        <div class="proj-desc">Bash on Linux for MySQL/MariaDB: health check, backup, restore dry-run, monitoring, daily report. The sysadmin loop - check, back up, prove you can restore.</div>
-        <div class="proj-tags">
-          <span class="tag cool">Bash</span>
-          <span class="tag cool">Linux</span>
-          <span class="tag">MySQL</span>
-          <span class="tag">Sysadmin</span>
-        </div>
-        <a href="https://github.com/mynulIslam95/linux-db-ops-toolkit" target="_blank" rel="noopener" class="proj-link">GitHub →</a>
-      </div>
-
-      <div class="card proj-card reveal reveal-delay-3">
-        <div class="proj-title">azure-functions-ts-lab</div>
-        <div class="proj-desc">TypeScript Azure Functions API for cost summary, tests, Bicep for Storage / App Insights / Function App, GitHub Actions for typecheck, tests, build and template lint. Junior cloud engineer.</div>
-        <div class="proj-tags">
-          <span class="tag cool">Azure</span>
-          <span class="tag cool">Bicep</span>
-          <span class="tag">TypeScript</span>
-          <span class="tag">GitHub Actions</span>
-        </div>
-        <a href="https://github.com/mynulIslam95/azure-functions-ts-lab" target="_blank" rel="noopener" class="proj-link">GitHub →</a>
-      </div>
-
-      <div class="card proj-card reveal">
-        <div class="proj-title">relational-db-ops-lab</div>
-        <div class="proj-desc">Ops model for Oracle/MySQL-style environments: health SQL, incident status, Betriebsstandard, backup and failover notes. Documentation the way a systems team actually works.</div>
-        <div class="proj-tags">
-          <span class="tag cool">SQL</span>
-          <span class="tag">Monitoring</span>
-          <span class="tag">DR / failover</span>
-        </div>
-        <a href="https://github.com/mynulIslam95/relational-db-ops-lab" target="_blank" rel="noopener" class="proj-link">GitHub →</a>
-      </div>
-
-      <div class="card proj-card reveal reveal-delay-1">
-        <div class="proj-title">ci-test-reporting</div>
-        <div class="proj-desc">Python that reads JUnit XML after a pipeline run and prints totals, fail rate, and the failed-case messages. Fast triage when CI is red.</div>
-        <div class="proj-tags">
-          <span class="tag cool">JUnit</span>
-          <span class="tag">Python</span>
-          <span class="tag">CI/CD</span>
-        </div>
-        <a href="https://github.com/mynulIslam95/ci-test-reporting" target="_blank" rel="noopener" class="proj-link">GitHub →</a>
-      </div>
-
-      <div class="card proj-card reveal reveal-delay-2">
-        <div class="proj-title">pytest-api-test-automation</div>
-        <div class="proj-desc">pytest suite for a small FastAPI service: health, create/list/get, negative cases, schema checks. GitHub Actions on every push. How I test a new application version.</div>
-        <div class="proj-tags">
-          <span class="tag">pytest</span>
-          <span class="tag">FastAPI</span>
-          <span class="tag cool">GitHub Actions</span>
-        </div>
-        <a href="https://github.com/mynulIslam95/pytest-api-test-automation" target="_blank" rel="noopener" class="proj-link">GitHub →</a>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<section id="upcoming" class="section">
-  <div class="container">
-    <p class="section-label reveal">Upcoming</p>
-    <h2 class="reveal reveal-delay-1" style="margin-bottom:1rem;">What I will<br/><em>build next</em></h2>
-    <p class="reveal" style="max-width:640px;margin-bottom:2.5rem;opacity:0.82;">Folders are already on disk with a README. I will commit and push as each one is real enough to demo.</p>
-    <div class="projects-grid">
-
-      <div class="card proj-card placeholder-card reveal">
-        <div class="proj-title">linux-workstation-baseline <span class="in-dev">in dev</span></div>
-        <div class="proj-desc">Bash/Ansible-style baseline for a Linux box: users, SSH, packages, a health script. Target: junior systems admin.</div>
-        <div class="proj-tags">
-          <span class="tag cool">Linux</span>
-          <span class="tag">SSH</span>
-          <span class="tag">Sysadmin</span>
-        </div>
-      </div>
-
-      <div class="card proj-card placeholder-card reveal reveal-delay-1">
-        <div class="proj-title">itsm-runbook-kit <span class="in-dev">in dev</span></div>
-        <div class="proj-desc">Markdown runbooks for first-line support: password reset, printer, VPN, mailbox. Checklists a helpdesk can actually follow.</div>
-        <div class="proj-tags">
-          <span class="tag cool">IT Support</span>
-          <span class="tag">Runbooks</span>
-          <span class="tag">ITSM</span>
-        </div>
-      </div>
-
-      <div class="card proj-card placeholder-card reveal reveal-delay-2">
-        <div class="proj-title">compose-gitops-lab <span class="in-dev">in dev</span></div>
-        <div class="proj-desc">Small stack in Docker Compose, pipeline that builds and starts it, a smoke URL check. Target: junior DevOps.</div>
-        <div class="proj-tags">
-          <span class="tag cool">Docker Compose</span>
-          <span class="tag">GitHub Actions</span>
-          <span class="tag">DevOps</span>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<section id="skills" class="section">
-  <div class="container">
-    <p class="section-label reveal">Skills &amp; Tools</p>
-    <h2 class="reveal reveal-delay-1" style="margin-bottom:2.5rem;">My <em>toolkit</em></h2>
-    <div class="skills-grid">
-
-      <div class="card reveal">
-        <div class="skill-group-label">CI / DevOps</div>
-        <div class="skill-pills">
-          <span class="skill-pill">Git</span>
-          <span class="skill-pill">GitHub Actions</span>
-          <span class="skill-pill">Jenkinsfile</span>
-          <span class="skill-pill">Docker</span>
-          <span class="skill-pill">Kubernetes (kind)</span>
-          <span class="skill-pill">JUnit</span>
-        </div>
-      </div>
-
-      <div class="card reveal reveal-delay-1">
-        <div class="skill-group-label">Cloud &amp; Linux</div>
-        <div class="skill-pills">
-          <span class="skill-pill">Azure Functions</span>
-          <span class="skill-pill">Bicep</span>
-          <span class="skill-pill">Linux</span>
-          <span class="skill-pill">Bash</span>
-          <span class="skill-pill">MySQL / MariaDB</span>
-        </div>
-      </div>
-
-      <div class="card reveal reveal-delay-2">
-        <div class="skill-group-label">Code</div>
-        <div class="skill-pills">
-          <span class="skill-pill">Python</span>
-          <span class="skill-pill">FastAPI</span>
-          <span class="skill-pill">pytest</span>
-          <span class="skill-pill">TypeScript</span>
-          <span class="skill-pill">SQL</span>
-        </div>
-      </div>
-
-      <div class="card reveal reveal-delay-3">
-        <div class="skill-group-label">Ops / Support</div>
-        <div class="skill-pills">
-          <span class="skill-pill">Incident follow-up</span>
-          <span class="skill-pill">Health checks</span>
-          <span class="skill-pill">Log triage</span>
-          <span class="skill-pill">Runbooks</span>
-          <span class="skill-pill">Handover notes</span>
-        </div>
-      </div>
-
-      <div class="card reveal">
-        <div class="skill-group-label">Languages (spoken)</div>
-        <div class="skill-pills">
-          <span class="skill-pill">English - Fluent</span>
-          <span class="skill-pill">German - A2</span>
-          <span class="skill-pill">Bengali - Native</span>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<section id="about" class="section">
-  <div class="container">
-    <p class="section-label reveal">About Me</p>
-    <div class="about-grid">
-      <div class="photo-frame reveal">
-        <img src="mynul_photo.JPG" alt="Mynul Islam" style="width:100%;height:100%;object-fit:cover;object-position:center top;"/>
-      </div>
-      <div class="reveal reveal-delay-1">
-        <h2 style="margin-bottom:1.25rem;">Hamburg,<br/><em>ops, and the next ticket.</em></h2>
-        <p style="margin-bottom:1rem;">
-          I'm Mynul. M.Sc. Information and Communication Engineering at HAW Hamburg. Until July 2026 I was a working student in IT operations at Mondia: incidents, reproduce, close, write it down.
-        </p>
-        <p style="margin-bottom:1rem;">
-          On my own time I build the labs I wish I had on the job: a pipeline that tests and packages a service, scripts that poll health instead of clicking, Bash that backs up a database and proves restore.
-        </p>
-        <p style="margin-bottom:1rem;">
-          Originally from Bangladesh. Live in Hamburg. English at work every day. German A2 and still in class.
-        </p>
-        <p>
-          Outside of that: cooking, yoga, and a queue of small GitHub repos I actually run before I put them on a CV.
-        </p>
-        <div class="interest-chips">
-          <span class="interest-chip">Linux</span>
-          <span class="interest-chip">CI/CD</span>
-          <span class="interest-chip">Azure</span>
-          <span class="interest-chip">Cooking</span>
-          <span class="interest-chip">Hamburg</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="why-me" class="section">
-  <div class="container">
-    <p class="section-label reveal">How I Work</p>
-    <h2 class="reveal reveal-delay-1" style="margin-bottom:2.5rem;">A few things<br/>that <em>stay constant</em></h2>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);">
-
-      <div class="card reveal">
-        <div style="font-family:'Marcellus',serif;font-size:1.25rem;color:var(--parchment);margin-bottom:0.5rem;">I close the loop</div>
-        <p style="font-size:1rem;line-height:1.6;opacity:0.82;">Intake, reproduce, follow up, retest, handover. I would rather write three lines for the next person than leave a ticket hanging.</p>
-      </div>
-
-      <div class="card reveal reveal-delay-1">
-        <div style="font-family:'Marcellus',serif;font-size:1.25rem;color:var(--parchment);margin-bottom:0.5rem;">Already in Hamburg</div>
-        <p style="font-size:1rem;line-height:1.6;opacity:0.82;">Study and work here. English for daily work. German A2. No relocation story to sell - I can start on site or hybrid.</p>
-      </div>
-
-      <div class="card reveal reveal-delay-2">
-        <div style="font-family:'Marcellus',serif;font-size:1.25rem;color:var(--parchment);margin-bottom:0.5rem;">Labs, not slides</div>
-        <p style="font-size:1rem;line-height:1.6;opacity:0.82;">pytest, docker build, kind, health poll - I run them before an interview. If CI is red I read the JUnit, I don't guess.</p>
-      </div>
-
-      <div class="card reveal reveal-delay-3">
-        <div style="font-family:'Marcellus',serif;font-size:1.25rem;color:var(--parchment);margin-bottom:0.5rem;">Careful with systems</div>
-        <p style="font-size:1rem;line-height:1.6;opacity:0.82;">Dry-run is the default. No secrets in git. I would rather ask than restart something I don't own.</p>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<section id="contact" class="section">
-  <div class="container">
-    <div class="contact-wrap reveal">
-      <p class="section-label" style="justify-content:center;">Get In Touch</p>
-      <h2 style="margin-bottom:0.75rem;">Let's <em>talk</em></h2>
-      <p style="margin-bottom:0.5rem;">
-        Junior DevOps, cloud, systems admin, IT support - Hamburg or hybrid. If a repo on this page is relevant, write me.
-      </p>
-      <a href="mailto:mynulislam042@gmail.com" class="contact-email">mynulislam042@gmail.com</a>
-      <div class="contact-links">
-        <a href="mailto:mynulislam042@gmail.com" class="contact-link">Email</a>
-        <a href="https://linkedin.com/in/mynulislam95" target="_blank" rel="noopener" class="contact-link">LinkedIn</a>
-        <a href="https://github.com/mynulIslam95" target="_blank" rel="noopener" class="contact-link">GitHub</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="container">
-    <p>Mynul Islam · Hamburg · <a href="https://github.com/mynulIslam95">github.com/mynulIslam95</a></p>
-  </div>
-</footer>
-
-<script>
-window.addEventListener('scroll', () => {
-  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
-}, { passive: true });
-
-document.getElementById('hamburger').addEventListener('click', () =>
-  document.getElementById('mobileMenu').classList.toggle('open'));
-document.querySelectorAll('#mobileMenu a').forEach(a => a.addEventListener('click', () =>
-  document.getElementById('mobileMenu').classList.remove('open')));
-
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }});
-}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-setTimeout(() => document.querySelectorAll('#hero .reveal').forEach(el => el.classList.add('visible')), 80);
-
-(function() {
-  const canvas = document.getElementById('hero-canvas');
-  const ctx = canvas.getContext('2d');
-  let W, H, animId, t = 0;
-  let intensity = 1;
-
-  const termLines = [
-    '> pytest -q',
-    '  6 passed in 0.03s',
-    '> docker build -t custom-profile-service:1.2.0 .',
-    '> python scripts/health_poll.py',
-    '  2026-10-06T16:02:11Z  UP  200',
-    '> python scripts/log_scan.py fixtures/sample.log',
-    '  ERROR: 2  WARN: 2',
-    '> kubectl apply -f k8s/',
-    '  deployment.apps/custom-profile-service configured',
-    '> git push origin main',
-    '  GitHub Actions: pytest then docker build',
-    '> ./backup.sh --dry-run',
-    '  restore target: testdb',
-    '> ssh mynul@hamburg',
-  ];
-  let activeLines = [];
-  let lineTimer = 0;
-
-  function resize() {
-    W = canvas.width = canvas.offsetWidth;
-    H = canvas.height = canvas.offsetHeight;
-  }
-
-  function drawGrid() {
-    const gridColor = 'rgba(69,104,89,';
-    const cols = 12, rows = 8;
-    const cw = W / cols, ch = H / rows;
-    ctx.lineWidth = 0.5;
-    for (let i = 1; i < cols; i++) {
-      ctx.beginPath();
-      ctx.moveTo(i * cw, 0); ctx.lineTo(i * cw, H);
-      ctx.strokeStyle = gridColor + (i % 3 === 0 ? '0.18' : '0.08') + ')';
-      ctx.stroke();
-    }
-    for (let j = 1; j < rows; j++) {
-      ctx.beginPath();
-      ctx.moveTo(0, j * ch); ctx.lineTo(W, j * ch);
-      ctx.strokeStyle = gridColor + (j % 2 === 0 ? '0.18' : '0.08') + ')';
-      ctx.stroke();
-    }
-    ctx.strokeStyle = gridColor + '0.28)';
-    ctx.lineWidth = 0.8;
-    const cx = W/2, cy = H/2;
-    for (let i = 0; i <= cols; i++) {
-      ctx.beginPath(); ctx.moveTo(i*cw, cy-4); ctx.lineTo(i*cw, cy+4); ctx.stroke();
-    }
-    for (let j = 0; j <= rows; j++) {
-      ctx.beginPath(); ctx.moveTo(cx-4, j*ch); ctx.lineTo(cx+4, j*ch); ctx.stroke();
-    }
-  }
-
-  function drawWaveform(yBase, amplitude, freq, phase, color, lineW, opacity) {
-    ctx.beginPath();
-    ctx.lineWidth = lineW;
-    const step = 2;
-    for (let x = 0; x <= W; x += step) {
-      const ratio = x / W;
-      const y = yBase + Math.sin(ratio * Math.PI * 2 * freq + phase) * amplitude
-            + Math.sin(ratio * Math.PI * 2 * freq * 2.3 + phase * 1.3) * amplitude * 0.18;
-      x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
-    }
-    ctx.strokeStyle = color.replace('OPACITY', opacity);
-    ctx.shadowColor = color.replace('OPACITY', '0.5');
-    ctx.shadowBlur = lineW * 5;
-    ctx.stroke();
-    ctx.shadowBlur = 0;
-  }
-
-  function spawnLine() {
-    if (activeLines.length >= 6) return;
-    const text = termLines[Math.floor(Math.random() * termLines.length)];
-    const col = Math.random() > 0.5 ? 'warm' : 'cool';
-    activeLines.push({
-      text, col,
-      x: Math.random() * (W * 0.5) + (Math.random() > 0.5 ? W * 0.55 : W * 0.02),
-      y: Math.random() * (H * 0.7) + H * 0.1,
-      alpha: 0, life: 0, maxLife: 160 + Math.random() * 100,
-    });
-  }
-
-  function drawTerminal() {
-    const warmBase = '190,173,137';
-    const coolBase = '69,104,89';
-    ctx.font = '400 11px "JetBrains Mono", monospace';
-    activeLines = activeLines.filter(l => l.life < l.maxLife);
-    activeLines.forEach(l => {
-      l.life++;
-      l.alpha = l.life < 20 ? l.life/20 : l.life > l.maxLife - 20 ? (l.maxLife - l.life)/20 : 1;
-      const base = l.col === 'warm' ? warmBase : coolBase;
-      ctx.fillStyle = `rgba(${base},${l.alpha * 0.28})`;
-      ctx.fillText(l.text, l.x, l.y);
-    });
-  }
-
-  function draw() {
-    ctx.fillStyle = 'rgba(20,57,48,0.2)';
-    ctx.fillRect(0, 0, W, H);
-    t += 0.012;
-    drawGrid();
-    drawWaveform(H * 0.55, H * 0.12, 2, t, 'rgba(190,173,137,OPACITY)', 1.4, '0.5');
-    drawWaveform(H * 0.45, H * 0.07, 3, t * 1.4 + 1, 'rgba(69,104,89,OPACITY)', 1.2, '0.35');
-    lineTimer++;
-    if (lineTimer % 55 === 0) spawnLine();
-    drawTerminal();
-    animId = requestAnimationFrame(draw);
-  }
-
-  function start() {
-    cancelAnimationFrame(animId);
-    resize();
-    setTimeout(spawnLine, 400);
-    setTimeout(spawnLine, 900);
-    setTimeout(spawnLine, 1500);
-    draw();
-  }
-
-  window.addEventListener('resize', () => { resize(); });
-  start();
-})();
-</script>
+  </footer>
+  <script src="assets/js/main.js?v=7" defer></script>
 </body>
 </html>

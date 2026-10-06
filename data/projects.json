@@ -1,0 +1,47 @@
+[
+  {
+    "title": "ops-duty-scripts",
+    "slug": "ops-duty-scripts",
+    "problem": "Shift checks for health, logs and handover.",
+    "skills": ["Python", "pytest", "Runbooks"],
+    "caseStudy": "case-studies/ops-duty-scripts.html",
+    "repo": "https://github.com/mynulIslam95/ops-duty-scripts"
+  },
+  {
+    "title": "custom-profile-service",
+    "slug": "custom-profile-service",
+    "problem": "API with tests, image and Kubernetes probes.",
+    "skills": ["CI/CD", "Docker", "Kubernetes", "Jenkins"],
+    "caseStudy": "case-studies/custom-profile-service.html",
+    "repo": "https://github.com/mynulIslam95/custom-profile-service"
+  },
+  {
+    "title": "linux-db-ops-toolkit",
+    "slug": "linux-db-ops-toolkit",
+    "problem": "Linux MySQL health, backup and restore dry-run.",
+    "skills": ["Bash", "Linux", "MySQL"],
+    "repo": "https://github.com/mynulIslam95/linux-db-ops-toolkit"
+  },
+  {
+    "title": "azure-functions-ts-lab",
+    "slug": "azure-functions-ts-lab",
+    "problem": "Azure Functions API with Bicep and CI.",
+    "skills": ["Azure", "Bicep", "TypeScript"],
+    "caseStudy": "case-studies/azure-functions-ts-lab.html",
+    "repo": "https://github.com/mynulIslam95/azure-functions-ts-lab"
+  },
+  {
+    "title": "relational-db-ops-lab",
+    "slug": "relational-db-ops-lab",
+    "problem": "Database ops notes: health, backup, failover.",
+    "skills": ["SQL", "Monitoring", "DR"],
+    "repo": "https://github.com/mynulIslam95/relational-db-ops-lab"
+  },
+  {
+    "title": "ci-test-reporting",
+    "slug": "ci-test-reporting",
+    "problem": "JUnit XML triage after a pipeline run.",
+    "skills": ["JUnit", "Python", "CI/CD"],
+    "repo": "https://github.com/mynulIslam95/ci-test-reporting"
+  }
+]
