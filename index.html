@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="assets/css/styles.css?v=20"/>
+  <link rel="stylesheet" href="assets/css/styles.css?v=21"/>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -71,13 +71,19 @@
           <p class="place" data-i18n="hero.place">Based in Hamburg.</p>
           <p class="lede" data-i18n="hero.lede">On the desk I run IT operations. A ticket comes in, I reproduce the fault, write a clear note for the next person, and close it only after retest. That daily work is Windows, user access and first-line support.</p>
           <p class="lede lede-more" data-i18n="hero.lede2">In GitHub the same habit is DevOps and cloud: Azure networks and storage in Terraform, services in Docker, Kubernetes probes, and GitHub Actions that format, test and validate before anything is called done.</p>
-          <p class="open-work" role="status">
-            <span class="open-dot" aria-hidden="true"></span>
-            <span class="open-copy">
+          <div class="open-work" role="status">
+            <div class="open-head">
+              <span class="open-dot" aria-hidden="true"></span>
               <strong data-i18n="hero.open">Open to relocate</strong>
-              <span data-i18n="hero.openroles">DevOps · Cloud · IT Operations · System Administration</span>
-            </span>
-          </p>
+            </div>
+            <p class="open-kicker" data-i18n="hero.roles">Roles</p>
+            <ul class="open-list">
+              <li data-i18n="role.devops">DevOps</li>
+              <li data-i18n="role.cloud">Cloud</li>
+              <li data-i18n="role.ops">IT Operations</li>
+              <li data-i18n="role.sys">System Administration</li>
+            </ul>
+          </div>
           <div class="hero-actions">
             <a class="btn btn-primary" href="#projects" data-i18n="hero.cta">Projects</a>
             <a class="btn btn-secondary ext" href="https://github.com/mynulIslam95" target="_blank" rel="noopener noreferrer">GitHub</a>
@@ -103,7 +109,26 @@
             </div>
             <div>
               <dt data-i18n="duty.role">Focus</dt>
-              <dd class="role-line" data-i18n="duty.roleval">DevOps · Cloud · IT Operations · System Administration</dd>
+              <dd>
+                <ul class="role-list">
+                  <li>
+                    <span class="role-icon"><img src="assets/icons/docker.svg?v=12" alt="" width="22" height="22"/></span>
+                    <span data-i18n="role.devops">DevOps</span>
+                  </li>
+                  <li>
+                    <span class="role-icon"><img src="assets/icons/azure.svg?v=12" alt="" width="22" height="22"/></span>
+                    <span data-i18n="role.cloud">Cloud</span>
+                  </li>
+                  <li>
+                    <span class="role-icon"><img src="assets/icons/windows.svg?v=12" alt="" width="22" height="22"/></span>
+                    <span data-i18n="role.ops">IT Operations</span>
+                  </li>
+                  <li>
+                    <span class="role-icon"><img src="assets/icons/linux.svg?v=12" alt="" width="22" height="22"/></span>
+                    <span data-i18n="role.sys">System Administration</span>
+                  </li>
+                </ul>
+              </dd>
             </div>
             <div>
               <dt data-i18n="duty.prev">Experience</dt>
@@ -307,6 +332,6 @@
       <p data-i18n="foot">Mynul Islam · Hamburg</p>
     </div>
   </footer>
-  <script src="assets/js/main.js?v=20" defer></script>
+  <script src="assets/js/main.js?v=21" defer></script>
 </body>
 </html>
