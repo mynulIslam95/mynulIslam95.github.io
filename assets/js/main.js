@@ -79,7 +79,6 @@
       "edu.b.l6": "Bachelor thesis: Python data pipelines for day-ahead renewable energy forecasting",
       "esc.kicker": "Contact",
       "esc.title": "Get in touch.",
-      "esc.body": "Based in Hamburg. Open to full-time work and relocation inside Germany. English C1, German B1.",
       "foot": "Mynul Islam · Hamburg"
     },
     de: {
@@ -153,7 +152,6 @@
       "edu.b.l6": "Bachelorarbeit: Python-Datenpipelines für die Prognose erneuerbarer Erzeugung am Vortag",
       "esc.kicker": "Kontakt",
       "esc.title": "Schreib mir.",
-      "esc.body": "In Hamburg. Offen für Vollzeit und Umzug innerhalb Deutschlands. Englisch C1, Deutsch B1.",
       "foot": "Mynul Islam · Hamburg"
     }
   };

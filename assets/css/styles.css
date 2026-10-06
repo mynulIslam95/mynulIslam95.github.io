@@ -842,6 +842,7 @@ section { scroll-margin-top: calc(var(--nav-h) + 28px); padding-block: var(--spa
 .profile-card:hover { transform: translate3d(0, var(--card-shift, 0px), 0); }
 
 .contact-card { padding: var(--space-6); max-width: 760px; }
+.contact-card h2 { margin-bottom: var(--space-4); }
 .contact-links { display: flex; flex-wrap: wrap; gap: var(--space-3); }
 .contact-links .cv-pair { margin-left: 0; }
 footer {
