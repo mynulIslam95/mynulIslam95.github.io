@@ -129,8 +129,8 @@
     nav#navbar .container { display: flex; align-items: center; justify-content: space-between; width: 100%; }
     .nav-logo { display: flex; align-items: center; gap: 0.7rem; font-family: 'Marcellus', serif; font-size: 1rem; color: var(--parchment); }
     .nav-avatar { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; object-position: center top; border: 1px solid var(--border); }
-    .nav-links { display: flex; align-items: center; gap: 1.75rem; }
-    .nav-links a { font-size: 0.95rem; font-weight: 400; color: var(--parchment); opacity: 0.8; transition: opacity var(--t); letter-spacing: 0.01em; }
+    .nav-links { display: flex; align-items: center; gap: 1.15rem; }
+    .nav-links a { font-size: 0.88rem; font-weight: 400; color: var(--parchment); opacity: 0.8; transition: opacity var(--t); letter-spacing: 0.01em; white-space: nowrap; }
     .nav-links a:hover { opacity: 1; text-decoration: underline; text-underline-offset: 3px; }
     .nav-actions { display: flex; align-items: center; gap: 0.75rem; }
     .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; background: none; border: none; }
@@ -142,6 +142,10 @@
     }
     .mobile-menu.open { display: flex; }
     .mobile-menu a { font-size: 1.1rem; font-weight: 400; color: var(--parchment); padding: 0.5rem 0; border-bottom: 1px solid var(--border); }
+    @media (max-width: 900px) {
+      .nav-links { gap: 0.85rem; }
+      .nav-links a { font-size: 0.8rem; }
+    }
     @media (max-width: 768px) {
       .nav-links, .nav-actions .btn { display: none; }
       .hamburger { display: flex; }
@@ -211,6 +215,11 @@
     .proj-link { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; letter-spacing: 0.04em; color: var(--tan); display: inline-flex; align-items: center; gap: 0.3rem; transition: gap var(--t); border-bottom: 1px solid var(--tan); padding-bottom: 1px; }
     .proj-link:hover { gap: 0.55rem; color: var(--parchment); border-color: var(--parchment); }
     .placeholder-card { opacity: 0.7; }
+    .in-dev {
+      font-size: 0.7rem; font-family: 'JetBrains Mono', monospace; color: var(--tan);
+      font-weight: 400; white-space: nowrap; margin-left: 0.4rem;
+    }
+    .nav-actions { flex-shrink: 0; }
 
     .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
     .skills-grid .card { border: none; }
@@ -261,12 +270,10 @@
     </a>
     <div class="nav-links">
       <a href="#experience">Experience</a>
-      <a href="#education">Education</a>
       <a href="#projects">Projects</a>
       <a href="#upcoming">Upcoming</a>
       <a href="#skills">Skills</a>
       <a href="#about">About</a>
-      <a href="#why-me">Why Me</a>
       <a href="#contact">Contact</a>
     </div>
     <div class="nav-actions">
@@ -300,7 +307,7 @@
     <h1 class="hero-title reveal reveal-delay-1">
       Hi, I'm<br/>
       <em>Mynul</em>,<br/>
-      looking for the next ops seat.
+      here for ops.
     </h1>
     <p class="hero-sub reveal reveal-delay-2">
       Information Engineering at HAW Hamburg. I take incidents, put tests in CI, build Docker images, and write the scripts I used to do by hand. Aiming at junior DevOps, cloud, systems admin, and IT support roles.
@@ -506,7 +513,7 @@
     <div class="projects-grid">
 
       <div class="card proj-card placeholder-card reveal">
-        <div class="proj-title">linux-workstation-baseline <span style="font-size:0.7rem;font-family:'JetBrains Mono',monospace;color:var(--tan);">in dev</span></div>
+        <div class="proj-title">linux-workstation-baseline <span class="in-dev">in dev</span></div>
         <div class="proj-desc">Bash/Ansible-style baseline for a Linux box: users, SSH, packages, a health script. Target: junior systems admin.</div>
         <div class="proj-tags">
           <span class="tag cool">Linux</span>
@@ -516,7 +523,7 @@
       </div>
 
       <div class="card proj-card placeholder-card reveal reveal-delay-1">
-        <div class="proj-title">itsm-runbook-kit <span style="font-size:0.7rem;font-family:'JetBrains Mono',monospace;color:var(--tan);">in dev</span></div>
+        <div class="proj-title">itsm-runbook-kit <span class="in-dev">in dev</span></div>
         <div class="proj-desc">Markdown runbooks for first-line support: password reset, printer, VPN, mailbox. Checklists a helpdesk can actually follow.</div>
         <div class="proj-tags">
           <span class="tag cool">IT Support</span>
@@ -526,7 +533,7 @@
       </div>
 
       <div class="card proj-card placeholder-card reveal reveal-delay-2">
-        <div class="proj-title">compose-gitops-lab <span style="font-size:0.7rem;font-family:'JetBrains Mono',monospace;color:var(--tan);">in dev</span></div>
+        <div class="proj-title">compose-gitops-lab <span class="in-dev">in dev</span></div>
         <div class="proj-desc">Small stack in Docker Compose, pipeline that builds and starts it, a smoke URL check. Target: junior DevOps.</div>
         <div class="proj-tags">
           <span class="tag cool">Docker Compose</span>
