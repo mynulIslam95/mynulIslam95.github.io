@@ -1,4 +1,4 @@
-# Mynul Islam — IT Operations & Cloud
+# Mynul Islam - IT Operations and Cloud
 
 Static GitHub Pages portfolio.
 

@@ -3,9 +3,12 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>status-service-delivery — Mynul Islam</title>
+  <title>status-service-delivery - Mynul Islam</title>
   <meta name="description" content="Status HTTP service with Compose, Prometheus, Grafana, CI, failure drill, rollback and Kubernetes."/>
-  <link rel="stylesheet" href="../assets/css/styles.css?v=8"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../assets/css/styles.css?v=13"/>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -17,13 +20,24 @@
       <nav class="nav-panel" aria-label="Primary">
         <ul class="nav-links">
           <li><a href="../index.html#projects">Projects</a></li>
-          <li><a href="../index.html#skills">Skills</a></li>
-          <li><a href="../index.html#experience">Experience</a></li>
-          <li><a href="../index.html#education">Education</a></li>
-          <li><a href="../index.html#contact">Contact</a></li>
+          <li><a href="../index.html#stack">Stack</a></li>
+          <li><a href="../index.html#closed">Closed work</a></li>
+          <li><a href="../index.html#runbooks">Runbooks</a></li>
+          <li><a href="../index.html#escalate">Escalate</a></li>
         </ul>
       </nav>
-      <a class="btn btn-primary btn-nav" href="../cv.pdf" download="Mynul_Islam_CV.pdf">Download CV</a>
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" data-lang="en" class="is-on" aria-label="English">
+          <img class="flag" src="../assets/icons/flag-gb.svg" width="22" height="15" alt=""/>
+        </button>
+        <button type="button" data-lang="de" aria-label="Deutsch">
+          <img class="flag" src="../assets/icons/flag-de.svg" width="22" height="15" alt=""/>
+        </button>
+      </div>
+      <div class="cv-pair">
+        <a href="../cv-en.pdf" download="Mynul_Islam_CV_EN.pdf">CV-English</a>
+        <a href="../cv-de.pdf" download="Mynul_Islam_CV_DE.pdf">CV-Deutsch</a>
+      </div>
     </div>
   </header>
   <main id="main" class="wrap page-header prose">
@@ -50,6 +64,6 @@
   <footer>
     <div class="wrap"><p>Mynul Islam · Hamburg</p></div>
   </footer>
-  <script src="../assets/js/main.js?v=8" defer></script>
+  <script src="../assets/js/main.js?v=13" defer></script>
 </body>
 </html>

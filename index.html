@@ -3,9 +3,12 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Mynul Islam — IT Operations &amp; Cloud</title>
-  <meta name="description" content="IT operations, cloud and DevOps. Hamburg. Incident handling, Linux, Azure, CI/CD."/>
-  <link rel="stylesheet" href="assets/css/styles.css?v=8"/>
+  <title>Mynul Islam - Shift handover</title>
+  <meta name="description" content="Hamburg IT operations. Tickets, Windows, Linux, Azure, CI/CD. Six GitHub projects."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/css/styles.css?v=13"/>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -16,60 +19,75 @@
       <label class="burger" for="nav-toggle" aria-label="Open menu"><span></span><span></span><span></span></label>
       <nav class="nav-panel" aria-label="Primary">
         <ul class="nav-links">
-          <li><a href="#projects">Projects</a></li>
-          <li><a href="#skills">Skills</a></li>
-          <li><a href="#experience">Experience</a></li>
-          <li><a href="#education">Education</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li><a href="#projects" data-i18n="nav.queue">Projects</a></li>
+          <li><a href="#stack" data-i18n="nav.stack">Stack</a></li>
+          <li><a href="#closed" data-i18n="nav.closed">Closed work</a></li>
+          <li><a href="#runbooks" data-i18n="nav.runbooks">Runbooks</a></li>
+          <li><a href="#escalate" data-i18n="nav.escalate">Escalate</a></li>
         </ul>
       </nav>
-      <a class="btn btn-primary btn-nav" href="cv.pdf" download="Mynul_Islam_CV.pdf">Download CV</a>
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" data-lang="en" class="is-on" aria-label="English">
+          <img class="flag" src="assets/icons/flag-gb.svg" width="22" height="15" alt=""/>
+        </button>
+        <button type="button" data-lang="de" aria-label="Deutsch">
+          <img class="flag" src="assets/icons/flag-de.svg" width="22" height="15" alt=""/>
+        </button>
+      </div>
+      <div class="cv-pair">
+        <a href="cv-en.pdf" download="Mynul_Islam_CV_EN.pdf">CV-English</a>
+        <a href="cv-de.pdf" download="Mynul_Islam_CV_DE.pdf">CV-Deutsch</a>
+      </div>
     </div>
   </header>
 
   <main id="main">
     <section class="hero" id="top">
-      <div class="hero-rings" aria-hidden="true"></div>
       <div class="wrap hero-grid">
         <div>
-          <p class="section-kicker">IT Operations &amp; Cloud</p>
-          <h1>IT Support &amp; Systems Management</h1>
-          <p class="lede">I’m Mynul Islam, an IT operations professional in Hamburg. I handle user support, Windows, access administration and incidents, and I deliver Linux, Azure, Docker and CI/CD work that teams can run from GitHub.</p>
+          <p class="section-kicker" data-i18n="hero.kicker">Shift handover · Hamburg desk</p>
+          <h1 data-i18n="hero.title">Notes for the next person on the queue.</h1>
+          <div class="meta-row">
+            <span class="chip" data-i18n="hero.chip1">Desk: Hamburg</span>
+            <span class="chip" data-i18n="hero.chip2">6 projects</span>
+            <span class="chip" data-i18n="hero.chip3">English fluent · German B1</span>
+            <span class="chip" data-i18n="hero.chip4">Open to relocate</span>
+          </div>
+          <p class="lede" data-i18n="hero.lede">I keep the queue honest. Take the ticket, reproduce the fault, write the handover, close after retest. Windows and access on the desk. Linux, Azure, Terraform, Docker and CI in GitHub: infrastructure as code, pipelines, containers. Open to relocate for a full-time DevOps or cloud job.</p>
           <div class="hero-actions">
-            <a class="btn btn-primary" href="#projects">View projects</a>
-            <a class="btn btn-secondary ext" href="https://github.com/mynulIslam95" target="_blank" rel="noopener noreferrer">GitHub profile</a>
-            <a class="btn btn-secondary" href="cv.pdf" download="Mynul_Islam_CV.pdf">Download CV</a>
+            <a class="btn btn-primary" href="#projects" data-i18n="hero.cta">See the projects</a>
+            <a class="btn btn-secondary ext" href="https://github.com/mynulIslam95" target="_blank" rel="noopener noreferrer">GitHub</a>
           </div>
         </div>
-        <aside class="panel profile-card" aria-label="Profile">
+        <aside class="panel profile-card" aria-label="On duty">
           <div class="photo-orbit">
             <picture>
               <source type="image/webp" srcset="assets/images/mynul.webp"/>
-              <img class="photo-sm" src="assets/images/mynul.jpg" width="92" height="92" alt="Portrait of Mynul Islam"/>
+              <img class="photo-sm" src="assets/images/mynul.jpg" width="84" height="84" alt="Portrait of Mynul Islam"/>
             </picture>
-            <img class="orbit-icon o1" src="assets/icons/linux.svg" alt="" width="26" height="26"/>
-            <img class="orbit-icon o2" src="assets/icons/azure.svg" alt="" width="26" height="26"/>
-            <img class="orbit-icon o3" src="assets/icons/python.svg" alt="" width="26" height="26"/>
-            <img class="orbit-icon o4" src="assets/icons/docker.svg" alt="" width="26" height="26"/>
-            <img class="orbit-icon o5" src="assets/icons/git.svg" alt="" width="26" height="26"/>
-            <img class="orbit-icon o6" src="assets/icons/windows.svg" alt="" width="26" height="26"/>
+            <img class="orbit-icon o1" src="assets/icons/linux.svg?v=12" alt="" width="26" height="26"/>
+            <img class="orbit-icon o2" src="assets/icons/azure.svg?v=12" alt="" width="26" height="26"/>
+            <img class="orbit-icon o3" src="assets/icons/python.svg?v=12" alt="" width="26" height="26"/>
+            <img class="orbit-icon o4" src="assets/icons/docker.svg?v=12" alt="" width="26" height="26"/>
+            <img class="orbit-icon o5" src="assets/icons/git.svg?v=12" alt="" width="26" height="26"/>
+            <img class="orbit-icon o6" src="assets/icons/windows.svg?v=12" alt="" width="26" height="26"/>
           </div>
           <dl>
             <div>
-              <dt>Location</dt>
+              <dt data-i18n="duty.loc">Location</dt>
               <dd>Hamburg, Germany</dd>
             </div>
             <div>
-              <dt>Focus</dt>
-              <dd>IT operations, cloud, DevOps</dd>
+              <dt data-i18n="duty.role">On duty</dt>
+              <dd data-i18n="duty.roleval">DevOps, cloud, IT operations</dd>
             </div>
             <div>
-              <dt>Experience</dt>
+              <dt data-i18n="duty.prev">Last desks</dt>
               <dd>Mondia Group · Motion E-Commerce</dd>
             </div>
             <div>
-              <dt>Languages</dt>
-              <dd>English fluent · German A2 · Bengali native</dd>
+              <dt data-i18n="duty.lang">Languages</dt>
+              <dd data-i18n="duty.langval">English fluent · German B1 · Bengali native</dd>
             </div>
           </dl>
         </aside>
@@ -78,212 +96,179 @@
 
     <section id="projects">
       <div class="wrap">
-        <p class="section-kicker">Projects</p>
-        <h2>Selected work</h2>
-        <div class="project-grid">
-          <article class="card">
+        <p class="section-kicker" data-i18n="queue.kicker">GitHub</p>
+        <h2 data-i18n="queue.title">Projects</h2>
+        <div class="ticket-grid">
+          <article class="ticket">
+            <div class="ticket-head"><span class="tid">NF-01</span><span class="tstate" data-i18n="t.open">open in git</span></div>
             <h3>it-ops-automation</h3>
-            <p>Northfield Office support: Windows inventory, Linux health check, five verified tickets, backup restore, Ansible, Active Directory and Entra/M365/Intune procedures.</p>
-            <ul class="tech">
-              <li>Windows</li><li>Linux</li><li>PowerShell</li><li>Ansible</li>
-            </ul>
+            <p data-i18n="p1">Windows inventory, Linux health check, five tickets with verification, backup restore, Ansible, Active Directory and Entra procedures.</p>
+            <ul class="tech"><li>Windows</li><li>Linux</li><li>PowerShell</li><li>Ansible</li></ul>
             <div class="card-links">
-              <a href="case-studies/it-ops-automation.html">Case study</a>
-              <a class="ext" href="https://github.com/mynulIslam95/it-ops-automation" target="_blank" rel="noopener noreferrer">View repository</a>
+              <a href="case-studies/it-ops-automation.html" data-i18n="t.note">Handover note</a>
+              <a class="ext" href="https://github.com/mynulIslam95/it-ops-automation" target="_blank" rel="noopener noreferrer">GitHub</a>
             </div>
           </article>
-          <article class="card">
+          <article class="ticket">
+            <div class="ticket-head"><span class="tid">NF-02</span><span class="tstate" data-i18n="t.open">open in git</span></div>
             <h3>azure-infra-foundation</h3>
-            <p>Terraform for a resource group, VNet module, NSG, storage and Log Analytics. CI formats and validates. Deploy is off until a subscription apply.</p>
-            <ul class="tech">
-              <li>Azure</li><li>Terraform</li><li>GitHub Actions</li>
-            </ul>
+            <p data-i18n="p2">Terraform for a resource group, VNet, NSG, storage and Log Analytics. CI formats and validates. No deploy until a subscription apply.</p>
+            <ul class="tech"><li>Azure</li><li>Terraform</li><li>GitHub Actions</li></ul>
             <div class="card-links">
-              <a href="case-studies/azure-infra-foundation.html">Case study</a>
-              <a class="ext" href="https://github.com/mynulIslam95/azure-infra-foundation" target="_blank" rel="noopener noreferrer">View repository</a>
+              <a href="case-studies/azure-infra-foundation.html" data-i18n="t.note">Handover note</a>
+              <a class="ext" href="https://github.com/mynulIslam95/azure-infra-foundation" target="_blank" rel="noopener noreferrer">GitHub</a>
             </div>
           </article>
-          <article class="card">
+          <article class="ticket">
+            <div class="ticket-head"><span class="tid">NF-03</span><span class="tstate" data-i18n="t.open">open in git</span></div>
             <h3>status-service-delivery</h3>
-            <p>Status HTTP service with Compose, Prometheus, Grafana, tests, CI health check, failure drill, rollback and Kubernetes probes.</p>
-            <ul class="tech">
-              <li>Docker</li><li>CI/CD</li><li>Kubernetes</li><li>Python</li>
-            </ul>
+            <p data-i18n="p3">Status HTTP service with Compose, Prometheus, Grafana, tests, CI health check, failure drill, rollback and Kubernetes probes.</p>
+            <ul class="tech"><li>Docker</li><li>CI/CD</li><li>Kubernetes</li><li>Python</li></ul>
             <div class="card-links">
-              <a href="case-studies/status-service-delivery.html">Case study</a>
-              <a class="ext" href="https://github.com/mynulIslam95/status-service-delivery" target="_blank" rel="noopener noreferrer">View repository</a>
+              <a href="case-studies/status-service-delivery.html" data-i18n="t.note">Handover note</a>
+              <a class="ext" href="https://github.com/mynulIslam95/status-service-delivery" target="_blank" rel="noopener noreferrer">GitHub</a>
             </div>
           </article>
-          <article class="card">
+          <article class="ticket">
+            <div class="ticket-head"><span class="tid">NF-04</span><span class="tstate" data-i18n="t.open">open in git</span></div>
             <h3>ops-duty-scripts</h3>
-            <p>Shift toolkit for application support: HTTP health poll with history, ERROR/WARN log scan, duty checklist with dry-run, and an incident runbook when /health is down.</p>
-            <ul class="tech">
-              <li>Python</li><li>pytest</li><li>Runbooks</li><li>IT Support</li>
-            </ul>
+            <p data-i18n="p4">Shift toolkit: HTTP health poll, ERROR/WARN log scan, duty checklist, runbook when /health is down.</p>
+            <ul class="tech"><li>Python</li><li>pytest</li><li>Runbooks</li></ul>
             <div class="card-links">
-              <a href="case-studies/ops-duty-scripts.html">Case study</a>
-              <a class="ext" href="https://github.com/mynulIslam95/ops-duty-scripts" target="_blank" rel="noopener noreferrer">View repository</a>
+              <a href="case-studies/ops-duty-scripts.html" data-i18n="t.note">Handover note</a>
+              <a class="ext" href="https://github.com/mynulIslam95/ops-duty-scripts" target="_blank" rel="noopener noreferrer">GitHub</a>
             </div>
           </article>
-          <article class="card">
+          <article class="ticket">
+            <div class="ticket-head"><span class="tid">NF-05</span><span class="tstate" data-i18n="t.open">open in git</span></div>
             <h3>custom-profile-service</h3>
-            <p>FastAPI service with pytest on every push, Docker image, Jenkinsfile, Kubernetes Deployment with live and ready probes, and a smoke check after a new version.</p>
-            <ul class="tech">
-              <li>CI/CD</li><li>Docker</li><li>Kubernetes</li><li>Jenkins</li>
-            </ul>
+            <p data-i18n="p5">FastAPI with pytest on every push, Docker image, Jenkinsfile, Kubernetes Deployment with live and ready probes.</p>
+            <ul class="tech"><li>CI/CD</li><li>Docker</li><li>Kubernetes</li></ul>
             <div class="card-links">
-              <a href="case-studies/custom-profile-service.html">Case study</a>
-              <a class="ext" href="https://github.com/mynulIslam95/custom-profile-service" target="_blank" rel="noopener noreferrer">View repository</a>
+              <a href="case-studies/custom-profile-service.html" data-i18n="t.note">Handover note</a>
+              <a class="ext" href="https://github.com/mynulIslam95/custom-profile-service" target="_blank" rel="noopener noreferrer">GitHub</a>
             </div>
           </article>
-          <article class="card">
-            <h3>linux-db-ops-toolkit</h3>
-            <p>Bash on Linux for MySQL/MariaDB: health check, backup, restore dry-run, monitoring and a daily report.</p>
-            <ul class="tech">
-              <li>Bash</li><li>Linux</li><li>MySQL</li>
-            </ul>
-            <div class="card-links">
-              <a class="ext" href="https://github.com/mynulIslam95/linux-db-ops-toolkit" target="_blank" rel="noopener noreferrer">View repository</a>
-            </div>
-          </article>
-          <article class="card">
+          <article class="ticket">
+            <div class="ticket-head"><span class="tid">NF-06</span><span class="tstate" data-i18n="t.open">open in git</span></div>
             <h3>azure-functions-ts-lab</h3>
-            <p>TypeScript Azure Functions API for cost summary, tests, Bicep for Storage, App Insights and Function App, GitHub Actions for typecheck, tests, build and template lint.</p>
-            <ul class="tech">
-              <li>Azure</li><li>Bicep</li><li>TypeScript</li><li>GitHub Actions</li>
-            </ul>
+            <p data-i18n="p6">TypeScript Azure Functions API, tests, Bicep for Storage, App Insights and Function App, GitHub Actions for typecheck and lint.</p>
+            <ul class="tech"><li>Azure</li><li>Bicep</li><li>TypeScript</li></ul>
             <div class="card-links">
-              <a href="case-studies/azure-functions-ts-lab.html">Case study</a>
-              <a class="ext" href="https://github.com/mynulIslam95/azure-functions-ts-lab" target="_blank" rel="noopener noreferrer">View repository</a>
-            </div>
-          </article>
-          <article class="card">
-            <h3>relational-db-ops-lab</h3>
-            <p>Operations model for database environments: health SQL, incident status, operating standard, backup and failover notes.</p>
-            <ul class="tech">
-              <li>SQL</li><li>Monitoring</li><li>DR</li>
-            </ul>
-            <div class="card-links">
-              <a class="ext" href="https://github.com/mynulIslam95/relational-db-ops-lab" target="_blank" rel="noopener noreferrer">View repository</a>
-            </div>
-          </article>
-          <article class="card">
-            <h3>ci-test-reporting</h3>
-            <p>Reads JUnit XML after a pipeline run and prints totals, fail rate and failed-case messages for fast triage when CI is red.</p>
-            <ul class="tech">
-              <li>JUnit</li><li>Python</li><li>CI/CD</li>
-            </ul>
-            <div class="card-links">
-              <a class="ext" href="https://github.com/mynulIslam95/ci-test-reporting" target="_blank" rel="noopener noreferrer">View repository</a>
+              <a href="case-studies/azure-functions-ts-lab.html" data-i18n="t.note">Handover note</a>
+              <a class="ext" href="https://github.com/mynulIslam95/azure-functions-ts-lab" target="_blank" rel="noopener noreferrer">GitHub</a>
             </div>
           </article>
         </div>
       </div>
     </section>
 
-    <section id="skills">
+    <section id="stack">
       <div class="wrap">
-        <p class="section-kicker">Skills</p>
-        <h2>Tools I work with</h2>
+        <p class="section-kicker" data-i18n="stack.kicker">On the desk</p>
+        <h2 data-i18n="stack.title">Tools I actually use.</h2>
         <div class="skill-groups">
           <article class="panel">
-            <h3>Systems &amp; Support</h3>
+            <h3 data-i18n="stack.s1">Systems and support</h3>
             <ul class="skill-list">
-              <li class="skill"><span class="skill-icon"><img src="assets/icons/windows.svg" alt="" width="22" height="22"/></span><span>Windows</span></li>
-              <li class="skill"><span class="skill-icon"><img src="assets/icons/linux.svg" alt="" width="22" height="22"/></span><span>Linux</span></li>
-              <li class="skill"><span class="skill-icon"><img src="assets/icons/tickets.svg" alt="" width="22" height="22"/></span><span>Incident &amp; tickets</span></li>
-              <li class="skill"><span class="skill-icon"><img src="assets/icons/identity.svg" alt="" width="22" height="22"/></span><span>Access administration</span></li>
-              <li class="skill"><span class="skill-icon"><img src="assets/icons/office.svg" alt="" width="22" height="22"/></span><span>Microsoft Office</span></li>
+              <li class="skill"><span class="skill-icon"><img src="assets/icons/windows.svg?v=12" alt="" width="26" height="26"/></span><span>Windows</span></li>
+              <li class="skill"><span class="skill-icon"><img src="assets/icons/linux.svg?v=12" alt="" width="26" height="26"/></span><span>Linux</span></li>
+              <li class="skill"><span class="skill-icon"><img src="assets/icons/tickets.svg?v=12" alt="" width="26" height="26"/></span><span data-i18n="sk.inc">Incident and tickets</span></li>
+              <li class="skill"><span class="skill-icon"><img src="assets/icons/identity.svg?v=12" alt="" width="26" height="26"/></span><span data-i18n="sk.acc">Access administration</span></li>
+              <li class="skill"><span class="skill-icon"><img src="assets/icons/office.svg?v=12" alt="" width="26" height="26"/></span><span>Microsoft Office</span></li>
             </ul>
           </article>
           <article class="panel">
-            <h3>Cloud &amp; Identity</h3>
+            <h3 data-i18n="stack.s2">Cloud and identity</h3>
             <ul class="skill-list">
-              <li class="skill"><span class="skill-icon"><img src="assets/icons/azure.svg" alt="" width="22" height="22"/></span><span>Azure</span></li>
-              <li class="skill"><span class="skill-icon"><img src="assets/icons/bicep.svg" alt="" width="22" height="22"/></span><span>Bicep</span></li>
-              <li class="skill"><span class="skill-icon"><img src="assets/icons/network.svg" alt="" width="22" height="22"/></span><span>Networking</span></li>
-              <li class="skill"><span class="skill-icon"><img src="assets/icons/kubernetes.svg" alt="" width="22" height="22"/></span><span>Kubernetes</span></li>
+              <li class="skill"><span class="skill-icon"><img src="assets/icons/azure.svg?v=12" alt="" width="26" height="26"/></span><span>Azure</span></li>
+              <li class="skill"><span class="skill-icon"><img src="assets/icons/bicep.svg?v=12" alt="" width="26" height="26"/></span><span>Bicep</span></li>
+              <li class="skill"><span class="skill-icon"><img src="assets/icons/network.svg?v=12" alt="" width="26" height="26"/></span><span data-i18n="sk.net">Networking</span></li>
+              <li class="skill"><span class="skill-icon"><img src="assets/icons/kubernetes.svg?v=12" alt="" width="26" height="26"/></span><span>Kubernetes</span></li>
             </ul>
           </article>
           <article class="panel">
-            <h3>Automation &amp; Delivery</h3>
+            <h3 data-i18n="stack.s3">Automation and delivery</h3>
             <ul class="skill-list">
-              <li class="skill"><span class="skill-icon"><img src="assets/icons/git.svg" alt="" width="22" height="22"/></span><span>Git</span></li>
-              <li class="skill"><span class="skill-icon"><img src="assets/icons/github-actions.svg" alt="" width="22" height="22"/></span><span>GitHub Actions</span></li>
-              <li class="skill"><span class="skill-icon"><img src="assets/icons/python.svg" alt="" width="22" height="22"/></span><span>Python</span></li>
-              <li class="skill"><span class="skill-icon"><img src="assets/icons/docker.svg" alt="" width="22" height="22"/></span><span>Docker</span></li>
-              <li class="skill"><span class="skill-icon"><img src="assets/icons/bash.svg" alt="" width="22" height="22"/></span><span>Bash</span></li>
+              <li class="skill"><span class="skill-icon"><img src="assets/icons/git.svg?v=12" alt="" width="26" height="26"/></span><span>Git</span></li>
+              <li class="skill"><span class="skill-icon"><img src="assets/icons/github-actions.svg?v=12" alt="" width="26" height="26"/></span><span>GitHub Actions</span></li>
+              <li class="skill"><span class="skill-icon"><img src="assets/icons/python.svg?v=12" alt="" width="26" height="26"/></span><span>Python</span></li>
+              <li class="skill"><span class="skill-icon"><img src="assets/icons/docker.svg?v=12" alt="" width="26" height="26"/></span><span>Docker</span></li>
+              <li class="skill"><span class="skill-icon"><img src="assets/icons/bash.svg?v=12" alt="" width="26" height="26"/></span><span>Bash</span></li>
             </ul>
           </article>
         </div>
       </div>
     </section>
 
-    <section id="experience">
+    <section id="closed">
       <div class="wrap">
-        <p class="section-kicker">Work experience</p>
-        <h2>Where I have worked</h2>
+        <p class="section-kicker" data-i18n="closed.kicker">Closed work</p>
+        <h2 data-i18n="closed.title">What already left the queue.</h2>
         <article class="panel job-card">
-          <p class="edu-level">Working student</p>
-          <h3>IT Operations — Mondia Group</h3>
-          <span class="muted">Hamburg · June 2024 – July 2026</span>
-          <p>Incident intake, reproduce, follow-up and close after retest. Handover notes for the next shift. User accounts and access rights. First-line support by email and on site.</p>
+          <p class="edu-level" data-i18n="job.ws">Working student</p>
+          <h3 data-i18n="job.m.title">IT Operations, Mondia Group</h3>
+          <span class="muted" data-i18n="job.m.dates">Hamburg · June 2024 - July 2026</span>
+          <p data-i18n="job.m.body">Incident intake, reproduce, follow-up and close after retest. Handover notes for the next shift. User accounts and access rights. First-line support by email and on site.</p>
         </article>
         <article class="panel job-card">
-          <p class="edu-level">Working student</p>
-          <h3>Operations — Motion E-Commerce GmbH</h3>
-          <span class="muted">Hamburg · November 2021 – September 2023</span>
-          <p>Production failures tracked to close. Excel control reports and operating notes for the team.</p>
+          <p class="edu-level" data-i18n="job.ws">Working student</p>
+          <h3 data-i18n="job.mo.title">Operations, Motion E-Commerce GmbH</h3>
+          <span class="muted" data-i18n="job.mo.dates">Hamburg · November 2021 - September 2023</span>
+          <p data-i18n="job.mo.body">Production failures tracked to close. Excel control reports and operating notes for the team.</p>
         </article>
       </div>
     </section>
 
-    <section id="education">
+    <section id="runbooks">
       <div class="wrap">
-        <p class="section-kicker">Education</p>
-        <h2>Degrees</h2>
+        <p class="section-kicker" data-i18n="edu.kicker">Education runbooks</p>
+        <h2 data-i18n="edu.title">Two degrees. Separate notes.</h2>
         <div class="edu-grid">
           <article class="panel edu-card">
-            <p class="edu-level">Master of Science · in progress</p>
+            <p class="edu-level" data-i18n="edu.m.lvl">Master of Science · in progress</p>
             <h3>Information and Communication Engineering</h3>
             <span class="muted">HAW Hamburg</span>
-            <span class="muted">April 2026 – present</span>
-            <p>I started this master’s at HAW Hamburg in April 2026. It is a full graduate programme in its own right: information and communication systems, networks, and the engineering of digital infrastructure.</p>
-            <p class="edu-learn">What I am studying</p>
+            <span class="muted" data-i18n="edu.m.dates">April 2026 - present</span>
+            <p data-i18n="edu.m.body">Started April 2026. Own graduate programme: information and communication systems, networks, digital infrastructure.</p>
+            <p class="edu-learn" data-i18n="edu.m.learn">What I am studying</p>
             <ul class="edu-topics">
-              <li>Information and communication systems</li>
-              <li>Communication networks and digital infrastructure</li>
-              <li>Engineering methods that build on my Information Engineering bachelor</li>
+              <li data-i18n="edu.m.l1">Information and communication systems</li>
+              <li data-i18n="edu.m.l2">Communication networks and digital infrastructure</li>
+              <li data-i18n="edu.m.l3">Engineering methods on top of the Information Engineering bachelor</li>
             </ul>
           </article>
           <article class="panel edu-card">
-            <p class="edu-level">Bachelor of Science · completed</p>
+            <p class="edu-level" data-i18n="edu.b.lvl">Bachelor of Science · completed</p>
             <h3>Information Engineering</h3>
             <span class="muted">HAW Hamburg</span>
-            <span class="muted">October 2023 – February 2026</span>
-            <p>A completed undergraduate degree in information engineering at HAW Hamburg, finished with a bachelor thesis.</p>
-            <p class="edu-learn">What I studied</p>
+            <span class="muted" data-i18n="edu.b.dates">October 2023 - February 2026</span>
+            <p data-i18n="edu.b.body">Completed undergraduate degree at HAW Hamburg, finished with a bachelor thesis.</p>
+            <p class="edu-learn" data-i18n="edu.b.learn">What I studied</p>
             <ul class="edu-topics">
-              <li>Operating systems</li>
-              <li>Computer networks</li>
-              <li>Software engineering</li>
-              <li>IT systems</li>
-              <li>Databases</li>
-              <li>Bachelor thesis: Python data pipelines for day-ahead renewable energy forecasting</li>
+              <li data-i18n="edu.b.l1">Operating systems</li>
+              <li data-i18n="edu.b.l2">Computer networks</li>
+              <li data-i18n="edu.b.l3">Software engineering</li>
+              <li data-i18n="edu.b.l4">IT systems</li>
+              <li data-i18n="edu.b.l5">Databases</li>
+              <li data-i18n="edu.b.l6">Bachelor thesis: Python data pipelines for day-ahead renewable energy forecasting</li>
             </ul>
           </article>
         </div>
       </div>
     </section>
 
-    <section id="contact">
+    <section id="escalate">
       <div class="wrap">
         <div class="panel contact-card">
-        <p class="section-kicker">Contact</p>
-        <h2>Get in touch</h2>
-        <p>Hamburg or hybrid. English for daily work. German A2.</p>
+        <p class="section-kicker" data-i18n="esc.kicker">Escalate</p>
+        <h2 data-i18n="esc.title">How to reach the desk.</h2>
+        <p data-i18n="esc.body">Hamburg, hybrid, or relocate. English for daily work. German B1. Open to a full-time DevOps or cloud role.</p>
         <div class="contact-links">
-          <a class="btn btn-primary" href="cv.pdf" download="Mynul_Islam_CV.pdf">Download CV</a>
+          <div class="cv-pair">
+            <a href="cv-en.pdf" download="Mynul_Islam_CV_EN.pdf">CV-English</a>
+            <a href="cv-de.pdf" download="Mynul_Islam_CV_DE.pdf">CV-Deutsch</a>
+          </div>
           <a class="btn btn-secondary" href="mailto:mynulislam042@gmail.com">Email</a>
           <a class="btn btn-secondary ext" href="https://linkedin.com/in/mynulislam95" target="_blank" rel="noopener noreferrer">LinkedIn</a>
           <a class="btn btn-secondary ext" href="https://github.com/mynulIslam95" target="_blank" rel="noopener noreferrer">GitHub</a>
@@ -295,9 +280,9 @@
 
   <footer>
     <div class="wrap">
-      <p>Mynul Islam · Hamburg · IT Operations &amp; Cloud</p>
+      <p data-i18n="foot">Mynul Islam · Hamburg · handover, not a pitch deck</p>
     </div>
   </footer>
-  <script src="assets/js/main.js?v=8" defer></script>
+  <script src="assets/js/main.js?v=13" defer></script>
 </body>
 </html>
