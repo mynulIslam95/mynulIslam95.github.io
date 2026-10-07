@@ -2,6 +2,29 @@
   var DATA = null;
   var root = document.getElementById("app");
   var wordState = { n: 1, step: "copy", copies: 0, sents: 0 };
+  var DONE_KEY = "de-desk-done-words";
+
+  function loadDone() {
+    try {
+      var arr = JSON.parse(localStorage.getItem(DONE_KEY) || "[]");
+      return Array.isArray(arr) ? arr : [];
+    } catch (err) {
+      return [];
+    }
+  }
+
+  function isDone(id) {
+    return loadDone().indexOf(id) !== -1;
+  }
+
+  function markDone(id) {
+    var ids = loadDone();
+    if (ids.indexOf(id) !== -1) return;
+    ids.push(id);
+    try {
+      localStorage.setItem(DONE_KEY, JSON.stringify(ids));
+    } catch (err) {}
+  }
 
   function norm(s) {
     return String(s || "")
@@ -232,8 +255,9 @@
     return c ? c.label : id;
   }
 
-  function deEn(de, en) {
-    var html = '<span class="de-text notranslate" lang="de" translate="no">' + de + "</span>";
+  function deEn(de, en, n) {
+    var html = (n ? '<span class="word-n">' + n + ".</span> " : "") +
+      '<span class="de-text notranslate" lang="de" translate="no">' + de + "</span>";
     if (en) html += ' <span class="en-paren">(' + en + ")</span>";
     return html;
   }
@@ -265,14 +289,17 @@
   function wordsCategory(cat) {
     var live = DATA.words.items.filter(function (w) { return w.category === cat; });
     var meta = (DATA.words.categories || []).find(function (c) { return c.id === cat; });
+    var doneN = live.filter(function (w) { return isDone(w.id); }).length;
     var html = topBar({ href: "#/words", label: "Word groups" }) +
       "<h1>" + (meta ? meta.label : cat) + "</h1>" +
-      '<p class="lede">' + (meta ? meta.live : live.length) + " live of " + (meta ? meta.total : 0) + ". Caps and full stops do not matter.</p><div class=\"bars\">";
+      '<p class="lede">' + (meta ? meta.live : live.length) + " live of " + (meta ? meta.total : 0) +
+      (live.length ? ". " + doneN + " done." : "") +
+      " Caps and full stops do not matter.</p><div class=\"bars\">";
     if (!live.length) {
       html += '<div class="bar is-lock"><span class="t">This group is closed for now</span></div>';
     } else {
       live.forEach(function (w) {
-        html += '<a class="bar" href="#/words/' + w.id + '"><span class="n">' + w.id + '</span><span class="t notranslate" lang="de" translate="no">' + w.german + '</span><span class="e">' + w.english + "</span></a>";
+        html += '<a class="bar' + (isDone(w.id) ? " is-done" : "") + '" href="#/words/' + w.id + '"><span class="n">' + w.id + '</span><span class="t notranslate" lang="de" translate="no">' + w.german + '</span><span class="e">' + w.english + (isDone(w.id) ? '<span class="tick" aria-label="Done">✓</span>' : "") + "</span></a>";
       });
       if (meta && meta.total > live.length) {
         html += '<div class="bar is-lock"><span class="n">' + (live.length + 1) + "-" + meta.total + '</span><span class="t">Closed for now</span></div>';
@@ -297,18 +324,18 @@
       '<div class="drill-stack">';
     if (wordState.step === "copy") {
       html +=
-        '<p class="word-big">' + deEn(w.german, w.english) + "</p>" +
+        '<p class="word-big">' + deEn(w.german, w.english, w.id) + "</p>" +
         '<p class="progress">Copy ' + (wordState.copies + 1) + " of 10</p>" +
         typeRow("Type the word");
     } else if (wordState.step === "sent") {
       html +=
-        '<p class="prompt">' + deEn(w.sentence, w.sentence_en) + "</p>" +
+        '<p class="prompt">' + deEn(w.sentence, w.sentence_en, w.id) + "</p>" +
         '<p class="progress">Sentence ' + (wordState.sents + 1) + " of 3</p>" +
         typeRow("Type the sentence");
     } else {
       html +=
         '<p class="msg ok">Success. The word and the sentence are done.</p>' +
-        '<p class="prompt">' + deEn(w.sentence, w.sentence_en) + "</p>" +
+        '<p class="prompt">' + deEn(w.sentence, w.sentence_en, w.id) + "</p>" +
         '<div class="row">' +
         (next ? '<a class="btn" href="#/words/' + next + '">Next word</a>' : '<a class="btn" href="#/words/' + (w.category || "der") + '">Back to group</a>') +
         "</div>";
@@ -334,7 +361,10 @@
         }
       } else {
         wordState.sents += 1;
-        if (wordState.sents >= 3) wordState.step = "done";
+        if (wordState.sents >= 3) {
+          wordState.step = "done";
+          markDone(w.id);
+        }
       }
       renderWord(w);
     }

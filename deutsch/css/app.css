@@ -94,6 +94,29 @@ h2 { font-size: 1.3rem; }
 .bar .t { font-family: var(--serif); font-weight: 650; }
 .bar .e { color: var(--muted); font-size: 0.95rem; text-align: right; }
 .bar.cat { grid-template-columns: 1fr auto; }
+.bar.is-done { background: #eef6f2; }
+.tick {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.2em;
+  height: 1.2em;
+  margin-left: 8px;
+  border-radius: 50%;
+  background: var(--forest);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+  vertical-align: middle;
+}
+.word-n {
+  font-family: var(--sans);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--muted);
+  font-size: 0.72em;
+}
 
 .back {
   display: inline-block; margin-bottom: 8px; color: #fff; font-weight: 600;
