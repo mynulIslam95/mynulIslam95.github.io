@@ -69,6 +69,7 @@ h2 { font-size: 1.45rem; }
 .bar .n { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 0.9rem; }
 .bar .t { font-family: var(--serif); font-weight: 650; }
 .bar .e { color: var(--muted); font-size: 0.95rem; text-align: right; }
+.bar.cat { grid-template-columns: 1fr auto; }
 
 .back { display: inline-block; margin-bottom: 16px; color: var(--muted); }
 .meta { color: var(--muted); margin-bottom: 18px; }
@@ -111,4 +112,6 @@ th { color: var(--muted); font-weight: 600; }
   .word-big { font-size: 1.55rem; }
   .bar { grid-template-columns: 2.6rem 1fr; }
   .bar .e { grid-column: 2; text-align: left; }
+  .bar.cat { grid-template-columns: 1fr auto; }
+  .bar.cat .e { grid-column: auto; }
 }

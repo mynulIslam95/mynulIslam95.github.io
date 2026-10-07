@@ -15,7 +15,9 @@
   function hash() {
     var h = (location.hash || "#/").replace(/^#/, "");
     var p = h.replace(/^\/+/, "").split("/").filter(Boolean);
-    return { kind: p[0] || "home", id: p[1] ? parseInt(p[1], 10) : null };
+    var raw = p[1] || null;
+    var num = raw && /^\d+$/.test(raw) ? parseInt(raw, 10) : null;
+    return { kind: p[0] || "home", raw: raw, id: num };
   }
 
   function go(to) {
@@ -169,20 +171,48 @@
     });
   }
 
+  function catLabel(id) {
+    var c = (DATA.words.categories || []).find(function (x) { return x.id === id; });
+    return c ? c.label : id;
+  }
+
   function wordsIndex() {
     var html = topBar({ href: "#/", label: "All sections" }) +
-      "<h1>Words</h1><p class=\"lede\">First 20 of 4028. Caps and full stops do not matter.</p><div class=\"bars\">";
-    DATA.words.items.forEach(function (w) {
-      html += '<a class="bar" href="#/words/' + w.id + '"><span class="n">' + w.id + '</span><span class="t notranslate" lang="de" translate="no">' + w.german + '</span><span class="e">' + w.english + "</span></a>";
+      "<h1>Words</h1><p class=\"lede\">Pick a group. Only der has 20 live words in this first drop.</p><div class=\"bars\">";
+    (DATA.words.categories || []).forEach(function (c) {
+      var count = c.live + " / " + c.total;
+      if (c.live > 0) {
+        html += '<a class="bar cat" href="#/words/' + c.id + '"><span class="t notranslate" lang="de" translate="no">' + c.label + '</span><span class="e">' + count + "</span></a>";
+      } else {
+        html += '<div class="bar cat is-lock"><span class="t notranslate" lang="de" translate="no">' + c.label + '</span><span class="e">' + count + "</span></div>";
+      }
     });
-    html += '<div class="bar is-lock"><span class="n">21-4028</span><span class="t">Closed for now</span></div></div>';
-    root.innerHTML = html;
+    root.innerHTML = html + "</div>";
+  }
+
+  function wordsCategory(cat) {
+    var live = DATA.words.items.filter(function (w) { return w.category === cat; });
+    var meta = (DATA.words.categories || []).find(function (c) { return c.id === cat; });
+    var html = topBar({ href: "#/words", label: "Word groups" }) +
+      "<h1>" + (meta ? meta.label : cat) + "</h1>" +
+      '<p class="lede">' + (meta ? meta.live : live.length) + " live of " + (meta ? meta.total : 0) + ". Caps and full stops do not matter.</p><div class=\"bars\">";
+    if (!live.length) {
+      html += '<div class="bar is-lock"><span class="t">This group is closed for now</span></div>';
+    } else {
+      live.forEach(function (w) {
+        html += '<a class="bar" href="#/words/' + w.id + '"><span class="n">' + w.id + '</span><span class="t notranslate" lang="de" translate="no">' + w.german + '</span><span class="e">' + w.english + "</span></a>";
+      });
+      if (meta && meta.total > live.length) {
+        html += '<div class="bar is-lock"><span class="n">' + (live.length + 1) + "-" + meta.total + '</span><span class="t">Closed for now</span></div>';
+      }
+    }
+    root.innerHTML = html + "</div>";
   }
 
   function wordsView(id) {
     var w = DATA.words.items.find(function (x) { return x.id === id; });
     if (!w) {
-      root.innerHTML = topBar({ href: "#/words", label: "Words" }) + "<p>This word is not live yet.</p>";
+          root.innerHTML = topBar({ href: "#/words", label: "Word groups" }) + "<p>This word is not live yet.</p>";
       return;
     }
     if (wordState.n !== id) wordState = { n: id, step: "copy", copies: 0, sents: 0 };
@@ -192,8 +222,8 @@
   function renderWord(w) {
     var next = w.id < 20 ? w.id + 1 : null;
     var html =
-      topBar({ href: "#/words", label: "Words" }) +
-      '<p class="meta">Word ' + w.id + " / 4028</p>" +
+      topBar({ href: "#/words/" + (w.category || "der"), label: catLabel(w.category || "der") }) +
+      '<p class="meta">' + catLabel(w.category || "der") + " · Word " + w.id + "</p>" +
       '<p class="word-big notranslate" lang="de" translate="no">' + w.german + "</p>";
     if (wordState.step === "copy") {
       html +=
@@ -219,7 +249,7 @@
         '<p class="prompt notranslate" lang="de" translate="no">' + w.sentence + "</p>" +
         '<p class="en-hit">' + (w.sentence_en || "") + "</p>" +
         '<div class="row">' +
-        (next ? '<a class="btn" href="#/words/' + next + '">Next word</a>' : '<a class="btn" href="#/words">Back to words</a>') +
+        (next ? '<a class="btn" href="#/words/' + next + '">Next word</a>' : '<a class="btn" href="#/words/' + (w.category || "der") + '">Back to group</a>') +
         "</div>";
     }
     root.innerHTML = html;
@@ -261,6 +291,7 @@
     if (r.kind === "grammar" && r.id) return grammarView(r.id);
     if (r.kind === "grammar") return grammarIndex();
     if (r.kind === "words" && r.id) return wordsView(r.id);
+    if (r.kind === "words" && r.raw) return wordsCategory(r.raw);
     if (r.kind === "words") return wordsIndex();
     home();
   }

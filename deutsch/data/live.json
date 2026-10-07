@@ -1644,7 +1644,8 @@
         "article": "der",
         "sentence": "Der Abend ist ruhig.",
         "live": true,
-        "sentence_en": "The evening is quiet."
+        "sentence_en": "The evening is quiet.",
+        "category": "der"
       },
       {
         "id": 2,
@@ -1653,7 +1654,8 @@
         "article": "der",
         "sentence": "Der Abfall liegt in der Tonne.",
         "live": true,
-        "sentence_en": "The waste is in the bin."
+        "sentence_en": "The waste is in the bin.",
+        "category": "der"
       },
       {
         "id": 3,
@@ -1662,7 +1664,8 @@
         "article": "der",
         "sentence": "Der Abflug ist um acht.",
         "live": true,
-        "sentence_en": "The departing flight is at eight."
+        "sentence_en": "The departing flight is at eight.",
+        "category": "der"
       },
       {
         "id": 4,
@@ -1671,7 +1674,8 @@
         "article": "der",
         "sentence": "Er macht den Abschluss.",
         "live": true,
-        "sentence_en": "He is completing the degree."
+        "sentence_en": "He is completing the degree.",
+        "category": "der"
       },
       {
         "id": 5,
@@ -1680,7 +1684,8 @@
         "article": "der",
         "sentence": "Lies den Abschnitt.",
         "live": true,
-        "sentence_en": "Read the section."
+        "sentence_en": "Read the section.",
+        "category": "der"
       },
       {
         "id": 6,
@@ -1689,7 +1694,8 @@
         "article": "der",
         "sentence": "Der Absender steht auf dem Brief.",
         "live": true,
-        "sentence_en": "The sender is on the letter."
+        "sentence_en": "The sender is on the letter.",
+        "category": "der"
       },
       {
         "id": 7,
@@ -1698,7 +1704,8 @@
         "article": "der",
         "sentence": "Der Abzug steht auf der Rechnung.",
         "live": true,
-        "sentence_en": "The deduction is on the invoice."
+        "sentence_en": "The deduction is on the invoice.",
+        "category": "der"
       },
       {
         "id": 8,
@@ -1707,7 +1714,8 @@
         "article": "der",
         "sentence": "Der Actionfilm beginnt um neun.",
         "live": true,
-        "sentence_en": "The action film starts at nine."
+        "sentence_en": "The action film starts at nine.",
+        "category": "der"
       },
       {
         "id": 9,
@@ -1716,7 +1724,8 @@
         "article": "der",
         "sentence": "Der Akku ist leer.",
         "live": true,
-        "sentence_en": "The battery is empty."
+        "sentence_en": "The battery is empty.",
+        "category": "der"
       },
       {
         "id": 10,
@@ -1725,7 +1734,8 @@
         "article": "der",
         "sentence": "Der Akkusativ ist ein Fall.",
         "live": true,
-        "sentence_en": "The accusative is a case."
+        "sentence_en": "The accusative is a case.",
+        "category": "der"
       },
       {
         "id": 11,
@@ -1734,7 +1744,8 @@
         "article": "der",
         "sentence": "Sein Akzent ist klar.",
         "live": true,
-        "sentence_en": "His accent is clear."
+        "sentence_en": "His accent is clear.",
+        "category": "der"
       },
       {
         "id": 12,
@@ -1743,7 +1754,8 @@
         "article": "der",
         "sentence": "Drück den Alarmknopf.",
         "live": true,
-        "sentence_en": "Press the alarm button."
+        "sentence_en": "Press the alarm button.",
+        "category": "der"
       },
       {
         "id": 13,
@@ -1752,7 +1764,8 @@
         "article": "der",
         "sentence": "Der Alltag in Hamburg ist voll.",
         "live": true,
-        "sentence_en": "Everyday life in Hamburg is full."
+        "sentence_en": "Everyday life in Hamburg is full.",
+        "category": "der"
       },
       {
         "id": 14,
@@ -1761,7 +1774,8 @@
         "article": "der",
         "sentence": "Der Almaufenthalt war kurz.",
         "live": true,
-        "sentence_en": "The Alpine visit was short."
+        "sentence_en": "The Alpine visit was short.",
+        "category": "der"
       },
       {
         "id": 15,
@@ -1770,7 +1784,8 @@
         "article": "der",
         "sentence": "Der Almsommer war warm.",
         "live": true,
-        "sentence_en": "The Alpine summer was warm."
+        "sentence_en": "The Alpine summer was warm.",
+        "category": "der"
       },
       {
         "id": 16,
@@ -1779,7 +1794,8 @@
         "article": "der",
         "sentence": "Der Almurlaub beginnt bald.",
         "live": true,
-        "sentence_en": "The Alpine vacation starts soon."
+        "sentence_en": "The Alpine vacation starts soon.",
+        "category": "der"
       },
       {
         "id": 17,
@@ -1788,7 +1804,8 @@
         "article": "der",
         "sentence": "Wir wohnen im Altbau.",
         "live": true,
-        "sentence_en": "We live in an old building."
+        "sentence_en": "We live in an old building.",
+        "category": "der"
       },
       {
         "id": 18,
@@ -1797,7 +1814,8 @@
         "article": "der",
         "sentence": "Der Altenpfleger hilft ihr.",
         "live": true,
-        "sentence_en": "The geriatric nurse helps her."
+        "sentence_en": "The geriatric nurse helps her.",
+        "category": "der"
       },
       {
         "id": 19,
@@ -1806,7 +1824,8 @@
         "article": "der",
         "sentence": "Der Altersdurchschnitt ist hoch.",
         "live": true,
-        "sentence_en": "The average age is high."
+        "sentence_en": "The average age is high.",
+        "category": "der"
       },
       {
         "id": 20,
@@ -1815,7 +1834,82 @@
         "article": "der",
         "sentence": "Alzheimer ist eine Krankheit.",
         "live": true,
-        "sentence_en": "Alzheimer's is a disease."
+        "sentence_en": "Alzheimer's is a disease.",
+        "category": "der"
+      }
+    ],
+    "categories": [
+      {
+        "id": "der",
+        "label": "der (masculine nouns)",
+        "total": 927,
+        "live": 20
+      },
+      {
+        "id": "die",
+        "label": "die (feminine nouns)",
+        "total": 1123,
+        "live": 0
+      },
+      {
+        "id": "das",
+        "label": "das (neuter nouns)",
+        "total": 521,
+        "live": 0
+      },
+      {
+        "id": "verb",
+        "label": "Verbs",
+        "total": 565,
+        "live": 0
+      },
+      {
+        "id": "adj",
+        "label": "Adjectives",
+        "total": 208,
+        "live": 0
+      },
+      {
+        "id": "adv",
+        "label": "Adverbs",
+        "total": 47,
+        "live": 0
+      },
+      {
+        "id": "prep",
+        "label": "Prepositions",
+        "total": 38,
+        "live": 0
+      },
+      {
+        "id": "pron",
+        "label": "Pronouns",
+        "total": 23,
+        "live": 0
+      },
+      {
+        "id": "num",
+        "label": "Numbers",
+        "total": 27,
+        "live": 0
+      },
+      {
+        "id": "conj",
+        "label": "Conjunctions",
+        "total": 5,
+        "live": 0
+      },
+      {
+        "id": "particle",
+        "label": "Particles",
+        "total": 14,
+        "live": 0
+      },
+      {
+        "id": "other",
+        "label": "Other",
+        "total": 530,
+        "live": 0
       }
     ]
   }
