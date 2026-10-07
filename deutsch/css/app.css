@@ -19,9 +19,23 @@ a { color: var(--forest); text-decoration: none; }
 a.card, a.item, a.bar { color: inherit; }
 a.btn { color: #fff; }
 button, input { font: inherit; }
-button, a, .btn, .card, .item, .bar, .sline-de, .sline-hide {
+
+@keyframes tapGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(47, 111, 94, 0.28), 0 8px 18px rgba(47, 111, 94, 0.12); }
+  50% { box-shadow: 0 0 0 7px rgba(47, 111, 94, 0.14), 0 14px 28px rgba(47, 111, 94, 0.3); }
+}
+.btn, .card, a.item, a.bar, .sline-de, .sline-hide, .brand, .home, .back {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  animation: tapGlow 2.4s ease-in-out infinite;
+}
+.btn:hover, .card:hover, a.item:hover, a.bar:hover, .sline-de:hover, .sline-hide:hover, .brand:hover, .home:hover, .back:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 0 5px rgba(47, 111, 94, 0.22), 0 16px 32px rgba(47, 111, 94, 0.32);
+}
+.btn:disabled, .item.is-lock, .bar.is-lock {
   animation: none;
-  transition: none;
+  transform: none;
+  box-shadow: none;
 }
 
 .wrap { width: min(920px, calc(100% - 32px)); margin: 0 auto; }
@@ -184,6 +198,13 @@ th { color: var(--muted); font-weight: 600; }
 .progress { color: var(--muted); font-size: 0.9rem; margin-bottom: 8px; }
 .word-big { font-family: var(--serif); font-size: 2rem; margin: 8px 0 18px; }
 .en-hit { margin-top: 10px; font-size: 1.05rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .btn, .card, a.item, a.bar, .sline-de, .sline-hide, .brand, .home, .back {
+    animation: none;
+    transition: none;
+  }
+}
 
 @media (max-width: 720px) {
   .grid3 { grid-template-columns: 1fr; }

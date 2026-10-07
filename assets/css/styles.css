@@ -268,6 +268,8 @@ section { scroll-margin-top: calc(var(--nav-h) + 28px); padding-block: var(--spa
 }
 .de-glow {
   display: block;
+  position: relative;
+  overflow: hidden;
   width: 100%;
   max-width: 40rem;
   margin: 0 0 var(--space-4);
@@ -279,11 +281,26 @@ section { scroll-margin-top: calc(var(--nav-h) + 28px); padding-block: var(--spa
   background-image:
     linear-gradient(rgba(0, 0, 0, 0.42), rgba(0, 0, 0, 0.52)),
     linear-gradient(to bottom, #000 0 33.34%, #dd0000 33.34% 66.66%, #ffce00 66.66% 100%);
-  border: 1px solid rgba(0, 0, 0, 0.35);
-  box-shadow: 0 0 0 1px rgba(255, 206, 0, 0.2), 0 12px 30px rgba(0, 0, 0, 0.22);
-  animation: deGlow 2.8s ease-in-out infinite;
+  border: 1px solid rgba(255, 206, 0, 0.45);
+  box-shadow: 0 0 0 2px rgba(255, 206, 0, 0.28), 0 12px 30px rgba(221, 0, 0, 0.28);
+  animation: deGlow 2.2s ease-in-out infinite, deFloat 3s ease-in-out infinite;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.de-glow:hover { text-decoration: none; filter: brightness(1.06); }
+.de-glow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 20%, rgba(255, 255, 255, 0.32) 50%, transparent 80%);
+  background-size: 220% 100%;
+  animation: deShine 2.6s linear infinite;
+  pointer-events: none;
+}
+.de-glow:hover {
+  text-decoration: none;
+  animation: deGlow 1.2s ease-in-out infinite;
+  transform: translateY(-5px);
+  box-shadow: 0 0 0 4px rgba(255, 206, 0, 0.55), 0 18px 40px rgba(221, 0, 0, 0.4);
+}
 .de-glow-kicker {
   display: block;
   font-family: var(--mono);
@@ -311,8 +328,16 @@ section { scroll-margin-top: calc(var(--nav-h) + 28px); padding-block: var(--spa
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
 }
 @keyframes deGlow {
-  0%, 100% { box-shadow: 0 0 0 1px rgba(255, 206, 0, 0.18), 0 10px 24px rgba(0, 0, 0, 0.2); }
-  50% { box-shadow: 0 0 0 3px rgba(255, 206, 0, 0.55), 0 14px 34px rgba(221, 0, 0, 0.35); }
+  0%, 100% { box-shadow: 0 0 0 2px rgba(255, 206, 0, 0.22), 0 10px 24px rgba(221, 0, 0, 0.22); }
+  50% { box-shadow: 0 0 0 6px rgba(255, 206, 0, 0.5), 0 16px 36px rgba(221, 0, 0, 0.42); }
+}
+@keyframes deFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+@keyframes deShine {
+  0% { background-position: 180% 0; }
+  100% { background-position: -80% 0; }
 }
 .term {
   width: 100%;
