@@ -1643,7 +1643,8 @@
         "english": "evening",
         "article": "der",
         "sentence": "Der Abend ist ruhig.",
-        "live": true
+        "live": true,
+        "sentence_en": "The evening is quiet."
       },
       {
         "id": 2,
@@ -1651,7 +1652,8 @@
         "english": "waste",
         "article": "der",
         "sentence": "Der Abfall liegt in der Tonne.",
-        "live": true
+        "live": true,
+        "sentence_en": "The waste is in the bin."
       },
       {
         "id": 3,
@@ -1659,7 +1661,8 @@
         "english": "departing flight",
         "article": "der",
         "sentence": "Der Abflug ist um acht.",
-        "live": true
+        "live": true,
+        "sentence_en": "The departing flight is at eight."
       },
       {
         "id": 4,
@@ -1667,7 +1670,8 @@
         "english": "degree",
         "article": "der",
         "sentence": "Er macht den Abschluss.",
-        "live": true
+        "live": true,
+        "sentence_en": "He is completing the degree."
       },
       {
         "id": 5,
@@ -1675,7 +1679,8 @@
         "english": "section, paragraph",
         "article": "der",
         "sentence": "Lies den Abschnitt.",
-        "live": true
+        "live": true,
+        "sentence_en": "Read the section."
       },
       {
         "id": 6,
@@ -1683,7 +1688,8 @@
         "english": "sender",
         "article": "der",
         "sentence": "Der Absender steht auf dem Brief.",
-        "live": true
+        "live": true,
+        "sentence_en": "The sender is on the letter."
       },
       {
         "id": 7,
@@ -1691,7 +1697,8 @@
         "english": "deduction",
         "article": "der",
         "sentence": "Der Abzug steht auf der Rechnung.",
-        "live": true
+        "live": true,
+        "sentence_en": "The deduction is on the invoice."
       },
       {
         "id": 8,
@@ -1699,7 +1706,8 @@
         "english": "action film",
         "article": "der",
         "sentence": "Der Actionfilm beginnt um neun.",
-        "live": true
+        "live": true,
+        "sentence_en": "The action film starts at nine."
       },
       {
         "id": 9,
@@ -1707,7 +1715,8 @@
         "english": "battery",
         "article": "der",
         "sentence": "Der Akku ist leer.",
-        "live": true
+        "live": true,
+        "sentence_en": "The battery is empty."
       },
       {
         "id": 10,
@@ -1715,7 +1724,8 @@
         "english": "accusative",
         "article": "der",
         "sentence": "Der Akkusativ ist ein Fall.",
-        "live": true
+        "live": true,
+        "sentence_en": "The accusative is a case."
       },
       {
         "id": 11,
@@ -1723,7 +1733,8 @@
         "english": "accent, stress",
         "article": "der",
         "sentence": "Sein Akzent ist klar.",
-        "live": true
+        "live": true,
+        "sentence_en": "His accent is clear."
       },
       {
         "id": 12,
@@ -1731,7 +1742,8 @@
         "english": "alarm button",
         "article": "der",
         "sentence": "Drück den Alarmknopf.",
-        "live": true
+        "live": true,
+        "sentence_en": "Press the alarm button."
       },
       {
         "id": 13,
@@ -1739,7 +1751,8 @@
         "english": "everyday life",
         "article": "der",
         "sentence": "Der Alltag in Hamburg ist voll.",
-        "live": true
+        "live": true,
+        "sentence_en": "Everyday life in Hamburg is full."
       },
       {
         "id": 14,
@@ -1747,7 +1760,8 @@
         "english": "Alpine visit",
         "article": "der",
         "sentence": "Der Almaufenthalt war kurz.",
-        "live": true
+        "live": true,
+        "sentence_en": "The Alpine visit was short."
       },
       {
         "id": 15,
@@ -1755,7 +1769,8 @@
         "english": "Alpine summer",
         "article": "der",
         "sentence": "Der Almsommer war warm.",
-        "live": true
+        "live": true,
+        "sentence_en": "The Alpine summer was warm."
       },
       {
         "id": 16,
@@ -1763,7 +1778,8 @@
         "english": "Alpine vacation",
         "article": "der",
         "sentence": "Der Almurlaub beginnt bald.",
-        "live": true
+        "live": true,
+        "sentence_en": "The Alpine vacation starts soon."
       },
       {
         "id": 17,
@@ -1771,7 +1787,8 @@
         "english": "old building",
         "article": "der",
         "sentence": "Wir wohnen im Altbau.",
-        "live": true
+        "live": true,
+        "sentence_en": "We live in an old building."
       },
       {
         "id": 18,
@@ -1779,7 +1796,8 @@
         "english": "geriatric nurse (m)",
         "article": "der",
         "sentence": "Der Altenpfleger hilft ihr.",
-        "live": true
+        "live": true,
+        "sentence_en": "The geriatric nurse helps her."
       },
       {
         "id": 19,
@@ -1787,7 +1805,8 @@
         "english": "average age",
         "article": "der",
         "sentence": "Der Altersdurchschnitt ist hoch.",
-        "live": true
+        "live": true,
+        "sentence_en": "The average age is high."
       },
       {
         "id": 20,
@@ -1795,7 +1814,8 @@
         "english": "Alzheimer's Disease",
         "article": "der",
         "sentence": "Alzheimer ist eine Krankheit.",
-        "live": true
+        "live": true,
+        "sentence_en": "Alzheimer's is a disease."
       }
     ]
   }

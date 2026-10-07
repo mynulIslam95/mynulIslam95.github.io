@@ -5,10 +5,11 @@
 
   function norm(s) {
     return String(s || "")
-      .trim()
       .toLowerCase()
+      .replace(/ß/g, "ss")
+      .replace(/[.,!?;:…„“”"'«»]/g, " ")
       .replace(/\s+/g, " ")
-      .replace(/ß/g, "ss");
+      .trim();
   }
 
   function hash() {
@@ -170,11 +171,11 @@
 
   function wordsIndex() {
     var html = topBar({ href: "#/", label: "All sections" }) +
-      "<h1>Words</h1><p class=\"lede\">First 20 of 4028. Type the German (with article) 10 times, then the sentence 3 times. Matching is not case sensitive.</p><div class=\"list\">";
+      "<h1>Words</h1><p class=\"lede\">First 20 of 4028. Caps and full stops do not matter.</p><div class=\"bars\">";
     DATA.words.items.forEach(function (w) {
-      html += '<a class="item" href="#/words/' + w.id + '"><span class="n">Word ' + w.id + '</span><span class="t">' + w.german + "</span></a>";
+      html += '<a class="bar" href="#/words/' + w.id + '"><span class="n">' + w.id + '</span><span class="t">' + w.german + '</span><span class="e">' + w.english + "</span></a>";
     });
-    html += '<div class="item is-lock"><span class="n">Words 21-4028</span><span class="t">Closed for now</span></div></div>';
+    html += '<div class="bar is-lock"><span class="n">21-4028</span><span class="t">Closed for now</span></div></div>';
     root.innerHTML = html;
   }
 
@@ -197,7 +198,7 @@
     if (wordState.step === "copy") {
       html +=
         '<p class="progress">Copy ' + (wordState.copies + 1) + " of 10</p>" +
-        '<p class="lede">Type the word exactly as shown, including the article.</p>' +
+        '<p class="lede">Type the word, with the article if it has one. Caps and full stops do not matter.</p>' +
         '<input class="field" id="ans" type="text" autocomplete="off" aria-label="Type the word">' +
         '<div class="row"><button class="btn" id="go" type="button">Check</button></div>' +
         '<div class="msg" id="msg"></div>' +
@@ -205,8 +206,9 @@
     } else if (wordState.step === "sent") {
       html +=
         '<p class="progress">Sentence ' + (wordState.sents + 1) + " of 3</p>" +
-        '<p class="lede">Type this sentence.</p>' +
+        '<p class="lede">Type this sentence. Caps and full stops do not matter.</p>' +
         '<p class="prompt">' + w.sentence + "</p>" +
+        '<p class="en-hit">' + (w.sentence_en || "") + "</p>" +
         '<input class="field" id="ans" type="text" autocomplete="off" aria-label="Type the sentence">' +
         '<div class="row"><button class="btn" id="go" type="button">Check</button></div>' +
         '<div class="msg" id="msg"></div>';
@@ -214,6 +216,8 @@
       html +=
         '<p class="msg ok">Success. The word and the sentence are done.</p>' +
         '<p class="en-hit">' + w.german + " = " + w.english + "</p>" +
+        '<p class="prompt">' + w.sentence + "</p>" +
+        '<p class="en-hit">' + (w.sentence_en || "") + "</p>" +
         '<div class="row">' +
         (next ? '<a class="btn" href="#/words/' + next + '">Next word</a>' : '<a class="btn" href="#/words">Back to words</a>') +
         "</div>";
