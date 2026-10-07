@@ -1,0 +1,1802 @@
+{
+  "stories": {
+    "total": 180,
+    "items": [
+      {
+        "id": 1,
+        "title_de": "Regenmontag in Hamburg",
+        "title_en": "Rainy Monday in Hamburg",
+        "de": "Es ist Montag in Hamburg. Mynul sitzt in der Küche und trinkt Tee. Draußen liegt schweres **Mistwetter**, und der **Flug** nach **Italien** fällt aus. Lena ruft an: „**Bade** jetzt und **Creme ein**! **Schätz** bitte die Zeit!“ Mynul **erledigt** die Post. Auf dem Brief stehen die **Anrede** und die **Altersangabe**. Die **Handwerkerin** Maria **hat abgeschlossen**. Sie hat ein kleines **Symbol** auf den Tisch **gelegt**. Mynul dankt dem Kollegen Ali für den Tipp.\n\nAm nassen **Tennisplatz** hat niemand **mitgespielt**. Mynul denkt an den **Sonntagnachmittag** und an den **Halbmarathon**. „Ich **jubele** trotzdem“, sagt er. Die Jacke ist **unmodern**; er **hat getauscht**. Er bleibt zu Hause, um die Papiere zu lesen, damit Lena nicht warten muss. Im **Krankenhaus** **verlängert** man die **Operation**. Der Arzt **inhaliert** Dampf. „Ich **kühle** den Tee. Wenn du **weiterhörst**, verstehst du den **Hauptteil**.“ Viele haben vom **losfahren** **abgeraten**. **Gemeinsam** wollen sie später das Radio **ausmachen** und prüfen, ob sie **zusammengehören**. Die **Beziehung** ist wichtig. Eine Firma **hat hergestellt**, was **geschrieben** und **gedruckt** auf dem Plakat steht. „Ich **baue** heute nichts.“ Der Kaffee ist **umsonst**. Die alte Regel hat **gegolten**. Die **Aufmerksamkeit** gilt nur dem Regen.",
+        "en": "It is Monday in Hamburg. Mynul is sitting in the kitchen and drinking tea. Outside there is heavy bad weather, and the flight to Italy is cancelled. Lena calls: “Bathe now and apply cream! Estimate the time, please!” Mynul takes care of the mail. On the letter are the salutation and the age statement. The craftswoman Maria has finished. She has laid a small symbol on the table. Mynul thanks colleague Ali for the tip.\n\nAt the wet tennis court nobody has played along. Mynul thinks of Sunday afternoon and of the half-marathon. “I cheer anyway,” he says. The jacket is unfashionable; he has switched. He stays at home in order to read the papers so that Lena does not have to wait. In the hospital they extend the operation. The doctor inhales steam. “I cool the tea. If you continue to listen, you understand the main part.” Many have advised against leaving. Together they later want to turn off the radio and check whether they belong together. The relationship is important. A company has manufactured what is written and printed on the poster. “I build nothing today.” The coffee is for free. The old rule has applied. Attention belongs only to the rain."
+      }
+    ],
+    "index": [
+      {
+        "id": 1,
+        "title_de": "Regenmontag in Hamburg",
+        "title_en": "Rainy Monday in Hamburg",
+        "live": true
+      },
+      {
+        "id": 2,
+        "title_de": "Umzug in die kleine Wohnung",
+        "title_en": "Moving into the small apartment",
+        "live": false
+      },
+      {
+        "id": 3,
+        "title_de": "Ein Anruf nach Dhaka",
+        "title_en": "A phone call to Dhaka",
+        "live": false
+      },
+      {
+        "id": 4,
+        "title_de": "Verloren am Hauptbahnhof",
+        "title_en": "Lost at the main station",
+        "live": false
+      },
+      {
+        "id": 5,
+        "title_de": "Kochen für Freunde",
+        "title_en": "Cooking for friends",
+        "live": false
+      },
+      {
+        "id": 6,
+        "title_de": "Nachtschicht im Krankenhaus",
+        "title_en": "A night shift at the hospital",
+        "live": false
+      },
+      {
+        "id": 7,
+        "title_de": "Der erste Tag im Deutschkurs",
+        "title_en": "The first day of the German course",
+        "live": false
+      },
+      {
+        "id": 8,
+        "title_de": "Ein gebrauchtes Fahrrad",
+        "title_en": "A used bicycle",
+        "live": false
+      },
+      {
+        "id": 9,
+        "title_de": "Eine Hochzeit in der Familie",
+        "title_en": "A wedding in the family",
+        "live": false
+      },
+      {
+        "id": 10,
+        "title_de": "Warten bei der Ausländerbehörde",
+        "title_en": "Waiting at the immigration office",
+        "live": false
+      },
+      {
+        "id": 11,
+        "title_de": "Spaziergang an der Elbe",
+        "title_en": "A walk along the Elbe",
+        "live": false
+      },
+      {
+        "id": 12,
+        "title_de": "Streit in der Wohngemeinschaft",
+        "title_en": "An argument in the shared flat",
+        "live": false
+      },
+      {
+        "id": 13,
+        "title_de": "Das Vorstellungsgespräch",
+        "title_en": "The job interview",
+        "live": false
+      },
+      {
+        "id": 14,
+        "title_de": "Der Supermarkt vor Feierabend",
+        "title_en": "The supermarket before closing",
+        "live": false
+      },
+      {
+        "id": 15,
+        "title_de": "Das Kind ist krank",
+        "title_en": "The child is sick",
+        "live": false
+      },
+      {
+        "id": 16,
+        "title_de": "Die Reise nach Berlin",
+        "title_en": "The trip to Berlin",
+        "live": false
+      },
+      {
+        "id": 17,
+        "title_de": "Stromausfall im Winter",
+        "title_en": "A power cut in winter",
+        "live": false
+      },
+      {
+        "id": 18,
+        "title_de": "Fußball im Park",
+        "title_en": "Football in the park",
+        "live": false
+      },
+      {
+        "id": 19,
+        "title_de": "Ein Brief von der Bank",
+        "title_en": "A letter from the bank",
+        "live": false
+      },
+      {
+        "id": 20,
+        "title_de": "Die Küche wird repariert",
+        "title_en": "The kitchen is being repaired",
+        "live": false
+      },
+      {
+        "id": 21,
+        "title_de": "Beim Zahnarzt",
+        "title_en": "At the dentist",
+        "live": false
+      },
+      {
+        "id": 22,
+        "title_de": "Ein später Zug nach Lübeck",
+        "title_en": "A late train to Lübeck",
+        "live": false
+      },
+      {
+        "id": 23,
+        "title_de": "Der Hund der Nachbarin",
+        "title_en": "Looking after a neighbour’s dog",
+        "live": false
+      },
+      {
+        "id": 24,
+        "title_de": "Geburtstag auf dem Boot",
+        "title_en": "A birthday on a boat",
+        "live": false
+      },
+      {
+        "id": 25,
+        "title_de": "In der Bibliothek vor der Prüfung",
+        "title_en": "The library before an exam",
+        "live": false
+      },
+      {
+        "id": 26,
+        "title_de": "Markt auf St. Pauli",
+        "title_en": "A market in St. Pauli",
+        "live": false
+      },
+      {
+        "id": 27,
+        "title_de": "Silvester bei Ali",
+        "title_en": "New Year’s Eve",
+        "live": false
+      },
+      {
+        "id": 28,
+        "title_de": "Eine Fahrstunde",
+        "title_en": "A driving lesson",
+        "live": false
+      },
+      {
+        "id": 29,
+        "title_de": "Der erste Schnee",
+        "title_en": "The first snow",
+        "live": false
+      },
+      {
+        "id": 30,
+        "title_de": "Videoanruf mit den Großeltern",
+        "title_en": "A video call with grandparents",
+        "live": false
+      },
+      {
+        "id": 31,
+        "title_de": "Der vierte Morgen in der Bäckerei",
+        "title_en": "The fourth morning in the bakery",
+        "live": false
+      },
+      {
+        "id": 32,
+        "title_de": "Die kaputte Waschmaschine",
+        "title_en": "The broken washing machine",
+        "live": false
+      },
+      {
+        "id": 33,
+        "title_de": "Ein Vormittag im Museum",
+        "title_en": "A morning at the museum",
+        "live": false
+      },
+      {
+        "id": 34,
+        "title_de": "Protest am Hafen",
+        "title_en": "A protest at the harbour",
+        "live": false
+      },
+      {
+        "id": 35,
+        "title_de": "Die Geldbörse im Parkhaus",
+        "title_en": "The wallet in the parking garage",
+        "live": false
+      },
+      {
+        "id": 36,
+        "title_de": "Wochenende im Zelt",
+        "title_en": "A weekend in the tent",
+        "live": false
+      },
+      {
+        "id": 37,
+        "title_de": "Der Vermieter kommt vorbei",
+        "title_en": "The landlord comes by",
+        "live": false
+      },
+      {
+        "id": 38,
+        "title_de": "Der Kochstream kippt um",
+        "title_en": "The cooking stream goes wrong",
+        "live": false
+      },
+      {
+        "id": 39,
+        "title_de": "Vormittag im Schwimmbad",
+        "title_en": "Morning at the swimming pool",
+        "live": false
+      },
+      {
+        "id": 40,
+        "title_de": "Nach der Trauerfeier im Café",
+        "title_en": "After the funeral in the café",
+        "live": false
+      },
+      {
+        "id": 41,
+        "title_de": "Die Zimmerbesichtigung",
+        "title_en": "The room viewing",
+        "live": false
+      },
+      {
+        "id": 42,
+        "title_de": "Hitze im Juli",
+        "title_en": "Heat in July",
+        "live": false
+      },
+      {
+        "id": 43,
+        "title_de": "Der Nachbar spielt Klavier",
+        "title_en": "The neighbour plays piano",
+        "live": false
+      },
+      {
+        "id": 44,
+        "title_de": "Ein Überraschungsgast",
+        "title_en": "A surprise guest",
+        "live": false
+      },
+      {
+        "id": 45,
+        "title_de": "Der verlorene Schlüssel",
+        "title_en": "The lost key",
+        "live": false
+      },
+      {
+        "id": 46,
+        "title_de": "Das Klassentreffen",
+        "title_en": "The school reunion",
+        "live": false
+      },
+      {
+        "id": 47,
+        "title_de": "Ein Regal bauen",
+        "title_en": "Building a shelf",
+        "live": false
+      },
+      {
+        "id": 48,
+        "title_de": "Ein Tag ohne Handy",
+        "title_en": "A day without a phone",
+        "live": false
+      },
+      {
+        "id": 49,
+        "title_de": "Der letzte Bus",
+        "title_en": "The last bus",
+        "live": false
+      },
+      {
+        "id": 50,
+        "title_de": "Ernte auf dem Hof",
+        "title_en": "Harvest at the farm",
+        "live": false
+      },
+      {
+        "id": 51,
+        "title_de": "Die leere Farbpatrone",
+        "title_en": "The empty ink cartridge",
+        "live": false
+      },
+      {
+        "id": 52,
+        "title_de": "Stecken im Aufzug",
+        "title_en": "Stuck in the elevator",
+        "live": false
+      },
+      {
+        "id": 53,
+        "title_de": "Ein Baby kommt",
+        "title_en": "A baby is born",
+        "live": false
+      },
+      {
+        "id": 54,
+        "title_de": "Aufräumen nach dem Hochwasser",
+        "title_en": "Cleaning up after the flood",
+        "live": false
+      },
+      {
+        "id": 55,
+        "title_de": "Die Weihnachtsfeier im Büro",
+        "title_en": "The office Christmas party",
+        "live": false
+      },
+      {
+        "id": 56,
+        "title_de": "Eine Katze an der Tür",
+        "title_en": "A cat at the door",
+        "live": false
+      },
+      {
+        "id": 57,
+        "title_de": "Fotos vom Hafen",
+        "title_en": "Photos of the harbour",
+        "live": false
+      },
+      {
+        "id": 58,
+        "title_de": "Ein Brief vom Gericht",
+        "title_en": "A letter from the court",
+        "live": false
+      },
+      {
+        "id": 59,
+        "title_de": "Nicht einschlafen vor dem Test",
+        "title_en": "Unable to sleep before the test",
+        "live": false
+      },
+      {
+        "id": 60,
+        "title_de": "Helfen auf dem Fest",
+        "title_en": "Helping at the festival",
+        "live": false
+      },
+      {
+        "id": 61,
+        "title_de": "Reifenpanne auf der Autobahn",
+        "title_en": "A flat tyre on the Autobahn",
+        "live": false
+      },
+      {
+        "id": 62,
+        "title_de": "Großmutter erzählt eine Geschichte",
+        "title_en": "Grandmother tells a story",
+        "live": false
+      },
+      {
+        "id": 63,
+        "title_de": "Der erste Lohn",
+        "title_en": "The first salary",
+        "live": false
+      },
+      {
+        "id": 64,
+        "title_de": "Ein stilles Frühstück",
+        "title_en": "A silent breakfast",
+        "live": false
+      },
+      {
+        "id": 65,
+        "title_de": "Den Flug verpasst",
+        "title_en": "Missed the plane",
+        "live": false
+      },
+      {
+        "id": 66,
+        "title_de": "Das Grillfest der Nachbarn",
+        "title_en": "The neighbours’ barbecue",
+        "live": false
+      },
+      {
+        "id": 67,
+        "title_de": "Nacht am Flughafen",
+        "title_en": "Night at the airport",
+        "live": false
+      },
+      {
+        "id": 68,
+        "title_de": "Das alte Radio geht noch",
+        "title_en": "The old radio still works",
+        "live": false
+      },
+      {
+        "id": 69,
+        "title_de": "Eine Schicht als Freiwillige",
+        "title_en": "A volunteer shift",
+        "live": false
+      },
+      {
+        "id": 70,
+        "title_de": "Schlittschuhlaufen lernen",
+        "title_en": "Learning to ice-skate",
+        "live": false
+      },
+      {
+        "id": 71,
+        "title_de": "Die Pflanze stirbt",
+        "title_en": "The plant is dying",
+        "live": false
+      },
+      {
+        "id": 72,
+        "title_de": "Ein Passwort wird gestohlen",
+        "title_en": "A password is stolen",
+        "live": false
+      },
+      {
+        "id": 73,
+        "title_de": "Sonntag am See",
+        "title_en": "Sunday at the lake",
+        "live": false
+      },
+      {
+        "id": 74,
+        "title_de": "Kofferpacken vor der Abreise",
+        "title_en": "Packing to leave Germany",
+        "live": false
+      },
+      {
+        "id": 75,
+        "title_de": "Ein Witz, der zu weit geht",
+        "title_en": "A joke that goes too far",
+        "live": false
+      },
+      {
+        "id": 76,
+        "title_de": "Der Bäcker erinnert sich an einen Namen",
+        "title_en": "The baker remembers a name",
+        "live": false
+      },
+      {
+        "id": 77,
+        "title_de": "Warten auf die Testergebnisse",
+        "title_en": "Waiting for test results",
+        "live": false
+      },
+      {
+        "id": 78,
+        "title_de": "Ein Fahrrad wird gestohlen",
+        "title_en": "A bicycle is stolen",
+        "live": false
+      },
+      {
+        "id": 79,
+        "title_de": "Nebel auf der Alster",
+        "title_en": "Fog on the Alster",
+        "live": false
+      },
+      {
+        "id": 80,
+        "title_de": "Zwei Fremde teilen einen Schirm",
+        "title_en": "Two strangers share an umbrella",
+        "live": false
+      },
+      {
+        "id": 81,
+        "title_de": "Der Reis kocht über",
+        "title_en": "The rice boils over",
+        "live": false
+      },
+      {
+        "id": 82,
+        "title_de": "Der Umzugswagen kommt spät",
+        "title_en": "The moving van is late",
+        "live": false
+      },
+      {
+        "id": 83,
+        "title_de": "Ein Lied im Radio",
+        "title_en": "A song on the radio",
+        "live": false
+      },
+      {
+        "id": 84,
+        "title_de": "Die letzte Kerze",
+        "title_en": "The last candle",
+        "live": false
+      },
+      {
+        "id": 85,
+        "title_de": "Ein Kind fragt nach zu Hause",
+        "title_en": "A child asks about home",
+        "live": false
+      },
+      {
+        "id": 86,
+        "title_de": "Überstunden am Freitag",
+        "title_en": "Overtime on Friday",
+        "live": false
+      },
+      {
+        "id": 87,
+        "title_de": "Ein falsches Paket",
+        "title_en": "A wrong package arrives",
+        "live": false
+      },
+      {
+        "id": 88,
+        "title_de": "Der Weg nach Hause in neuen Schuhen",
+        "title_en": "Walking home in new shoes",
+        "live": false
+      },
+      {
+        "id": 89,
+        "title_de": "Im Café fehlt die Milch",
+        "title_en": "The café runs out of milk",
+        "live": false
+      },
+      {
+        "id": 90,
+        "title_de": "Ein Wiedersehen am Grab",
+        "title_en": "A reunion at a grave",
+        "live": false
+      },
+      {
+        "id": 91,
+        "title_de": "Klingeln um drei Uhr",
+        "title_en": "A ring at three o’clock",
+        "live": false
+      },
+      {
+        "id": 92,
+        "title_de": "Die erste Tomate",
+        "title_en": "The first tomato",
+        "live": false
+      },
+      {
+        "id": 93,
+        "title_de": "Eine Karte ohne Namen",
+        "title_en": "A map with no names",
+        "live": false
+      },
+      {
+        "id": 94,
+        "title_de": "U-Bahn für Ali",
+        "title_en": "Teaching Ali the U-Bahn",
+        "live": false
+      },
+      {
+        "id": 95,
+        "title_de": "Ein gebrochenes Versprechen",
+        "title_en": "A broken promise",
+        "live": false
+      },
+      {
+        "id": 96,
+        "title_de": "Regen durchs Dach",
+        "title_en": "Rain through the roof",
+        "live": false
+      },
+      {
+        "id": 97,
+        "title_de": "Der Hund wählt",
+        "title_en": "The dog chooses",
+        "live": false
+      },
+      {
+        "id": 98,
+        "title_de": "Lange Schlange um Brot",
+        "title_en": "A long queue for bread",
+        "live": false
+      },
+      {
+        "id": 99,
+        "title_de": "Alte Fotos",
+        "title_en": "Old photos",
+        "live": false
+      },
+      {
+        "id": 100,
+        "title_de": "Der Kontrolleur",
+        "title_en": "The ticket inspector",
+        "live": false
+      },
+      {
+        "id": 101,
+        "title_de": "Der Fluss ist zu hoch",
+        "title_en": "The river is too high",
+        "live": false
+      },
+      {
+        "id": 102,
+        "title_de": "Ein stilles Hotelzimmer",
+        "title_en": "A quiet hotel room",
+        "live": false
+      },
+      {
+        "id": 103,
+        "title_de": "Jemand bringt ein Buch zurück",
+        "title_en": "Someone returns a book",
+        "live": false
+      },
+      {
+        "id": 104,
+        "title_de": "Der Feueralarm in der Küche",
+        "title_en": "A kitchen fire alarm",
+        "live": false
+      },
+      {
+        "id": 105,
+        "title_de": "Der letzte Sommertag",
+        "title_en": "The last day of summer",
+        "live": false
+      },
+      {
+        "id": 106,
+        "title_de": "Ein Haarschnitt vor dem Gespräch",
+        "title_en": "A haircut before an interview",
+        "live": false
+      },
+      {
+        "id": 107,
+        "title_de": "Streit um Geld",
+        "title_en": "Arguments about money",
+        "live": false
+      },
+      {
+        "id": 108,
+        "title_de": "Ein Fenster zu den Gleisen",
+        "title_en": "A window facing the tracks",
+        "live": false
+      },
+      {
+        "id": 109,
+        "title_de": "Der Nachtbusfahrer erzählt",
+        "title_en": "The night bus driver talks",
+        "live": false
+      },
+      {
+        "id": 110,
+        "title_de": "Ein Paket aus Bangladesch",
+        "title_en": "A parcel from Bangladesh",
+        "live": false
+      },
+      {
+        "id": 111,
+        "title_de": "Nein sagen lernen",
+        "title_en": "Learning to say no",
+        "live": false
+      },
+      {
+        "id": 112,
+        "title_de": "Der Park nach dem Sturm",
+        "title_en": "The park after the storm",
+        "live": false
+      },
+      {
+        "id": 113,
+        "title_de": "Ein Kollege kündigt",
+        "title_en": "A colleague quits",
+        "live": false
+      },
+      {
+        "id": 114,
+        "title_de": "Verlaufen im Einkaufszentrum",
+        "title_en": "Lost in a shopping centre",
+        "live": false
+      },
+      {
+        "id": 115,
+        "title_de": "Ein Kuchen von zu Hause",
+        "title_en": "A homemade cake",
+        "live": false
+      },
+      {
+        "id": 116,
+        "title_de": "Die Kirchenglocke am Mittag",
+        "title_en": "The church bell at noon",
+        "live": false
+      },
+      {
+        "id": 117,
+        "title_de": "Ein Ersatzschlüssel unter einem Stein",
+        "title_en": "A spare key under a stone",
+        "live": false
+      },
+      {
+        "id": 118,
+        "title_de": "Warten in der Notaufnahme",
+        "title_en": "Waiting in A&E",
+        "live": false
+      },
+      {
+        "id": 119,
+        "title_de": "Ein billiger Flug, eine lange Verspätung",
+        "title_en": "A cheap flight, a long delay",
+        "live": false
+      },
+      {
+        "id": 120,
+        "title_de": "Der laute Fernseher des Nachbarn",
+        "title_en": "The neighbour’s loud TV",
+        "live": false
+      },
+      {
+        "id": 121,
+        "title_de": "Die Liste am Kühlschrank",
+        "title_en": "The list on the fridge",
+        "live": false
+      },
+      {
+        "id": 122,
+        "title_de": "Nebelhörner am Morgen",
+        "title_en": "Foghorns in the morning",
+        "live": false
+      },
+      {
+        "id": 123,
+        "title_de": "Der Junge lernt Radfahren",
+        "title_en": "The boy learns to ride",
+        "live": false
+      },
+      {
+        "id": 124,
+        "title_de": "Der letzte Apfel",
+        "title_en": "The last apple",
+        "live": false
+      },
+      {
+        "id": 125,
+        "title_de": "Jemand vergisst einen Namen",
+        "title_en": "Someone forgets a name",
+        "live": false
+      },
+      {
+        "id": 126,
+        "title_de": "Ein Spaziergang ohne Ziel",
+        "title_en": "A walk without a destination",
+        "live": false
+      },
+      {
+        "id": 127,
+        "title_de": "Der Speicher ist voll",
+        "title_en": "The attic is full",
+        "live": false
+      },
+      {
+        "id": 128,
+        "title_de": "Ein geliehener Mantel",
+        "title_en": "A borrowed coat",
+        "live": false
+      },
+      {
+        "id": 129,
+        "title_de": "Montag nach dem Feiertag",
+        "title_en": "Monday after a holiday",
+        "live": false
+      },
+      {
+        "id": 130,
+        "title_de": "Ein gesprungener Bildschirm",
+        "title_en": "A cracked phone screen",
+        "live": false
+      },
+      {
+        "id": 131,
+        "title_de": "Die Fähre kommt nicht",
+        "title_en": "The ferry does not come",
+        "live": false
+      },
+      {
+        "id": 132,
+        "title_de": "Ein Geheimnis im Brief",
+        "title_en": "A secret in a letter",
+        "live": false
+      },
+      {
+        "id": 133,
+        "title_de": "Zwei Tassen, ein Tisch",
+        "title_en": "Two cups, one table",
+        "live": false
+      },
+      {
+        "id": 134,
+        "title_de": "Die Heizung geht endlich",
+        "title_en": "The heater finally works",
+        "live": false
+      },
+      {
+        "id": 135,
+        "title_de": "Ein verlorener Ballon",
+        "title_en": "A stray balloon",
+        "live": false
+      },
+      {
+        "id": 136,
+        "title_de": "Arbeitsstiefel an der Tür",
+        "title_en": "Work boots by the door",
+        "live": false
+      },
+      {
+        "id": 137,
+        "title_de": "Das falsche Gleis",
+        "title_en": "The wrong platform",
+        "live": false
+      },
+      {
+        "id": 138,
+        "title_de": "Ein langsamer Aufzug",
+        "title_en": "A slow elevator",
+        "live": false
+      },
+      {
+        "id": 139,
+        "title_de": "Schnee auf dem Sattel",
+        "title_en": "Snow on the bicycle seat",
+        "live": false
+      },
+      {
+        "id": 140,
+        "title_de": "Eine Stimme aus dem Hof",
+        "title_en": "A voice from the courtyard",
+        "live": false
+      },
+      {
+        "id": 141,
+        "title_de": "Heute ist das Museum frei",
+        "title_en": "The museum is free today",
+        "live": false
+      },
+      {
+        "id": 142,
+        "title_de": "Eine späte Entschuldigung",
+        "title_en": "A late apology",
+        "live": false
+      },
+      {
+        "id": 143,
+        "title_de": "Der Markt riecht nach Fisch",
+        "title_en": "The market smells of fish",
+        "live": false
+      },
+      {
+        "id": 144,
+        "title_de": "Ein Fenster, das nicht zugeht",
+        "title_en": "A window that will not close",
+        "live": false
+      },
+      {
+        "id": 145,
+        "title_de": "Drei verpasste Anrufe",
+        "title_en": "Three missed calls",
+        "live": false
+      },
+      {
+        "id": 146,
+        "title_de": "Der erste deutsche Traum",
+        "title_en": "The first German dream",
+        "live": false
+      },
+      {
+        "id": 147,
+        "title_de": "Ein kaputter Reißverschluss",
+        "title_en": "A broken zipper",
+        "live": false
+      },
+      {
+        "id": 148,
+        "title_de": "Lichter über dem Wasser",
+        "title_en": "Lights across the water",
+        "live": false
+      },
+      {
+        "id": 149,
+        "title_de": "Die Nachbarin borgt Zucker",
+        "title_en": "A neighbour borrows sugar",
+        "live": false
+      },
+      {
+        "id": 150,
+        "title_de": "Die alte Straßenbahnlinie",
+        "title_en": "The old tram line",
+        "live": false
+      },
+      {
+        "id": 151,
+        "title_de": "Der Koffer geht nicht zu",
+        "title_en": "The suitcase will not shut",
+        "live": false
+      },
+      {
+        "id": 152,
+        "title_de": "Regen auf dem Brautkleid",
+        "title_en": "Rain on a wedding dress",
+        "live": false
+      },
+      {
+        "id": 153,
+        "title_de": "Die Nacht vor dem Umzug",
+        "title_en": "The night before moving",
+        "live": false
+      },
+      {
+        "id": 154,
+        "title_de": "Ein Kind zählt die Stationen",
+        "title_en": "A child counts the stations",
+        "live": false
+      },
+      {
+        "id": 155,
+        "title_de": "Der letzte Zug nach Hause",
+        "title_en": "The last train home",
+        "live": false
+      },
+      {
+        "id": 156,
+        "title_de": "Ein gelber Zettel an der Tür",
+        "title_en": "A yellow note on the door",
+        "live": false
+      },
+      {
+        "id": 157,
+        "title_de": "Kaffee am Fenster",
+        "title_en": "Coffee at the window",
+        "live": false
+      },
+      {
+        "id": 158,
+        "title_de": "Eine Karte von Hand",
+        "title_en": "A map drawn by hand",
+        "live": false
+      },
+      {
+        "id": 159,
+        "title_de": "Der Wind nimmt einen Hut",
+        "title_en": "The wind takes a hat",
+        "live": false
+      },
+      {
+        "id": 160,
+        "title_de": "Eine stille Ecke in der Bibliothek",
+        "title_en": "A quiet library corner",
+        "live": false
+      },
+      {
+        "id": 161,
+        "title_de": "Blumen vor dem Supermarkt",
+        "title_en": "Flowers in front of the supermarket",
+        "live": false
+      },
+      {
+        "id": 162,
+        "title_de": "Die Treppe ist zu steil",
+        "title_en": "The stairs are too steep",
+        "live": false
+      },
+      {
+        "id": 163,
+        "title_de": "Eine Wetterwarnung im Radio",
+        "title_en": "A weather warning on the radio",
+        "live": false
+      },
+      {
+        "id": 164,
+        "title_de": "Der erste Gast",
+        "title_en": "The first guest",
+        "live": false
+      },
+      {
+        "id": 165,
+        "title_de": "Eine Tasche voller Tickets",
+        "title_en": "A pocket full of tickets",
+        "live": false
+      },
+      {
+        "id": 166,
+        "title_de": "Mond über den Hafenkränen",
+        "title_en": "Moon over the harbour cranes",
+        "live": false
+      },
+      {
+        "id": 167,
+        "title_de": "Ein Versprechen zurückzukommen",
+        "title_en": "A promise to come back",
+        "live": false
+      },
+      {
+        "id": 168,
+        "title_de": "Der leere Stuhl",
+        "title_en": "The empty chair",
+        "live": false
+      },
+      {
+        "id": 169,
+        "title_de": "Ein Licht bleibt an",
+        "title_en": "A light left on",
+        "live": false
+      },
+      {
+        "id": 170,
+        "title_de": "Schritte im Flur",
+        "title_en": "Footsteps in the hallway",
+        "live": false
+      },
+      {
+        "id": 171,
+        "title_de": "Nach dem Gewitter",
+        "title_en": "After the thunderstorm",
+        "live": false
+      },
+      {
+        "id": 172,
+        "title_de": "Ein Schlüssel, der noch passt",
+        "title_en": "A key that still fits",
+        "live": false
+      },
+      {
+        "id": 173,
+        "title_de": "Zwei Sprachen beim Abendessen",
+        "title_en": "Two languages at dinner",
+        "live": false
+      },
+      {
+        "id": 174,
+        "title_de": "Die letzte Seite im Heft",
+        "title_en": "The last page of a notebook",
+        "live": false
+      },
+      {
+        "id": 175,
+        "title_de": "Ein Fenster zum Frühling",
+        "title_en": "A window open to spring",
+        "live": false
+      },
+      {
+        "id": 176,
+        "title_de": "Ein nasser Montag in Hamburg",
+        "title_en": "A rainy Monday in Hamburg",
+        "live": false
+      },
+      {
+        "id": 177,
+        "title_de": "Umzug in eine kleine Wohnung",
+        "title_en": "Moving into a small apartment",
+        "live": false
+      },
+      {
+        "id": 178,
+        "title_de": "Ein Anruf nach Dhaka",
+        "title_en": "A phone call to Dhaka",
+        "live": false
+      },
+      {
+        "id": 179,
+        "title_de": "Verloren am Hauptbahnhof",
+        "title_en": "Lost at the main station",
+        "live": false
+      },
+      {
+        "id": 180,
+        "title_de": "Kochen für Freunde",
+        "title_en": "Cooking for friends",
+        "live": false
+      }
+    ]
+  },
+  "grammar": {
+    "total": 80,
+    "index": [
+      {
+        "id": 1,
+        "title_de": "Personalpronomen",
+        "live": true
+      },
+      {
+        "id": 2,
+        "title_de": "Konjugation im Präsens",
+        "live": false
+      },
+      {
+        "id": 3,
+        "title_de": "sein, haben, möchte",
+        "live": false
+      },
+      {
+        "id": 4,
+        "title_de": "Verben mit Vokalwechsel",
+        "live": false
+      },
+      {
+        "id": 5,
+        "title_de": "Modalverben",
+        "live": false
+      },
+      {
+        "id": 6,
+        "title_de": "Modalverben – Gebrauch",
+        "live": false
+      },
+      {
+        "id": 7,
+        "title_de": "Trennbare Verben",
+        "live": false
+      },
+      {
+        "id": 8,
+        "title_de": "Imperativ",
+        "live": false
+      },
+      {
+        "id": 9,
+        "title_de": "Fragen mit Fragewort",
+        "live": false
+      },
+      {
+        "id": 10,
+        "title_de": "Ja/Nein-Fragen",
+        "live": false
+      },
+      {
+        "id": 11,
+        "title_de": "Wörter im Satz 1",
+        "live": false
+      },
+      {
+        "id": 12,
+        "title_de": "Wörter im Satz 2",
+        "live": false
+      },
+      {
+        "id": 13,
+        "title_de": "Nomen im Plural",
+        "live": false
+      },
+      {
+        "id": 14,
+        "title_de": "Artikel",
+        "live": false
+      },
+      {
+        "id": 15,
+        "title_de": "Negation",
+        "live": false
+      },
+      {
+        "id": 16,
+        "title_de": "Akkusativ",
+        "live": false
+      },
+      {
+        "id": 17,
+        "title_de": "Dativ",
+        "live": false
+      },
+      {
+        "id": 18,
+        "title_de": "Possessivartikel",
+        "live": false
+      },
+      {
+        "id": 19,
+        "title_de": "welcher, dieser",
+        "live": false
+      },
+      {
+        "id": 20,
+        "title_de": "Personalpronomen im Akkusativ und Dativ",
+        "live": false
+      },
+      {
+        "id": 21,
+        "title_de": "Verben mit Akkusativ und Dativ",
+        "live": false
+      },
+      {
+        "id": 22,
+        "title_de": "Verben mit Dativ",
+        "live": false
+      },
+      {
+        "id": 23,
+        "title_de": "Präteritum von sein und haben",
+        "live": false
+      },
+      {
+        "id": 24,
+        "title_de": "Perfekt mit haben",
+        "live": false
+      },
+      {
+        "id": 25,
+        "title_de": "Perfekt mit sein",
+        "live": false
+      },
+      {
+        "id": 26,
+        "title_de": "Partizip II",
+        "live": false
+      },
+      {
+        "id": 27,
+        "title_de": "Präteritum der Modalverben",
+        "live": false
+      },
+      {
+        "id": 28,
+        "title_de": "Zeitengebrauch",
+        "live": false
+      },
+      {
+        "id": 29,
+        "title_de": "Reflexive und reziproke Verben",
+        "live": false
+      },
+      {
+        "id": 30,
+        "title_de": "Temporale Präpositionen",
+        "live": false
+      },
+      {
+        "id": 31,
+        "title_de": "Präpositionen mit Dativ",
+        "live": false
+      },
+      {
+        "id": 32,
+        "title_de": "Präpositionen mit Akkusativ",
+        "live": false
+      },
+      {
+        "id": 33,
+        "title_de": "Wechselpräpositionen mit Dativ",
+        "live": false
+      },
+      {
+        "id": 34,
+        "title_de": "Wechselpräpositionen mit Dativ und Akkusativ",
+        "live": false
+      },
+      {
+        "id": 35,
+        "title_de": "Lokale Präpositionen",
+        "live": false
+      },
+      {
+        "id": 36,
+        "title_de": "Adjektivdeklination im Nominativ und Akkusativ",
+        "live": false
+      },
+      {
+        "id": 37,
+        "title_de": "Ordinalzahlen",
+        "live": false
+      },
+      {
+        "id": 38,
+        "title_de": "Komparativ und Vergleich",
+        "live": false
+      },
+      {
+        "id": 39,
+        "title_de": "Superlativ",
+        "live": false
+      },
+      {
+        "id": 40,
+        "title_de": "und, aber, oder, denn",
+        "live": false
+      },
+      {
+        "id": 41,
+        "title_de": "deshalb, sonst, dann, danach",
+        "live": false
+      },
+      {
+        "id": 42,
+        "title_de": "weil, dass und wenn",
+        "live": false
+      },
+      {
+        "id": 43,
+        "title_de": "da, dort, dahin, dorthin",
+        "live": false
+      },
+      {
+        "id": 44,
+        "title_de": "Partikeln",
+        "live": false
+      },
+      {
+        "id": 45,
+        "title_de": "Komposita",
+        "live": false
+      },
+      {
+        "id": 46,
+        "title_de": "Wortbildung mit Endungen",
+        "live": false
+      },
+      {
+        "id": 47,
+        "title_de": "Zusammengesetzte Verben",
+        "live": false
+      },
+      {
+        "id": 48,
+        "title_de": "Genusregeln",
+        "live": false
+      },
+      {
+        "id": 49,
+        "title_de": "Präteritum",
+        "live": false
+      },
+      {
+        "id": 50,
+        "title_de": "Plusquamperfekt",
+        "live": false
+      },
+      {
+        "id": 51,
+        "title_de": "Reflexivpronomen im Dativ",
+        "live": false
+      },
+      {
+        "id": 52,
+        "title_de": "Trennbare und untrennbare Verben",
+        "live": false
+      },
+      {
+        "id": 53,
+        "title_de": "Verben mit Präpositionen",
+        "live": false
+      },
+      {
+        "id": 54,
+        "title_de": "Pronominaladverbien",
+        "live": false
+      },
+      {
+        "id": 55,
+        "title_de": "Konjunktiv II – Formen",
+        "live": false
+      },
+      {
+        "id": 56,
+        "title_de": "Konjunktiv II – Gebrauch",
+        "live": false
+      },
+      {
+        "id": 57,
+        "title_de": "Passiv Teil 1",
+        "live": false
+      },
+      {
+        "id": 58,
+        "title_de": "Passiv Teil 2",
+        "live": false
+      },
+      {
+        "id": 59,
+        "title_de": "Futur I",
+        "live": false
+      },
+      {
+        "id": 60,
+        "title_de": "Funktionen von werden",
+        "live": false
+      },
+      {
+        "id": 61,
+        "title_de": "lassen",
+        "live": false
+      },
+      {
+        "id": 62,
+        "title_de": "sitzen/setzen, stehen/stellen, liegen/legen, hängen",
+        "live": false
+      },
+      {
+        "id": 63,
+        "title_de": "Genitiv",
+        "live": false
+      },
+      {
+        "id": 64,
+        "title_de": "N-Deklination",
+        "live": false
+      },
+      {
+        "id": 65,
+        "title_de": "Adjektive als Nomen für Personen",
+        "live": false
+      },
+      {
+        "id": 66,
+        "title_de": "Adjektive als neutrale Nomen",
+        "live": false
+      },
+      {
+        "id": 67,
+        "title_de": "Indirekte Fragen",
+        "live": false
+      },
+      {
+        "id": 68,
+        "title_de": "Infinitiv mit zu",
+        "live": false
+      },
+      {
+        "id": 69,
+        "title_de": "Infinitiv ohne zu",
+        "live": false
+      },
+      {
+        "id": 70,
+        "title_de": "Relativsätze 1",
+        "live": false
+      },
+      {
+        "id": 71,
+        "title_de": "Relativsätze 2",
+        "live": false
+      },
+      {
+        "id": 72,
+        "title_de": "wenn und als",
+        "live": false
+      },
+      {
+        "id": 73,
+        "title_de": "während, bevor, nachdem und seit",
+        "live": false
+      },
+      {
+        "id": 74,
+        "title_de": "um ... zu und damit",
+        "live": false
+      },
+      {
+        "id": 75,
+        "title_de": "Doppelkonnektoren",
+        "live": false
+      },
+      {
+        "id": 76,
+        "title_de": "Vergleichssätze",
+        "live": false
+      },
+      {
+        "id": 77,
+        "title_de": "Präpositionen mit Genitiv",
+        "live": false
+      },
+      {
+        "id": 78,
+        "title_de": "Temporale Präpositionen 2",
+        "live": false
+      },
+      {
+        "id": 79,
+        "title_de": "Adjektivdeklination mit und ohne Artikel",
+        "live": false
+      },
+      {
+        "id": 80,
+        "title_de": "Partizip I als Adjektiv",
+        "live": false
+      }
+    ],
+    "items": [
+      {
+        "id": 1,
+        "title_de": "Personalpronomen",
+        "title_en": "Personal pronouns",
+        "lead": "Use ich, du, er, sie, es, wir, ihr, sie, Sie instead of repeating a name.",
+        "tables": [
+          {
+            "headers": [
+              "Pronoun",
+              "Meaning",
+              "When"
+            ],
+            "rows": [
+              [
+                "ich",
+                "I",
+                "talking about yourself"
+              ],
+              [
+                "du",
+                "you",
+                "one person you know"
+              ],
+              [
+                "er",
+                "he / it",
+                "a man, or a der word"
+              ],
+              [
+                "sie",
+                "she / it",
+                "a woman, or a die word"
+              ],
+              [
+                "es",
+                "it",
+                "a das word"
+              ],
+              [
+                "wir",
+                "we",
+                "you and others"
+              ],
+              [
+                "ihr",
+                "you (plural)",
+                "people you know"
+              ],
+              [
+                "sie",
+                "they",
+                "more than one person"
+              ],
+              [
+                "Sie",
+                "you (formal)",
+                "polite form"
+              ]
+            ]
+          }
+        ],
+        "formula": "pronoun + verb + the rest",
+        "examples": [
+          {
+            "de": "Ich wohne in Hamburg.",
+            "en": "I live in Hamburg."
+          },
+          {
+            "de": "Du lernst Deutsch.",
+            "en": "You are learning German."
+          },
+          {
+            "de": "Mynul wohnt in Hamburg. Er studiert dort.",
+            "en": "Mynul lives in Hamburg. He studies there."
+          },
+          {
+            "de": "Lena kommt aus Deutschland. Sie spricht Deutsch.",
+            "en": "Lena comes from Germany. She speaks German."
+          },
+          {
+            "de": "Das Kind spielt. Es ist glücklich.",
+            "en": "The child is playing. It is happy."
+          },
+          {
+            "de": "Wir lernen zusammen.",
+            "en": "We learn together."
+          },
+          {
+            "de": "Ihr wohnt in Hamburg.",
+            "en": "You (plural) live in Hamburg."
+          },
+          {
+            "de": "Ali und Sara arbeiten heute. Sie sind müde.",
+            "en": "Ali and Sara are working today. They are tired."
+          },
+          {
+            "de": "Wo wohnen Sie?",
+            "en": "Where do you (formal) live?"
+          }
+        ],
+        "note": "sie = she / they (small s). Sie = formal you (capital S). At the start of a sentence both can look the same. Check the verb.",
+        "drills": [
+          {
+            "prompt": "Mynul kommt aus Bangladesch. ___ wohnt in Hamburg.",
+            "answer": "Er",
+            "en": "He lives in Hamburg."
+          },
+          {
+            "prompt": "Anna lernt Deutsch. ___ spricht schon gut.",
+            "answer": "Sie",
+            "en": "She already speaks well."
+          },
+          {
+            "prompt": "Ali und ich sind Freunde. ___ lernen zusammen.",
+            "answer": "Wir",
+            "en": "We learn together."
+          },
+          {
+            "prompt": "Sara und Maria arbeiten heute. ___ sind müde.",
+            "answer": "Sie",
+            "en": "They are tired."
+          },
+          {
+            "prompt": "Herr Müller, wohnen ___ in Berlin?",
+            "answer": "Sie",
+            "en": "Do you (formal) live in Berlin?"
+          },
+          {
+            "prompt": "Das Baby schläft. ___ ist müde.",
+            "answer": "Es",
+            "en": "It is tired."
+          }
+        ]
+      }
+    ]
+  },
+  "words": {
+    "total": 4028,
+    "items": [
+      {
+        "id": 1,
+        "german": "der Abend",
+        "english": "evening",
+        "article": "der",
+        "sentence": "Der Abend ist ruhig.",
+        "live": true
+      },
+      {
+        "id": 2,
+        "german": "der Abfall",
+        "english": "waste",
+        "article": "der",
+        "sentence": "Der Abfall liegt in der Tonne.",
+        "live": true
+      },
+      {
+        "id": 3,
+        "german": "der Abflug",
+        "english": "departing flight",
+        "article": "der",
+        "sentence": "Der Abflug ist um acht.",
+        "live": true
+      },
+      {
+        "id": 4,
+        "german": "der Abschluss",
+        "english": "degree",
+        "article": "der",
+        "sentence": "Er macht den Abschluss.",
+        "live": true
+      },
+      {
+        "id": 5,
+        "german": "der Abschnitt",
+        "english": "section, paragraph",
+        "article": "der",
+        "sentence": "Lies den Abschnitt.",
+        "live": true
+      },
+      {
+        "id": 6,
+        "german": "der Absender",
+        "english": "sender",
+        "article": "der",
+        "sentence": "Der Absender steht auf dem Brief.",
+        "live": true
+      },
+      {
+        "id": 7,
+        "german": "der Abzug (Sg.)",
+        "english": "deduction",
+        "article": "der",
+        "sentence": "Der Abzug steht auf der Rechnung.",
+        "live": true
+      },
+      {
+        "id": 8,
+        "german": "der Actionfilm",
+        "english": "action film",
+        "article": "der",
+        "sentence": "Der Actionfilm beginnt um neun.",
+        "live": true
+      },
+      {
+        "id": 9,
+        "german": "der Akku",
+        "english": "battery",
+        "article": "der",
+        "sentence": "Der Akku ist leer.",
+        "live": true
+      },
+      {
+        "id": 10,
+        "german": "der Akkusativ",
+        "english": "accusative",
+        "article": "der",
+        "sentence": "Der Akkusativ ist ein Fall.",
+        "live": true
+      },
+      {
+        "id": 11,
+        "german": "der Akzent",
+        "english": "accent, stress",
+        "article": "der",
+        "sentence": "Sein Akzent ist klar.",
+        "live": true
+      },
+      {
+        "id": 12,
+        "german": "der Alarmknopf",
+        "english": "alarm button",
+        "article": "der",
+        "sentence": "Drück den Alarmknopf.",
+        "live": true
+      },
+      {
+        "id": 13,
+        "german": "der Alltag",
+        "english": "everyday life",
+        "article": "der",
+        "sentence": "Der Alltag in Hamburg ist voll.",
+        "live": true
+      },
+      {
+        "id": 14,
+        "german": "der Almaufenthalt",
+        "english": "Alpine visit",
+        "article": "der",
+        "sentence": "Der Almaufenthalt war kurz.",
+        "live": true
+      },
+      {
+        "id": 15,
+        "german": "der Almsommer",
+        "english": "Alpine summer",
+        "article": "der",
+        "sentence": "Der Almsommer war warm.",
+        "live": true
+      },
+      {
+        "id": 16,
+        "german": "der Almurlaub",
+        "english": "Alpine vacation",
+        "article": "der",
+        "sentence": "Der Almurlaub beginnt bald.",
+        "live": true
+      },
+      {
+        "id": 17,
+        "german": "der Altbau",
+        "english": "old building",
+        "article": "der",
+        "sentence": "Wir wohnen im Altbau.",
+        "live": true
+      },
+      {
+        "id": 18,
+        "german": "der Altenpfleger",
+        "english": "geriatric nurse (m)",
+        "article": "der",
+        "sentence": "Der Altenpfleger hilft ihr.",
+        "live": true
+      },
+      {
+        "id": 19,
+        "german": "der Altersdurchschnitt",
+        "english": "average age",
+        "article": "der",
+        "sentence": "Der Altersdurchschnitt ist hoch.",
+        "live": true
+      },
+      {
+        "id": 20,
+        "german": "der Alzheimer (Sg.)",
+        "english": "Alzheimer's Disease",
+        "article": "der",
+        "sentence": "Alzheimer ist eine Krankheit.",
+        "live": true
+      }
+    ]
+  }
+}
