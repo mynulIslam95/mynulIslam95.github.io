@@ -59,6 +59,7 @@ h2 { font-size: 1.3rem; }
 .lede { color: var(--muted); margin: 0 0 14px; max-width: 42rem; }
 
 .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 22px; }
+.grid-home { grid-template-columns: 1fr 1fr; }
 .card {
   display: block; background: #fff; border: 2px solid var(--forest);
   border-radius: 12px; padding: 14px 14px; color: inherit;

@@ -1,0 +1,9 @@
+{
+  "id": "sb-demo",
+  "title": "Prepositions",
+  "prompt": "Ich interessiere mich ___ Musik.",
+  "choices": ["an", "auf", "für", "mit"],
+  "answer": 2,
+  "rule": "sich interessieren für + Akkusativ",
+  "example": "Ich interessiere mich für Sport."
+}

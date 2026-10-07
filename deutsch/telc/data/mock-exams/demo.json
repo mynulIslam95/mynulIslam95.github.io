@@ -1,0 +1,6 @@
+{
+  "id": "demo",
+  "title": "Demo Exam",
+  "durationMs": 180000,
+  "sections": ["lesen", "sprachbausteine"]
+}

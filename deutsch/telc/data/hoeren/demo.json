@@ -1,0 +1,10 @@
+{
+  "id": "hoeren-demo",
+  "title": "Time",
+  "question": "Wann beginnt der Kurs?",
+  "choices": ["um acht", "um neun", "um zehn"],
+  "answer": 1,
+  "transcript": "Der Kurs beginnt um neun Uhr.",
+  "en": "The course starts at nine.",
+  "vocab": ["Kurs", "beginnen"]
+}

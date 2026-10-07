@@ -1,0 +1,11 @@
+{
+  "disclaimer": "Independent practice material. Not affiliated with or endorsed by telc gGmbH.",
+  "areas": [
+    { "id": "lesen", "title": "Lesen", "blurb": "Read for the main idea and details." },
+    { "id": "sprachbausteine", "title": "Sprachbausteine", "blurb": "Grammar and word choice in context." },
+    { "id": "hoeren", "title": "Hören", "blurb": "Listen once, then answer." },
+    { "id": "schreiben", "title": "Schreiben", "blurb": "Write from a situation, point by point." },
+    { "id": "sprechen", "title": "Sprechen", "blurb": "Speak in short, timed turns." }
+  ],
+  "mocks": { "total": 30, "demoId": "demo" }
+}

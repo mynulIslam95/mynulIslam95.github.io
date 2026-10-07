@@ -1,0 +1,9 @@
+{
+  "id": "sprechen-demo",
+  "title": "Einander kennenlernen",
+  "prompts": [
+    { "de": "Wie heißen Sie?", "en": "What is your name?" },
+    { "de": "Woher kommen Sie?", "en": "Where are you from?" }
+  ],
+  "rescue": ["Meiner Meinung nach ...", "Ich denke, dass ...", "Ein Vorteil ist ..."]
+}

@@ -1,0 +1,10 @@
+{
+  "id": "lesen-demo",
+  "title": "Main idea",
+  "passage": "Lena wohnt in Hamburg. Am Montag trinkt sie Tee in der Küche.",
+  "question": "Wo wohnt Lena?",
+  "choices": ["In Berlin", "In Hamburg", "In München"],
+  "answer": 1,
+  "evidence": "Lena wohnt in Hamburg.",
+  "explain": "The first sentence names the city."
+}

@@ -1,0 +1,7 @@
+{
+  "id": "schreiben-demo",
+  "title": "Asking for information",
+  "situation": "You write to a language school in Hamburg.",
+  "points": ["Greet the school", "Ask for course times", "Close politely"],
+  "model": "Guten Tag,\n\nkönnen Sie mir bitte die Kurszeiten nennen?\n\nMit freundlichen Grüßen"
+}

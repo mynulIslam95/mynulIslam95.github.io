@@ -40,7 +40,7 @@
     var p = h.replace(/^\/+/, "").split("/").filter(Boolean);
     var raw = p[1] || null;
     var num = raw && /^\d+$/.test(raw) ? parseInt(raw, 10) : null;
-    return { kind: p[0] || "home", raw: raw, id: num };
+    return { kind: p[0] || "home", raw: raw, id: num, parts: p };
   }
 
   function go(to) {
@@ -91,10 +91,11 @@
       topBar() +
       "<h1>German desk</h1>" +
       '<p class="lede">One task at a time. Story 1, chapter 1, and the first 20 words are live. The rest of the numbered rooms stay closed until the next drop.</p>' +
-      '<div class="grid3">' +
+      '<div class="grid3 grid-home">' +
       card("#/stories", "Stories", "1 / " + s.total + " live", "180 rooms. Room 1 is open.") +
       card("#/grammar", "Grammar", "1 / " + g.total + " live", "80 chapters from the book. Chapter 1 is open.") +
       card("#/words", "Words", "20 / " + w.total + " live", "Type the word, then the sentence.") +
+      card("#/telc", "Master TELC B1", "Exam training", "Lesen, Sprachbausteine, Hören, Schreiben and Sprechen.") +
       "</div>";
   }
 
@@ -387,6 +388,10 @@
     if (r.kind === "stories") return storiesIndex();
     if (r.kind === "grammar" && r.id) return grammarView(r.id);
     if (r.kind === "grammar") return grammarIndex();
+    if (r.kind === "telc") {
+      if (window.Telc) return window.Telc.render(r.parts);
+      return;
+    }
     if (r.kind === "words" && r.id) return wordsView(r.id);
     if (r.kind === "words" && r.raw) return wordsCategory(r.raw);
     if (r.kind === "words") return wordsIndex();
