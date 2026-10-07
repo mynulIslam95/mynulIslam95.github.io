@@ -75,6 +75,38 @@ h2 { font-size: 1.45rem; }
 .meta { color: var(--muted); margin-bottom: 18px; }
 .story { font-family: var(--serif); font-size: 1.15rem; white-space: pre-wrap; }
 .story strong { font-weight: 700; }
+.story-lines { margin: 8px 0 8px; }
+.sline { margin: 0; }
+.sline-gap { margin-top: 1.15em; }
+.sline-de {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  line-height: 1.55;
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  padding: 6px 8px;
+  cursor: pointer;
+  color: var(--ink);
+}
+.sline-de:hover, .sline-de.is-on { background: #efe8db; }
+.sline-en {
+  margin: 0 8px 10px;
+  color: var(--muted);
+  font-size: 1rem;
+}
+.sline-hide {
+  margin-left: 8px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--forest);
+  cursor: pointer;
+  font-size: 0.88rem;
+}
 .en { margin-top: 22px; color: var(--muted); white-space: pre-wrap; }
 
 .row { display: flex; gap: 10px; flex-wrap: wrap; margin: 18px 0; }

@@ -79,19 +79,52 @@
       root.innerHTML = topBar({ href: "#/stories", label: "Stories" }) + "<p>This story is not live yet.</p>";
       return;
     }
-    root.innerHTML =
+    var lines = s.lines || [];
+    var html =
       topBar({ href: "#/stories", label: "Stories" }) +
       '<p class="meta">Story ' + s.id + " / 180</p>" +
       "<h1>" + s.title_de + "</h1>" +
       '<p class="meta">' + s.title_en + "</p>" +
-      '<div class="story notranslate" lang="de" translate="no">' + md(s.de) + "</div>" +
-      '<div class="row"><button class="btn ghost" type="button" id="en-btn">Show English</button></div>' +
+      '<p class="lede">Tap a German line to see its English. Tap again to hide it.</p>' +
+      '<div class="story-lines" id="story-lines">';
+    lines.forEach(function (ln, i) {
+      html +=
+        '<div class="sline' + (i === 8 ? " sline-gap" : "") + '">' +
+        '<button class="sline-de notranslate" type="button" lang="de" translate="no" data-i="' + i + '" aria-expanded="false">' + md(ln.de) + "</button>" +
+        '<p class="sline-en" hidden>' + md(ln.en) + ' <button class="sline-hide" type="button" data-i="' + i + '">Hide translation</button></p>' +
+        "</div>";
+    });
+    html +=
+      "</div>" +
+      '<div class="row"><button class="btn ghost" type="button" id="en-btn">Show Full translation</button></div>' +
       '<div class="en" id="en-box" hidden>' + md(s.en) + "</div>";
+    root.innerHTML = html;
+
+    function setLine(i, on) {
+      var btn = root.querySelector('.sline-de[data-i="' + i + '"]');
+      var en = btn && btn.parentNode.querySelector(".sline-en");
+      if (!btn || !en) return;
+      en.hidden = !on;
+      btn.setAttribute("aria-expanded", on ? "true" : "false");
+      btn.classList.toggle("is-on", on);
+    }
+
+    root.querySelectorAll(".sline-de").forEach(function (btn) {
+      btn.onclick = function () {
+        setLine(this.getAttribute("data-i"), this.getAttribute("aria-expanded") !== "true");
+      };
+    });
+    root.querySelectorAll(".sline-hide").forEach(function (btn) {
+      btn.onclick = function (e) {
+        e.stopPropagation();
+        setLine(this.getAttribute("data-i"), false);
+      };
+    });
     document.getElementById("en-btn").onclick = function () {
       var box = document.getElementById("en-box");
       var on = box.hidden;
       box.hidden = !on;
-      this.textContent = on ? "Hide English" : "Show English";
+      this.textContent = on ? "Hide Full translation" : "Show Full translation";
     };
   }
 

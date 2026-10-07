@@ -7,7 +7,109 @@
         "title_de": "Regenmontag in Hamburg",
         "title_en": "Rainy Monday in Hamburg",
         "de": "Es ist Montag in Hamburg. Mynul sitzt in der Küche und trinkt Tee. Draußen liegt schweres **Mistwetter**, und der **Flug** nach **Italien** fällt aus. Lena ruft an: „**Bade** jetzt und **Creme ein**! **Schätz** bitte die Zeit!“ Mynul **erledigt** die Post. Auf dem Brief stehen die **Anrede** und die **Altersangabe**. Die **Handwerkerin** Maria **hat abgeschlossen**. Sie hat ein kleines **Symbol** auf den Tisch **gelegt**. Mynul dankt dem Kollegen Ali für den Tipp.\n\nAm nassen **Tennisplatz** hat niemand **mitgespielt**. Mynul denkt an den **Sonntagnachmittag** und an den **Halbmarathon**. „Ich **jubele** trotzdem“, sagt er. Die Jacke ist **unmodern**; er **hat getauscht**. Er bleibt zu Hause, um die Papiere zu lesen, damit Lena nicht warten muss. Im **Krankenhaus** **verlängert** man die **Operation**. Der Arzt **inhaliert** Dampf. „Ich **kühle** den Tee. Wenn du **weiterhörst**, verstehst du den **Hauptteil**.“ Viele haben vom **losfahren** **abgeraten**. **Gemeinsam** wollen sie später das Radio **ausmachen** und prüfen, ob sie **zusammengehören**. Die **Beziehung** ist wichtig. Eine Firma **hat hergestellt**, was **geschrieben** und **gedruckt** auf dem Plakat steht. „Ich **baue** heute nichts.“ Der Kaffee ist **umsonst**. Die alte Regel hat **gegolten**. Die **Aufmerksamkeit** gilt nur dem Regen.",
-        "en": "It is Monday in Hamburg. Mynul is sitting in the kitchen and drinking tea. Outside there is heavy bad weather, and the flight to Italy is cancelled. Lena calls: “Bathe now and apply cream! Estimate the time, please!” Mynul takes care of the mail. On the letter are the salutation and the age statement. The craftswoman Maria has finished. She has laid a small symbol on the table. Mynul thanks colleague Ali for the tip.\n\nAt the wet tennis court nobody has played along. Mynul thinks of Sunday afternoon and of the half-marathon. “I cheer anyway,” he says. The jacket is unfashionable; he has switched. He stays at home in order to read the papers so that Lena does not have to wait. In the hospital they extend the operation. The doctor inhales steam. “I cool the tea. If you continue to listen, you understand the main part.” Many have advised against leaving. Together they later want to turn off the radio and check whether they belong together. The relationship is important. A company has manufactured what is written and printed on the poster. “I build nothing today.” The coffee is for free. The old rule has applied. Attention belongs only to the rain."
+        "en": "It is Monday in Hamburg. Mynul is sitting in the kitchen and drinking tea. Outside there is heavy bad weather, and the flight to Italy is cancelled. Lena calls: “Bathe now and apply cream! Estimate the time, please!” Mynul takes care of the mail. On the letter are the salutation and the age statement. The craftswoman Maria has finished. She has laid a small symbol on the table. Mynul thanks colleague Ali for the tip.\n\nAt the wet tennis court nobody has played along. Mynul thinks of Sunday afternoon and of the half-marathon. “I cheer anyway,” he says. The jacket is unfashionable; he has switched. He stays at home in order to read the papers so that Lena does not have to wait. In the hospital they extend the operation. The doctor inhales steam. “I cool the tea. If you continue to listen, you understand the main part.” Many have advised against leaving. Together they later want to turn off the radio and check whether they belong together. The relationship is important. A company has manufactured what is written and printed on the poster. “I build nothing today.” The coffee is for free. The old rule has applied. Attention belongs only to the rain.",
+        "lines": [
+          {
+            "de": "Es ist Montag in Hamburg.",
+            "en": "It is Monday in Hamburg."
+          },
+          {
+            "de": "Mynul sitzt in der Küche und trinkt Tee.",
+            "en": "Mynul is sitting in the kitchen and drinking tea."
+          },
+          {
+            "de": "Draußen liegt schweres **Mistwetter**, und der **Flug** nach **Italien** fällt aus.",
+            "en": "Outside there is heavy bad weather, and the flight to Italy is cancelled."
+          },
+          {
+            "de": "Lena ruft an: „**Bade** jetzt und **Creme ein**! **Schätz** bitte die Zeit!“",
+            "en": "Lena calls: “Bathe now and apply cream! Estimate the time, please!”"
+          },
+          {
+            "de": "Mynul **erledigt** die Post.",
+            "en": "Mynul takes care of the mail."
+          },
+          {
+            "de": "Auf dem Brief stehen die **Anrede** und die **Altersangabe**.",
+            "en": "On the letter are the salutation and the age statement."
+          },
+          {
+            "de": "Die **Handwerkerin** Maria **hat abgeschlossen**.",
+            "en": "The craftswoman Maria has finished."
+          },
+          {
+            "de": "Sie hat ein kleines **Symbol** auf den Tisch **gelegt**.",
+            "en": "She has laid a small symbol on the table."
+          },
+          {
+            "de": "Mynul dankt dem Kollegen Ali für den Tipp.",
+            "en": "Mynul thanks colleague Ali for the tip."
+          },
+          {
+            "de": "Am nassen **Tennisplatz** hat niemand **mitgespielt**.",
+            "en": "At the wet tennis court nobody has played along."
+          },
+          {
+            "de": "Mynul denkt an den **Sonntagnachmittag** und an den **Halbmarathon**.",
+            "en": "Mynul thinks of Sunday afternoon and of the half-marathon."
+          },
+          {
+            "de": "„Ich **jubele** trotzdem“, sagt er.",
+            "en": "“I cheer anyway,” he says."
+          },
+          {
+            "de": "Die Jacke ist **unmodern**; er **hat getauscht**.",
+            "en": "The jacket is unfashionable; he has switched."
+          },
+          {
+            "de": "Er bleibt zu Hause, um die Papiere zu lesen, damit Lena nicht warten muss.",
+            "en": "He stays at home in order to read the papers so that Lena does not have to wait."
+          },
+          {
+            "de": "Im **Krankenhaus** **verlängert** man die **Operation**.",
+            "en": "In the hospital they extend the operation."
+          },
+          {
+            "de": "Der Arzt **inhaliert** Dampf.",
+            "en": "The doctor inhales steam."
+          },
+          {
+            "de": "„Ich **kühle** den Tee. Wenn du **weiterhörst**, verstehst du den **Hauptteil**.“",
+            "en": "“I cool the tea. If you continue to listen, you understand the main part.”"
+          },
+          {
+            "de": "Viele haben vom **losfahren** **abgeraten**.",
+            "en": "Many have advised against leaving."
+          },
+          {
+            "de": "**Gemeinsam** wollen sie später das Radio **ausmachen** und prüfen, ob sie **zusammengehören**.",
+            "en": "Together they later want to turn off the radio and check whether they belong together."
+          },
+          {
+            "de": "Die **Beziehung** ist wichtig.",
+            "en": "The relationship is important."
+          },
+          {
+            "de": "Eine Firma **hat hergestellt**, was **geschrieben** und **gedruckt** auf dem Plakat steht.",
+            "en": "A company has manufactured what is written and printed on the poster."
+          },
+          {
+            "de": "„Ich **baue** heute nichts.“",
+            "en": "“I build nothing today.”"
+          },
+          {
+            "de": "Der Kaffee ist **umsonst**.",
+            "en": "The coffee is for free."
+          },
+          {
+            "de": "Die alte Regel hat **gegolten**.",
+            "en": "The old rule has applied."
+          },
+          {
+            "de": "Die **Aufmerksamkeit** gilt nur dem Regen.",
+            "en": "Attention belongs only to the rain."
+          }
+        ]
       }
     ],
     "index": [
