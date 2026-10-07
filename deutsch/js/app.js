@@ -32,6 +32,26 @@
       .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
   }
 
+  function splitPairs(de, en) {
+    function parts(t) {
+      t = String(t || "").replace(/\n+/g, " ").trim();
+      try {
+        return t.split(/(?<=[.!?])\s+/).filter(Boolean);
+      } catch (err) {
+        return t.split(/[.!?]+\s+/).filter(Boolean);
+      }
+    }
+    var d = parts(de);
+    var e = parts(en);
+    var n = Math.max(d.length, e.length);
+    var rows = [];
+    var i;
+    for (i = 0; i < n; i += 1) {
+      rows.push({ de: d[i] || "", en: e[i] || "" });
+    }
+    return rows;
+  }
+
   function topBar(crumb) {
     return (
       '<div class="top"><a class="brand" href="#/">German desk</a>' +
@@ -79,7 +99,7 @@
       root.innerHTML = topBar({ href: "#/stories", label: "Stories" }) + "<p>This story is not live yet.</p>";
       return;
     }
-    var lines = s.lines || [];
+    var lines = s.lines && s.lines.length ? s.lines : splitPairs(s.de, s.en);
     var html =
       topBar({ href: "#/stories", label: "Stories" }) +
       '<p class="meta">Story ' + s.id + " / 180</p>" +
@@ -329,7 +349,7 @@
     home();
   }
 
-  fetch("data/live.json")
+  fetch("data/live.json?v=6")
     .then(function (res) { return res.json(); })
     .then(function (d) {
       DATA = d;

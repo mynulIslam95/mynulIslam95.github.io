@@ -85,10 +85,11 @@ h2 { font-size: 1.45rem; }
   font-family: var(--serif);
   font-size: 1.15rem;
   line-height: 1.55;
-  background: transparent;
-  border: 0;
+  background: var(--card);
+  border: 1px solid var(--line);
   border-radius: 8px;
-  padding: 6px 8px;
+  padding: 8px 10px;
+  margin: 0 0 6px;
   cursor: pointer;
   color: var(--ink);
 }
