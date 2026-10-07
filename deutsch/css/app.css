@@ -132,15 +132,16 @@ h2 { font-size: 1.3rem; }
   display: block;
   margin: 8px 0 0;
   padding: 8px 12px;
-  background: #fff;
-  border: 2px solid var(--line);
+  background: #1b3c34;
+  border: 2px solid #1b3c34;
   border-radius: 10px;
-  color: var(--muted);
+  color: #f4efe6;
   font-size: 1rem;
   line-height: 1.55;
   white-space: normal;
   overflow-wrap: break-word;
 }
+.sline-en .text-act { color: #e7f3ee; }
 .sline-en[hidden], .en[hidden] { display: none !important; }
 @keyframes textGlow {
   0%, 100% { text-shadow: 0 0 2px rgba(47, 111, 94, 0.2); }
