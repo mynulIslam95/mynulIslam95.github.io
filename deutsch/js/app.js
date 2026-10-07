@@ -189,8 +189,10 @@
         '<div class="drill" data-i="' + i + '">' +
         '<div class="progress">Question ' + (i + 1) + " / " + ch.drills.length + "</div>" +
         '<div class="prompt notranslate" lang="de" translate="no">' + d.prompt + "</div>" +
-        '<input class="field" type="text" autocomplete="off" aria-label="Answer">' +
-        '<div class="row"><button class="btn" type="button">Check</button></div>' +
+        '<div class="type-row">' +
+        '<input class="field notranslate" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" translate="no" lang="de" aria-label="Answer">' +
+        '<button class="btn" type="button">Check</button>' +
+        "</div>" +
         '<div class="msg"></div></div>';
     });
     root.innerHTML = html;
@@ -230,6 +232,22 @@
     return c ? c.label : id;
   }
 
+  function deEn(de, en) {
+    var html = '<span class="de-text notranslate" lang="de" translate="no">' + de + "</span>";
+    if (en) html += ' <span class="en-paren">(' + en + ")</span>";
+    return html;
+  }
+
+  function typeRow(label) {
+    return (
+      '<div class="type-row">' +
+      '<input class="field notranslate" id="ans" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" translate="no" lang="de" aria-label="' + label + '">' +
+      '<button class="btn" id="go" type="button">Check</button>' +
+      "</div>" +
+      '<div class="msg" id="msg"></div>'
+    );
+  }
+
   function wordsIndex() {
     var html = topBar({ href: "#/", label: "All sections" }) +
       "<h1>Words</h1><p class=\"lede\">Pick a group. Only der has 20 live words in this first drop.</p><div class=\"bars\">";
@@ -266,7 +284,7 @@
   function wordsView(id) {
     var w = DATA.words.items.find(function (x) { return x.id === id; });
     if (!w) {
-          root.innerHTML = topBar({ href: "#/words", label: "Word groups" }) + "<p>This word is not live yet.</p>";
+      root.innerHTML = topBar({ href: "#/words", label: "Word groups" }) + "<p>This word is not live yet.</p>";
       return;
     }
     if (wordState.n !== id) wordState = { n: id, step: "copy", copies: 0, sents: 0 };
@@ -275,37 +293,27 @@
 
   function renderWord(w) {
     var next = w.id < 20 ? w.id + 1 : null;
-    var html =
-      topBar({ href: "#/words/" + (w.category || "der"), label: catLabel(w.category || "der") }) +
-      '<p class="meta">' + catLabel(w.category || "der") + " · Word " + w.id + "</p>" +
-      '<p class="word-big notranslate" lang="de" translate="no">' + w.german + "</p>";
+    var html = topBar({ href: "#/words/" + (w.category || "der"), label: w.category || "der" }) +
+      '<div class="drill-stack">';
     if (wordState.step === "copy") {
       html +=
+        '<p class="word-big">' + deEn(w.german, w.english) + "</p>" +
         '<p class="progress">Copy ' + (wordState.copies + 1) + " of 10</p>" +
-        '<p class="lede">Type the word, with the article if it has one. Caps and full stops do not matter.</p>' +
-        '<input class="field notranslate" id="ans" type="text" autocomplete="off" translate="no" lang="de" aria-label="Type the word">' +
-        '<div class="row"><button class="btn" id="go" type="button">Check</button></div>' +
-        '<div class="msg" id="msg"></div>' +
-        (wordState.copies ? '<p class="en-hit">English: ' + w.english + "</p>" : "");
+        typeRow("Type the word");
     } else if (wordState.step === "sent") {
       html +=
+        '<p class="prompt">' + deEn(w.sentence, w.sentence_en) + "</p>" +
         '<p class="progress">Sentence ' + (wordState.sents + 1) + " of 3</p>" +
-        '<p class="lede">Type this sentence. Caps and full stops do not matter.</p>' +
-        '<p class="prompt notranslate" lang="de" translate="no">' + w.sentence + "</p>" +
-        '<p class="en-hit">' + (w.sentence_en || "") + "</p>" +
-        '<input class="field notranslate" id="ans" type="text" autocomplete="off" translate="no" lang="de" aria-label="Type the sentence">' +
-        '<div class="row"><button class="btn" id="go" type="button">Check</button></div>' +
-        '<div class="msg" id="msg"></div>';
+        typeRow("Type the sentence");
     } else {
       html +=
         '<p class="msg ok">Success. The word and the sentence are done.</p>' +
-        '<p class="en-hit">' + w.german + " = " + w.english + "</p>" +
-        '<p class="prompt notranslate" lang="de" translate="no">' + w.sentence + "</p>" +
-        '<p class="en-hit">' + (w.sentence_en || "") + "</p>" +
+        '<p class="prompt">' + deEn(w.sentence, w.sentence_en) + "</p>" +
         '<div class="row">' +
         (next ? '<a class="btn" href="#/words/' + next + '">Next word</a>' : '<a class="btn" href="#/words/' + (w.category || "der") + '">Back to group</a>') +
         "</div>";
     }
+    html += "</div>";
     root.innerHTML = html;
     var ans = document.getElementById("ans");
     var goBtn = document.getElementById("go");
@@ -333,6 +341,11 @@
     goBtn.onclick = check;
     ans.addEventListener("keydown", function (e) {
       if (e.key === "Enter") check();
+    });
+    ans.addEventListener("focus", function () {
+      setTimeout(function () {
+        ans.scrollIntoView({ block: "center", behavior: "smooth" });
+      }, 250);
     });
     ans.focus();
   }
