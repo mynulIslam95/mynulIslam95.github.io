@@ -111,12 +111,13 @@
       html +=
         '<div class="sline' + (i === 8 ? " sline-gap" : "") + '">' +
         '<button class="sline-de notranslate" type="button" lang="de" translate="no" data-i="' + i + '" aria-expanded="false">' + md(ln.de) + "</button>" +
-        '<p class="sline-en" hidden>' + md(ln.en) + ' <button class="sline-hide" type="button" data-i="' + i + '">Hide translation</button></p>' +
+        '<p class="sline-en" hidden>' + md(ln.en) +
+        ' <button class="text-act sline-hide" type="button" data-i="' + i + '">Hide translation</button></p>' +
         "</div>";
     });
     html +=
       "</div>" +
-      '<div class="row"><button class="btn ghost" type="button" id="en-btn">Show Full translation</button></div>' +
+      '<p class="full-act"><button class="text-act" type="button" id="en-btn">Show Full translation</button></p>' +
       '<div class="en" id="en-box" hidden>' + md(s.en) + "</div>";
     root.innerHTML = html;
 
