@@ -206,7 +206,7 @@
 
   if (!reduce && "IntersectionObserver" in window) {
     document.documentElement.classList.add("motion");
-    var revealSel = ".hero-grid > *, .ticket, .skill-groups > .panel, .job-card, .edu-card, .contact-card, section .section-kicker, section h2, .page-header, .prose";
+    var revealSel = ".hero-grid > *, .hero-side > *, .ticket, .skill-groups > .panel, .job-card, .edu-card, .contact-card, section .section-kicker, section h2, .page-header, .prose";
     document.querySelectorAll(revealSel).forEach(function (el) { el.classList.add("reveal"); });
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
