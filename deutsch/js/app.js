@@ -82,7 +82,7 @@
       '<p class="meta">Story ' + s.id + " / 180</p>" +
       "<h1>" + s.title_de + "</h1>" +
       '<p class="meta">' + s.title_en + "</p>" +
-      '<div class="story">' + md(s.de) + "</div>" +
+      '<div class="story notranslate" lang="de" translate="no">' + md(s.de) + "</div>" +
       '<div class="row"><button class="btn ghost" type="button" id="en-btn">Show English</button></div>' +
       '<div class="en" id="en-box" hidden>' + md(s.en) + "</div>";
     document.getElementById("en-btn").onclick = function () {
@@ -132,7 +132,7 @@
       html +=
         '<div class="drill" data-i="' + i + '">' +
         '<div class="progress">Question ' + (i + 1) + " / " + ch.drills.length + "</div>" +
-        '<div class="prompt">' + d.prompt + "</div>" +
+        '<div class="prompt notranslate" lang="de" translate="no">' + d.prompt + "</div>" +
         '<input class="field" type="text" autocomplete="off" aria-label="Answer">' +
         '<div class="row"><button class="btn" type="button">Check</button></div>' +
         '<div class="msg"></div></div>';
@@ -173,7 +173,7 @@
     var html = topBar({ href: "#/", label: "All sections" }) +
       "<h1>Words</h1><p class=\"lede\">First 20 of 4028. Caps and full stops do not matter.</p><div class=\"bars\">";
     DATA.words.items.forEach(function (w) {
-      html += '<a class="bar" href="#/words/' + w.id + '"><span class="n">' + w.id + '</span><span class="t">' + w.german + '</span><span class="e">' + w.english + "</span></a>";
+      html += '<a class="bar" href="#/words/' + w.id + '"><span class="n">' + w.id + '</span><span class="t notranslate" lang="de" translate="no">' + w.german + '</span><span class="e">' + w.english + "</span></a>";
     });
     html += '<div class="bar is-lock"><span class="n">21-4028</span><span class="t">Closed for now</span></div></div>';
     root.innerHTML = html;
@@ -194,12 +194,12 @@
     var html =
       topBar({ href: "#/words", label: "Words" }) +
       '<p class="meta">Word ' + w.id + " / 4028</p>" +
-      '<p class="word-big">' + w.german + "</p>";
+      '<p class="word-big notranslate" lang="de" translate="no">' + w.german + "</p>";
     if (wordState.step === "copy") {
       html +=
         '<p class="progress">Copy ' + (wordState.copies + 1) + " of 10</p>" +
         '<p class="lede">Type the word, with the article if it has one. Caps and full stops do not matter.</p>' +
-        '<input class="field" id="ans" type="text" autocomplete="off" aria-label="Type the word">' +
+        '<input class="field notranslate" id="ans" type="text" autocomplete="off" translate="no" lang="de" aria-label="Type the word">' +
         '<div class="row"><button class="btn" id="go" type="button">Check</button></div>' +
         '<div class="msg" id="msg"></div>' +
         (wordState.copies ? '<p class="en-hit">English: ' + w.english + "</p>" : "");
@@ -207,16 +207,16 @@
       html +=
         '<p class="progress">Sentence ' + (wordState.sents + 1) + " of 3</p>" +
         '<p class="lede">Type this sentence. Caps and full stops do not matter.</p>' +
-        '<p class="prompt">' + w.sentence + "</p>" +
+        '<p class="prompt notranslate" lang="de" translate="no">' + w.sentence + "</p>" +
         '<p class="en-hit">' + (w.sentence_en || "") + "</p>" +
-        '<input class="field" id="ans" type="text" autocomplete="off" aria-label="Type the sentence">' +
+        '<input class="field notranslate" id="ans" type="text" autocomplete="off" translate="no" lang="de" aria-label="Type the sentence">' +
         '<div class="row"><button class="btn" id="go" type="button">Check</button></div>' +
         '<div class="msg" id="msg"></div>';
     } else {
       html +=
         '<p class="msg ok">Success. The word and the sentence are done.</p>' +
         '<p class="en-hit">' + w.german + " = " + w.english + "</p>" +
-        '<p class="prompt">' + w.sentence + "</p>" +
+        '<p class="prompt notranslate" lang="de" translate="no">' + w.sentence + "</p>" +
         '<p class="en-hit">' + (w.sentence_en || "") + "</p>" +
         '<div class="row">' +
         (next ? '<a class="btn" href="#/words/' + next + '">Next word</a>' : '<a class="btn" href="#/words">Back to words</a>') +
