@@ -90,11 +90,11 @@
     root.innerHTML =
       topBar() +
       "<h1>German desk</h1>" +
-      '<p class="lede">One task at a time. Story 1, chapter 1, and the first 20 words are live. The rest of the numbered rooms stay closed until the next drop.</p>' +
+      '<p class="lede">One task at a time. Story 1 and chapter 1 are open. All ' + w.total + " glossary words are live.</p>" +
       '<div class="grid3 grid-home">' +
       card("#/stories", "Stories", "1 / " + s.total + " live", "180 rooms. Room 1 is open.") +
       card("#/grammar", "Grammar", "1 / " + g.total + " live", "80 chapters from the book. Chapter 1 is open.") +
-      card("#/words", "Words", "20 / " + w.total + " live", "Type the word, then the sentence.") +
+      card("#/words", "Words", w.total + " / " + w.total + " live", "Type the word, then the sentence.") +
       card("#/telc", "Master TELC B1", "Exam training", "Lesen, Sprachbausteine, Hören, Schreiben and Sprechen.") +
       "</div>";
   }
@@ -275,14 +275,10 @@
 
   function wordsIndex() {
     var html = topBar({ href: "#/", label: "All sections" }) +
-      "<h1>Words</h1><p class=\"lede\">Pick a group. Only der has 20 live words in this first drop.</p><div class=\"bars\">";
+      "<h1>Words</h1><p class=\"lede\">Pick a group. All " + DATA.words.total + " words from the Netzwerk neu glossary are open.</p><div class=\"bars\">";
     (DATA.words.categories || []).forEach(function (c) {
       var count = c.live + " / " + c.total;
-      if (c.live > 0) {
-        html += '<a class="bar cat" href="#/words/' + c.id + '"><span class="t notranslate" lang="de" translate="no">' + c.label + '</span><span class="e">' + count + "</span></a>";
-      } else {
-        html += '<div class="bar cat is-lock"><span class="t notranslate" lang="de" translate="no">' + c.label + '</span><span class="e">' + count + "</span></div>";
-      }
+      html += '<a class="bar cat" href="#/words/' + c.id + '"><span class="t notranslate" lang="de" translate="no">' + c.label + '</span><span class="e">' + count + "</span></a>";
     });
     root.innerHTML = html + "</div>";
   }
@@ -302,9 +298,6 @@
       live.forEach(function (w) {
         html += '<a class="bar' + (isDone(w.id) ? " is-done" : "") + '" href="#/words/' + w.id + '"><span class="n">' + w.id + '</span><span class="t notranslate" lang="de" translate="no">' + w.german + '</span><span class="e">' + w.english + (isDone(w.id) ? '<span class="tick" aria-label="Done">✓</span>' : "") + "</span></a>";
       });
-      if (meta && meta.total > live.length) {
-        html += '<div class="bar is-lock"><span class="n">' + (live.length + 1) + "-" + meta.total + '</span><span class="t">Closed for now</span></div>';
-      }
     }
     root.innerHTML = html + "</div>";
   }
@@ -320,7 +313,10 @@
   }
 
   function renderWord(w) {
-    var next = w.id < 20 ? w.id + 1 : null;
+    var same = DATA.words.items.filter(function (x) { return x.category === w.category; });
+    var idx = -1;
+    same.forEach(function (x, i) { if (x.id === w.id) idx = i; });
+    var next = idx >= 0 && idx < same.length - 1 ? same[idx + 1].id : null;
     var html = topBar({ href: "#/words/" + (w.category || "der"), label: w.category || "der" }) +
       '<div class="drill-stack">';
     if (wordState.step === "copy") {
@@ -398,7 +394,7 @@
     home();
   }
 
-  fetch("data/live.json?v=6")
+  fetch("data/live.json?v=7")
     .then(function (res) { return res.json(); })
     .then(function (d) {
       DATA = d;
