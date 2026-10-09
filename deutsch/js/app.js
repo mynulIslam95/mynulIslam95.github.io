@@ -38,13 +38,45 @@
   function hash() {
     var h = (location.hash || "#/").replace(/^#/, "");
     var p = h.replace(/^\/+/, "").split("/").filter(Boolean);
-    var raw = p[1] || null;
+    var level = null;
+    var rest = p;
+    if (p[0] && /^(a1|a2|b1)$/i.test(p[0])) {
+      level = p[0].toUpperCase();
+      rest = p.slice(1);
+    }
+    var raw = rest[1] || null;
     var num = raw && /^\d+$/.test(raw) ? parseInt(raw, 10) : null;
-    return { kind: p[0] || "home", raw: raw, id: num, parts: p };
+    return {
+      level: level,
+      kind: rest[0] || (level ? "level" : "home"),
+      raw: raw,
+      id: num,
+      parts: p
+    };
   }
 
-  function go(to) {
-    location.hash = to;
+  function up(s) {
+    return String(s || "A1").toUpperCase();
+  }
+
+  function wordsAt(level) {
+    return DATA.words.items.filter(function (w) { return up(w.level) === up(level); });
+  }
+
+  function catsAt(level) {
+    var items = wordsAt(level);
+    return (DATA.words.categories || []).map(function (c) {
+      var n = items.filter(function (w) { return w.category === c.id; }).length;
+      return n ? { id: c.id, label: c.label, total: n, live: n } : null;
+    }).filter(Boolean);
+  }
+
+  function storiesAt(level) {
+    return (DATA.stories.index || []).filter(function (s) { return up(s.level) === up(level); });
+  }
+
+  function levelPath(level) {
+    return "#/" + String(level).toLowerCase();
   }
 
   function md(text) {
@@ -84,18 +116,32 @@
   }
 
   function home() {
-    var s = DATA.stories;
-    var g = DATA.grammar;
-    var w = DATA.words;
-    root.innerHTML =
-      topBar() +
+    var levels = ["A1", "A2", "B1"];
+    var html = topBar() +
       "<h1>German desk</h1>" +
-      '<p class="lede">One task at a time. Story 1 and chapter 1 are open. All ' + w.total + " glossary words are live.</p>" +
+      '<p class="lede">Pick a level. Each level has the same two rooms: Words and Stories.</p>' +
+      '<div class="grid3">';
+    levels.forEach(function (lv) {
+      var wn = wordsAt(lv).length;
+      var sn = storiesAt(lv).length;
+      html += card(levelPath(lv), "Level " + lv, wn + " words · " + sn + " stories", "Words by category, then stories for this level.");
+    });
+    html += "</div>";
+    html += '<p class="lede"><a href="#/telc">TELC B1 exam training</a> · <a href="#/grammar">Grammar chapters</a></p>';
+    root.innerHTML = html;
+  }
+
+  function levelHome(level) {
+    var wn = wordsAt(level).length;
+    var sn = storiesAt(level).length;
+    var liveStories = storiesAt(level).filter(function (s) { return s.live; }).length;
+    root.innerHTML =
+      topBar({ href: "#/", label: "All levels" }) +
+      "<h1>Level " + level + "</h1>" +
+      '<p class="lede">Same two rooms at every level: words, then stories.</p>' +
       '<div class="grid3 grid-home">' +
-      card("#/stories", "Stories", "1 / " + s.total + " live", "180 rooms. Room 1 is open.") +
-      card("#/grammar", "Grammar", "1 / " + g.total + " live", "80 chapters from the book. Chapter 1 is open.") +
-      card("#/words", "Words", w.total + " / " + w.total + " live", "Type the word, then the sentence.") +
-      card("#/telc", "Master TELC B1", "Exam training", "Lesen, Sprachbausteine, Hören, Schreiben and Sprechen.") +
+      card(levelPath(level) + "/words", "Words", wn + " live", "Grouped by der, die, das, verbs and the rest.") +
+      card(levelPath(level) + "/stories", "Stories", liveStories + " / " + sn + " live", "Stories for Level " + level + ".") +
       "</div>";
   }
 
@@ -105,11 +151,15 @@
     );
   }
 
-  function storiesIndex() {
-    var html = topBar({ href: "#/", label: "All sections" }) + "<h1>Stories</h1><p class=\"lede\">180 rooms. Only story 1 is live.</p><div class=\"list\">";
-    DATA.stories.index.forEach(function (it) {
+  function storiesIndex(level) {
+    var list = level ? storiesAt(level) : DATA.stories.index;
+    var html = topBar({ href: level ? levelPath(level) : "#/", label: level ? "Level " + level : "All levels" }) +
+      "<h1>" + (level ? "Level " + level + " stories" : "Stories") + "</h1>" +
+      '<p class="lede">' + list.length + " stories in this list. Open rooms are live.</p><div class=\"list\">";
+    list.forEach(function (it) {
+      var href = (level ? levelPath(level) + "/stories/" : "#/stories/") + it.id;
       if (it.live) {
-        html += '<a class="item" href="#/stories/' + it.id + '"><span class="n">Story ' + it.id + '</span><span class="t">' + it.title_de + "</span></a>";
+        html += '<a class="item" href="' + href + '"><span class="n">Story ' + it.id + '</span><span class="t">' + it.title_de + "</span></a>";
       } else {
         html += '<div class="item is-lock"><span class="n">Story ' + it.id + '</span><span class="t">' + it.title_de + "</span></div>";
       }
@@ -117,16 +167,17 @@
     root.innerHTML = html + "</div>";
   }
 
-  function storyView(id) {
+  function storyView(id, level) {
     var s = DATA.stories.items.find(function (x) { return x.id === id; });
+    var back = level ? levelPath(level) + "/stories" : "#/stories";
     if (!s) {
-      root.innerHTML = topBar({ href: "#/stories", label: "Stories" }) + "<p>This story is not live yet.</p>";
+      root.innerHTML = topBar({ href: back, label: "Stories" }) + "<p>This story is not live yet.</p>";
       return;
     }
     var lines = s.lines && s.lines.length ? s.lines : splitPairs(s.de, s.en);
     var html =
-      topBar({ href: "#/stories", label: "Stories" }) +
-      '<p class="meta">Story ' + s.id + " / 180</p>" +
+      topBar({ href: back, label: "Stories" }) +
+      '<p class="meta">Story ' + s.id + " · Level " + (s.level || level || "") + "</p>" +
       "<h1>" + s.title_de + "</h1>" +
       '<p class="meta">' + s.title_en + "</p>" +
       '<p class="lede">Tap a German line to see its English. Tap again to hide it.</p>' +
@@ -173,84 +224,6 @@
     };
   }
 
-  function grammarIndex() {
-    var html = topBar({ href: "#/", label: "All sections" }) + "<h1>Grammar</h1><p class=\"lede\">80 chapters. Only chapter 1 is live.</p><div class=\"list\">";
-    DATA.grammar.index.forEach(function (it) {
-      if (it.live) {
-        html += '<a class="item" href="#/grammar/' + it.id + '"><span class="n">Chapter ' + it.id + '</span><span class="t">' + it.title_de + "</span></a>";
-      } else {
-        html += '<div class="item is-lock"><span class="n">Chapter ' + it.id + '</span><span class="t">' + it.title_de + "</span></div>";
-      }
-    });
-    root.innerHTML = html + "</div>";
-  }
-
-  function grammarView(id) {
-    var ch = DATA.grammar.items.find(function (x) { return x.id === id; });
-    if (!ch) {
-      root.innerHTML = topBar({ href: "#/grammar", label: "Grammar" }) + "<p>This chapter is not live yet.</p>";
-      return;
-    }
-    var html =
-      topBar({ href: "#/grammar", label: "Grammar" }) +
-      '<p class="meta">Chapter ' + ch.id + " / 80</p>" +
-      "<h1>" + ch.title_de + "</h1>" +
-      '<p class="lede">' + ch.lead + "</p>";
-    ch.tables.forEach(function (t) {
-      html += "<table><thead><tr>" + t.headers.map(function (h) { return "<th>" + h + "</th>"; }).join("") + "</tr></thead><tbody>";
-      t.rows.forEach(function (r) {
-        html += "<tr>" + r.map(function (c) { return "<td>" + c + "</td>"; }).join("") + "</tr>";
-      });
-      html += "</tbody></table>";
-    });
-    html += '<p class="formula">' + ch.formula + "</p><h2>Examples</h2>";
-    ch.examples.forEach(function (ex) {
-      html += '<div class="ex"><div class="de">' + ex.de + '</div><div class="en">' + ex.en + "</div></div>";
-    });
-    html += '<p class="note">' + ch.note + "</p><h2>Practice</h2><p class=\"lede\">Fill the blank. After two wrong tries, the answer is shown.</p>";
-    ch.drills.forEach(function (d, i) {
-      html +=
-        '<div class="drill" data-i="' + i + '">' +
-        '<div class="progress">Question ' + (i + 1) + " / " + ch.drills.length + "</div>" +
-        '<div class="prompt notranslate" lang="de" translate="no">' + d.prompt + "</div>" +
-        '<div class="type-row">' +
-        '<input class="field notranslate" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" translate="no" lang="de" aria-label="Answer">' +
-        '<button class="btn" type="button">Check</button>' +
-        "</div>" +
-        '<div class="msg"></div></div>';
-    });
-    root.innerHTML = html;
-    Array.prototype.forEach.call(root.querySelectorAll(".drill"), function (box, i) {
-      var tries = 0;
-      var d = ch.drills[i];
-      var input = box.querySelector("input");
-      var msg = box.querySelector(".msg");
-      var btn = box.querySelector("button");
-      function reveal(ok) {
-        msg.className = "msg " + (ok ? "ok" : "bad");
-        msg.textContent = ok ? "Correct. " + d.en : "Answer: " + d.answer + " — " + d.en;
-        input.disabled = true;
-        btn.disabled = true;
-      }
-      btn.onclick = function () {
-        if (norm(input.value) === norm(d.answer)) {
-          reveal(true);
-          return;
-        }
-        tries += 1;
-        if (tries >= 2) {
-          reveal(false);
-          return;
-        }
-        msg.className = "msg bad";
-        msg.textContent = "Not yet. One more try.";
-      };
-      input.addEventListener("keydown", function (e) {
-        if (e.key === "Enter") btn.click();
-      });
-    });
-  }
-
   function catLabel(id) {
     var c = (DATA.words.categories || []).find(function (x) { return x.id === id; });
     return c ? c.label : id;
@@ -273,51 +246,55 @@
     );
   }
 
-  function wordsIndex() {
-    var html = topBar({ href: "#/", label: "All sections" }) +
-      "<h1>Words</h1><p class=\"lede\">Pick a group. All " + DATA.words.total + " words from the Netzwerk neu glossary are open.</p><div class=\"bars\">";
-    (DATA.words.categories || []).forEach(function (c) {
-      var count = c.live + " / " + c.total;
-      html += '<a class="bar cat" href="#/words/' + c.id + '"><span class="t notranslate" lang="de" translate="no">' + c.label + '</span><span class="e">' + count + "</span></a>";
+  function wordsIndex(level) {
+    var cats = catsAt(level);
+    var html = topBar({ href: levelPath(level), label: "Level " + level }) +
+      "<h1>Level " + level + " words</h1>" +
+      '<p class="lede">Pick a category. ' + wordsAt(level).length + " words in this level.</p><div class=\"bars\">";
+    cats.forEach(function (c) {
+      html += '<a class="bar cat" href="' + levelPath(level) + "/words/" + c.id + '"><span class="t notranslate" lang="de" translate="no">' + c.label + '</span><span class="e">' + c.live + "</span></a>";
     });
     root.innerHTML = html + "</div>";
   }
 
-  function wordsCategory(cat) {
-    var live = DATA.words.items.filter(function (w) { return w.category === cat; });
+  function wordsCategory(level, cat) {
+    var live = wordsAt(level).filter(function (w) { return w.category === cat; });
     var meta = (DATA.words.categories || []).find(function (c) { return c.id === cat; });
     var doneN = live.filter(function (w) { return isDone(w.id); }).length;
-    var html = topBar({ href: "#/words", label: "Word groups" }) +
+    var html = topBar({ href: levelPath(level) + "/words", label: "Level " + level + " words" }) +
       "<h1>" + (meta ? meta.label : cat) + "</h1>" +
-      '<p class="lede">' + (meta ? meta.live : live.length) + " live of " + (meta ? meta.total : 0) +
+      '<p class="lede">' + live.length + " words" +
       (live.length ? ". " + doneN + " done." : "") +
       " Caps and full stops do not matter.</p><div class=\"bars\">";
     if (!live.length) {
-      html += '<div class="bar is-lock"><span class="t">This group is closed for now</span></div>';
+      html += '<div class="bar is-lock"><span class="t">No words in this group yet</span></div>';
     } else {
       live.forEach(function (w) {
-        html += '<a class="bar' + (isDone(w.id) ? " is-done" : "") + '" href="#/words/' + w.id + '"><span class="n">' + w.id + '</span><span class="t notranslate" lang="de" translate="no">' + w.german + '</span><span class="e">' + w.english + (isDone(w.id) ? '<span class="tick" aria-label="Done">✓</span>' : "") + "</span></a>";
+        html += '<a class="bar' + (isDone(w.id) ? " is-done" : "") + '" href="' + levelPath(level) + "/words/" + w.id + '"><span class="n">' + w.id + '</span><span class="t notranslate" lang="de" translate="no">' + w.german + '</span><span class="e">' + w.english + (isDone(w.id) ? '<span class="tick" aria-label="Done">✓</span>' : "") + "</span></a>";
       });
     }
     root.innerHTML = html + "</div>";
   }
 
-  function wordsView(id) {
+  function wordsView(id, level) {
     var w = DATA.words.items.find(function (x) { return x.id === id; });
+    var back = level ? levelPath(level) + "/words" : "#/";
     if (!w) {
-      root.innerHTML = topBar({ href: "#/words", label: "Word groups" }) + "<p>This word is not live yet.</p>";
+      root.innerHTML = topBar({ href: back, label: "Words" }) + "<p>This word is not live yet.</p>";
       return;
     }
+    if (!level) level = up(w.level);
     if (wordState.n !== id) wordState = { n: id, step: "copy", copies: 0, sents: 0 };
-    renderWord(w);
+    renderWord(w, level);
   }
 
-  function renderWord(w) {
-    var same = DATA.words.items.filter(function (x) { return x.category === w.category; });
+  function renderWord(w, level) {
+    var same = wordsAt(level).filter(function (x) { return x.category === w.category; });
     var idx = -1;
     same.forEach(function (x, i) { if (x.id === w.id) idx = i; });
     var next = idx >= 0 && idx < same.length - 1 ? same[idx + 1].id : null;
-    var html = topBar({ href: "#/words/" + (w.category || "der"), label: w.category || "der" }) +
+    var catHref = levelPath(level) + "/words/" + (w.category || "der");
+    var html = topBar({ href: catHref, label: catLabel(w.category || "der") }) +
       '<div class="drill-stack">';
     if (wordState.step === "copy") {
       html +=
@@ -334,7 +311,7 @@
         '<p class="msg ok">Success. The word and the sentence are done.</p>' +
         '<p class="prompt">' + deEn(w.sentence, w.sentence_en, w.id) + "</p>" +
         '<div class="row">' +
-        (next ? '<a class="btn" href="#/words/' + next + '">Next word</a>' : '<a class="btn" href="#/words/' + (w.category || "der") + '">Back to group</a>') +
+        (next ? '<a class="btn" href="' + levelPath(level) + "/words/" + next + '">Next word</a>' : '<a class="btn" href="' + catHref + '">Back to group</a>') +
         "</div>";
     }
     html += "</div>";
@@ -363,7 +340,7 @@
           markDone(w.id);
         }
       }
-      renderWord(w);
+      renderWord(w, level);
     }
     goBtn.onclick = check;
     ans.addEventListener("keydown", function (e) {
@@ -377,24 +354,64 @@
     ans.focus();
   }
 
+
+  function grammarIndex() {
+    var html = topBar({ href: "#/", label: "All sections" }) + "<h1>Grammar</h1><p class=\"lede\">80 chapters. Only chapter 1 is live.</p><div class=\"list\">";
+    (DATA.grammar.index || []).forEach(function (it) {
+      if (it.live) {
+        html += '<a class="item" href="#/grammar/' + it.id + '"><span class="n">Chapter ' + it.id + '</span><span class="t">' + it.title_de + "</span></a>";
+      } else {
+        html += '<div class="item is-lock"><span class="n">Chapter ' + it.id + '</span><span class="t">' + it.title_de + "</span></div>";
+      }
+    });
+    root.innerHTML = html + "</div>";
+  }
+
+  function grammarView(id) {
+    var ch = (DATA.grammar.items || []).find(function (x) { return x.id === id; });
+    if (!ch) {
+      root.innerHTML = topBar({ href: "#/grammar", label: "Grammar" }) + "<p>This chapter is not live yet.</p>";
+      return;
+    }
+    var html =
+      topBar({ href: "#/grammar", label: "Grammar" }) +
+      '<p class="meta">Chapter ' + ch.id + " / 80</p>" +
+      "<h1>" + ch.title_de + "</h1>" +
+      '<p class="lede">' + ch.lead + "</p>";
+    (ch.tables || []).forEach(function (tb) {
+      html += "<table><thead><tr>" + tb.headers.map(function (h) { return "<th>" + h + "</th>"; }).join("") + "</tr></thead><tbody>";
+      tb.rows.forEach(function (r) {
+        html += "<tr>" + r.map(function (c) { return "<td>" + c + "</td>"; }).join("") + "</tr>";
+      });
+      html += "</tbody></table>";
+    });
+    html += '<p class="formula">' + (ch.formula || "") + "</p><h2>Examples</h2>";
+    (ch.examples || []).forEach(function (ex) {
+      html += '<div class="ex"><div class="de">' + ex.de + '</div><div class="en">' + ex.en + "</div></div>";
+    });
+    html += '<p class="note">' + (ch.note || "") + "</p>";
+    root.innerHTML = html;
+  }
+
   function render() {
     if (!DATA) return;
     var r = hash();
-    if (r.kind === "stories" && r.id) return storyView(r.id);
-    if (r.kind === "stories") return storiesIndex();
     if (r.kind === "grammar" && r.id) return grammarView(r.id);
     if (r.kind === "grammar") return grammarIndex();
-    if (r.kind === "telc") {
+    if (r.kind === "telc" || (r.parts[0] === "telc")) {
       if (window.Telc) return window.Telc.render(r.parts);
       return;
     }
-    if (r.kind === "words" && r.id) return wordsView(r.id);
-    if (r.kind === "words" && r.raw) return wordsCategory(r.raw);
-    if (r.kind === "words") return wordsIndex();
+    if (r.kind === "level") return levelHome(r.level);
+    if (r.kind === "stories" && r.id) return storyView(r.id, r.level);
+    if (r.kind === "stories") return storiesIndex(r.level);
+    if (r.kind === "words" && r.id) return wordsView(r.id, r.level);
+    if (r.kind === "words" && r.raw) return wordsCategory(r.level || "A1", r.raw);
+    if (r.kind === "words") return wordsIndex(r.level || "A1");
     home();
   }
 
-  fetch("data/live.json?v=7")
+  fetch("data/live.json?v=16")
     .then(function (res) { return res.json(); })
     .then(function (d) {
       DATA = d;
