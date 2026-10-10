@@ -71,8 +71,12 @@
     }).filter(Boolean);
   }
 
+  function byNum(a, b) {
+    return (a.n || a.id) - (b.n || b.id);
+  }
+
   function storiesAt(level) {
-    return (DATA.stories.index || []).filter(function (s) { return up(s.level) === up(level); });
+    return (DATA.stories.index || []).filter(function (s) { return up(s.level) === up(level); }).sort(byNum);
   }
 
   function storyCatsAt(level) {
@@ -84,7 +88,7 @@
   }
 
   function grammarAt(level) {
-    return (DATA.grammar.index || []).filter(function (g) { return up(g.level) === up(level); });
+    return (DATA.grammar.index || []).filter(function (g) { return up(g.level) === up(level); }).sort(byNum);
   }
 
   function grammarCatsAt(level) {
@@ -163,8 +167,8 @@
       '<p class="lede">Same three rooms at every level: words, stories, grammar.</p>' +
       '<div class="grid3">' +
       card(levelPath(level) + "/words", "Words", wn + " live", "Grouped by der, die, das, verbs with all forms, and the rest.") +
-      card(levelPath(level) + "/stories", "Stories", liveStories + " / " + sn + " live", "Grouped by theme for Level " + level + ".") +
-      card(levelPath(level) + "/grammar", "Grammar", gn + " chapters", "Reorganized by topic for Level " + level + ".") +
+      card(levelPath(level) + "/stories", "Stories", liveStories + " numbered", "All stories for Level " + level + ", in order.") +
+      card(levelPath(level) + "/grammar", "Grammar", gn + " chapters", "All grammar chapters for Level " + level + ".") +
       "</div>";
   }
 
@@ -174,13 +178,27 @@
     );
   }
 
+  function storyRow(level, it) {
+    var href = levelPath(level) + "/stories/" + it.id;
+    var n = it.n || it.id;
+    if (it.live) {
+      return '<a class="bar" href="' + href + '"><span class="n">' + n + '</span><span class="t">' + it.title_de + '</span><span class="e">' + (it.title_en || "") + "</span></a>";
+    }
+    return '<div class="bar is-lock"><span class="n">' + n + '</span><span class="t">' + it.title_de + "</span></div>";
+  }
+
   function storiesIndex(level) {
+    var list = storiesAt(level);
     var cats = storyCatsAt(level);
     var html = topBar({ href: levelPath(level), label: "Level " + level }) +
       "<h1>Level " + level + " stories</h1>" +
-      '<p class="lede">Pick a theme. ' + storiesAt(level).length + " stories in this level.</p><div class=\"bars\">";
+      '<p class="lede">' + list.length + " stories, numbered 1 to " + list.length + " for this level. Filter by theme if you want.</p><div class=\"bars\">";
     cats.forEach(function (c) {
       html += '<a class="bar cat" href="' + levelPath(level) + "/stories/" + c.id + '"><span class="t">' + c.label + '</span><span class="e">' + c.live + "</span></a>";
+    });
+    html += '</div><div class="bars" style="margin-top:12px">';
+    list.forEach(function (it) {
+      html += storyRow(level, it);
     });
     root.innerHTML = html + "</div>";
   }
@@ -190,23 +208,16 @@
     var meta = (DATA.stories.categories || []).find(function (c) { return c.id === cat; });
     var html = topBar({ href: levelPath(level) + "/stories", label: "Level " + level + " stories" }) +
       "<h1>" + (meta ? meta.label : cat) + "</h1>" +
-      '<p class="lede">' + list.length + " stories in this group.</p><div class=\"list\">";
+      '<p class="lede">' + list.length + " stories in this group, still in level order.</p><div class=\"bars\">";
     list.forEach(function (it) {
-      var href = levelPath(level) + "/stories/" + it.id;
-      if (it.live) {
-        html += '<a class="item" href="' + href + '"><span class="n">Story ' + it.id + '</span><span class="t">' + it.title_de + "</span></a>";
-      } else {
-        html += '<div class="item is-lock"><span class="n">Story ' + it.id + '</span><span class="t">' + it.title_de + "</span></div>";
-      }
+      html += storyRow(level, it);
     });
     root.innerHTML = html + "</div>";
   }
 
   function storyView(id, level) {
     var s = DATA.stories.items.find(function (x) { return x.id === id; });
-    var back = level && s && s.category
-      ? levelPath(level) + "/stories/" + s.category
-      : (level ? levelPath(level) + "/stories" : "#/stories");
+    var back = level ? levelPath(level) + "/stories" : "#/stories";
     if (!s) {
       root.innerHTML = topBar({ href: back, label: "Stories" }) + "<p>This story is not live yet.</p>";
       return;
@@ -214,7 +225,7 @@
     var lines = s.lines && s.lines.length ? s.lines : splitPairs(s.de, s.en);
     var html =
       topBar({ href: back, label: "Stories" }) +
-      '<p class="meta">Story ' + s.id + " · Level " + (s.level || level || "") + (s.theme ? " · " + s.theme : "") + "</p>" +
+      '<p class="meta">Story ' + (s.n || s.id) + " / " + storiesAt(s.level || level).length + " · Level " + (s.level || level || "") + (s.theme ? " · " + s.theme : "") + "</p>" +
       "<h1>" + s.title_de + "</h1>" +
       '<p class="meta">' + s.title_en + "</p>" +
       '<p class="lede">Tap a German line to see its English. Tap again to hide it.</p>' +
@@ -261,13 +272,24 @@
     };
   }
 
+  function grammarRow(level, it) {
+    var href = levelPath(level) + "/grammar/" + it.id;
+    var n = it.n || it.id;
+    return '<a class="bar" href="' + href + '"><span class="n">' + n + '</span><span class="t">' + it.title_de + '</span><span class="e">' + (it.title_en || "") + "</span></a>";
+  }
+
   function grammarIndex(level) {
+    var list = grammarAt(level);
     var cats = grammarCatsAt(level);
     var html = topBar({ href: levelPath(level), label: "Level " + level }) +
       "<h1>Level " + level + " grammar</h1>" +
-      '<p class="lede">Pick a topic. ' + grammarAt(level).length + " chapters in this level.</p><div class=\"bars\">";
+      '<p class="lede">All ' + list.length + " chapters for this level, numbered in teaching order. Filter by topic if you want.</p><div class=\"bars\">";
     cats.forEach(function (c) {
       html += '<a class="bar cat" href="' + levelPath(level) + "/grammar/" + c.id + '"><span class="t">' + c.label + '</span><span class="e">' + c.live + "</span></a>";
+    });
+    html += '</div><div class="bars" style="margin-top:12px">';
+    list.forEach(function (it) {
+      html += grammarRow(level, it);
     });
     root.innerHTML = html + "</div>";
   }
@@ -277,19 +299,16 @@
     var meta = (DATA.grammar.categories || []).find(function (c) { return c.id === cat; });
     var html = topBar({ href: levelPath(level) + "/grammar", label: "Level " + level + " grammar" }) +
       "<h1>" + (meta ? meta.label : cat) + "</h1>" +
-      '<p class="lede">' + list.length + " chapters in this group.</p><div class=\"list\">";
+      '<p class="lede">' + list.length + " chapters in this group.</p><div class=\"bars\">";
     list.forEach(function (it) {
-      var href = levelPath(level) + "/grammar/" + it.id;
-      html += '<a class="item" href="' + href + '"><span class="n">Chapter ' + it.id + '</span><span class="t">' + it.title_de + "</span></a>";
+      html += grammarRow(level, it);
     });
     root.innerHTML = html + "</div>";
   }
 
   function grammarView(id, level) {
     var ch = (DATA.grammar.items || []).find(function (x) { return x.id === id; });
-    var back = level && ch && ch.category
-      ? levelPath(level) + "/grammar/" + ch.category
-      : (level ? levelPath(level) + "/grammar" : "#/");
+    var back = level ? levelPath(level) + "/grammar" : "#/";
     if (!ch) {
       root.innerHTML = topBar({ href: back, label: "Grammar" }) + "<p>This chapter is not live yet.</p>";
       return;
@@ -297,7 +316,7 @@
     if (!level) level = up(ch.level);
     var html =
       topBar({ href: back, label: "Grammar" }) +
-      '<p class="meta">Chapter ' + ch.id + " · Level " + (ch.level || level) + "</p>" +
+      '<p class="meta">Chapter ' + (ch.n || ch.id) + " / " + grammarAt(ch.level || level).length + " · Level " + (ch.level || level) + "</p>" +
       "<h1>" + ch.title_de + "</h1>" +
       (ch.title_en ? '<p class="meta">' + ch.title_en + "</p>" : "") +
       (ch.lead ? '<p class="lede">' + ch.lead + "</p>" : "");
@@ -522,7 +541,7 @@
     home();
   }
 
-  fetch("data/live.json?v=18")
+  fetch("data/live.json?v=19")
     .then(function (res) { return res.json(); })
     .then(function (d) {
       DATA = d;
