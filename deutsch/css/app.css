@@ -279,3 +279,23 @@ th { color: var(--muted); font-weight: 600; }
   .btn { padding: 10px 12px; }
   .word-big { font-size: 1.22rem; }
 }
+
+.vforms {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border: 2px solid var(--forest);
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 0 0 12px;
+}
+.vforms caption {
+  caption-side: top;
+  text-align: left;
+  font-weight: 650;
+  padding: 0 0 6px;
+}
+.vforms th, .vforms td { padding: 7px 12px; text-align: left; vertical-align: top; }
+.vforms th { width: 38%; color: var(--muted); font-weight: 500; }
+.vforms td { font-family: var(--serif); }
+.vforms tr + tr th, .vforms tr + tr td { border-top: 1px solid var(--line); }

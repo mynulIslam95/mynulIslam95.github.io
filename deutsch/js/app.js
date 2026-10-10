@@ -75,6 +75,14 @@
     return (DATA.stories.index || []).filter(function (s) { return up(s.level) === up(level); });
   }
 
+  function storyCatsAt(level) {
+    var items = storiesAt(level);
+    return (DATA.stories.categories || []).map(function (c) {
+      var n = items.filter(function (s) { return s.category === c.id; }).length;
+      return n ? { id: c.id, label: c.label, total: n, live: n } : null;
+    }).filter(Boolean);
+  }
+
   function levelPath(level) {
     return "#/" + String(level).toLowerCase();
   }
@@ -140,8 +148,8 @@
       "<h1>Level " + level + "</h1>" +
       '<p class="lede">Same two rooms at every level: words, then stories.</p>' +
       '<div class="grid3 grid-home">' +
-      card(levelPath(level) + "/words", "Words", wn + " live", "Grouped by der, die, das, verbs and the rest.") +
-      card(levelPath(level) + "/stories", "Stories", liveStories + " / " + sn + " live", "Stories for Level " + level + ".") +
+      card(levelPath(level) + "/words", "Words", wn + " live", "Grouped by der, die, das, verbs with all forms, and the rest.") +
+      card(levelPath(level) + "/stories", "Stories", liveStories + " / " + sn + " live", "Grouped by theme for Level " + level + ".") +
       "</div>";
   }
 
@@ -152,12 +160,24 @@
   }
 
   function storiesIndex(level) {
-    var list = level ? storiesAt(level) : DATA.stories.index;
-    var html = topBar({ href: level ? levelPath(level) : "#/", label: level ? "Level " + level : "All levels" }) +
-      "<h1>" + (level ? "Level " + level + " stories" : "Stories") + "</h1>" +
-      '<p class="lede">' + list.length + " stories in this list. Open rooms are live.</p><div class=\"list\">";
+    var cats = storyCatsAt(level);
+    var html = topBar({ href: levelPath(level), label: "Level " + level }) +
+      "<h1>Level " + level + " stories</h1>" +
+      '<p class="lede">Pick a theme. ' + storiesAt(level).length + " stories in this level.</p><div class=\"bars\">";
+    cats.forEach(function (c) {
+      html += '<a class="bar cat" href="' + levelPath(level) + "/stories/" + c.id + '"><span class="t">' + c.label + '</span><span class="e">' + c.live + "</span></a>";
+    });
+    root.innerHTML = html + "</div>";
+  }
+
+  function storiesCategory(level, cat) {
+    var list = storiesAt(level).filter(function (s) { return s.category === cat; });
+    var meta = (DATA.stories.categories || []).find(function (c) { return c.id === cat; });
+    var html = topBar({ href: levelPath(level) + "/stories", label: "Level " + level + " stories" }) +
+      "<h1>" + (meta ? meta.label : cat) + "</h1>" +
+      '<p class="lede">' + list.length + " stories in this group.</p><div class=\"list\">";
     list.forEach(function (it) {
-      var href = (level ? levelPath(level) + "/stories/" : "#/stories/") + it.id;
+      var href = levelPath(level) + "/stories/" + it.id;
       if (it.live) {
         html += '<a class="item" href="' + href + '"><span class="n">Story ' + it.id + '</span><span class="t">' + it.title_de + "</span></a>";
       } else {
@@ -169,7 +189,9 @@
 
   function storyView(id, level) {
     var s = DATA.stories.items.find(function (x) { return x.id === id; });
-    var back = level ? levelPath(level) + "/stories" : "#/stories";
+    var back = level && s && s.category
+      ? levelPath(level) + "/stories/" + s.category
+      : (level ? levelPath(level) + "/stories" : "#/stories");
     if (!s) {
       root.innerHTML = topBar({ href: back, label: "Stories" }) + "<p>This story is not live yet.</p>";
       return;
@@ -177,7 +199,7 @@
     var lines = s.lines && s.lines.length ? s.lines : splitPairs(s.de, s.en);
     var html =
       topBar({ href: back, label: "Stories" }) +
-      '<p class="meta">Story ' + s.id + " · Level " + (s.level || level || "") + "</p>" +
+      '<p class="meta">Story ' + s.id + " · Level " + (s.level || level || "") + (s.theme ? " · " + s.theme : "") + "</p>" +
       "<h1>" + s.title_de + "</h1>" +
       '<p class="meta">' + s.title_en + "</p>" +
       '<p class="lede">Tap a German line to see its English. Tap again to hide it.</p>' +
@@ -234,6 +256,15 @@
       '<span class="de-text notranslate" lang="de" translate="no">' + de + "</span>";
     if (en) html += ' <span class="en-paren">(' + en + ")</span>";
     return html;
+  }
+
+  function formTable(w) {
+    if (!w.forms || !w.forms.length) return "";
+    var html = '<table class="vforms"><caption>All verb forms</caption><tbody>';
+    w.forms.forEach(function (row) {
+      html += '<tr><th>' + row.slot + '</th><td class="notranslate" lang="de" translate="no">' + row.form + "</td></tr>";
+    });
+    return html + "</tbody></table>";
   }
 
   function typeRow(label) {
@@ -295,6 +326,7 @@
     var next = idx >= 0 && idx < same.length - 1 ? same[idx + 1].id : null;
     var catHref = levelPath(level) + "/words/" + (w.category || "der");
     var html = topBar({ href: catHref, label: catLabel(w.category || "der") }) +
+      formTable(w) +
       '<div class="drill-stack">';
     if (wordState.step === "copy") {
       html +=
@@ -354,6 +386,9 @@
     ans.focus();
   }
 
+  function render() {
+    if (!DATA) return;
+    var r = hash();
 
   function grammarIndex() {
     var html = topBar({ href: "#/", label: "All sections" }) + "<h1>Grammar</h1><p class=\"lede\">80 chapters. Only chapter 1 is live.</p><div class=\"list\">";
@@ -377,7 +412,7 @@
       topBar({ href: "#/grammar", label: "Grammar" }) +
       '<p class="meta">Chapter ' + ch.id + " / 80</p>" +
       "<h1>" + ch.title_de + "</h1>" +
-      '<p class="lede">' + ch.lead + "</p>";
+      '<p class="lede">' + (ch.lead || "") + "</p>";
     (ch.tables || []).forEach(function (tb) {
       html += "<table><thead><tr>" + tb.headers.map(function (h) { return "<th>" + h + "</th>"; }).join("") + "</tr></thead><tbody>";
       tb.rows.forEach(function (r) {
@@ -385,17 +420,10 @@
       });
       html += "</tbody></table>";
     });
-    html += '<p class="formula">' + (ch.formula || "") + "</p><h2>Examples</h2>";
-    (ch.examples || []).forEach(function (ex) {
-      html += '<div class="ex"><div class="de">' + ex.de + '</div><div class="en">' + ex.en + "</div></div>";
-    });
-    html += '<p class="note">' + (ch.note || "") + "</p>";
+    html += '<p class="formula">' + (ch.formula || "") + "</p>";
     root.innerHTML = html;
   }
 
-  function render() {
-    if (!DATA) return;
-    var r = hash();
     if (r.kind === "grammar" && r.id) return grammarView(r.id);
     if (r.kind === "grammar") return grammarIndex();
     if (r.kind === "telc" || (r.parts[0] === "telc")) {
@@ -404,6 +432,7 @@
     }
     if (r.kind === "level") return levelHome(r.level);
     if (r.kind === "stories" && r.id) return storyView(r.id, r.level);
+    if (r.kind === "stories" && r.raw) return storiesCategory(r.level || "A1", r.raw);
     if (r.kind === "stories") return storiesIndex(r.level);
     if (r.kind === "words" && r.id) return wordsView(r.id, r.level);
     if (r.kind === "words" && r.raw) return wordsCategory(r.level || "A1", r.raw);
@@ -411,7 +440,7 @@
     home();
   }
 
-  fetch("data/live.json?v=16")
+  fetch("data/live.json?v=17")
     .then(function (res) { return res.json(); })
     .then(function (d) {
       DATA = d;
