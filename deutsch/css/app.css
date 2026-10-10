@@ -299,3 +299,13 @@ th { color: var(--muted); font-weight: 600; }
 .vforms th { width: 38%; color: var(--muted); font-weight: 500; }
 .vforms td { font-family: var(--serif); }
 .vforms tr + tr th, .vforms tr + tr td { border-top: 1px solid var(--line); }
+
+.gtable { width: 100%; border-collapse: collapse; background: #fff; border: 2px solid var(--forest); border-radius: 10px; overflow: hidden; margin: 0 0 12px; }
+.gtable th, .gtable td { padding: 7px 10px; text-align: left; vertical-align: top; }
+.gtable th { color: var(--muted); font-weight: 600; font-size: 0.88rem; }
+.gtable tr + tr td { border-top: 1px solid var(--line); }
+.formula { font-family: var(--serif); background: #e7f3ee; border: 2px solid var(--forest); border-radius: 10px; padding: 10px 12px; white-space: pre-wrap; }
+.ex { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; margin: 0 0 8px; }
+.ex .de { font-family: var(--serif); }
+.ex .en { color: var(--muted); margin-top: 4px; }
+.note { color: var(--muted); }

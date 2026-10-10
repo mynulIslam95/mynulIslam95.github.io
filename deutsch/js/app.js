@@ -83,6 +83,18 @@
     }).filter(Boolean);
   }
 
+  function grammarAt(level) {
+    return (DATA.grammar.index || []).filter(function (g) { return up(g.level) === up(level); });
+  }
+
+  function grammarCatsAt(level) {
+    var items = grammarAt(level);
+    return (DATA.grammar.categories || []).map(function (c) {
+      var n = items.filter(function (g) { return g.category === c.id; }).length;
+      return n ? { id: c.id, label: c.label, total: n, live: n } : null;
+    }).filter(Boolean);
+  }
+
   function levelPath(level) {
     return "#/" + String(level).toLowerCase();
   }
@@ -127,15 +139,16 @@
     var levels = ["A1", "A2", "B1"];
     var html = topBar() +
       "<h1>German desk</h1>" +
-      '<p class="lede">Pick a level. Each level has the same two rooms: Words and Stories.</p>' +
+      '<p class="lede">Pick a level. Each level has the same three rooms: Words, Stories and Grammar.</p>' +
       '<div class="grid3">';
     levels.forEach(function (lv) {
       var wn = wordsAt(lv).length;
       var sn = storiesAt(lv).length;
-      html += card(levelPath(lv), "Level " + lv, wn + " words · " + sn + " stories", "Words by category, then stories for this level.");
+      var gn = grammarAt(lv).length;
+      html += card(levelPath(lv), "Level " + lv, wn + " words · " + sn + " stories · " + gn + " grammar", "Words, stories and grammar for this level.");
     });
     html += "</div>";
-    html += '<p class="lede"><a href="#/telc">TELC B1 exam training</a> · <a href="#/grammar">Grammar chapters</a></p>';
+    html += '<p class="lede"><a href="#/telc">TELC B1 exam training</a></p>';
     root.innerHTML = html;
   }
 
@@ -143,13 +156,15 @@
     var wn = wordsAt(level).length;
     var sn = storiesAt(level).length;
     var liveStories = storiesAt(level).filter(function (s) { return s.live; }).length;
+    var gn = grammarAt(level).length;
     root.innerHTML =
       topBar({ href: "#/", label: "All levels" }) +
       "<h1>Level " + level + "</h1>" +
-      '<p class="lede">Same two rooms at every level: words, then stories.</p>' +
-      '<div class="grid3 grid-home">' +
+      '<p class="lede">Same three rooms at every level: words, stories, grammar.</p>' +
+      '<div class="grid3">' +
       card(levelPath(level) + "/words", "Words", wn + " live", "Grouped by der, die, das, verbs with all forms, and the rest.") +
       card(levelPath(level) + "/stories", "Stories", liveStories + " / " + sn + " live", "Grouped by theme for Level " + level + ".") +
+      card(levelPath(level) + "/grammar", "Grammar", gn + " chapters", "Reorganized by topic for Level " + level + ".") +
       "</div>";
   }
 
@@ -244,6 +259,107 @@
       box.hidden = !on;
       this.textContent = on ? "Hide Full translation" : "Show Full translation";
     };
+  }
+
+  function grammarIndex(level) {
+    var cats = grammarCatsAt(level);
+    var html = topBar({ href: levelPath(level), label: "Level " + level }) +
+      "<h1>Level " + level + " grammar</h1>" +
+      '<p class="lede">Pick a topic. ' + grammarAt(level).length + " chapters in this level.</p><div class=\"bars\">";
+    cats.forEach(function (c) {
+      html += '<a class="bar cat" href="' + levelPath(level) + "/grammar/" + c.id + '"><span class="t">' + c.label + '</span><span class="e">' + c.live + "</span></a>";
+    });
+    root.innerHTML = html + "</div>";
+  }
+
+  function grammarCategory(level, cat) {
+    var list = grammarAt(level).filter(function (g) { return g.category === cat; });
+    var meta = (DATA.grammar.categories || []).find(function (c) { return c.id === cat; });
+    var html = topBar({ href: levelPath(level) + "/grammar", label: "Level " + level + " grammar" }) +
+      "<h1>" + (meta ? meta.label : cat) + "</h1>" +
+      '<p class="lede">' + list.length + " chapters in this group.</p><div class=\"list\">";
+    list.forEach(function (it) {
+      var href = levelPath(level) + "/grammar/" + it.id;
+      html += '<a class="item" href="' + href + '"><span class="n">Chapter ' + it.id + '</span><span class="t">' + it.title_de + "</span></a>";
+    });
+    root.innerHTML = html + "</div>";
+  }
+
+  function grammarView(id, level) {
+    var ch = (DATA.grammar.items || []).find(function (x) { return x.id === id; });
+    var back = level && ch && ch.category
+      ? levelPath(level) + "/grammar/" + ch.category
+      : (level ? levelPath(level) + "/grammar" : "#/");
+    if (!ch) {
+      root.innerHTML = topBar({ href: back, label: "Grammar" }) + "<p>This chapter is not live yet.</p>";
+      return;
+    }
+    if (!level) level = up(ch.level);
+    var html =
+      topBar({ href: back, label: "Grammar" }) +
+      '<p class="meta">Chapter ' + ch.id + " · Level " + (ch.level || level) + "</p>" +
+      "<h1>" + ch.title_de + "</h1>" +
+      (ch.title_en ? '<p class="meta">' + ch.title_en + "</p>" : "") +
+      (ch.lead ? '<p class="lede">' + ch.lead + "</p>" : "");
+    (ch.tables || []).forEach(function (t) {
+      html += '<table class="gtable"><thead><tr>' + (t.headers || []).map(function (h) { return "<th>" + h + "</th>"; }).join("") + "</tr></thead><tbody>";
+      (t.rows || []).forEach(function (r) {
+        html += "<tr>" + r.map(function (c) { return "<td>" + c + "</td>"; }).join("") + "</tr>";
+      });
+      html += "</tbody></table>";
+    });
+    if (ch.formula) html += '<p class="formula">' + ch.formula + "</p>";
+    if (ch.examples && ch.examples.length) {
+      html += "<h2>Examples</h2>";
+      ch.examples.forEach(function (ex) {
+        html += '<div class="ex"><div class="de notranslate" lang="de" translate="no">' + ex.de + '</div><div class="en">' + (ex.en || "") + "</div></div>";
+      });
+    }
+    if (ch.note) html += '<p class="note">' + ch.note + "</p>";
+    if (ch.drills && ch.drills.length) {
+      html += "<h2>Practice</h2><p class=\"lede\">Fill the blank. After two wrong tries, the answer is shown.</p>";
+      ch.drills.forEach(function (d, i) {
+        html +=
+          '<div class="drill" data-i="' + i + '">' +
+          '<div class="progress">Question ' + (i + 1) + " / " + ch.drills.length + "</div>" +
+          '<div class="prompt notranslate" lang="de" translate="no">' + d.prompt + "</div>" +
+          '<div class="type-row">' +
+          '<input class="field notranslate" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" translate="no" lang="de" aria-label="Answer">' +
+          '<button class="btn" type="button">Check</button>' +
+          "</div>" +
+          '<div class="msg"></div></div>';
+      });
+    }
+    root.innerHTML = html;
+    Array.prototype.forEach.call(root.querySelectorAll(".drill"), function (box, i) {
+      var tries = 0;
+      var d = ch.drills[i];
+      var input = box.querySelector("input");
+      var msg = box.querySelector(".msg");
+      var btn = box.querySelector("button");
+      function reveal(ok) {
+        msg.className = "msg " + (ok ? "ok" : "bad");
+        msg.textContent = ok ? "Correct. " + (d.en || "") : "Answer: " + d.answer + (d.en ? " — " + d.en : "");
+        input.disabled = true;
+        btn.disabled = true;
+      }
+      btn.onclick = function () {
+        if (norm(input.value) === norm(d.answer)) {
+          reveal(true);
+          return;
+        }
+        tries += 1;
+        if (tries >= 2) {
+          reveal(false);
+          return;
+        }
+        msg.className = "msg bad";
+        msg.textContent = "Not yet. One more try.";
+      };
+      input.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") btn.click();
+      });
+    });
   }
 
   function catLabel(id) {
@@ -389,48 +505,14 @@
   function render() {
     if (!DATA) return;
     var r = hash();
-
-  function grammarIndex() {
-    var html = topBar({ href: "#/", label: "All sections" }) + "<h1>Grammar</h1><p class=\"lede\">80 chapters. Only chapter 1 is live.</p><div class=\"list\">";
-    (DATA.grammar.index || []).forEach(function (it) {
-      if (it.live) {
-        html += '<a class="item" href="#/grammar/' + it.id + '"><span class="n">Chapter ' + it.id + '</span><span class="t">' + it.title_de + "</span></a>";
-      } else {
-        html += '<div class="item is-lock"><span class="n">Chapter ' + it.id + '</span><span class="t">' + it.title_de + "</span></div>";
-      }
-    });
-    root.innerHTML = html + "</div>";
-  }
-
-  function grammarView(id) {
-    var ch = (DATA.grammar.items || []).find(function (x) { return x.id === id; });
-    if (!ch) {
-      root.innerHTML = topBar({ href: "#/grammar", label: "Grammar" }) + "<p>This chapter is not live yet.</p>";
-      return;
-    }
-    var html =
-      topBar({ href: "#/grammar", label: "Grammar" }) +
-      '<p class="meta">Chapter ' + ch.id + " / 80</p>" +
-      "<h1>" + ch.title_de + "</h1>" +
-      '<p class="lede">' + (ch.lead || "") + "</p>";
-    (ch.tables || []).forEach(function (tb) {
-      html += "<table><thead><tr>" + tb.headers.map(function (h) { return "<th>" + h + "</th>"; }).join("") + "</tr></thead><tbody>";
-      tb.rows.forEach(function (r) {
-        html += "<tr>" + r.map(function (c) { return "<td>" + c + "</td>"; }).join("") + "</tr>";
-      });
-      html += "</tbody></table>";
-    });
-    html += '<p class="formula">' + (ch.formula || "") + "</p>";
-    root.innerHTML = html;
-  }
-
-    if (r.kind === "grammar" && r.id) return grammarView(r.id);
-    if (r.kind === "grammar") return grammarIndex();
     if (r.kind === "telc" || (r.parts[0] === "telc")) {
       if (window.Telc) return window.Telc.render(r.parts);
       return;
     }
     if (r.kind === "level") return levelHome(r.level);
+    if (r.kind === "grammar" && r.id) return grammarView(r.id, r.level);
+    if (r.kind === "grammar" && r.raw) return grammarCategory(r.level || "A1", r.raw);
+    if (r.kind === "grammar") return grammarIndex(r.level);
     if (r.kind === "stories" && r.id) return storyView(r.id, r.level);
     if (r.kind === "stories" && r.raw) return storiesCategory(r.level || "A1", r.raw);
     if (r.kind === "stories") return storiesIndex(r.level);
@@ -440,7 +522,7 @@
     home();
   }
 
-  fetch("data/live.json?v=17")
+  fetch("data/live.json?v=18")
     .then(function (res) { return res.json(); })
     .then(function (d) {
       DATA = d;
