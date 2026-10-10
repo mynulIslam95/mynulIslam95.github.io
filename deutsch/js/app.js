@@ -153,16 +153,36 @@
     return help(w.english, w.bn);
   }
 
-  function langSwitch() {
-    var html = '<div class="lang-switch" role="group" aria-label="' + t("explain") + '">';
-    html += '<span class="lang-label">' + t("explain") + "</span>";
+  function langPills() {
+    var html = '<div class="lang-pills">';
     I18n.langs.forEach(function (L) {
       html +=
         '<button type="button"' +
         (I18n.get() === L.id ? ' class="is-on"' : "") +
-        ' data-lang-set="' + L.id + '">' + L.label + "</button>";
+        ' data-lang-set="' + L.id + '"' +
+        ' aria-pressed="' + (I18n.get() === L.id ? "true" : "false") + '">' +
+        L.label + "</button>";
     });
     return html + "</div>";
+  }
+
+  function langSwitch() {
+    return (
+      '<div class="lang-switch" role="group" aria-label="' + t("explain") + '">' +
+      '<span class="lang-label">' + t("explain") + "</span>" +
+      langPills() +
+      "</div>"
+    );
+  }
+
+  function langBanner() {
+    return (
+      '<div class="lang-banner">' +
+      '<p class="lang-banner-q">' + t("langHint") + "</p>" +
+      '<div class="lang-switch lang-switch-lg" role="group" aria-label="' + t("explain") + '">' +
+      langPills() +
+      "</div></div>"
+    );
   }
 
   function bindLang() {
@@ -179,7 +199,10 @@
       ? '<a class="home" href="' + window.DESK_PORTFOLIO + '">' + t("portfolio") + "</a>"
       : "";
     return (
-      '<div class="top"><a class="brand" href="#/">' + t("brand") + "</a>" + extra + langSwitch() + "</div>" +
+      '<div class="top">' +
+      '<div class="top-row"><a class="brand" href="#/">' + t("brand") + "</a>" + extra + "</div>" +
+      langSwitch() +
+      "</div>" +
       (crumb ? '<a class="back" href="' + crumb.href + '">' + crumb.label + "</a>" : "")
     );
   }
@@ -189,6 +212,7 @@
     var html = topBar() +
       "<h1>" + t("brand") + "</h1>" +
       '<p class="lede">' + t("homeLede") + "</p>" +
+      langBanner() +
       '<div class="grid3">';
     levels.forEach(function (lv) {
       var wn = wordsAt(lv).length;
@@ -601,7 +625,7 @@
 
   I18n.onChange = render;
 
-  fetch("data/live.json?v=20")
+  fetch("data/live.json?v=22")
     .then(function (res) { return res.json(); })
     .then(function (d) {
       DATA = d;

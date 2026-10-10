@@ -23,22 +23,35 @@ button, input { font: inherit; }
 
 .wrap { width: min(920px, calc(100% - 28px)); margin: 0 auto; max-width: 100%; }
 .site { padding: 12px 0 40px; min-width: 0; padding-bottom: max(40px, env(safe-area-inset-bottom)); }
-.top { display: flex; justify-content: space-between; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
+.top { display: flex; flex-direction: column; gap: 10px; align-items: stretch; margin-bottom: 14px; }
+.top-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .brand {
   font-family: var(--serif); font-weight: 650; color: #fff; font-size: 0.98rem;
   background: var(--forest); border: 2px solid var(--forest); border-radius: 10px;
   padding: 6px 12px;
 }
 .lang-switch {
-  display: flex; align-items: center; gap: 4px; margin-left: auto; flex-wrap: wrap;
+  display: flex; align-items: center; gap: 10px; margin-left: 0; flex-wrap: wrap;
 }
-.lang-label { color: var(--muted); font-size: 0.8rem; margin-right: 2px; }
-.lang-switch button {
-  font: inherit; font-size: 0.82rem; font-weight: 600;
-  padding: 5px 10px; border: 2px solid var(--forest); border-radius: 8px;
-  background: #fff; color: var(--forest); cursor: pointer;
+.lang-label { color: var(--muted); font-size: 0.9rem; font-weight: 500; }
+.lang-pills {
+  display: inline-flex; border: 2px solid var(--forest); border-radius: 999px;
+  overflow: hidden; background: #fff;
 }
-.lang-switch button.is-on { background: var(--forest); color: #fff; }
+.lang-pills button {
+  font: inherit; font-size: 0.92rem; font-weight: 600;
+  padding: 6px 14px; border: 0; border-right: 1px solid var(--forest);
+  background: transparent; color: var(--forest); cursor: pointer; border-radius: 0;
+}
+.lang-pills button:last-child { border-right: 0; }
+.lang-pills button.is-on { background: var(--forest); color: #fff; }
+.lang-banner {
+  background: #fff; border: 2px solid var(--forest); border-radius: 12px;
+  padding: 12px 14px; margin: 0 0 18px;
+}
+.lang-banner-q { margin: 0 0 10px; color: var(--ink); font-size: 1.02rem; line-height: 1.45; }
+.lang-switch-lg { margin-left: 0; }
+.lang-switch-lg .lang-pills button { font-size: 1.02rem; padding: 8px 18px; }
 .home {
   font-weight: 600; color: #fff; font-size: 0.95rem;
   background: var(--forest); border: 2px solid var(--forest); border-radius: 10px;
@@ -186,4 +199,7 @@ h2 { font-size: 1.3rem; }
   .bar .e { grid-column: 2; text-align: left; }
   .bar.cat { grid-template-columns: 1fr auto; }
   .bar.cat .e { grid-column: auto; }
+  .lang-switch { width: 100%; }
+  .type-row { flex-wrap: wrap; }
+  .type-row .btn { width: 100%; }
 }
