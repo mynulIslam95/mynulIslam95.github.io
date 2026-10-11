@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="assets/css/styles.css?v=42"/>
+  <link rel="stylesheet" href="assets/css/styles.css?v=43"/>
 </head>
 <body translate="no" class="notranslate">
   <a class="skip" href="#main">Skip to content</a>
@@ -104,22 +104,37 @@
                 <span class="orbit-badge o4"><img src="assets/icons/role-sysadmin.svg?v=26" alt="" width="20" height="20"/></span>
               </div>
             </div>
-            <dl>
-              <div>
-                <dt data-i18n="duty.loc">Location</dt>
-                <dd>Hamburg, Germany</dd>
+            <div class="id-meta">
+              <div class="id-place">
+                <span class="id-pin" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="18" height="18" focusable="false">
+                    <path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/>
+                  </svg>
+                </span>
+                <div>
+                  <span class="id-kicker" data-i18n="duty.loc">Location</span>
+                  <strong>Hamburg</strong>
+                  <span class="id-country">Germany</span>
+                </div>
               </div>
-              <div>
-                <dt data-i18n="duty.lang">Languages</dt>
-                <dd>
-                  <ul class="lang-list">
-                    <li data-i18n="duty.en">English : C1</li>
-                    <li data-i18n="duty.de">German : B1</li>
-                    <li data-i18n="duty.bn">Bengali : Native</li>
-                  </ul>
-                </dd>
+              <div class="id-langs">
+                <span class="id-kicker" data-i18n="duty.lang">Languages</span>
+                <ul class="lang-pills">
+                  <li>
+                    <span class="lang-name" data-i18n="duty.en">English</span>
+                    <span class="lang-lvl">C1</span>
+                  </li>
+                  <li>
+                    <span class="lang-name" data-i18n="duty.de">German</span>
+                    <span class="lang-lvl">B1</span>
+                  </li>
+                  <li>
+                    <span class="lang-name" data-i18n="duty.bn">Bengali</span>
+                    <span class="lang-lvl is-native" data-i18n="duty.native">Native</span>
+                  </li>
+                </ul>
               </div>
-            </dl>
+            </div>
           </aside>
           <a class="learn-glow" href="learn/index.html" aria-label="Learn with Mynul">
             <span class="learn-glow-kicker" data-i18n="learn.kicker">German and technology</span>
@@ -317,6 +332,6 @@
       <p data-i18n="foot">Mynul Islam · Hamburg</p>
     </div>
   </footer>
-  <script src="assets/js/main.js?v=42" defer></script>
+  <script src="assets/js/main.js?v=43" defer></script>
 </body>
 </html>

@@ -1026,25 +1026,102 @@ section { scroll-margin-top: calc(var(--nav-h) + 28px); padding-block: var(--spa
 @keyframes orbit-unspin {
   to { transform: rotate(-360deg); }
 }
-.lang-list {
-  list-style: none;
-  margin: 4px 0 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+.id-meta {
+  display: grid;
+  gap: 14px;
 }
-.lang-list li {
-  position: relative;
-  padding-left: 1em;
+.id-place {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--neon-line);
+  background: rgba(0, 255, 156, 0.06);
+  box-shadow: 0 0 16px var(--neon-dim);
+}
+.id-pin {
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  border-radius: 12px;
+  background: var(--neon);
+  color: #000;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 0 16px var(--neon-dim);
+}
+.id-kicker {
+  display: block;
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 3px;
+}
+.id-place strong {
+  display: block;
+  font-family: var(--display);
+  font-size: 1.12rem;
+  font-weight: 750;
+  letter-spacing: -0.03em;
+  color: var(--neon);
+  text-shadow: 0 0 12px var(--neon-dim);
+  line-height: 1.15;
+  white-space: nowrap;
+}
+.id-country {
+  display: block;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.id-langs .id-kicker { margin-bottom: 8px; }
+.lang-pills {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+.lang-pills li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 44px;
+  padding: 6px 8px 6px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--ink-line);
+  background: rgba(0, 255, 156, 0.04);
+}
+.lang-name {
   font-weight: 600;
   color: var(--ink);
+  letter-spacing: -0.01em;
 }
-.lang-list li::before {
-  content: "-";
-  position: absolute;
-  left: 0;
-  color: var(--neon);
+.lang-lvl {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #000;
+  background: var(--neon);
+  min-width: 46px;
+  text-align: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  box-shadow: 0 0 12px var(--neon-dim);
+}
+.lang-lvl.is-native {
+  min-width: 0;
+  padding-inline: 12px;
 }
 .profile-card {
   transform: translate3d(0, var(--card-shift, 0px), 0);
