@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <script>
+  (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
+  </script>
+  <title>C programming for Operating System · Learn with Mynul</title>
+  <meta name="description" content="C for the OS exam: ten chapters. Lesson plus a lot of practice. Hint, submit, see the commented answer."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/c.css?v=3"/>
+</head>
+<body class="cos">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="cos-bar">
+    <div class="wrap">
+      <a class="cos-brand" href="index.html">C · OS</a>
+      <nav class="cos-nav" aria-label="C course">
+        <a class="is-on" href="index.html">Map</a>
+        <a href="ch01.html">1</a>
+        <a href="ch02.html">2</a>
+        <a href="ch03.html">3</a>
+        <a href="ch04.html">4</a>
+        <a href="ch05.html">5</a>
+        <a href="ch06.html">6</a>
+        <a href="ch07.html">7</a>
+        <a href="ch08.html">8</a>
+        <a href="ch09.html">9</a>
+        <a href="ch10.html">10</a>
+        <a href="../os/index.html">OS</a>
+        <a href="../index.html">Learn hub</a>
+      </nav>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode">Light</button>
+    </div>
+  </header>
+  <main id="main">
+    <div class="wrap">
+      <p class="kicker"><a href="../index.html">Learn with Mynul</a> · Technology</p>
+      <h1>C programming for Operating System</h1>
+      <p class="lede">This course sits outside the OS classroom. No shop stories. Ten chapters, each a long rule then a large practice set. Every item has Hint, Submit, and See answer. The answer is C with comments on every important line. Start at Chapter 1 if you have never written C.</p>
+
+      <div class="need">
+        <span class="tag">How to practice</span>
+        <p>Read the rule. Trace: what is in the box, which line runs next, what comes back. Then do every drill. Submit first. Open See answer only after you try. Logic is the skill. Typing is second.</p>
+      </div>
+
+      <div class="floor">
+        <p class="floor-label">Warm-up · open</p>
+        <h2>Chapters 1 to 6</h2>
+        <p>File with <code>main</code>, variables, <code>printf</code>/<code>scanf</code>, <code>if</code>, loops, arrays. Do these before functions. Same Hint / Submit / See answer.</p>
+        <div class="grid">
+          <a class="card" href="ch01.html">
+            <p class="id">Ch1 · open</p>
+            <h3>A C file</h3>
+            <p>main, compile, run. Order of lines. gcc then ./tool.</p>
+          </a>
+          <a class="card" href="ch02.html">
+            <p class="id">Ch2 · open</p>
+            <h3>Variables</h3>
+            <p>int, char. One name, one value. Assignment replaces.</p>
+          </a>
+          <a class="card" href="ch03.html">
+            <p class="id">Ch3 · open</p>
+            <h3>Print and read</h3>
+            <p>printf, scanf, perror. Format vs value. Print a pid.</p>
+          </a>
+          <a class="card" href="ch04.html">
+            <p class="id">Ch4 · open</p>
+            <h3>Choice</h3>
+            <p>if / else. == vs =. if (r == 0) after fork.</p>
+          </a>
+          <a class="card" href="ch05.html">
+            <p class="id">Ch5 · open</p>
+            <h3>Repeat</h3>
+            <p>while, for. Off-by-one. Flag wait loop vs wait().</p>
+          </a>
+          <a class="card" href="ch06.html">
+            <p class="id">Ch6 · open</p>
+            <h3>Arrays</h3>
+            <p>Index from 0. Strings. "/myshm". Do not walk off the end.</p>
+          </a>
+        </div>
+      </div>
+
+      <div class="floor">
+        <p class="floor-label">The OS hinge · open</p>
+        <h2>Chapters 7 to 10</h2>
+        <p>This is the C you must be boss at before process, threads, mutex, semaphore, shared memory, GPIO.</p>
+        <div class="grid">
+          <a class="card" href="ch07.html">
+            <p class="id">Ch7 · open</p>
+            <h3>Functions</h3>
+            <p>Call, arguments, return. Who waits. Then fork, wait, kill, a signal handler.</p>
+          </a>
+          <a class="card" href="ch08.html">
+            <p class="id">Ch8 · open</p>
+            <h3>Pointers</h3>
+            <p>Paper vs box. Two papers, one box. Mutex, mmap, GPIO. Hardest chapter.</p>
+          </a>
+          <a class="card" href="ch09.html">
+            <p class="id">Ch9 · open</p>
+            <h3>Structs</h3>
+            <p>Several fields, one object. Shared block: counters + a lock.</p>
+          </a>
+          <a class="card" href="ch10.html">
+            <p class="id">Ch10 · open</p>
+            <h3>Headers</h3>
+            <p>#include, -lpthread, -lrt. Why lock and shm_open fail to build.</p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="cos-foot">
+    <div class="wrap">C programming for Operating System · ten chapters · logic first</div>
+  </footer>
+  <script src="../../assets/js/theme.js?v=1"></script>
+</body>
+</html>

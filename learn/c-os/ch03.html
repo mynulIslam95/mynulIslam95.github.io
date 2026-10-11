@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <script>
+  (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
+  </script>
+  <title>Ch3 · Print and read · C for OS</title>
+  <meta name="description" content="printf and scanf. Format vs value. Practice with hint, submit, commented answers."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/c.css?v=3"/>
+</head>
+<body class="cos">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="cos-bar">
+    <div class="wrap">
+      <a class="cos-brand" href="index.html">C · OS</a>
+      <nav class="cos-nav" aria-label="C course">
+        <a href="index.html">Map</a>
+        <a href="ch01.html">1</a>
+        <a href="ch02.html">2</a>
+        <a class="is-on" href="ch03.html">3</a>
+        <a href="ch04.html">4</a>
+        <a href="ch05.html">5</a>
+        <a href="ch06.html">6</a>
+        <a href="ch07.html">7</a>
+        <a href="ch08.html">8</a>
+        <a href="ch09.html">9</a>
+        <a href="ch10.html">10</a>
+        <a href="../os/index.html">OS</a>
+        <a href="../index.html">Learn hub</a>
+      </nav>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode">Light</button>
+    </div>
+  </header>
+  <main id="main">
+    <div class="wrap">
+      <p class="kicker"><a href="index.html">C for OS</a> · Chapter 3</p>
+      <h1>Print and read — printf, scanf</h1>
+      <p class="lede">Format vs value. What prints. What is still unknown until you read it. Labs print a pid or a pin. <code>perror</code> is also a print after a failed call.</p>
+      <p class="jump"><a href="#practice">Jump to practice</a> <a href="ch02.html">Ch2 variables</a></p>
+
+      <h2>1. printf is a function call</h2>
+      <p>You already wait for functions in Chapter 7. Here you only need: you <strong>call</strong> <code>printf</code>. What goes in: a format string, then values. The screen shows text. <code>main</code> waits until printing is done.</p>
+      <pre><code>#include &lt;stdio.h&gt;
+
+int main(void) {
+  int x = 5;
+  printf("%d\n", x);
+  return 0;
+}</code></pre>
+      <div class="rule">
+        <span class="tag">The rule</span>
+        <p><code>%d</code> is a hole for an <code>int</code>. <code>\n</code> is a new line. The value after the comma fills the hole. The format is not the value. <code>"%d\n"</code> is instructions. <code>x</code> is the number.</p>
+      </div>
+
+      <h2>2. Holes you need</h2>
+      <ul>
+        <li><code>%d</code> — int (pid, count, fd, return code)</li>
+        <li><code>%c</code> — one char</li>
+        <li><code>%s</code> — string (paper to the first character, Chapter 6/8)</li>
+        <li><code>%%</code> — a real percent sign</li>
+      </ul>
+      <p>Wrong hole: <code>printf("%d\n", "hello");</code> is undefined. Match the type. Two holes need two values: <code>printf("%d %d\n", a, b);</code></p>
+      <p>Text around holes is copied as-is: <code>printf("pid=%d\n", r);</code> prints <code>pid=</code> then the number then a newline.</p>
+
+      <h2>3. Newline</h2>
+      <p>Without <code>\n</code>, the next print sticks to the same line. Traces in this course always show a newline when the code has <code>\n</code>. Type what you would see, including spaces, not the quotes.</p>
+
+      <h2>4. scanf — read into a box</h2>
+      <pre><code>int x;
+scanf("%d", &amp;x);   /* paper to x. Chapter 8 is the star. here: MUST use &amp; */</code></pre>
+      <p><code>scanf</code> must know <em>which box</em> to fill. So you pass the <strong>address</strong> <code>&amp;x</code>, not the value of x (which is garbage anyway). Forgetting <code>&amp;</code> is a crash or a silent disaster.</p>
+      <p>What goes in: format, then papers. What comes back: how many boxes were filled, or <code>EOF</code>. Who waits: <code>main</code> waits until the user types (or input fails).</p>
+      <p>OS labs rarely use <code>scanf</code>. They print. You still need this so <code>&amp;</code> is not new in Chapter 8: you already passed an address so a function could write your box.</p>
+
+      <h2>5. perror — print why a call failed</h2>
+      <pre><code>if (fd == -1) {
+  perror("shm_open");
+  return 1;
+}</code></pre>
+      <p><code>perror</code> prints your label, then the OS reason (permission, no such file, …). It is still a function you call after a failed OS call. Include <code>stdio.h</code>.</p>
+
+      <div class="os-door">
+        <span class="tag">OS door</span>
+        <p>Print <code>r</code> after <code>fork</code>, print <code>getpid()</code>, print a GPIO value. Same <code>%d</code>. Do not print a pointer with <code>%d</code> (Chapter 8 uses <code>%p</code> if you must). Prefer printing <code>*p</code> (the box) not the paper.</p>
+      </div>
+
+      <h2 id="practice">Practice</h2>
+      <div class="scorebox">
+        <span class="tag">This chapter</span>
+        <p><strong data-drill-score>0 / ? submitted right</strong></p>
+        <p style="margin-bottom:0">Type output exactly. Hint / Submit / See answer.</p>
+      </div>
+      <div id="drills"></div>
+      <div class="pager">
+        <a href="ch02.html">← Ch2 · Variables</a>
+        <a href="ch04.html">Ch4 · Choice →</a>
+      </div>
+    </div>
+  </main>
+  <footer class="cos-foot">
+    <div class="wrap">Ch3 · print and read · C programming for Operating System</div>
+  </footer>
+  <script src="js/ch03-data.js?v=1"></script>
+  <script src="js/practice.js?v=1"></script>
+  <script src="../../assets/js/theme.js?v=1"></script>
+</body>
+</html>

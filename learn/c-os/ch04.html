@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <script>
+  (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
+  </script>
+  <title>Ch4 · Choice · C for OS</title>
+  <meta name="description" content="if/else, == vs =. fork child test. Practice with hint, submit, commented answers."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/c.css?v=3"/>
+</head>
+<body class="cos">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="cos-bar">
+    <div class="wrap">
+      <a class="cos-brand" href="index.html">C · OS</a>
+      <nav class="cos-nav" aria-label="C course">
+        <a href="index.html">Map</a>
+        <a href="ch01.html">1</a>
+        <a href="ch02.html">2</a>
+        <a href="ch03.html">3</a>
+        <a class="is-on" href="ch04.html">4</a>
+        <a href="ch05.html">5</a>
+        <a href="ch06.html">6</a>
+        <a href="ch07.html">7</a>
+        <a href="ch08.html">8</a>
+        <a href="ch09.html">9</a>
+        <a href="ch10.html">10</a>
+        <a href="../os/index.html">OS</a>
+        <a href="../index.html">Learn hub</a>
+      </nav>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode">Light</button>
+    </div>
+  </header>
+  <main id="main">
+    <div class="wrap">
+      <p class="kicker"><a href="index.html">C for OS</a> · Chapter 4</p>
+      <h1>Choice — if / else</h1>
+      <p class="lede">Which branch runs. <code>==</code> vs <code>=</code>. This is the line <code>if (r == 0)</code> after <code>fork</code>. Trace the test, then only one body.</p>
+      <p class="jump"><a href="#practice">Jump to practice</a> <a href="ch03.html">Ch3 print</a></p>
+
+      <h2>1. A test, then a body</h2>
+      <pre><code>if (x == 0) {
+  printf("zero\n");
+} else {
+  printf("not\n");
+}</code></pre>
+      <div class="rule">
+        <span class="tag">The rule</span>
+        <p>The test is in round brackets. If it is true (non-zero), the <code>if</code> body runs. Otherwise the <code>else</code> body runs, if you wrote one. Never both. After the whole if/else, the next line of main runs.</p>
+      </div>
+      <p>True in C: any non-zero number. <code>if (3)</code> is true. <code>if (0)</code> is false. Prefer a real comparison: <code>x == 0</code>, <code>p != NULL</code>, <code>fd == -1</code>.</p>
+
+      <h2>2. == vs =</h2>
+      <p><code>==</code> asks: are these values the same? It does not write the box.</p>
+      <p><code>=</code> writes. <code>if (x = 0)</code> sets x to 0, then the test is 0, which is false. You smashed the box and took the wrong branch. Write <code>==</code> for tests. Always.</p>
+      <p>Other tests: <code>!=</code> not equal, <code>&lt;</code> <code>&gt;</code> <code>&lt;=</code> <code>&gt;=</code>.</p>
+      <p>Combine: <code>&amp;&amp;</code> and, <code>||</code> or. <code>if (r &gt; 0 &amp;&amp; fd != -1)</code> — both must be true.</p>
+
+      <h2>3. Braces</h2>
+      <p>Use braces even for one line. OS labs nest ifs. Without braces, only the next statement belongs to the if. You will think a <code>wait</code> is in the parent and it will not be.</p>
+      <pre><code>if (r == 0)
+  printf("child\n");
+  wait(NULL);    /* this is NOT inside the if. it always runs. */</code></pre>
+
+      <h2>4. else if chain — fork</h2>
+      <pre><code>pid_t r = fork();
+if (r == 0) {
+  /* child */
+} else if (r &gt; 0) {
+  /* parent. r is child's pid */
+} else {
+  /* r == -1. fail. still only parent */
+}</code></pre>
+      <p>One process only ever takes <strong>one</strong> of these three. After a successful fork there are two processes: one has r==0, one has r&gt;0. Each traces its own if. That is not “C ran both branches in one process.”</p>
+      <p><code>if (fork() == 0)</code> is the same test without storing r. Then the parent cannot <code>waitpid</code> on that pid unless you stored it. Prefer a box: <code>r = fork();</code></p>
+
+      <h2>5. Error checks are ifs</h2>
+      <pre><code>if (fd == -1) { perror("shm_open"); return 1; }
+if (p == MAP_FAILED) { perror("mmap"); return 1; }
+if (p == NULL) { /* do not open */ }</code></pre>
+      <p>These are Chapter 4 plus Chapter 2 boxes. The lab looks long because there are many ifs, not because C changed.</p>
+
+      <div class="os-door">
+        <span class="tag">OS door</span>
+        <p>Child vs parent is an if on an int. Mutex code is not an if for “is it locked” in the beginner picture — you <em>call</em> lock (Chapter 7) and wait inside that call. Do not write <code>if (mutex)</code> instead of <code>lock(&amp;m)</code>.</p>
+      </div>
+
+      <h2 id="practice">Practice</h2>
+      <div class="scorebox">
+        <span class="tag">This chapter</span>
+        <p><strong data-drill-score>0 / ? submitted right</strong></p>
+        <p style="margin-bottom:0">Name the branch. Hint / Submit / See answer.</p>
+      </div>
+      <div id="drills"></div>
+      <div class="pager">
+        <a href="ch03.html">← Ch3 · Print</a>
+        <a href="ch05.html">Ch5 · Repeat →</a>
+      </div>
+    </div>
+  </main>
+  <footer class="cos-foot">
+    <div class="wrap">Ch4 · choice · C programming for Operating System</div>
+  </footer>
+  <script src="js/ch04-data.js?v=1"></script>
+  <script src="js/practice.js?v=1"></script>
+  <script src="../../assets/js/theme.js?v=1"></script>
+</body>
+</html>

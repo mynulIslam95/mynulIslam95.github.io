@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <script>
+  (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
+  </script>
+  <title>Ch1 · A C file · C for OS</title>
+  <meta name="description" content="A C file: main, compile, run, order of lines. Huge practice with hint, submit, commented answers."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/c.css?v=3"/>
+</head>
+<body class="cos">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="cos-bar">
+    <div class="wrap">
+      <a class="cos-brand" href="index.html">C · OS</a>
+      <nav class="cos-nav" aria-label="C course">
+        <a href="index.html">Map</a>
+        <a class="is-on" href="ch01.html">1</a>
+        <a href="ch02.html">2</a>
+        <a href="ch03.html">3</a>
+        <a href="ch04.html">4</a>
+        <a href="ch05.html">5</a>
+        <a href="ch06.html">6</a>
+        <a href="ch07.html">7</a>
+        <a href="ch08.html">8</a>
+        <a href="ch09.html">9</a>
+        <a href="ch10.html">10</a>
+        <a href="../os/index.html">OS</a>
+        <a href="../index.html">Learn hub</a>
+      </nav>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode">Light</button>
+    </div>
+  </header>
+  <main id="main">
+    <div class="wrap">
+      <p class="kicker"><a href="index.html">C for OS</a> · Chapter 1</p>
+      <h1>A C file — main, compile, run</h1>
+      <p class="lede">A program is a text file of rules. You compile it into a tool. You run the tool. The computer starts at <code>main</code> and follows the lines in order. No story. Trace every line.</p>
+      <p class="jump"><a href="#practice">Jump to practice</a></p>
+
+      <h2>1. Three different things</h2>
+      <p>Do not mix these three. Labs fail when you mix them.</p>
+      <ol>
+        <li><strong>Source</strong> — a text file, usually <code>lab.c</code>. You can read it. The CPU does not run this file as-is.</li>
+        <li><strong>Compile</strong> — a program (<code>gcc</code>) reads the text and builds a machine tool. Example name: <code>lab</code>.</li>
+        <li><strong>Run</strong> — you start that tool. Then <code>main</code> runs.</li>
+      </ol>
+      <div class="rule">
+        <span class="tag">The rule</span>
+        <p>Edit the <code>.c</code> file. Compile again. Then run. If you change the text and only run the old tool, you are running yesterday’s program.</p>
+      </div>
+
+      <h2>2. The smallest program</h2>
+      <pre><code>#include &lt;stdio.h&gt;
+
+int main(void) {
+  return 0;
+}</code></pre>
+      <p><code>#include &lt;stdio.h&gt;</code> means: copy the toolkit names for input and output (Chapter 10 will go deep). You need it as soon as you call <code>printf</code>. For this tiny file you could skip it, but labs always keep it. Habit: put it at the top.</p>
+      <p><code>int main(void)</code> is the start function. <code>int</code> means main sends an integer back to the operating system. <code>void</code> in the brackets means main takes no arguments here.</p>
+      <p>The braces <code>{ }</code> mark the body. Work lives between them.</p>
+      <p><code>return 0;</code> sends 0 back to the OS: “this program ended without error.” A non-zero number usually means failure. Semicolon ends the statement. Without it, compile fails.</p>
+
+      <h2>3. What actually runs, and in which order</h2>
+      <p>The computer does <strong>not</strong> start at line 1 of the file. It starts at <code>main</code>. Then it runs the body from the opening brace downward, one statement after another, until <code>return</code> or the closing brace.</p>
+      <pre><code>#include &lt;stdio.h&gt;
+
+int main(void) {
+  printf("A\n");
+  printf("B\n");
+  return 0;
+}</code></pre>
+      <div class="trace">
+        <span class="tag">Trace</span>
+        <pre><code>1. OS starts the tool.
+2. Jump to main.
+3. Print A (and a new line).
+4. Print B (and a new line).
+5. return 0 — main ends. OS takes 0.
+Output:
+A
+B</code></pre>
+      </div>
+      <p>If you put a second function in the file (Chapter 7), that function runs <em>only when you call it</em>. Defining it is not running it. For this chapter: everything you want to happen must sit inside <code>main</code>, in order.</p>
+
+      <h2>4. Compile and run, by hand</h2>
+      <pre><code>gcc hello.c -o hello
+./hello</code></pre>
+      <p><code>gcc hello.c -o hello</code> reads <code>hello.c</code> and writes a tool named <code>hello</code>. <code>-o</code> means “output name.”</p>
+      <p><code>./hello</code> runs that tool in the current folder. The <code>./</code> means “here.” On Windows in some labs you type <code>hello.exe</code>. Same idea: run the tool, not the <code>.c</code> text.</p>
+      <p>If compile fails, there is no new tool (or the old one stays). Read the first error. Line numbers in the error point at the <code>.c</code> file, not at the running program.</p>
+      <p>Later labs add flags: <code>gcc lab.c -o lab -lpthread -lrt</code>. That is still this chapter plus Chapter 10. The extra words are libraries. The shape is the same: compile, then run.</p>
+
+      <h2>5. Comments — for humans, not for the CPU</h2>
+      <pre><code>/* this block is ignored */
+int main(void) {
+  return 0;  // this rest of line is ignored
+}</code></pre>
+      <p><code>/* ... */</code> can span lines. <code>//</code> runs to the end of that line. Comments do not change what prints. They are how you will read your own lab at 1 a.m. In this course, See answer uses comments to teach. Your Submit answers may include comments; the checker ignores them.</p>
+
+      <h2>6. Braces, statements, one main</h2>
+      <ul>
+        <li>Every <code>(</code> needs <code>)</code>. Every <code>{</code> needs <code>}</code>.</li>
+        <li>One <code>main</code> per program. Two <code>main</code>s: the linker fights you.</li>
+        <li>The file name can be anything ending in <code>.c</code>. The function must still be named <code>main</code>. The OS looks for that name, not for the file name.</li>
+      </ul>
+
+      <div class="os-door">
+        <span class="tag">OS door</span>
+        <p>GPIO, scheduler, signals, Windows labs: they are still a <code>.c</code> file with <code>main</code>. You compile. You run. If the professor’s ZIP has <code>gcc ...</code> in a README, that line is this chapter. You will not get a different language for the OS exam.</p>
+      </div>
+
+      <h2 id="practice">Practice</h2>
+      <div class="scorebox">
+        <span class="tag">This chapter</span>
+        <p><strong data-drill-score>0 / ? submitted right</strong></p>
+        <p style="margin-bottom:0">Every item: Hint, Submit, See answer. Submit first.</p>
+      </div>
+      <div id="drills"></div>
+
+      <div class="pager">
+        <a href="index.html">← Map</a>
+        <a href="ch02.html">Ch2 · Variables →</a>
+      </div>
+    </div>
+  </main>
+  <footer class="cos-foot">
+    <div class="wrap">Ch1 · a C file · C programming for Operating System</div>
+  </footer>
+  <script src="js/ch01-data.js?v=1"></script>
+  <script src="js/practice.js?v=1"></script>
+  <script src="../../assets/js/theme.js?v=1"></script>
+</body>
+</html>

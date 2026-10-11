@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <script>
+  (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
+  </script>
+  <title>Ch9 · Structs · C for OS</title>
+  <meta name="description" content="Structs in C: several fields, one object. Shared block with counters and a lock. Practice with hint, submit, commented answers."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/c.css?v=3"/>
+</head>
+<body class="cos">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="cos-bar">
+    <div class="wrap">
+      <a class="cos-brand" href="index.html">C · OS</a>
+      <nav class="cos-nav" aria-label="C course">
+        <a href="index.html">Map</a>
+        <a href="ch01.html">1</a>
+        <a href="ch02.html">2</a>
+        <a href="ch03.html">3</a>
+        <a href="ch04.html">4</a>
+        <a href="ch05.html">5</a>
+        <a href="ch06.html">6</a>
+        <a href="ch07.html">7</a>
+        <a href="ch08.html">8</a>
+        <a class="is-on" href="ch09.html">9</a>
+        <a href="ch10.html">10</a>
+        <a href="../os/index.html">OS</a>
+        <a href="../index.html">Learn hub</a>
+      </nav>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode">Light</button>
+    </div>
+  </header>
+  <main id="main">
+    <div class="wrap">
+      <p class="kicker"><a href="index.html">C for OS</a> · Chapter 9</p>
+      <h1>Structs — several fields, one object</h1>
+      <p class="lede">One name for a bundle. Then you put that bundle in shared memory: counters plus a lock. Without a struct you pass four pointers and lose the lock.</p>
+      <p class="jump"><a href="#practice">Jump to practice</a> <a href="ch08.html">Ch8 pointers</a></p>
+
+      <h2>1. Why a struct exists</h2>
+      <p>A process in your head is not one int. It has a pid, a state, maybe a pointer to a page table. Shared memory for the exam is not one int. It is at least a counter and a mutex. A <strong>struct</strong> is one object with several named fields.</p>
+      <div class="rule">
+        <span class="tag">The rule</span>
+        <p>You still have one box. Inside it, labelled inner boxes (fields). You carry one address for the whole object. That is why <code>mmap</code> of <code>sizeof(struct Block)</code> is the exam pattern.</p>
+      </div>
+      <pre><code>struct Point {
+  int x;
+  int y;
+};
+
+int main(void) {
+  struct Point p;
+  p.x = 2;     /* dot: the object is not a pointer */
+  p.y = 3;
+  return 0;
+}</code></pre>
+
+      <h2>2. Dot vs arrow</h2>
+      <p>If you have the object itself, use <strong>dot</strong>: <code>p.x</code>.</p>
+      <p>If you have a <em>paper</em> to the object, use <strong>arrow</strong>: <code>sp-&gt;x</code>. That is exactly <code>(*sp).x</code>. The arrow opens the box, then selects the field.</p>
+      <pre><code>struct Point p;
+struct Point *sp = &amp;p;   /* paper to the same object */
+p.x = 2;
+sp-&gt;y = 3;               /* writes p.y */
+/* now p.x is 2, p.y is 3. ONE object. */</code></pre>
+      <p>OS code is almost all arrows, because you hold a pointer from <code>mmap</code> or from a function argument. Learn <code>-&gt;</code> until it is boring.</p>
+
+      <h2>3. Copy vs share</h2>
+      <p><code>struct Point b = a;</code> copies every field into a <strong>second</strong> object. Changing <code>b.x</code> does not change <code>a.x</code>.</p>
+      <p><code>struct Point *q = &amp;a;</code> copies the paper. One object. This is Chapter 8 inside a struct.</p>
+      <p>Threads must share. So they do not copy the struct by value into each thread’s private stack as “the” shared state. They each get a pointer to one struct.</p>
+
+      <h2>4. Nested: a lock living next to the data</h2>
+      <p>This is the exam picture. One shared block:</p>
+      <pre><code>#include &lt;pthread.h&gt;
+
+struct Block {
+  pthread_mutex_t lock;  /* the lock is a FIELD */
+  int count;             /* the data the lock protects */
+  int done;
+};</code></pre>
+      <p>Why together? Because whoever maps the block sees <em>both</em>. If the mutex lived in process A only, process B cannot lock it. If <code>count</code> lived in a different mapping, you can lock the wrong thing.</p>
+      <p>Use:</p>
+      <pre><code>struct Block *b;   /* paper from mmap, Chapter 8 */
+pthread_mutex_lock(&amp;b-&gt;lock);   /* paper to the FIELD inside the object */
+b-&gt;count = b-&gt;count + 1;
+pthread_mutex_unlock(&amp;b-&gt;lock);</code></pre>
+      <div class="trace">
+        <span class="tag">Trace the papers</span>
+        <pre><code>b            paper to the whole Block (shared bytes)
+&amp;b-&gt;lock     paper to the mutex field inside that Block
+b-&gt;count     the int field, opened through the same object
+
+Two threads: each has its own paper variable, both addresses
+are the same mapping. One lock box. One count box.</code></pre>
+      </div>
+      <p>Init once: <code>pthread_mutex_init(&amp;b-&gt;lock, NULL);</code> before other threads or processes use it. Unlock is a function call (Chapter 7) on a pointer (Chapter 8) to a field (this chapter).</p>
+
+      <h2>5. sizeof and mmap</h2>
+      <p><code>sizeof(struct Block)</code> is how many bytes the object needs. You pass that to <code>ftruncate</code> and <code>mmap</code> so the window is big enough for lock + counters. If you map only <code>sizeof(int)</code>, the mutex does not fit. You will smash memory. Always size the mapping to the struct.</p>
+      <pre><code>ftruncate(fd, sizeof(struct Block));
+struct Block *b = mmap(NULL, sizeof(struct Block),
+                       PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);</code></pre>
+
+      <h2>6. Passing a struct into a function</h2>
+      <p>By value: the function gets a copy. Expensive, and changes do not come back (unless you <code>return</code> the copy).</p>
+      <p>By pointer: what goes in is the address. The callee opens the same object. This is how thread start functions and almost all OS helpers take a struct.</p>
+      <pre><code>void bump(struct Block *b) {
+  pthread_mutex_lock(&amp;b-&gt;lock);
+  b-&gt;count++;
+  pthread_mutex_unlock(&amp;b-&gt;lock);
+}</code></pre>
+      <p>Who waits: the caller waits for <code>bump</code>. Inside <code>bump</code>, the thread may also wait inside <code>lock</code> if another thread holds the mutex. That is a second wait, still “the caller of that function waits.”</p>
+
+      <h2>7. Typedef (optional, you will see it)</h2>
+      <p><code>typedef struct Block Block;</code> lets you write <code>Block *b</code> instead of <code>struct Block *b</code>. Same object. Do not let the extra word scare you.</p>
+
+      <div class="os-door">
+        <span class="tag">OS door</span>
+        <p>Shared memory in the exam is this object: lock + counters (and maybe a semaphore field). GPIO mmap is a different struct of registers. Same C: fields, pointer, <code>sizeof</code>.</p>
+      </div>
+
+      <h2 id="practice">Practice</h2>
+      <div class="scorebox">
+        <span class="tag">This chapter</span>
+        <p><strong data-drill-score>0 / ? submitted right</strong></p>
+        <p style="margin-bottom:0">Dot vs arrow until it is automatic. Then the shared block. Hint / Submit / See answer.</p>
+      </div>
+      <div id="drills"></div>
+
+      <div class="pager">
+        <a href="ch08.html">← Ch8 · Pointers</a>
+        <a href="ch10.html">Ch10 · Headers →</a>
+      </div>
+    </div>
+  </main>
+  <footer class="cos-foot">
+    <div class="wrap">Ch9 · structs · C programming for Operating System</div>
+  </footer>
+  <script src="js/ch09-data.js?v=1"></script>
+  <script src="js/practice.js?v=1"></script>
+  <script src="../../assets/js/theme.js?v=1"></script>
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <script>
+  (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
+  </script>
+  <title>Ch8 · Pointers · C for OS</title>
+  <meta name="description" content="Pointers: paper vs box, two papers one box. Mutex, mmap, GPIO. Huge practice with hint, submit, commented answers."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/c.css?v=3"/>
+</head>
+<body class="cos">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="cos-bar">
+    <div class="wrap">
+      <a class="cos-brand" href="index.html">C · OS</a>
+      <nav class="cos-nav" aria-label="C course">
+        <a href="index.html">Map</a>
+        <a href="ch01.html">1</a>
+        <a href="ch02.html">2</a>
+        <a href="ch03.html">3</a>
+        <a href="ch04.html">4</a>
+        <a href="ch05.html">5</a>
+        <a href="ch06.html">6</a>
+        <a href="ch07.html">7</a>
+        <a class="is-on" href="ch08.html">8</a>
+        <a href="ch09.html">9</a>
+        <a href="ch10.html">10</a>
+        <a href="../os/index.html">OS</a>
+        <a href="../index.html">Learn hub</a>
+      </nav>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode">Light</button>
+    </div>
+  </header>
+  <main id="main">
+    <div class="wrap">
+      <p class="kicker"><a href="index.html">C for OS</a> · Chapter 8</p>
+      <h1>Pointers — &amp; and *</h1>
+      <p class="lede">Paper vs box. Two papers, one box. This is the hardest C chapter and the hinge for mutex, <code>mmap</code>, and GPIO. If you only memorise stars, you will fail the lab files. Trace the address.</p>
+      <p class="jump"><a href="#practice">Jump to practice</a> <a href="ch07.html">Ch7 functions</a></p>
+
+      <h2>1. Two different things</h2>
+      <p>A <strong>box</strong> is a variable in memory. It has a name, a type, a value, and an <strong>address</strong> (where it lives).</p>
+      <p>A <strong>paper</strong> is a pointer. The value stored on the paper is not “the money.” It is the <strong>address</strong> of a box.</p>
+      <div class="rule">
+        <span class="tag">The rule — never mix these</span>
+        <ul>
+          <li><code>int x = 5;</code> — box named <code>x</code>, value 5.</li>
+          <li><code>&amp;x</code> — the address of that box (you write the address on a paper).</li>
+          <li><code>int *p;</code> — paper <code>p</code>. It is meant to hold the address of an <code>int</code> box.</li>
+          <li><code>p = &amp;x;</code> — write x’s address on the paper.</li>
+          <li><code>*p</code> — open the box whose address is on the paper. That is 5. If you assign <code>*p = 9</code>, the box <code>x</code> becomes 9.</li>
+        </ul>
+        <p style="margin-bottom:0"><code>*</code> in the declaration <code>int *p</code> means “paper for an int.” <code>*</code> in an expression <code>*p</code> means “open the box.” Same character, two jobs. Say the job out loud.</p>
+      </div>
+
+      <h2>2. One picture you will reuse in every OS lab</h2>
+      <pre><code>Box x at address 0x100:   [ 5 ]
+
+Paper p:                  [ 0x100 ]   p == &amp;x
+*p means: go to 0x100     so *p is 5, and x is 5
+
+Paper q:                  [ 0x100 ]   q = p;  (copy the paper, not the box)
+Now two papers, ONE box.
+*q = 9;                   box x is 9. *p is also 9.</code></pre>
+      <p>Copying a pointer copies the <em>address</em>. It does not create a second int. This is “two papers, one box.” Threads, mutex, shared memory all sit on this sentence.</p>
+
+      <h2>3. Full program, line by line</h2>
+      <pre><code>#include &lt;stdio.h&gt;
+
+int main(void) {
+  int x = 5;
+  int *p;
+  p = &amp;x;
+  printf("%d\n", *p);   /* 5 */
+  *p = 9;
+  printf("%d\n", x);    /* 9 — same box */
+  return 0;
+}</code></pre>
+      <div class="trace">
+        <span class="tag">Trace</span>
+        <pre><code>1. Box x holds 5.
+2. Paper p exists. Address on it is garbage until we write one.
+3. p = &amp;x  writes x's address on the paper.
+4. *p reads the box. Prints 5.
+5. *p = 9 writes 9 into that box.
+6. x is 9. There was never a second int.</code></pre>
+      </div>
+
+      <h2>4. Why Chapter 7 was not enough</h2>
+      <p>Pass by value copies the number. A function cannot change the caller’s box if it only receives the number.</p>
+      <pre><code>void bump(int n) { n = n + 1; }      /* copy. caller unchanged */
+
+void bump_box(int *p) { *p = *p + 1; }  /* paper. opens the caller's box */
+
+int main(void) {
+  int x = 4;
+  bump(x);        /* x still 4 */
+  bump_box(&amp;x);   /* pass THE ADDRESS. x becomes 5 */
+  return 0;
+}</code></pre>
+      <p>Read <code>bump_box(&amp;x)</code> as: “here is the paper for x. Open that box.” What goes in is an address. What comes back is <code>void</code>. Who waits: <code>main</code> waits until <code>bump_box</code> returns. After return, x is changed because both used the same box.</p>
+      <p>This is exactly why mutex functions take a pointer. If they took the mutex by value, they would lock a <em>copy</em>. The other thread would lock a different copy. The lock would be a lie.</p>
+
+      <h2>5. NULL — a paper that must not be opened</h2>
+      <p><code>NULL</code> is a special address meaning “nowhere.” You may store it on a paper: <code>p = NULL;</code>. You must not do <code>*p</code>. Opening nowhere crashes (undefined behaviour; on Linux you usually see a segmentation fault).</p>
+      <p>Many OS functions return a pointer. Failure is <code>NULL</code> (or <code>MAP_FAILED</code> for <code>mmap</code>, which is also “this is not a usable paper”). Always test the paper before you open it.</p>
+      <pre><code>int *p = NULL;
+if (p != NULL) {
+  *p = 1;    /* skipped. safe */
+}</code></pre>
+
+      <h2>6. void * — a paper without a type yet</h2>
+      <p><code>void *</code> means “a paper that points at some bytes, type not specified.” <code>mmap</code> returns <code>void *</code> because the kernel does not know if you will treat the bytes as ints, a struct, or GPIO registers. You assign it to the type you need:</p>
+      <pre><code>void *raw = mmap(...);
+int *nums = raw;           /* treat bytes as ints */
+/* or */
+struct Block *b = raw;     /* Chapter 9 */</code></pre>
+      <p>You do not write <code>*raw</code> as if it were an int. First you choose the type of paper.</p>
+
+      <h2>7. Pointer vs array (only what OS C needs)</h2>
+      <p>An array is many boxes in a row. The name <code>a</code> in <code>int a[4]</code> can decay to a paper for the first box. <code>&amp;a[0]</code> is that address. You need this for a name string <code>"/myshm"</code> and for small buffers. You do not need pointer arithmetic contests.</p>
+      <pre><code>char name[] = "/myshm";   /* boxes for each letter, plus '\0' */
+/* shm_open wants a paper to the first character: name or &amp;name[0] */</code></pre>
+
+      <h2>8. Function pointer — paper that points at a job</h2>
+      <p>Chapter 7: a signal handler is a function you do not call yourself. <code>signal(SIGUSR1, handler)</code> needs the <em>address of the function</em>. That is a paper whose box is code, not an int.</p>
+      <p>You write the name <code>handler</code> without calling it (no <code>()</code>). With <code>()</code> you would run it now. Without <code>()</code> you pass the paper.</p>
+
+      <h2>9. volatile — the box may change behind your back</h2>
+      <p>A signal handler, or hardware, can change a box while <code>main</code> is looking at it. <code>volatile int flag</code> tells the compiler: “every time you read this, really read the box. Do not assume it is still 0.” One line. Not a new chapter. You will put <code>volatile</code> on the flag the handler sets.</p>
+
+      <div class="os-door">
+        <span class="tag">OS door — same paper/box rule</span>
+        <p>Mutex, mmap, GPIO are not new C. They are “two papers, one box” in three places.</p>
+      </div>
+
+      <h2>10. Mutex — lock the box, not a copy</h2>
+      <p><code>pthread_mutex_t m;</code> is a box (the lock object). <code>pthread_mutex_lock(&amp;m)</code> takes a <strong>paper</strong> to that box.</p>
+      <pre><code>pthread_mutex_t m;
+pthread_mutex_init(&amp;m, NULL);
+pthread_mutex_lock(&amp;m);     /* paper: the SAME mutex both threads must use */
+/* critical: touch the shared int here */
+pthread_mutex_unlock(&amp;m);</code></pre>
+      <p>If two threads each had their own <code>m</code>, two papers would point at two boxes. Both would “lock” and both would still race. Shared mutex = one mutex box, two threads holding papers to it.</p>
+      <p>A counting semaphore is the same idea: the functions take a pointer to one semaphore object both sides must see.</p>
+
+      <h2>11. mmap — a paper to a window of bytes</h2>
+      <p><code>mmap</code> is a function. What comes back is a <strong>pointer</strong> (or <code>MAP_FAILED</code>).</p>
+      <p>With <code>MAP_SHARED</code>, that paper points at bytes the kernel also maps for another process (or for a file, or for hardware). Two processes, two papers, <strong>one</strong> shared box (or one shared struct). If process A writes <code>*p = 7</code>, process B’s paper sees 7.</p>
+      <p>That is shared memory in C clothing. You will put a struct there in Chapter 9 (counters + lock).</p>
+      <pre><code>int fd = shm_open("/myshm", O_RDWR, 0600);
+ftruncate(fd, sizeof(int));
+int *p = mmap(NULL, sizeof(int), PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+if (p == MAP_FAILED) { /* bad paper. do not open */ }
+*p = 1;   /* write into the SHARED box */</code></pre>
+      <p>Who waits: <code>mmap</code> returns when the mapping is set up. It does not wait for the other process. The other process must map the same object and get its own paper to the same bytes.</p>
+
+      <h2>12. GPIO — a paper to hardware registers</h2>
+      <p>Lab 1 is not a new kind of star. You open <code>/dev/mem</code> (or the Pi’s gpiochip path in the lab story), then <code>mmap</code> a window onto device registers. The return value is a paper. You write to <code>*reg</code> or to a field, and a pin changes. The box is not a normal RAM variable you declared. It is hardware. Still: paper vs box. Do not copy the register by value and expect the pin to move. Write through the pointer.</p>
+      <p><code>volatile</code> appears again: the register can change without your C code writing it. Read the box every time.</p>
+
+      <h2>13. Mistakes that fail the exam file</h2>
+      <ul>
+        <li>Using <code>p</code> when you meant <code>*p</code> (printing the address, or passing a paper where an int is needed).</li>
+        <li>Using <code>*p</code> when <code>p</code> is <code>NULL</code>.</li>
+        <li>Passing <code>m</code> instead of <code>&amp;m</code> to <code>lock</code>.</li>
+        <li>Thinking two pointer variables means two mutexes or two shared ints.</li>
+        <li>Forgetting that <code>fork</code> copies the papers. After <code>fork</code>, parent and child have copies of the pointer value. If the mapping is <code>MAP_SHARED</code>, those copies still point at the <em>same</em> physical box. If it is private memory, each has its own box. That sentence is the process/thread/shm hinge.</li>
+      </ul>
+
+      <div class="need">
+        <span class="tag">Boss test</span>
+        <p>For every pointer in a lab: name the paper, name the box, say how many boxes exist, say who else holds a paper to that box. If you cannot, do the practice. Do not skip to OS stories.</p>
+      </div>
+
+      <h2 id="practice">Practice</h2>
+      <div class="scorebox">
+        <span class="tag">This chapter</span>
+        <p><strong data-drill-score>0 / ? submitted right</strong></p>
+        <p style="margin-bottom:0">Huge set. Predict before you write. Hint, Submit, See answer with comments.</p>
+      </div>
+      <div id="drills"></div>
+
+      <div class="pager">
+        <a href="ch07.html">← Ch7 · Functions</a>
+        <a href="ch09.html">Ch9 · Structs →</a>
+      </div>
+    </div>
+  </main>
+  <footer class="cos-foot">
+    <div class="wrap">Ch8 · pointers · C programming for Operating System</div>
+  </footer>
+  <script src="js/ch08-data.js?v=1"></script>
+  <script src="js/practice.js?v=1"></script>
+  <script src="../../assets/js/theme.js?v=1"></script>
+</body>
+</html>

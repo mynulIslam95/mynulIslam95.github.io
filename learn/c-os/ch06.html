@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <script>
+  (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
+  </script>
+  <title>Ch6 · Arrays · C for OS</title>
+  <meta name="description" content="Arrays: index, buffers, char strings like /myshm. Practice with hint, submit, commented answers."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/c.css?v=3"/>
+</head>
+<body class="cos">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="cos-bar">
+    <div class="wrap">
+      <a class="cos-brand" href="index.html">C · OS</a>
+      <nav class="cos-nav" aria-label="C course">
+        <a href="index.html">Map</a>
+        <a href="ch01.html">1</a>
+        <a href="ch02.html">2</a>
+        <a href="ch03.html">3</a>
+        <a href="ch04.html">4</a>
+        <a href="ch05.html">5</a>
+        <a class="is-on" href="ch06.html">6</a>
+        <a href="ch07.html">7</a>
+        <a href="ch08.html">8</a>
+        <a href="ch09.html">9</a>
+        <a href="ch10.html">10</a>
+        <a href="../os/index.html">OS</a>
+        <a href="../index.html">Learn hub</a>
+      </nav>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode">Light</button>
+    </div>
+  </header>
+  <main id="main">
+    <div class="wrap">
+      <p class="kicker"><a href="index.html">C for OS</a> · Chapter 6</p>
+      <h1>Arrays — many boxes, one name</h1>
+      <p class="lede">Index starts at 0. A string is a char array with a hidden <code>'\0'</code>. That is how <code>"/myshm"</code> exists. Walk with <code>i &lt; n</code>. Do not walk off the end.</p>
+      <p class="jump"><a href="#practice">Jump to practice</a> <a href="ch05.html">Ch5 loops</a></p>
+
+      <h2>1. One name, many boxes</h2>
+      <pre><code>int a[4];
+a[0] = 10;
+a[1] = 20;
+a[2] = 30;
+a[3] = 40;</code></pre>
+      <div class="rule">
+        <span class="tag">The rule</span>
+        <p><code>int a[4]</code> is four int boxes in a row. The name is <code>a</code>. The index in square brackets selects which box. The first index is <strong>0</strong>. The last index is <strong>3</strong>, not 4. There is no <code>a[4]</code>.</p>
+      </div>
+      <p><code>a[4] = 1</code> is out of range. It may compile. It is undefined. It can smash a mutex, a return address, a GPIO mapping. Off-by-one from Chapter 5 becomes a crash here.</p>
+
+      <h2>2. Walk with for</h2>
+      <pre><code>int i;
+for (i = 0; i &lt; 4; i++) {
+  a[i] = 0;          /* clear every box */
+}</code></pre>
+      <p>Test is <code>i &lt; 4</code>, same as length. <code>i &lt;= 4</code> writes <code>a[4]</code>. Illegal.</p>
+      <p>The name <code>a</code> without <code>[ ]</code> is, in many expressions, a paper to the first box (Chapter 8). You do not need that yet. You need <code>a[i]</code>. For <code>shm_open</code>, you pass the array name of a string because that function wants a paper to the first character.</p>
+
+      <h2>3. char arrays — strings</h2>
+      <pre><code>char name[] = "/myshm";</code></pre>
+      <p>This is boxes: <code>'/' 'm' 'y' 's' 'h' 'm'</code> and one extra box <code>'\0'</code> (the terminator, value 0). <code>printf("%s", name)</code> prints until that 0. Functions like <code>shm_open</code> read until that 0.</p>
+      <p>Double quotes make this array. Single quotes make one char (Chapter 2). The leading slash in <code>"/myshm"</code> is POSIX (Chapter 10). The C fact is: it is a char array.</p>
+      <p>You may write <code>char buf[64];</code> for a buffer you fill later. Clear it with a loop or with <code>buf[0] = '\0';</code> if you only need empty.</p>
+
+      <h2>4. Index is an int</h2>
+      <p><code>a[i]</code> — i is a number. <code>a['A']</code> is a weird index (65). Do not. <code>a[-1]</code> is also out of range.</p>
+      <p>Copy: <code>b = a[0];</code> copies one value. <code>int b[4];</code> then you must loop to copy all, or later use memcpy. <code>b = a</code> does not copy four ints in this course’s C (arrays are not assigned that way). Trace one box at a time.</p>
+
+      <h2>5. Tiny OS uses</h2>
+      <ul>
+        <li>Name string for <code>shm_open("/myshm", ...)</code></li>
+        <li>A small buffer you <code>read</code> into</li>
+        <li>Sometimes a table of pids: <code>pid_t kids[3];</code></li>
+      </ul>
+      <p>Shared memory of many ints can be <code>int *p</code> from mmap, then <code>p[0]</code>, <code>p[1]</code> — that is an array view of a pointer (Chapter 8). Same indexes. Same 0-based rule.</p>
+
+      <div class="os-door">
+        <span class="tag">OS door</span>
+        <p>After this chapter you can read every C line that is not a function call, a pointer star, a struct field, or a missing header. Those four are 7–10. Do 7 next. Do not skip 8.</p>
+      </div>
+
+      <h2 id="practice">Practice</h2>
+      <div class="scorebox">
+        <span class="tag">This chapter</span>
+        <p><strong data-drill-score>0 / ? submitted right</strong></p>
+        <p style="margin-bottom:0">Index from 0. Hint / Submit / See answer.</p>
+      </div>
+      <div id="drills"></div>
+      <div class="pager">
+        <a href="ch05.html">← Ch5 · Repeat</a>
+        <a href="ch07.html">Ch7 · Functions →</a>
+      </div>
+    </div>
+  </main>
+  <footer class="cos-foot">
+    <div class="wrap">Ch6 · arrays · C programming for Operating System</div>
+  </footer>
+  <script src="js/ch06-data.js?v=1"></script>
+  <script src="js/practice.js?v=1"></script>
+  <script src="../../assets/js/theme.js?v=1"></script>
+</body>
+</html>

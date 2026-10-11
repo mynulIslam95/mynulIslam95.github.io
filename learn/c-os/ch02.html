@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <script>
+  (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
+  </script>
+  <title>Ch2 · Variables · C for OS</title>
+  <meta name="description" content="Variables in C: int, char, assignment replaces. Practice with hint, submit, commented answers."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/c.css?v=3"/>
+</head>
+<body class="cos">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="cos-bar">
+    <div class="wrap">
+      <a class="cos-brand" href="index.html">C · OS</a>
+      <nav class="cos-nav" aria-label="C course">
+        <a href="index.html">Map</a>
+        <a href="ch01.html">1</a>
+        <a class="is-on" href="ch02.html">2</a>
+        <a href="ch03.html">3</a>
+        <a href="ch04.html">4</a>
+        <a href="ch05.html">5</a>
+        <a href="ch06.html">6</a>
+        <a href="ch07.html">7</a>
+        <a href="ch08.html">8</a>
+        <a href="ch09.html">9</a>
+        <a href="ch10.html">10</a>
+        <a href="../os/index.html">OS</a>
+        <a href="../index.html">Learn hub</a>
+      </nav>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode">Light</button>
+    </div>
+  </header>
+  <main id="main">
+    <div class="wrap">
+      <p class="kicker"><a href="index.html">C for OS</a> · Chapter 2</p>
+      <h1>Variables — int and char</h1>
+      <p class="lede">One name, one box, one value. A new assignment <strong>replaces</strong> the old value. That is how a PID, a count, and a flag live in a lab file.</p>
+      <p class="jump"><a href="#practice">Jump to practice</a> <a href="ch01.html">Ch1 file</a></p>
+
+      <h2>1. A box with a name</h2>
+      <p>A variable is a <strong>box</strong> in memory. It has:</p>
+      <ul>
+        <li>a <strong>name</strong> you chose (<code>x</code>, <code>count</code>, <code>pid</code>)</li>
+        <li>a <strong>type</strong> (what kind of value fits)</li>
+        <li>a <strong>value</strong> (what is in the box now)</li>
+      </ul>
+      <div class="rule">
+        <span class="tag">The rule</span>
+        <p><code>int x = 5;</code> makes an int box named <code>x</code> and puts 5 in it. Later <code>x = 9;</code> does not make a second box. It <strong>replaces</strong> 5 with 9. After that, the old 5 is gone.</p>
+      </div>
+      <pre><code>int x;      /* box exists. value is GARBAGE until you write one */
+x = 5;      /* now 5 */
+x = 9;      /* now 9. not 5, not 14 */</code></pre>
+
+      <h2>2. int — whole numbers</h2>
+      <p><code>int</code> holds a whole number (no fraction): 0, 1, -1, 42. Process ids, counts, file descriptors, return codes: almost all are <code>int</code> (or a typedef that is an int, like <code>pid_t</code>). For tracing, treat <code>pid_t</code> as <code>int</code>.</p>
+      <p><code>int x = 5;</code> is declare and initialise. You may split: <code>int x;</code> then <code>x = 5;</code>.</p>
+      <p>Uninitialised: if you declare <code>int x;</code> and print <code>x</code> before any assignment, the value is garbage (whatever bits were there). Do not do that. Give a value first. Flags start at 0. Counts start at 0.</p>
+
+      <h2>3. Assignment vs algebra</h2>
+      <p>In maths, <code>x = x + 1</code> is false. In C it is a command: read the box, add 1, write it back.</p>
+      <pre><code>int n = 3;
+n = n + 1;   /* read 3, write 4. n is now 4 */
+n++;         /* same idea: add 1. n is 5 */</code></pre>
+      <p><code>=</code> is not “equals.” Equals as a test is <code>==</code> (Chapter 4). Mixing them is the most expensive one-character bug in this course.</p>
+
+      <h2>4. char — one character, actually a small int</h2>
+      <p><code>char c = 'A';</code> — single quotes. One character. Double quotes <code>"A"</code> are a string (a small array, Chapter 6). Do not mix them yet.</p>
+      <p>A <code>char</code> is stored as a small integer (the code for that character). You may do <code>c + 1</code> in traces. You rarely need that for OS labs. You need <code>char</code> for letters in a name like <code>/myshm</code> (Chapter 6) and for tiny flags some people store as <code>char</code>. Prefer <code>int</code> for counts and pids.</p>
+
+      <h2>5. Names you will see in labs</h2>
+      <ul>
+        <li><code>pid</code> — process id, an int (or pid_t)</li>
+        <li><code>fd</code> — file descriptor, an int, often from <code>shm_open</code> or <code>open</code></li>
+        <li><code>count</code> — how many times something happened</li>
+        <li><code>flag</code> / <code>got</code> / <code>done</code> — 0 or 1. Off or on.</li>
+      </ul>
+      <p>These are not new types. They are ints with a job. A flag that is 1 is still an int 1. Later <code>volatile int got</code> is still this box, with one extra word (Chapter 8).</p>
+
+      <h2>6. Two boxes, two names</h2>
+      <pre><code>int a = 1;
+int b = a;   /* copy the VALUE 1 into a new box b */
+b = 9;       /* a is still 1 */</code></pre>
+      <p>Copying the value is not sharing the box. Sharing the box needs a pointer (Chapter 8). For this chapter: two names, two boxes, unless you later point both papers at one box.</p>
+
+      <div class="os-door">
+        <span class="tag">OS door</span>
+        <p><code>fork</code> returns into an int box: <code>pid_t r = fork();</code> That is this chapter. The meaning of 0 / pid / -1 is Chapter 7. The box is an int. Put a value in. Replace it. Read it in an <code>if</code> (Chapter 4).</p>
+      </div>
+
+      <h2 id="practice">Practice</h2>
+      <div class="scorebox">
+        <span class="tag">This chapter</span>
+        <p><strong data-drill-score>0 / ? submitted right</strong></p>
+        <p style="margin-bottom:0">Trace what is in the box after each line. Hint / Submit / See answer.</p>
+      </div>
+      <div id="drills"></div>
+      <div class="pager">
+        <a href="ch01.html">← Ch1 · File</a>
+        <a href="ch03.html">Ch3 · Print →</a>
+      </div>
+    </div>
+  </main>
+  <footer class="cos-foot">
+    <div class="wrap">Ch2 · variables · C programming for Operating System</div>
+  </footer>
+  <script src="js/ch02-data.js?v=1"></script>
+  <script src="js/practice.js?v=1"></script>
+  <script src="../../assets/js/theme.js?v=1"></script>
+</body>
+</html>

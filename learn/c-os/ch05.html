@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <script>
+  (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
+  </script>
+  <title>Ch5 · Repeat · C for OS</title>
+  <meta name="description" content="while and for loops. Off-by-one. Wait loops. Practice with hint, submit, commented answers."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/c.css?v=3"/>
+</head>
+<body class="cos">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="cos-bar">
+    <div class="wrap">
+      <a class="cos-brand" href="index.html">C · OS</a>
+      <nav class="cos-nav" aria-label="C course">
+        <a href="index.html">Map</a>
+        <a href="ch01.html">1</a>
+        <a href="ch02.html">2</a>
+        <a href="ch03.html">3</a>
+        <a href="ch04.html">4</a>
+        <a class="is-on" href="ch05.html">5</a>
+        <a href="ch06.html">6</a>
+        <a href="ch07.html">7</a>
+        <a href="ch08.html">8</a>
+        <a href="ch09.html">9</a>
+        <a href="ch10.html">10</a>
+        <a href="../os/index.html">OS</a>
+        <a href="../index.html">Learn hub</a>
+      </nav>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode">Light</button>
+    </div>
+  </header>
+  <main id="main">
+    <div class="wrap">
+      <p class="kicker"><a href="index.html">C for OS</a> · Chapter 5</p>
+      <h1>Repeat — while and for</h1>
+      <p class="lede">How many times. Off-by-one. A wait loop on a flag. Clear a buffer. Retry until <code>wait</code> returns. Trace i after each pass.</p>
+      <p class="jump"><a href="#practice">Jump to practice</a> <a href="ch04.html">Ch4 choice</a></p>
+
+      <h2>1. while — test, body, test again</h2>
+      <pre><code>int n = 3;
+while (n &gt; 0) {
+  printf("%d\n", n);
+  n = n - 1;
+}</code></pre>
+      <div class="rule">
+        <span class="tag">The rule</span>
+        <p>Check the test. If true, run the body, then check again. If false, skip the body and continue after the loop. If the test is false at the start, the body runs <strong>zero</strong> times.</p>
+      </div>
+      <div class="trace">
+        <span class="tag">Trace</span>
+        <pre><code>n=3  test 3&gt;0 true  print 3  n=2
+n=2  test true      print 2  n=1
+n=1  test true      print 1  n=0
+n=0  test false     stop
+Output: 3  2  1  (each on a line)</code></pre>
+      </div>
+      <p>If you never change <code>n</code>, the test stays true: infinite loop. The program does not reach <code>return 0</code>. In labs, <code>while (1)</code> is a server loop (xinetd/signal lab). You break it with a flag or by exiting.</p>
+
+      <h2>2. for — same idea, packed</h2>
+      <pre><code>int i;
+for (i = 0; i &lt; 3; i++) {
+  printf("%d\n", i);
+}</code></pre>
+      <p>Three pieces: <strong>start</strong> <code>i = 0</code>, <strong>test</strong> <code>i &lt; 3</code>, <strong>step</strong> <code>i++</code> after each body. This prints 0, 1, 2 — three times. Not 1,2,3. Not 0,1,2,3.</p>
+      <p>That is off-by-one: <code>i &lt;= 3</code> would run four times. Arrays (next chapter) have length 3 with indexes 0,1,2. So <code>i &lt; n</code> is the habit, not <code>i &lt;= n</code>.</p>
+
+      <h2>3. Count how many times, on paper</h2>
+      <p>Write a table: i (or n) before the body, what prints, i after the step. If you cannot fill the table, you are guessing. Boss skill is the table, not the word “loop.”</p>
+
+      <h2>4. Wait loop on a flag</h2>
+      <pre><code>volatile int got = 0;
+/* signal handler sets got = 1 */
+while (got == 0) {
+  /* wait. sometimes pause() lives here */
+}
+/* got is 1. continue */</code></pre>
+      <p>This is Chapter 4’s test, repeated until false. The handler (Chapter 7) writes the box. <code>volatile</code> (Chapter 8) makes main really re-read it. The loop is this chapter.</p>
+      <p><code>while (1) { pause(); }</code> sleeps until a signal. Still a loop. The body runs until you _exit or a flag breaks it.</p>
+
+      <h2>5. Retry and waitpid</h2>
+      <p>A parent may loop until a child is gone. A GPIO lab may loop toggling a pin. Same while/for. Sleep in the body if you must slow the pin. The C is still “body, then test again.”</p>
+
+      <div class="os-door">
+        <span class="tag">OS door</span>
+        <p>Do not confuse a wait <em>loop in C</em> with the function <code>wait()</code>. <code>wait()</code> is one call that blocks inside the kernel. A <code>while (got == 0)</code> is your own repeat. Both “wait.” Different mechanisms. Name which one you mean.</p>
+      </div>
+
+      <h2 id="practice">Practice</h2>
+      <div class="scorebox">
+        <span class="tag">This chapter</span>
+        <p><strong data-drill-score>0 / ? submitted right</strong></p>
+        <p style="margin-bottom:0">Count passes. Hint / Submit / See answer.</p>
+      </div>
+      <div id="drills"></div>
+      <div class="pager">
+        <a href="ch04.html">← Ch4 · Choice</a>
+        <a href="ch06.html">Ch6 · Arrays →</a>
+      </div>
+    </div>
+  </main>
+  <footer class="cos-foot">
+    <div class="wrap">Ch5 · repeat · C programming for Operating System</div>
+  </footer>
+  <script src="js/ch05-data.js?v=1"></script>
+  <script src="js/practice.js?v=1"></script>
+  <script src="../../assets/js/theme.js?v=1"></script>
+</body>
+</html>

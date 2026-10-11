@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <script>
+  (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
+  </script>
+  <title>Ch7 · Functions · C for OS</title>
+  <meta name="description" content="Functions in C: call, arguments, return, who waits. Then fork, wait, kill, signal handler. Huge practice with hint, submit, commented answers."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/c.css?v=3"/>
+</head>
+<body class="cos">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="cos-bar">
+    <div class="wrap">
+      <a class="cos-brand" href="index.html">C · OS</a>
+      <nav class="cos-nav" aria-label="C course">
+        <a href="index.html">Map</a>
+        <a href="ch01.html">1</a>
+        <a href="ch02.html">2</a>
+        <a href="ch03.html">3</a>
+        <a href="ch04.html">4</a>
+        <a href="ch05.html">5</a>
+        <a href="ch06.html">6</a>
+        <a class="is-on" href="ch07.html">7</a>
+        <a href="ch08.html">8</a>
+        <a href="ch09.html">9</a>
+        <a href="ch10.html">10</a>
+        <a href="../os/index.html">OS</a>
+        <a href="../index.html">Learn hub</a>
+      </nav>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode">Light</button>
+    </div>
+  </header>
+  <main id="main">
+    <div class="wrap">
+      <p class="kicker"><a href="index.html">C for OS</a> · Chapter 7</p>
+      <h1>Functions — call, arguments, return</h1>
+      <p class="lede">What goes in. What comes back. Who waits. Then the OS-shaped calls: <code>fork</code>, <code>wait</code>, <code>kill</code>, a signal handler. No story. Trace every line.</p>
+      <p class="jump"><a href="#practice">Jump to practice</a></p>
+
+      <h2>1. What a function is</h2>
+      <p>A function is a <strong>named job</strong>. You write the job once. You <strong>call</strong> it when you need it. The computer jumps into that job, runs it, then comes back.</p>
+      <p>Every C program already has one function: <code>main</code>. That is “start here.” <code>main</code> can call other functions. Those can call more functions.</p>
+      <div class="rule">
+        <span class="tag">The rule</span>
+        <p>A call has three parts you must name out loud:</p>
+        <ol>
+          <li><strong>Arguments</strong> — values that go <em>in</em> (copies, in normal C).</li>
+          <li><strong>Body</strong> — the work inside the function.</li>
+          <li><strong>Return</strong> — the value that comes <em>back</em> to the caller. Or nothing, if the type is <code>void</code>.</li>
+        </ol>
+        <p style="margin-bottom:0"><strong>Who waits:</strong> the caller stops at the call line. It does not run the next line until the callee has returned. That is normal C. <code>fork</code> is the famous exception. We reach it later on this page.</p>
+      </div>
+
+      <h2>2. A full small program</h2>
+      <pre><code>#include &lt;stdio.h&gt;
+
+int add(int a, int b) {   /* callee: named job */
+  return a + b;           /* value goes BACK */
+}
+
+int main(void) {          /* caller: start here */
+  int s;
+  s = add(2, 3);          /* 2 and 3 go IN. main WAITS. */
+  printf("%d\n", s);      /* runs only after add returns */
+  return 0;
+}</code></pre>
+      <div class="trace">
+        <span class="tag">Trace — say this out loud</span>
+        <pre><code>1. main starts. Box s exists, value unknown.
+2. main calls add(2, 3).
+   Copies: a gets 2. b gets 3. These are NEW boxes inside add.
+3. main is waiting. It does not print yet.
+4. add computes 2 + 3, then return 5.
+   The 5 travels BACK to the call site.
+5. s gets 5. add's boxes a and b are gone.
+6. printf prints 5.
+7. main returns 0 to the operating system.</code></pre>
+      </div>
+
+      <h2>3. What goes in (arguments)</h2>
+      <p>The names in the round brackets of the definition are <strong>parameters</strong>: <code>int a, int b</code>. They are local boxes that live only while the function runs.</p>
+      <p>The values in the call are <strong>arguments</strong>: <code>add(2, 3)</code>. C copies those values into the parameter boxes. This is <strong>pass by value</strong>.</p>
+      <p>If the caller has a box <code>x = 2</code> and you call <code>add(x, 3)</code>, <code>add</code> does <em>not</em> receive the box <code>x</code>. It receives a copy of the number 2. If <code>add</code> writes <code>a = 100</code>, <code>x</code> in <code>main</code> is still 2.</p>
+      <p>That is why a function cannot swap two ints in the caller if you only pass the ints. You would need the <em>address</em> of the boxes. That is Chapter 8. Here you must feel the copy.</p>
+      <pre><code>void bump(int n) {
+  n = n + 1;     /* changes the COPY only */
+}
+
+int main(void) {
+  int x = 4;
+  bump(x);
+  /* x is still 4 */
+  return 0;
+}</code></pre>
+
+      <h2>4. What comes back (return)</h2>
+      <p><code>return expression;</code> does two things at once:</p>
+      <ol>
+        <li>It sends that value back to the caller.</li>
+        <li>It <strong>ends</strong> the function. Lines after <code>return</code> in that function do not run.</li>
+      </ol>
+      <p>The type before the function name is the type of the value that comes back: <code>int add(...)</code> must return an <code>int</code>.</p>
+      <p><code>void</code> means “nothing comes back.” You still <em>call</em> the function. The caller still <em>waits</em> until the body finishes. There is just no value to store.</p>
+      <pre><code>void hello(void) {
+  printf("hi\n");
+  /* no return value */
+}
+
+int main(void) {
+  hello();          /* main waits. Nothing to assign. */
+  printf("done\n");
+  return 0;
+}</code></pre>
+      <p>A function returns <strong>one</strong> value. Not two ints at once. If you need two results, you later use pointers or a struct (Chapters 8 and 9). For the exam, first lock this: one <code>return</code>, one value, or <code>void</code>.</p>
+      <p><code>return 0;</code> from <code>main</code> is a message to the OS: this program ended without error. Non-zero usually means failure. You will see that idea again with <code>fork</code> returning <code>-1</code>.</p>
+
+      <h2>5. Who waits (normal C)</h2>
+      <p>Draw a stack of paper in your head. The current function is the top sheet.</p>
+      <ul>
+        <li>When A calls B, you put B’s sheet on top. A is underneath, frozen.</li>
+        <li>When B returns, you throw B’s sheet away. A continues on the next line.</li>
+        <li>If B calls C, C is on top. B waits. A still waits.</li>
+      </ul>
+      <p>So “who waits?” has a short answer: <strong>the caller waits for the callee</strong>. Always, in this chapter, until we say <code>fork</code>.</p>
+      <p>Library functions are the same rule. When you call <code>printf</code>, <code>main</code> waits until <code>printf</code> has finished writing. When you call <code>sleep(2)</code>, <code>main</code> waits about two seconds. Waiting is not special to OS calls. OS calls just wait for bigger work (a child to die, a lock, a signal).</p>
+
+      <h2>6. Order, nested calls, prototypes</h2>
+      <p>In <code>printf("%d\n", add(2, add(1, 1)));</code> the inner <code>add(1, 1)</code> runs first. It returns 2. Then <code>add(2, 2)</code> runs. It returns 4. Then <code>printf</code> runs. Inner call first. That is how you trace nested calls.</p>
+      <p>A <strong>prototype</strong> (declaration) tells the compiler the name, the argument types, and the return type, before you call the function:</p>
+      <pre><code>int add(int a, int b);   /* prototype: promise */
+
+int main(void) {
+  printf("%d\n", add(2, 3));
+  return 0;
+}
+
+int add(int a, int b) {  /* definition: the real body */
+  return a + b;
+}</code></pre>
+      <p>Without a prototype (or a definition above the call), old C guesses wrong types. You will think the function is “broken.” It is not. The compiler was not told the truth. Headers (Chapter 10) are bags of prototypes: <code>fork</code>, <code>wait</code>, <code>kill</code>, <code>pthread_mutex_lock</code>.</p>
+
+      <h2>7. Function you write vs function you only call</h2>
+      <p>You write <code>add</code>. You only call <code>printf</code>. Both are functions. The difference is who wrote the body.</p>
+      <p>OS exam C is full of functions you <em>call</em> but did not write: <code>fork</code>, <code>exec</code>, <code>wait</code>, <code>kill</code>, <code>signal</code>, <code>mmap</code>, <code>shm_open</code>. They still take arguments, they still return, and the caller still waits — except where the man page says the call does something extra (two processes after <code>fork</code>, or the OS later calling <em>your</em> handler).</p>
+
+      <div class="os-door">
+        <span class="tag">OS door — still C, not the OS story</span>
+        <p>You do not learn process theory here. You learn how these four <em>look as C functions</em>. After this chapter you can read a lab file without drowning.</p>
+      </div>
+
+      <h2>8. fork — a call that returns twice</h2>
+      <p><code>pid_t fork(void);</code> — no arguments. Return type is a process id (treat it as an <code>int</code> for tracing).</p>
+      <p>Normal function: one call, one return, back to one caller.</p>
+      <p><code>fork</code>: one call, then there are <strong>two</strong> processes. Each gets a return value.</p>
+      <ul>
+        <li>In the <strong>child</strong>, <code>fork</code> returns <code>0</code>.</li>
+        <li>In the <strong>parent</strong>, <code>fork</code> returns the child’s pid (a positive number), or <code>-1</code> if it failed. Then there is no child.</li>
+      </ul>
+      <pre><code>pid_t r = fork();
+if (r == 0) {
+  /* this body runs in the CHILD */
+} else if (r &gt; 0) {
+  /* this body runs in the PARENT. r is the child's pid */
+} else {
+  /* r == -1. fork failed. still only the parent */
+}</code></pre>
+      <p>Who waits? After a successful <code>fork</code>, <strong>neither</strong> waits for the other just because you called <code>fork</code>. Both continue. If you want the parent to wait, you must <em>call another function</em>: <code>wait</code> or <code>waitpid</code>.</p>
+      <p>That is the whole “who waits” trap for the exam: <code>fork</code> does not wait. <code>wait</code> waits.</p>
+
+      <h2>9. wait — the caller really stops</h2>
+      <p><code>pid_t wait(int *status);</code> — the parent calls this. The parent is the caller. The parent <strong>waits</strong> until one child ends (or there is an error).</p>
+      <p>What goes in: a pointer to an int, or <code>NULL</code> if you do not need the status. Pointers are Chapter 8. For this chapter, remember: <code>wait</code> is a function. Arguments in. A pid comes back (the child that ended), or <code>-1</code> on error.</p>
+      <p>Who waits: <strong>the parent, inside the <code>wait</code> call</strong>, until that child is done. The child does not call <code>wait</code> for the parent in the normal exam picture. The child runs, then ends. The parent is the one blocked in <code>wait</code>.</p>
+      <pre><code>pid_t r = fork();
+if (r == 0) {
+  /* child work, then return/exit */
+} else if (r &gt; 0) {
+  wait(NULL);   /* parent STOPS here until the child ends */
+  /* parent continues only after the child is gone */
+}</code></pre>
+
+      <h2>10. kill — a function that sends a signal</h2>
+      <p>The name is a lie for beginners. <code>kill</code> does not always end a process. It is a function you call to <strong>send a signal</strong> to a pid.</p>
+      <p>Prototype idea: <code>int kill(pid_t pid, int sig);</code></p>
+      <ul>
+        <li>What goes in: who (<code>pid</code>) and which signal (<code>sig</code>, for example <code>SIGUSR1</code> or <code>SIGTERM</code>).</li>
+        <li>What comes back: <code>0</code> if the signal was sent, <code>-1</code> if it failed (bad pid, no permission).</li>
+        <li>Who waits: the caller of <code>kill</code> waits only until the kernel has <em>queued / delivered the send</em>. It does not wait until the other process has handled the signal. That other process may run its handler later.</li>
+      </ul>
+      <p><code>SIGUSR1</code> is the lab signal: “user signal 1,” not “always die.” <code>SIGTERM</code> asks a process to end. <code>SIGKILL</code> forces end and cannot be caught. You do not need more signal names for this chapter.</p>
+
+      <h2>11. A signal handler — a function you do not call</h2>
+      <p>This is the second exception, after <code>fork</code>.</p>
+      <p>You <strong>write</strong> a function that matches a special shape:</p>
+      <pre><code>void handler(int sig) {
+  /* keep this tiny. often only set a flag */
+}</code></pre>
+      <p>You do <strong>not</strong> write <code>handler(SIGUSR1)</code> in <code>main</code> as the normal path. You <em>register</em> it:</p>
+      <pre><code>signal(SIGUSR1, handler);
+/*  what goes in: which signal, and the ADDRESS of your function
+    what comes back: old handler, or error
+    who waits: signal() itself returns quickly.
+    later, when the signal arrives, the OS CALLS handler for you. */</code></pre>
+      <p>So: <code>handler</code> is a function. Its argument is the signal number. Its return is <code>void</code>. The caller, when the signal happens, is the operating system, not <code>main</code>.</p>
+      <p>That is why we later write <code>volatile int flag</code> and only set the flag in the handler. <code>main</code> loops and looks at the flag. You will see the pointer chapter for <code>volatile</code> and for “address of a function.” For now: <strong>function pointer</strong> means “the paper that says where the function lives.” <code>signal</code> needs that paper so the OS knows which job to run.</p>
+      <pre><code>#include &lt;signal.h&gt;
+
+volatile int got = 0;
+
+void handler(int sig) {
+  (void)sig;     /* we received it; we may ignore the number */
+  got = 1;       /* only this. no printf in the strict picture */
+}
+
+int main(void) {
+  signal(SIGUSR1, handler);  /* register. we do not call handler here */
+  /* wait until got becomes 1, then continue */
+  return 0;
+}</code></pre>
+
+      <h2>12. Picture of the four OS calls as functions</h2>
+      <pre><code>fork()     in: nothing
+           back: 0 in child, pid in parent, -1 on fail
+           wait?: no. two sides continue
+
+wait()     in: pointer to status, or NULL
+           back: pid of dead child, or -1
+           wait?: YES. parent frozen until a child ends
+
+kill()     in: pid, signal number
+           back: 0 or -1
+           wait?: only for the send, not for the handler
+
+handler()  in: signal number (OS passes it)
+           back: void
+           who calls it?: the OS, after you registered it
+                         with signal(sig, handler)</code></pre>
+
+      <div class="need">
+        <span class="tag">Before practice</span>
+        <p>If you cannot say, for a call, “what goes in / what comes back / who waits,” you are not done with the rule. Practice below forces that sentence again and again.</p>
+      </div>
+
+      <h2 id="practice">Practice</h2>
+      <div class="scorebox">
+        <span class="tag">This chapter</span>
+        <p><strong data-drill-score>0 / ? submitted right</strong></p>
+        <p style="margin-bottom:0">Every item: Hint, Submit, See answer. See answer shows commented C. Submit first if you want to be boss.</p>
+      </div>
+      <div id="drills"></div>
+
+      <div class="pager">
+        <a href="ch06.html">← Ch6 · Arrays</a>
+        <a href="ch08.html">Ch8 · Pointers →</a>
+      </div>
+    </div>
+  </main>
+  <footer class="cos-foot">
+    <div class="wrap">Ch7 · functions · C programming for Operating System</div>
+  </footer>
+  <script src="js/ch07-data.js?v=1"></script>
+  <script src="js/practice.js?v=1"></script>
+  <script src="../../assets/js/theme.js?v=1"></script>
+</body>
+</html>
