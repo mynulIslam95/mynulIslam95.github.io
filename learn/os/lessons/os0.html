@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>OS0 · The building and the work</title>
+  <meta name="description" content="OS0: the operating system is the shop building. Apps are the work inside. Story and yes or no. No C yet."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/os.css?v=4"/>
+</head>
+<body class="os">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="os-bar">
+    <div class="wrap">
+      <a class="os-brand" href="../index.html">OS · Learn</a>
+      <nav class="os-nav" aria-label="OS">
+        <a href="../index.html">Map</a>
+        <a href="../c/c1.html">C stories</a>
+        <a class="is-on" href="os0.html">OS stories</a>
+        <a href="../../index.html">Learn hub</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <div class="wrap">
+      <p class="kicker"><a href="../index.html">Map</a> · Floor 1 · OS0</p>
+      <h1>The building and the work</h1>
+      <p class="lede">You can read this before C. There is no code on this page. Only a shop, a building, and the work inside.</p>
+
+      <h2>Story</h2>
+      <div class="story">
+        <p>A laptop is a building with rooms: a brain (CPU), a table (RAM), a store room (disk). The rooms are empty. They do not know Chrome, Word, or WhatsApp.</p>
+        <p>If you only put power in, you get a dark shop. Nobody opens the door. Nobody puts boxes on the table.</p>
+        <p>The <strong>operating system</strong> is the first big program that wakes up. It is the building: lights, keys, who may use a room. Windows is one building. Linux is another. Same job, different paint.</p>
+        <p>Chrome and Word are not the building. They are <strong>work inside</strong> the shop. They ask the building: give me table space, open this file, send this letter.</p>
+      </div>
+
+      <div class="quiz" data-answer="no">
+        <p><strong>Practice.</strong> Is Chrome the operating system?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Chrome is work inside the shop. Windows or Linux is the building. Chrome asks the building for memory and for the network.</p>
+        </div>
+      </div>
+
+      <h2>Two rooms in the building</h2>
+      <div class="story">
+        <p>One room is close to the walls and the power. We call it the <strong>kernel</strong>. Memory, CPU time, disk, network card live here. You do not click around in this room. If this room falls, the whole shop is dark.</p>
+        <p>The other room is for guests: browser, editor, Teams, a small C program. Guests ask. They do not own the walls.</p>
+        <p>That asking is a <strong>system call</strong>. You do not need the list of names yet. Apps are guests. The OS is the building.</p>
+      </div>
+
+      <h2>A recipe is not a running shop</h2>
+      <div class="story">
+        <p>Word on disk is a <strong>program</strong>: a file. A recipe in a book. When you open Word, the OS puts it on the table and it becomes a <strong>process</strong>: a running shop from that recipe.</p>
+        <p>You open Word twice. One recipe. Two running shops, unless Word reuses one. Task Manager and <code>top</code> show the running shops, not the book on the shelf.</p>
+        <p>When Word freezes, you stop the running shop. You do not throw the recipe in the bin. Uninstall is for when the recipe itself is broken.</p>
+      </div>
+
+      <div class="quiz" data-answer="no">
+        <p><strong>Practice.</strong> Word freezes. Should you uninstall Word first?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. End the process first. That is the running shop. Uninstall is later, if the program file itself is broken.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no">
+        <p><strong>Practice.</strong> You open Word twice. Do you now have two programs on disk?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. One program on disk. Two processes in RAM. The file is the recipe. The running copies are processes.</p>
+        </div>
+      </div>
+
+      <h2>Names on the store room</h2>
+      <div class="story">
+        <p>On the disk there are only bits. Folders, file names, C:\ and /home are a story the OS tells you. The same USB stick can look different in Windows and in Linux. Each building tells the story in its own way.</p>
+      </div>
+
+      <p>At work the ticket is almost never “the kernel crashed.” It is: laptop slow, disk full, app frozen. Under that, it is still the building: too many running shops, no table space, a locked file. If you only know the app, you guess. If you see the OS, you have a place to look.</p>
+      <p>Next OS story, after C1–C4: we copy the whole shop. Two buildings. Each has its own money box. That is a process.</p>
+
+      <div class="pager">
+        <a href="../index.html">← Map</a>
+        <a href="os1.html">OS1 · Copy the shop →</a>
+      </div>
+    </div>
+  </main>
+  <footer class="os-foot">
+    <div class="wrap">OS0 · building, guests, recipe vs running shop</div>
+  </footer>
+  <script src="../js/os.js?v=2"></script>
+</body>
+</html>

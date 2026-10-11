@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>C1 · The note for the helper</title>
+  <meta name="description" content="C1: a C program is a note. The builder turns it into a tool. Story, yes or no, then four lines of C."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/os.css?v=4"/>
+</head>
+<body class="os">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="os-bar">
+    <div class="wrap">
+      <a class="os-brand" href="../index.html">OS · Learn</a>
+      <nav class="os-nav" aria-label="OS">
+        <a href="../index.html">Map</a>
+        <a class="is-on" href="c1.html">C stories</a>
+        <a href="../lessons/os0.html">OS stories</a>
+        <a href="../../index.html">Learn hub</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <div class="wrap">
+      <p class="kicker"><a href="../index.html">Map</a> · Floor 0 · C1</p>
+      <h1>The note for the helper</h1>
+      <p class="lede">You never wrote C. That is fine. This page is a shop story. Then a yes or no. Then the same story in four lines of C.</p>
+
+      <h2>Story</h2>
+      <div class="story">
+        <p>You own a small shop. You cannot stand at the door all day. You write a <strong>note</strong> for a helper.</p>
+        <p>The note says: start here. Say “shop is open.” Then stop.</p>
+        <p>The helper cannot read your handwriting. A <strong>builder</strong> takes the note and builds a small tool. Now the helper can run the tool.</p>
+        <p>If you change the note, you must call the builder again. The old tool still does the old job until you build a new one.</p>
+      </div>
+
+      <div class="quiz" data-answer="no">
+        <p><strong>Practice.</strong> You change the note. You do not call the builder. Does the helper now say the new words?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>The helper runs the tool, not the paper. The paper is only for the builder. New words need a new tool.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="yes">
+        <p><strong>Practice.</strong> Is “start here” the first thing in the note?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Every C note has a start. That start is called <code>main</code>. The helper always begins there.</p>
+        </div>
+      </div>
+
+      <h2>The same story in C</h2>
+      <p>The note is a file. We call it <code>shop.c</code>. The builder is a program called <code>gcc</code>. The tool the helper runs is <code>./shop</code>.</p>
+      <pre><code>#include &lt;stdio.h&gt;
+
+int main(void) {
+  printf("shop is open\n");
+  return 0;
+}</code></pre>
+      <p class="line-note">Line 1: bring the print toolkit. Line 3: start here. Line 4: say the words. Line 5: stop, all is well.</p>
+
+      <div class="quiz" data-answer="yes">
+        <p><strong>Practice.</strong> In this C, is <code>main</code> the “start here” of the note?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. The helper always starts at <code>main</code>. <code>printf</code> is the line that speaks. <code>return 0</code> means stop, no problem.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no">
+        <p><strong>Practice.</strong> You only keep <code>shop.c</code>. You never run the builder. Can the helper already say “shop is open”?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. <code>shop.c</code> is the note. The builder command is <code>gcc shop.c -o shop</code>. After that, the helper runs <code>./shop</code>.</p>
+        </div>
+      </div>
+
+      <p>The word <strong>C</strong> is just the language of the note. You will use it again for locks and copies of the shop. First you must be able to start, speak, and stop.</p>
+
+      <div class="pager">
+        <a href="../index.html">← Map</a>
+        <a href="c2.html">C2 · Boxes →</a>
+      </div>
+    </div>
+  </main>
+  <footer class="os-foot">
+    <div class="wrap">C1 · note, builder, helper</div>
+  </footer>
+  <script src="../js/os.js?v=2"></script>
+</body>
+</html>

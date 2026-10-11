@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>C2 · Boxes with names</title>
+  <meta name="description" content="C2: variables, if, while. Shop story, yes or no, then C."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/os.css?v=4"/>
+</head>
+<body class="os">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="os-bar">
+    <div class="wrap">
+      <a class="os-brand" href="../index.html">OS · Learn</a>
+      <nav class="os-nav" aria-label="OS">
+        <a href="../index.html">Map</a>
+        <a class="is-on" href="c1.html">C stories</a>
+        <a href="../lessons/os0.html">OS stories</a>
+        <a href="../../index.html">Learn hub</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <div class="wrap">
+      <p class="kicker"><a href="../index.html">Map</a> · Floor 0 · C2</p>
+      <h1>Boxes with names</h1>
+      <p class="lede">A box with a name. A choice. A repeat. Then the same story in C.</p>
+      <h2>Story</h2>
+      <div class="story">
+        <p>In the shop there is a <strong>box</strong> with a name. One box is called <code>money</code>. You put 10 inside.</p>
+        <p>A <strong>choice</strong>: if the box is 0, you close the shop. If it is not 0, you stay open.</p>
+        <p>A <strong>repeat</strong>: you add 1 to the box, again and again, three times. The box ends at 13.</p>
+        <p>The name of the box is not the money. The money is the number inside.</p>
+      </div>
+
+      <div class="quiz" data-answer="yes">
+        <p><strong>Practice.</strong> Is <code>money</code> a box that can hold a number?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. In C that box is a variable. <code>int money = 10;</code> means: make a box for a whole number, put 10 in it.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no">
+        <p><strong>Practice.</strong> If you write a new number in the box, does the old number stay there too?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. A box holds one number at a time. The new number replaces the old one.</p>
+        </div>
+      </div>
+<h2>The same story in C</h2>
+<p>A whole number uses <code>int</code>. <code>if</code> is the choice. <code>while</code> is the repeat. <code>printf</code> shows what is inside.</p>
+      <pre><code>#include &lt;stdio.h&gt;
+
+int main(void) {
+  int money = 10;
+  int n = 0;
+  while (n &lt; 3) {
+    money = money + 1;
+    n = n + 1;
+  }
+  if (money == 0) {
+    printf("closed\n");
+  } else {
+    printf("open, money=%d\n", money);
+  }
+  return 0;
+}</code></pre>
+      <p class="line-note">money is the box. The while loop adds 1 three times. Then if asks: is the box empty?</p>
+
+      <div class="quiz" data-answer="no">
+        <p><strong>Practice.</strong> After this program, is <code>money</code> still 10?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. It started at 10. The loop added 1 three times. It is 13. The program prints open, money=13.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="yes">
+        <p><strong>Practice.</strong> Is <code>if (money == 0)</code> the choice “is the shop empty?”</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. Two equal signs ask: is this equal to that? One equal sign would put a number in the box.</p>
+        </div>
+      </div>
+      <div class="pager">
+        <a href="c1.html">← C1</a>
+        <a href="c3.html">C3 · Ask a helper →</a>
+      </div>
+    </div>
+  </main>
+  <footer class="os-foot">
+    <div class="wrap">C2 · boxes, if, while</div>
+  </footer>
+  <script src="../js/os.js?v=2"></script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>OS9 · Windows events</title>
+  <meta name="description" content="OS9: CreateProcess, named events, Lab 4."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/os.css?v=4"/>
+</head>
+<body class="os">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="os-bar">
+    <div class="wrap">
+      <a class="os-brand" href="../index.html">OS · Learn</a>
+      <nav class="os-nav" aria-label="OS">
+        <a href="../index.html">Map</a>
+        <a href="../c/c1.html">C stories</a>
+        <a class="is-on" href="os0.html">OS stories</a>
+        <a href="../../index.html">Learn hub</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <div class="wrap">
+      <p class="kicker"><a href="../index.html">Map</a> · Floor 2 · OS9</p>
+      <h1>Windows events</h1>
+      <p class="lede">CreateProcess, named events, three processes. Lab 4.</p>
+      <p class="need">Lab 4. Read after <a href="os1.html">OS1</a>–<a href="os8.html">OS8</a>. Windows words for the same shop stories.</p>
+      <h2>Story</h2>
+      <div class="story">
+        <p>Linux <code>fork</code> copies the shop. Windows <code>CreateProcess</code> starts a <strong>named program</strong>. The child does not get a copy of the parent’s heap.</p>
+        <p><code>CreateThread</code> is two workers in one shop, like pthread. <code>WaitForSingleObject</code> on a process handle is like waitpid. Then CloseHandle.</p>
+        <p>File mapping and memory mapping on Windows are the same API: CreateFileMapping plus MapViewOfFile. They are quite similar to shm_open plus mmap.</p>
+        <p>A Windows mutex, semaphore, or event is a kernel object you wait on. Signaled means “ready.” WaitForSingleObject waits for one. WaitForMultipleObjects waits for the first, or for all, depending on bWaitAll. “It always waits for all” is false.</p>
+        <p>Unnamed objects are for threads in one process. Another process cannot guess them. Named events: Process A CreateEvent(..., "TriggerSeen"). Process B OpenEvent with the same string. Lab 4 wants events (“this happened”), not a mutex around the whole pipeline.</p>
+        <p>Lab 4: three processes. InputOutput sees a trigger on pin 48 and pulses pin 29. Processing does the heavy work. Control is the boss: wait for trigger, tell processing to start, wait until done, tell output to pulse. Clicking another console can boost that window. The scope jitters. That is scheduling, not a broken SetEvent. Same idea as nice on Linux.</p>
+        <p>GetMessage returns FALSE after WM_QUIT. That is how the GUI loop exits. “After WM_QUIT, GetMessage returns TRUE” is false. The Windows 10 command shell is not an 8-bit MS-DOS environment.</p>
+      </div>
+
+      <div class="quiz" data-answer="no">
+        <p><strong>Practice.</strong> Does CreateProcess copy the parent’s heap like fork?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. New process, named program, new memory. That is closer to fork then exec.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no">
+        <p><strong>Practice.</strong> Does WaitForMultipleObjects always wait for all objects?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Only when bWaitAll is TRUE. If FALSE, the first signaled object is enough.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="yes">
+        <p><strong>Practice.</strong> Can a named Windows event wake a thread in another process?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes, because of the name (or a duplicated handle). Unnamed cannot.</p>
+        </div>
+      </div>
+<h2>The same story in C</h2>
+      <pre><code>HANDLE h = CreateEvent(NULL, FALSE, FALSE, TEXT("TriggerSeen"));
+SetEvent(h);                       /* InputOutput: pin 48 arrived */
+WaitForSingleObject(h, INFINITE);  /* Control waits */</code></pre>
+      <p class="line-note">Named event. SetEvent is “this happened.” Wait blocks, it does not spin. Processing uses other names, for example StartCalc and CalcDone.</p>
+
+      <div class="paper">
+        <p class="yr">SS2025 · Windows bomb</p>
+        <p>Linux fork is not available. Start copies of this program.</p>
+        <details>
+          <summary>Solution steps</summary>
+          <ol>
+          <li>He wants CreateProcess in a loop, like fork making children.</li>
+          <li>CreateWindow in one process is the wrong story. Almost zero marks.</li>
+          <li>New address space, new handles. CloseHandle when you are done.</li>
+          </ol>
+        </details>
+      </div>
+
+      <div class="paper">
+        <p class="yr">Lab 4 · 2026</p>
+        <p>Three processes, named events, why the scope jitters.</p>
+        <details>
+          <summary>Solution steps</summary>
+          <ol>
+          <li>Events: trigger seen, start calc, calc done, do output. Unique string names.</li>
+          <li>Control loop: wait trigger → start processing → wait done → pulse pin 29.</li>
+          <li>Hog first: cores full, pulse late. Your pipeline first: cleaner. Click a console: foreground boost. Same idea as Lab 2 nice.</li>
+          </ol>
+        </details>
+      </div>
+      <div class="pager">
+        <a href="os8.html">← OS8</a>
+        <a href="../index.html">Map →</a>
+      </div>
+    </div>
+  </main>
+  <footer class="os-foot">
+    <div class="wrap">OS9 · Lab 4 Windows</div>
+  </footer>
+  <script src="../js/os.js?v=2"></script>
+</body>
+</html>

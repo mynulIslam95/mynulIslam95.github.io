@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>OS3 · One key for the drawer</title>
+  <meta name="description" content="OS3: mutex, owner, critical section."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/os.css?v=4"/>
+</head>
+<body class="os">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="os-bar">
+    <div class="wrap">
+      <a class="os-brand" href="../index.html">OS · Learn</a>
+      <nav class="os-nav" aria-label="OS">
+        <a href="../index.html">Map</a>
+        <a href="../c/c1.html">C stories</a>
+        <a class="is-on" href="os0.html">OS stories</a>
+        <a href="../../index.html">Learn hub</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <div class="wrap">
+      <p class="kicker"><a href="../index.html">Map</a> · Floor 1 · OS3</p>
+      <h1>One key for the drawer</h1>
+      <p class="lede">The worker who took the key must give it back.</p>
+      <p class="need">You need <a href="os2.html">OS2</a>. One key for one drawer. The worker who took the key must give it back.</p>
+      <h2>Story</h2>
+      <div class="story">
+        <p>The cash drawer has <strong>one key</strong>. Only the worker who holds the key may open the drawer. That key is a <strong>mutex</strong>. Mutex means: one owner.</p>
+        <p>You lock, you change <code>x</code>, you unlock. If the other worker already has the key, you <strong>wait</strong>. You do not spin in front of the drawer: <code>while (!free) { }</code> burns the CPU.</p>
+        <p>The stretch that touches <code>x</code> is the <strong>critical section</strong>. Critical does not mean “important for the grade.” It means this stretch must not overlap.</p>
+        <p>A mutex does <strong>not</strong> stop deadlock. If A takes key 1 then key 2, and B takes key 2 then key 1, each mutex did its job and they still wait forever. Deadlock is OS5.</p>
+      </div>
+
+      <div class="quiz" data-answer="yes">
+        <p><strong>Practice.</strong> Does a mutex have an owner?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. The worker who locked should unlock. A semaphore (OS4) has no owner.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no">
+        <p><strong>Practice.</strong> Does a mutex also prevent deadlock?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. It only says: one at a time on this key. A circle of two keys is a different problem.</p>
+        </div>
+      </div>
+<h2>The same story in C</h2>
+      <pre><code>#include &lt;pthread.h&gt;
+
+int x = 0;
+pthread_mutex_t m = PTHREAD_MUTEX_INITIALIZER;
+
+void *worker(void *arg) {
+  int i;
+  for (i = 0; i &lt; 1000; i++) {
+    pthread_mutex_lock(&amp;m);
+    x = x + 1;
+    pthread_mutex_unlock(&amp;m);
+  }
+  return NULL;
+}</code></pre>
+      <p class="line-note">m is the key, global so both lock the same key. lock, add 1, unlock. Only x = x + 1 is the critical section. &m is the paper (C4).</p>
+
+      <div class="quiz" data-answer="yes">
+        <p><strong>Practice.</strong> Should the mutex be global like x?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. If each worker has its own mutex, they are not sharing one key.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no">
+        <p><strong>Practice.</strong> Is the for-loop the critical section?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Only the lines that touch x while you hold the key. You must not hold the key for the whole 1000 if you do not need to — here we lock around each add.</p>
+        </div>
+      </div>
+
+      <div class="paper">
+        <p class="yr">SS2018 / WS2024 · true or false</p>
+        <p>“Mutexes avoid deadlocks.” Two threads add 1 to x. Why might x not be 2000?</p>
+        <details>
+          <summary>Solution steps</summary>
+          <ol>
+          <li>Mutexes avoid deadlocks: false. A mutex is one key. Deadlock is a circle.</li>
+          <li>x = x + 1 is read, add, write. Both can read 10 and both write 11. Lost update.</li>
+          <li>Fix: lock, add, unlock. Then x is 2000 if you also join.</li>
+          </ol>
+        </details>
+      </div>
+      <div class="pager">
+        <a href="os2.html">← OS2</a>
+        <a href="os4.html">OS4 · Twenty violins →</a>
+      </div>
+    </div>
+  </main>
+  <footer class="os-foot">
+    <div class="wrap">OS3 · mutex</div>
+  </footer>
+  <script src="../js/os.js?v=2"></script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>C5 · One form</title>
+  <meta name="description" content="C5: a struct is one form with several fields."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/os.css?v=4"/>
+</head>
+<body class="os">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="os-bar">
+    <div class="wrap">
+      <a class="os-brand" href="../index.html">OS · Learn</a>
+      <nav class="os-nav" aria-label="OS">
+        <a href="../index.html">Map</a>
+        <a class="is-on" href="c1.html">C stories</a>
+        <a href="../lessons/os0.html">OS stories</a>
+        <a href="../../index.html">Learn hub</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <div class="wrap">
+      <p class="kicker"><a href="../index.html">Map</a> · Floor 0 · C5</p>
+      <h1>One form</h1>
+      <p class="lede">Several fields on one paper. You carry one form, not four.</p>
+      <h2>Story</h2>
+      <div class="story">
+        <p>The shop does not carry four loose papers. It carries <strong>one form</strong> with several fields: violins, rooms, keys.</p>
+        <p>You change only violins. Rooms and keys stay as they were.</p>
+        <p>Later, a music school keeps four counters on one shared form: holidays, cars, a tape, a printer. That is the same idea with a bigger form.</p>
+        <p>The form has a name. Each field has a name. You write <code>shop.violins</code> to open one field.</p>
+      </div>
+
+      <div class="quiz" data-answer="no">
+        <p><strong>Practice.</strong> If you change violins on the form, do rooms also change by themselves?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Each field is its own box on the same paper.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="yes">
+        <p><strong>Practice.</strong> Is one form easier to share than four loose papers?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. You map one block of memory. All fields travel together. That is why OS stories use a struct.</p>
+        </div>
+      </div>
+<h2>The same story in C</h2>
+      <pre><code>#include &lt;stdio.h&gt;
+
+struct Shop {
+  int violins;
+  int rooms;
+};
+
+int main(void) {
+  struct Shop s;
+  s.violins = 20;
+  s.rooms = 3;
+  s.violins = s.violins - 1;
+  printf("violins=%d rooms=%d\n", s.violins, s.rooms);
+  return 0;
+}</code></pre>
+      <p class="line-note">struct Shop is the form. s is one filled form. s.violins is one field. Print is 19 and 3.</p>
+
+      <div class="quiz" data-answer="yes">
+        <p><strong>Practice.</strong> After this program, are there 19 violins and 3 rooms?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. You only changed violins. Rooms stayed 3.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no">
+        <p><strong>Practice.</strong> Is <code>struct Shop</code> a process?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. It is only a form in C. A process is a running shop. You meet that in OS1.</p>
+        </div>
+      </div>
+      <div class="pager">
+        <a href="c4.html">← C4</a>
+        <a href="c6.html">C6 · The toolkit →</a>
+      </div>
+    </div>
+  </main>
+  <footer class="os-foot">
+    <div class="wrap">C5 · struct</div>
+  </footer>
+  <script src="../js/os.js?v=2"></script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>C3 · Ask a helper</title>
+  <meta name="description" content="C3: a function returns an answer."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/os.css?v=4"/>
+</head>
+<body class="os">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="os-bar">
+    <div class="wrap">
+      <a class="os-brand" href="../index.html">OS · Learn</a>
+      <nav class="os-nav" aria-label="OS">
+        <a href="../index.html">Map</a>
+        <a class="is-on" href="c1.html">C stories</a>
+        <a href="../lessons/os0.html">OS stories</a>
+        <a href="../../index.html">Learn hub</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <div class="wrap">
+      <p class="kicker"><a href="../index.html">Map</a> · Floor 0 · C3</p>
+      <h1>Ask a helper</h1>
+      <p class="lede">You send a job. The helper comes back with a number.</p>
+      <h2>Story</h2>
+      <div class="story">
+        <p>You do not count every apple yourself. You ask a <strong>helper</strong>: “count these, come back with a number.”</p>
+        <p>You give the helper two numbers: how many boxes, how many apples in each. The helper <strong>returns</strong> the total.</p>
+        <p>You wait for the answer. Then you write it on the door.</p>
+        <p>Later, <code>fork</code> and <code>waitpid</code> are also helpers you call. First you must see a helper in a small story.</p>
+      </div>
+
+      <div class="quiz" data-answer="yes">
+        <p><strong>Practice.</strong> Does the helper give you back one answer?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. That answer is the return value. In C, <code>return total;</code> sends it back to the caller.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no">
+        <p><strong>Practice.</strong> Do you need to copy the helper’s whole job into every note?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. You write the helper once. You call it when you need it. That is a function.</p>
+        </div>
+      </div>
+<h2>The same story in C</h2>
+      <pre><code>#include &lt;stdio.h&gt;
+
+int count_apples(int boxes, int each) {
+  return boxes * each;
+}
+
+int main(void) {
+  int total = count_apples(4, 5);
+  printf("apples=%d\n", total);
+  return 0;
+}</code></pre>
+      <p class="line-note">count_apples is the helper. 4 and 5 are what you give. return is the answer. main prints 20.</p>
+
+      <div class="quiz" data-answer="yes">
+        <p><strong>Practice.</strong> Does <code>count_apples(4, 5)</code> return 20?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. Four boxes, five apples each. 4 × 5 = 20. <code>total</code> holds 20.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no">
+        <p><strong>Practice.</strong> Is <code>main</code> the helper that counts apples?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. <code>main</code> is still “start here.” It asks the helper, then prints.</p>
+        </div>
+      </div>
+      <div class="pager">
+        <a href="c2.html">← C2</a>
+        <a href="c4.html">C4 · The address →</a>
+      </div>
+    </div>
+  </main>
+  <footer class="os-foot">
+    <div class="wrap">C3 · functions</div>
+  </footer>
+  <script src="../js/os.js?v=2"></script>
+</body>
+</html>

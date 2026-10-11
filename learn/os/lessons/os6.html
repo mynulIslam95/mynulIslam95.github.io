@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>OS6 · A window both shops can see</title>
+  <meta name="description" content="OS6: shm_open, mmap, MAP_SHARED."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/os.css?v=4"/>
+</head>
+<body class="os">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="os-bar">
+    <div class="wrap">
+      <a class="os-brand" href="../index.html">OS · Learn</a>
+      <nav class="os-nav" aria-label="OS">
+        <a href="../index.html">Map</a>
+        <a href="../c/c1.html">C stories</a>
+        <a class="is-on" href="os0.html">OS stories</a>
+        <a href="../../index.html">Learn hub</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <div class="wrap">
+      <p class="kicker"><a href="../index.html">Map</a> · Floor 1 · OS6</p>
+      <h1>A window both shops can see</h1>
+      <p class="lede">The violin board sits in a shared window.</p>
+      <p class="need">You need <a href="../c/c4.html">C4</a>, <a href="../c/c5.html">C5</a>, and <a href="os4.html">OS4</a>. Two shops, one window.</p>
+      <h2>Story</h2>
+      <div class="story">
+        <p>Two different shops need to see the <strong>same</strong> violin board. You put the board in a <strong>window</strong> both can look through. That window is shared memory.</p>
+        <p>Shared memory is not a lock. It only makes the same bytes visible. You still put a mutex or a semaphore on that page.</p>
+        <p>The rental creates a named page with <code>shm_open</code>, gives it a size with <code>ftruncate</code>, then <code>mmap</code> with <code>MAP_SHARED</code> so the other shop sees the writes. Then <code>sem_init(s, 1, 20)</code>.</p>
+        <p>The student opens the same name, no <code>O_CREAT</code>, read-write, because <code>sem_wait</code> writes the counter. Read-only can crash.</p>
+      </div>
+
+      <div class="quiz" data-answer="no">
+        <p><strong>Practice.</strong> Is shared memory a synchronization tool by itself?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. It only shares bytes. You still need a mutex or a semaphore on that page.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="yes">
+        <p><strong>Practice.</strong> Must the student open the page read-write to call sem_wait?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. wait subtracts one. That is a write.</p>
+        </div>
+      </div>
+<h2>The same story in C</h2>
+      <pre><code>#include &lt;fcntl.h&gt;
+#include &lt;sys/mman.h&gt;
+#include &lt;semaphore.h&gt;
+#include &lt;unistd.h&gt;
+
+int main(void) {
+  int fd = shm_open("/pool", O_CREAT | O_RDWR, 0666);
+  ftruncate(fd, sizeof(sem_t));
+  sem_t *s = mmap(NULL, sizeof(sem_t),
+                  PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+  close(fd);
+  sem_init(s, 1, 20);
+  pause();
+  return 0;
+}</code></pre>
+      <p class="line-note">O_CREAT: rental goes first. ftruncate: without a size there is no room. MAP_SHARED: the student must see writes. sem_init 1,20. pause, not an empty loop.</p>
+      <pre><code>int main(void) {
+  int fd = shm_open("/pool", O_RDWR, 0);
+  sem_t *s = mmap(NULL, sizeof(sem_t),
+                  PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+  close(fd);
+  int i;
+  for (i = 0; i &lt; 5; i++) {
+    sem_wait(s);
+    sleep(1);
+    sem_post(s);
+  }
+  return 0;
+}</code></pre>
+      <p class="line-note">Student: no O_CREAT. O_RDWR. Same name /pool. Five take-play-return.</p>
+
+      <div class="paper">
+        <p class="yr">SS2022 Task 1 / SS2020 travel agency</p>
+        <p>Why shared memory? What if pshared is 0? Why not mmap read-only for the student?</p>
+        <details>
+          <summary>Solution steps</summary>
+          <ol>
+          <li>Students are other programs. They do not share the rental’s heap.</li>
+          <li>pshared 0: each program has its own counter of 20. Forty violins in the world.</li>
+          <li>Read-only: sem_wait must write. It can crash. Open O_RDWR, PROT_READ | PROT_WRITE.</li>
+          <li>Rental must not burn the CPU: pause(), not while(1){}.</li>
+          </ol>
+        </details>
+      </div>
+      <div class="pager">
+        <a href="os5.html">← OS5</a>
+        <a href="os7.html">OS7 · GPIO →</a>
+      </div>
+    </div>
+  </main>
+  <footer class="os-foot">
+    <div class="wrap">OS6 · shared memory</div>
+  </footer>
+  <script src="../js/os.js?v=2"></script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>OS7 · GPIO on the Pi</title>
+  <meta name="description" content="OS7: Lab 1 GPIO17, pin 11, RP1, mmap vs script."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/os.css?v=4"/>
+</head>
+<body class="os">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="os-bar">
+    <div class="wrap">
+      <a class="os-brand" href="../index.html">OS · Learn</a>
+      <nav class="os-nav" aria-label="OS">
+        <a href="../index.html">Map</a>
+        <a href="../c/c1.html">C stories</a>
+        <a class="is-on" href="os0.html">OS stories</a>
+        <a href="../../index.html">Learn hub</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <div class="wrap">
+      <p class="kicker"><a href="../index.html">Map</a> · Floor 2 · OS7</p>
+      <h1>GPIO on the Pi</h1>
+      <p class="lede">Pin 11, chip RP1, script vs mmap, gaps on the scope.</p>
+      <p class="need">Lab 1. You need <a href="os1.html">OS1</a> (fork, process cost) and <a href="os6.html">OS6</a> (mmap). Raspberry Pi 5.</p>
+      <h2>Story</h2>
+      <div class="story">
+        <p>The job: set GPIO17 as an output, toggle it as fast as you can, <strong>two ways</strong>, measure both on a scope, and explain why the speeds differ and why the fast wave has gaps.</p>
+        <p>Linux talks about <strong>line 17</strong>. That is not hole 17 on the plastic. The probe goes on <strong>physical pin 11</strong>. Ground on a GND pin. Old reports said BeagleBoard pin 136. That is wrong on this board.</p>
+        <p>On Pi 5, GPIO lives on a chip named <strong>RP1</strong>, not the old BCM chip. If you mmap old addresses, you write in the wrong place.</p>
+        <p>Way 1 — a script. Every high and every low: the shell copies a process (fork), that process becomes gpioset (exec), gpioset talks to the kernel, the pin changes, the process dies. Then the next edge does the whole thing again. The pin is fast. You wait on process creation. Slow square wave, hundreds of hertz. Do not make your main sentence “bash is interpreted.”</p>
+        <p>Way 2 — C and mmap. Open <code>/dev/mem</code> read-write with <code>O_SYNC</code>. mmap the RP1 page once. Then write bit 17 into SET and CLEAR in a loop. You used the kernel once. After that, ordinary stores. Megahertz, with <strong>gaps</strong>. A gap is the OS taking the CPU. The pin stays at the last high or low. RP1 does not keep toggling by itself.</p>
+        <p>This is memory-mapped I/O, not old x86 IN/OUT ports. mmap here is the same call as OS6, but the page is hardware, not a semaphore you made.</p>
+      </div>
+
+      <div class="quiz" data-answer="no">
+        <p><strong>Practice.</strong> Is the probe on header hole 17?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. GPIO17 is the line. The metal hole is physical pin 11.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="yes">
+        <p><strong>Practice.</strong> Is the Pi 5 GPIO chip RP1?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. Not BCM from Pi 3/4. Not pin 136.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no">
+        <p><strong>Practice.</strong> Are the gaps on the fast wave a crash?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Time slices. The process was not Running. The pin froze.</p>
+        </div>
+      </div>
+<h2>The same story in C</h2>
+      <pre><code>int fd = open("/dev/mem", O_RDWR | O_SYNC);
+volatile uint32_t *gpio = mmap(NULL, 4096, PROT_READ | PROT_WRITE,
+                               MAP_SHARED, fd, /* RP1 base */ 0);
+for (;;) {
+  *set_reg = (1u &lt;&lt; 17);  /* high — probe on pin 11 */
+  *clr_reg = (1u &lt;&lt; 17);  /* low  — chip RP1 */
+}</code></pre>
+      <p class="line-note">volatile: do not delete stores in a loop that looks unused. Bit 17 is GPIO17. You still must use the real RP1 offsets from the lab sheet.</p>
+
+      <div class="paper">
+        <p class="yr">Lab 1 · Pi 5</p>
+        <p>Toggle GPIO17 two ways. Where is the probe? Which chip? Why is the script slower? What are the gaps?</p>
+        <details>
+          <summary>Solution steps</summary>
+          <ol>
+          <li>Probe: physical pin 11, not hole 17. Chip: RP1.</li>
+          <li>Script: fork + exec + syscalls every edge. Hundreds of hertz. Not “bash is interpreted” as the main line.</li>
+          <li>C: open /dev/mem once, mmap, then stores. Megahertz.</li>
+          <li>Gaps: the OS took the CPU. Memory-mapped I/O, not x86 ports. Kickoff: do not use /sys/class/gpio.</li>
+          </ol>
+        </details>
+      </div>
+      <div class="pager">
+        <a href="os6.html">← OS6</a>
+        <a href="os8.html">OS8 · Telnet →</a>
+      </div>
+    </div>
+  </main>
+  <footer class="os-foot">
+    <div class="wrap">OS7 · Lab 1 GPIO</div>
+  </footer>
+  <script src="../js/os.js?v=2"></script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>OS2 · Two workers, one shop</title>
+  <meta name="description" content="OS2: threads share the heap. Lost update."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/os.css?v=4"/>
+</head>
+<body class="os">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="os-bar">
+    <div class="wrap">
+      <a class="os-brand" href="../index.html">OS · Learn</a>
+      <nav class="os-nav" aria-label="OS">
+        <a href="../index.html">Map</a>
+        <a href="../c/c1.html">C stories</a>
+        <a class="is-on" href="os0.html">OS stories</a>
+        <a href="../../index.html">Learn hub</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <div class="wrap">
+      <p class="kicker"><a href="../index.html">Map</a> · Floor 1 · OS2</p>
+      <h1>Two workers, one shop</h1>
+      <p class="lede">Same money box. Both add one. Sometimes one add is lost.</p>
+      <p class="need">You need <a href="os1.html">OS1</a> and <a href="../c/c4.html">C4</a>. Two workers in <strong>one</strong> shop.</p>
+      <h2>Story</h2>
+      <div class="story">
+        <p>A <strong>thread</strong> is a worker inside one shop. Two workers of the same shop share the money box. They see the same <code>x</code>.</p>
+        <p>That is cheap talk. That is also danger. Both add 1. <code>x = x + 1</code> is three steps: read, add, write. Both can read 10. Both write 11. You wanted 12. One add is lost.</p>
+        <p>“A thread’s memory is protected so no other thread can touch it” sounds safe. It is false. Threads of one process share by design.</p>
+        <p>You do not need shared memory for two threads. They already live in one shop. You do not need twenty tickets. There is one box, not twenty violins.</p>
+      </div>
+
+      <div class="quiz" data-answer="yes">
+        <p><strong>Practice.</strong> Do two threads of one process share the heap?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. Same shop, same boxes. Two processes after fork do not.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no">
+        <p><strong>Practice.</strong> If both add 1 to x a thousand times, is x always 2000 with no lock?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. A lost update can happen. You will need the key in OS3.</p>
+        </div>
+      </div>
+<h2>The same story in C</h2>
+<p>The worker function is what each thread runs. <code>pthread_join</code> waits until that worker finishes. If <code>main</code> returns without join, the whole shop closes and both workers die early. Compile with <code>-pthread</code>.</p>
+      <pre><code>#include &lt;pthread.h&gt;
+
+int x = 0;
+
+void *worker(void *arg) {
+  int i;
+  for (i = 0; i &lt; 1000; i++) {
+    x = x + 1;
+  }
+  return NULL;
+}
+
+int main(void) {
+  pthread_t t1, t2;
+  pthread_create(&amp;t1, NULL, worker, NULL);
+  pthread_create(&amp;t2, NULL, worker, NULL);
+  pthread_join(t1, NULL);
+  pthread_join(t2, NULL);
+  return 0;
+}</code></pre>
+      <p class="line-note">x is global so both workers see it. If x is local inside worker, each has a private box and there is no race. join waits. This still has no key — x may not be 2000.</p>
+
+      <div class="quiz" data-answer="yes">
+        <p><strong>Practice.</strong> Must x be global (or heap) for both workers to share it?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. A local x inside worker sits on that thread’s own stack.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no">
+        <p><strong>Practice.</strong> If main skips join, are you sure both workers finished?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. When main returns, the process exits. Threads can die in the middle.</p>
+        </div>
+      </div>
+
+      <div class="paper">
+        <p class="yr">SS2018 Processes and Threads · true or false</p>
+        <p>“A thread’s address space is protected so no other thread can access it.”</p>
+        <details>
+          <summary>Solution steps</summary>
+          <ol>
+          <li>Read the sentence slowly. Threads of one process share the address space.</li>
+          <li>Protected from threads of another process: different story. This sentence is about other threads — it is false.</li>
+          </ol>
+        </details>
+      </div>
+
+      <div class="paper">
+        <p class="yr">SS2024 primes (short)</p>
+        <p>Ten workers search for a big prime. Are they threads or ten shops?</p>
+        <details>
+          <summary>Solution steps</summary>
+          <ol>
+          <li>If they share one result box, they are threads of one process.</li>
+          <li>If each is a new program with its own memory, they are processes. The paper usually wants threads plus a lock on the result (OS3).</li>
+          </ol>
+        </details>
+      </div>
+      <div class="pager">
+        <a href="os1.html">← OS1</a>
+        <a href="os3.html">OS3 · One key →</a>
+      </div>
+    </div>
+  </main>
+  <footer class="os-foot">
+    <div class="wrap">OS2 · threads</div>
+  </footer>
+  <script src="../js/os.js?v=2"></script>
+</body>
+</html>

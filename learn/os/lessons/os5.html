@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>OS5 · Two keys, both wait</title>
+  <meta name="description" content="OS5: deadlock, four conditions, Banker's vs detection."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/os.css?v=4"/>
+</head>
+<body class="os">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="os-bar">
+    <div class="wrap">
+      <a class="os-brand" href="../index.html">OS · Learn</a>
+      <nav class="os-nav" aria-label="OS">
+        <a href="../index.html">Map</a>
+        <a href="../c/c1.html">C stories</a>
+        <a class="is-on" href="os0.html">OS stories</a>
+        <a href="../../index.html">Learn hub</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <div class="wrap">
+      <p class="kicker"><a href="../index.html">Map</a> · Floor 1 · OS5</p>
+      <h1>Two keys, both wait</h1>
+      <p class="lede">A has key 1. B has key 2. Nobody can move.</p>
+      <p class="need">You need <a href="os3.html">OS3</a> and <a href="os4.html">OS4</a>. Deadlock is a circle of waiting, not “the mutex failed.”</p>
+      <h2>Story</h2>
+      <div class="story">
+        <p>Four cars in a crossing. Each sits in one square and needs the next. Nobody can reverse. If they wait in a circle, they stand forever. That is <strong>deadlock</strong>.</p>
+        <p>Four conditions. 1. Only one may use it. 2. Hold and wait: keep what you have, ask for the next. 3. No snatch: the OS will not pull the tool out of a hand. 4. Circular wait. The first three make deadlock possible. The circle makes it exist. Remove any one of the four, and deadlock cannot stay.</p>
+        <p>Jazz takes the organ then the synth. Classical takes the synth then the organ. Drive them until Jazz holds organ and waits for synth, Classical holds synth and waits for organ. That is the circle. One organ, one synth: the picture of a cycle <strong>is</strong> deadlock.</p>
+        <p>If a tool has several copies, a cycle on the drawing is not enough. Someone outside might finish and give one back. Then you need the detection numbers, not only the drawing.</p>
+        <p>Three jobs the OS can do. Prevention: design so one condition cannot happen (same order). Avoidance: Banker's — pretend to grant, can everyone still finish? Detection: grant freely, later find who is stuck now.</p>
+        <p>Need is the future (Claim minus what you hold). That is Banker's. Request is what they want now. That is detection. Do not mix the tables. Unsafe is not “stuck this second.” Unsafe means you might get stuck later, so you deny.</p>
+      </div>
+
+      <div class="quiz" data-answer="no">
+        <p><strong>Practice.</strong> Does a mutex prevent deadlock?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. A mutex is condition 1 (only one may use it). The circle can still form with two mutexes in opposite order.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no">
+        <p><strong>Practice.</strong> If both programs take organ then synth, can this circle still form?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Same order. The circle cannot form. That is prevention.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no">
+        <p><strong>Practice.</strong> Is unsafe the same as deadlock now?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Unsafe is Banker's future. Deadlock now is detection.</p>
+        </div>
+      </div>
+<h2>Need versus Request, with numbers</h2>
+<p>Free V = (1, 0). P1 Need (1, 0), holds (0, 1). P2 Need (1, 1), holds (1, 0). P1 asks for (1, 0). Grant or deny?</p>
+
+      <div class="paper">
+        <p class="yr">Worked numbers · Banker's</p>
+        <p>P1 requests (1, 0). Show every Work step.</p>
+        <details>
+          <summary>Solution steps</summary>
+          <ol>
+          <li>Request (1,0) fits P1 Need (1,0) and fits free (1,0). Pretend: P1 now holds (1,1). Free becomes (0,0).</li>
+          <li>P1 Need is now (0,0), which fits Work (0,0). Mark P1 finished. Work += (1,1) → (1,1).</li>
+          <li>P2 Need (1,1) now fits. Mark P2. Everyone finished → GRANT.</li>
+          <li>If after pretend nobody’s Need fits, DENY. Write every Work vector, not only the last line.</li>
+          </ol>
+        </details>
+      </div>
+
+      <div class="paper">
+        <p class="yr">SS2022 jazz / SS2020 tape-printer / SS2025 robots</p>
+        <p>One robot takes T then P. The other takes P then T. One of each. Four conditions, prove deadlock, one fix.</p>
+        <details>
+          <summary>Solution steps</summary>
+          <ol>
+          <li>Name the four conditions in full sentences.</li>
+          <li>Drive until A holds T and waits for P, B holds P and waits for T.</li>
+          <li>Graph: arrow from process to the resource it waits for, arrow from resource to the holder. Cycle. One instance each → this cycle is deadlock.</li>
+          <li>Fix: both take T then P. Do not answer “use a mutex.”</li>
+          </ol>
+        </details>
+      </div>
+
+      <div class="paper">
+        <p class="yr">SS2025 · Banker's vs detection</p>
+        <p>What is the difference between Need and Request? Unsafe versus deadlock?</p>
+        <details>
+          <summary>Solution steps</summary>
+          <ol>
+          <li>Need = Claim − Allocation. Future. Banker's pretends to grant, then asks if everyone can still finish. If not: unsafe, deny.</li>
+          <li>Request Q = what they want now. Detection. No pretend future. Unmarked names are deadlocked now.</li>
+          <li>Do not put Need in the detection table. Do not put Q in Banker's.</li>
+          </ol>
+        </details>
+      </div>
+      <div class="pager">
+        <a href="os4.html">← OS4</a>
+        <a href="os6.html">OS6 · The window →</a>
+      </div>
+    </div>
+  </main>
+  <footer class="os-foot">
+    <div class="wrap">OS5 · deadlock</div>
+  </footer>
+  <script src="../js/os.js?v=2"></script>
+</body>
+</html>

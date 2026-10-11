@@ -1,87 +1,139 @@
 <!DOCTYPE html>
-<html lang="en" translate="no" class="notranslate">
+<html lang="en">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Operating systems · Learn with Mynul</title>
-  <meta name="google" content="notranslate"/>
-  <meta name="description" content="Operating systems with Mynul: what the OS is doing on your laptop."/>
+  <meta name="description" content="Operating systems from zero. Stories, then C, then practice. No C and no OS needed to start."/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="../../assets/css/styles.css?v=35"/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/os.css?v=4"/>
 </head>
-<body translate="no" class="notranslate">
+<body class="os">
   <a class="skip" href="#main">Skip to content</a>
-  <header class="site-header">
-    <div class="wrap nav">
-      <a class="brand" href="../../index.html">Mynul Islam</a>
-      <input id="nav-toggle" class="nav-toggle" type="checkbox"/>
-      <label class="burger" for="nav-toggle" aria-label="Open menu"><span></span><span></span><span></span></label>
-      <nav class="nav-panel" aria-label="Primary">
-        <ul class="nav-links">
-          <li><a href="../index.html">Learn with Mynul</a></li>
-          <li><a href="../../index.html#projects">Projects</a></li>
-          <li><a href="../../index.html#escalate">Contact</a></li>
-        </ul>
+  <header class="os-bar">
+    <div class="wrap">
+      <a class="os-brand" href="index.html">OS · Learn</a>
+      <nav class="os-nav" aria-label="OS">
+        <a class="is-on" href="index.html">Map</a>
+        <a href="c/c1.html">C stories</a>
+        <a href="lessons/os0.html">OS stories</a>
+        <a href="../index.html">Learn hub</a>
       </nav>
     </div>
   </header>
   <main id="main">
-    <section>
-      <div class="wrap lesson">
-        <p class="section-kicker"><a href="../index.html">Learn with Mynul</a> · Technology</p>
-        <h1>Operating systems</h1>
-        <p class="lede">Lesson 1. What the OS is actually doing. I am not selling a certificate. This is the picture I use at work and the one I learned in Information Engineering.</p>
-
-        <h2>The machine is stupid without this</h2>
-        <p>A laptop has a CPU, RAM and a disk. Those parts do not know Chrome, Word or WhatsApp. If you put electricity in and nothing else, you get a brick. The operating system is the first big program that wakes up, talks to the hardware, and then lets your apps run.</p>
-        <p>Windows is an OS. Linux is an OS. macOS is an OS. Android is an OS on a phone. Same job, different clothes.</p>
-
-        <h2>Two rooms</h2>
-        <p>Think of two rooms.</p>
-        <ul>
-          <li><strong>Kernel.</strong> Close to the metal. Memory, CPU time, disk, network card. You do not click around in here. If this breaks, the whole machine is gone.</li>
-          <li><strong>User programs.</strong> Browser, editor, Teams, your Python script. They ask the kernel: give me RAM, open this file, send this packet.</li>
-        </ul>
-        <p>That asking is a system call. You do not need the list of names yet. You only need the idea: apps are guests. The OS is the building.</p>
-
-        <h2>A program is not a process</h2>
-        <p>Chrome on disk is a program: a file. When you open it, the OS loads it into RAM and gives it a process. Two Chrome windows can be two processes from the same program. Task Manager and <code>top</code> show processes, not the installer.</p>
-        <p>When a process is stuck, you kill the process. You do not delete Chrome from disk. That is the difference, in one ticket.</p>
-
-        <h2>Files are a story the OS tells you</h2>
-        <p>On the disk there are blocks of bits. Folders, file names, C:\ and /home — that layout is the OS. Same USB stick looks different on Windows and Linux because each OS tells the story in its own way.</p>
-
-        <h2>Why this matters on a helpdesk</h2>
-        <p>At Mondia the ticket is almost never “the kernel crashed.” It is: laptop slow, disk full, app frozen, cannot print. Under that, it is still the OS: too many processes, no RAM left, a file lock, a driver. If you only know the app, you guess. If you see the OS, you have a place to look.</p>
-
-        <div class="ask">
-          <p><strong>Check.</strong> You open Word twice. How many programs? How many processes?</p>
-          <details>
-            <summary>Answer</summary>
-            <p>One program on disk. Two processes in RAM, unless Word reuses one — the idea still holds: the file is the program, the running copies are processes.</p>
-          </details>
-        </div>
-
-        <div class="ask">
-          <p><strong>Check.</strong> Chrome freezes. Do you uninstall Chrome, or end the process first?</p>
-          <details>
-            <summary>Answer</summary>
-            <p>End the process first. Uninstall is for when the program itself is broken. Freeze is usually the running copy.</p>
-          </details>
-        </div>
-
-        <p>Next lesson, when I write it: processes and CPU — why “100% CPU” is not always the app you are looking at.</p>
-        <p><a class="btn btn-primary" href="../index.html">Back to Learn with Mynul</a></p>
-      </div>
-    </section>
-  </main>
-  <footer>
     <div class="wrap">
-      <p>Mynul Islam · Hamburg</p>
+      <p class="kicker"><a href="../index.html">Learn with Mynul</a> · Technology</p>
+      <h1>Operating systems</h1>
+      <p class="lede">You do not need C. You do not need OS. Each page is a short story, then a yes or no, then a few lines of C. Year papers sit on the same page, with steps. If you never wrote a program, start at C1.</p>
+
+      <div class="floor">
+        <p class="floor-label">Floor 0 · if you never wrote C</p>
+        <h2>C stories</h2>
+        <div class="grid">
+          <a class="card" href="c/c1.html">
+            <p class="id">C1 · open</p>
+            <h3>The note for the helper</h3>
+            <p>You write a note. A builder turns it into a tool the shop can run.</p>
+          </a>
+          <a class="card" href="c/c2.html">
+            <p class="id">C2 · open</p>
+            <h3>Boxes with names</h3>
+            <p>A box called money. A choice. A repeat.</p>
+          </a>
+          <a class="card" href="c/c3.html">
+            <p class="id">C3 · open</p>
+            <h3>Ask a helper</h3>
+            <p>You send a job. The helper comes back with an answer.</p>
+          </a>
+          <a class="card" href="c/c4.html">
+            <p class="id">C4 · open</p>
+            <h3>The address on the shelf</h3>
+            <p>The paper is not the money. Two workers, one shelf.</p>
+          </a>
+          <a class="card" href="c/c5.html">
+            <p class="id">C5 · open</p>
+            <h3>One form</h3>
+            <p>Several fields on one paper. You carry one form, not four.</p>
+          </a>
+          <a class="card" href="c/c6.html">
+            <p class="id">C6 · open</p>
+            <h3>The toolkit</h3>
+            <p>If you forget the toolkit, the builder does not know the word lock.</p>
+          </a>
+        </div>
+      </div>
+
+      <div class="floor">
+        <p class="floor-label">Floor 1 · OS, after C4</p>
+        <h2>Shop stories</h2>
+        <div class="grid">
+          <a class="card" href="lessons/os0.html">
+            <p class="id">OS0 · open</p>
+            <h3>The building and the work</h3>
+            <p>The shop building vs the work inside. You can read this before C.</p>
+          </a>
+          <a class="card" href="lessons/os1.html">
+            <p class="id">OS1 · open</p>
+            <h3>Copy the whole shop</h3>
+            <p>Two buildings. Each has its own money box. That is a process. Lab 2 lives here.</p>
+          </a>
+          <a class="card" href="lessons/os2.html">
+            <p class="id">OS2 · open</p>
+            <h3>Two workers, one shop</h3>
+            <p>Same money box. Both add one. Sometimes one add is lost.</p>
+          </a>
+          <a class="card" href="lessons/os3.html">
+            <p class="id">OS3 · open</p>
+            <h3>One key for the drawer</h3>
+            <p>The worker who took the key must give it back. Mutex.</p>
+          </a>
+          <a class="card" href="lessons/os4.html">
+            <p class="id">OS4 · open</p>
+            <h3>Twenty violins</h3>
+            <p>A number on the wall. Not a key. Anyone may take one.</p>
+          </a>
+          <a class="card" href="lessons/os5.html">
+            <p class="id">OS5 · open</p>
+            <h3>Two keys, both wait</h3>
+            <p>A has key 1. B has key 2. Nobody can move. Banker's lives here.</p>
+          </a>
+          <a class="card" href="lessons/os6.html">
+            <p class="id">OS6 · open</p>
+            <h3>A window both shops can see</h3>
+            <p>The violin board sits in a shared window.</p>
+          </a>
+        </div>
+      </div>
+
+      <div class="floor">
+        <p class="floor-label">Floor 2 · labs on the machine</p>
+        <h2>See it on the machine</h2>
+        <div class="grid">
+          <a class="card" href="lessons/os7.html">
+            <p class="id">OS7 · open</p>
+            <h3>GPIO on the Pi</h3>
+            <p>Pin 11, chip RP1, script vs mmap, gaps on the scope. Lab 1.</p>
+          </a>
+          <a class="card" href="lessons/os8.html">
+            <p class="id">OS8 · open</p>
+            <h3>Telnet and a bell</h3>
+            <p>xinetd, SIGUSR1, empty queue. Lab 3 and the network paper.</p>
+          </a>
+          <a class="card" href="lessons/os9.html">
+            <p class="id">OS9 · open</p>
+            <h3>Windows events</h3>
+            <p>CreateProcess, named events, three processes. Lab 4.</p>
+          </a>
+        </div>
+      </div>
+
     </div>
+  </main>
+  <footer class="os-foot">
+    <div class="wrap">Mynul Islam · Hamburg · stories first, then C</div>
   </footer>
-  <script src="../../assets/js/main.js?v=37" defer></script>
 </body>
 </html>

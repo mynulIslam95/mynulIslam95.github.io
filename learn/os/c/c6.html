@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>C6 · The toolkit</title>
+  <meta name="description" content="C6: includes and -pthread."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/os.css?v=4"/>
+</head>
+<body class="os">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="os-bar">
+    <div class="wrap">
+      <a class="os-brand" href="../index.html">OS · Learn</a>
+      <nav class="os-nav" aria-label="OS">
+        <a href="../index.html">Map</a>
+        <a class="is-on" href="c1.html">C stories</a>
+        <a href="../lessons/os0.html">OS stories</a>
+        <a href="../../index.html">Learn hub</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <div class="wrap">
+      <p class="kicker"><a href="../index.html">Map</a> · Floor 0 · C6</p>
+      <h1>The toolkit</h1>
+      <p class="lede">If you forget the toolkit, the builder does not know the word lock.</p>
+      <h2>Story</h2>
+      <div class="story">
+        <p>If you ask for a special lock, you must <strong>bring the toolkit</strong>. The first line of the note names the toolkit: <code>#include &lt;pthread.h&gt;</code>.</p>
+        <p>The builder also needs a flag: <code>-pthread</code>. If you forget the flag, the builder says it does not know the lock words.</p>
+        <p>POSIX semaphores often need <code>#include &lt;semaphore.h&gt;</code> and <code>-lrt</code> or <code>-pthread</code> on Linux.</p>
+        <p>The toolkit is not the story. It is the bag you carry so the story can run.</p>
+      </div>
+
+      <div class="quiz" data-answer="no">
+        <p><strong>Practice.</strong> If you write <code>pthread_create</code> but you never include the toolkit, will the builder always succeed?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. You must include the header. You must also pass <code>-pthread</code> when you call gcc.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="yes">
+        <p><strong>Practice.</strong> Is <code>gcc shop.c -o shop -pthread</code> the builder command for a lock used by two workers?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. <code>-o shop</code> names the tool. <code>-pthread</code> brings the thread toolkit.</p>
+        </div>
+      </div>
+<h2>The same story in C</h2>
+<p>You already know <code>main</code>. Here you only see the includes and the builder line. The lock story is OS3.</p>
+      <pre><code>#include &lt;stdio.h&gt;
+#include &lt;pthread.h&gt;
+#include &lt;semaphore.h&gt;
+
+/* gcc this.c -o this -pthread */
+
+int main(void) {
+  printf("toolkits are here\n");
+  return 0;
+}</code></pre>
+      <p class="line-note">stdio for print. pthread for workers and the key. semaphore for tickets. Compile with -pthread.</p>
+
+      <div class="quiz" data-answer="no">
+        <p><strong>Practice.</strong> Does <code>#include</code> start the shop helper?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. <code>main</code> still starts the helper. Include only brings words the builder must know.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="yes">
+        <p><strong>Practice.</strong> After C1–C6, can you read a box, a helper, an address, a form, and a toolkit line?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. That is enough C to open OS1. Process, lock, and mmap will add new words, still explained line by line.</p>
+        </div>
+      </div>
+      <div class="pager">
+        <a href="c5.html">← C5</a>
+        <a href="../lessons/os0.html">OS0 · The building →</a>
+      </div>
+    </div>
+  </main>
+  <footer class="os-foot">
+    <div class="wrap">C6 · includes</div>
+  </footer>
+  <script src="../js/os.js?v=2"></script>
+</body>
+</html>

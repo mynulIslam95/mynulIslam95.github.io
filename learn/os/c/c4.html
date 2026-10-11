@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>C4 · The address on the shelf</title>
+  <meta name="description" content="C4: pointers. The paper is not the money."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/os.css?v=4"/>
+</head>
+<body class="os">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="os-bar">
+    <div class="wrap">
+      <a class="os-brand" href="../index.html">OS · Learn</a>
+      <nav class="os-nav" aria-label="OS">
+        <a href="../index.html">Map</a>
+        <a class="is-on" href="c1.html">C stories</a>
+        <a href="../lessons/os0.html">OS stories</a>
+        <a href="../../index.html">Learn hub</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <div class="wrap">
+      <p class="kicker"><a href="../index.html">Map</a> · Floor 0 · C4</p>
+      <h1>The address on the shelf</h1>
+      <p class="lede">The paper is not the money. Two workers, one shelf. This is the hinge for OS.</p>
+      <h2>Story</h2>
+      <div class="story">
+        <p>The box <code>money</code> sits on a shelf. The shelf has a number. That number is the <strong>address</strong>.</p>
+        <p>You write the address on a paper. The paper is not the money. The paper only says where the box lives.</p>
+        <p>Worker A and Worker B both hold a copy of that paper. They walk to the <strong>same</strong> shelf. If A puts 50 in the box, B sees 50.</p>
+        <p>In C the paper is a <strong>pointer</strong>. <code>&amp;money</code> means “the address of this box.” <code>*p</code> means “open the box at this address.”</p>
+        <p>You will need this for a mutex, a semaphore, and <code>mmap</code>. Without the paper, those words are magic.</p>
+      </div>
+
+      <div class="quiz" data-answer="no">
+        <p><strong>Practice.</strong> If I copy the paper, do I get a second box of money?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. You copy the address, not the money. Two papers, one box.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="yes">
+        <p><strong>Practice.</strong> If two workers have the same paper, and one writes 50, does the other see 50?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. Same shelf. That is why two threads can smash the same <code>x</code>. That is also why a lock can sit at one address both can open.</p>
+        </div>
+      </div>
+<h2>The same story in C</h2>
+      <pre><code>#include &lt;stdio.h&gt;
+
+int main(void) {
+  int money = 10;
+  int *p = &amp;money;
+  *p = 50;
+  printf("money=%d\n", money);
+  return 0;
+}</code></pre>
+      <p class="line-note">money is the box. p is the paper. &money fills the paper. *p = 50 opens the box and writes 50. printf shows 50.</p>
+
+      <div class="quiz" data-answer="yes">
+        <p><strong>Practice.</strong> After <code>*p = 50</code>, is <code>money</code> 50?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. You did not make a second box. You opened the same box through the paper.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no">
+        <p><strong>Practice.</strong> Is <code>p</code> the money?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. <code>p</code> is the address. <code>*p</code> is the money inside.</p>
+        </div>
+      </div>
+      <div class="pager">
+        <a href="c3.html">← C3</a>
+        <a href="c5.html">C5 · One form →</a>
+      </div>
+    </div>
+  </main>
+  <footer class="os-foot">
+    <div class="wrap">C4 · pointers</div>
+  </footer>
+  <script src="../js/os.js?v=2"></script>
+</body>
+</html>

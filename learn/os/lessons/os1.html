@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>OS1 · Copy the whole shop</title>
+  <meta name="description" content="OS1: process, fork, exec, zombie, Lab 2."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/os.css?v=4"/>
+</head>
+<body class="os">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="os-bar">
+    <div class="wrap">
+      <a class="os-brand" href="../index.html">OS · Learn</a>
+      <nav class="os-nav" aria-label="OS">
+        <a href="../index.html">Map</a>
+        <a href="../c/c1.html">C stories</a>
+        <a class="is-on" href="os0.html">OS stories</a>
+        <a href="../../index.html">Learn hub</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <div class="wrap">
+      <p class="kicker"><a href="../index.html">Map</a> · Floor 1 · OS1</p>
+      <h1>Copy the whole shop</h1>
+      <p class="lede">Two buildings. Each has its own money box. Then year questions with steps.</p>
+      <p class="need">You need <a href="../c/c1.html">C1</a>–<a href="../c/c4.html">C4</a>. A process is a running copy of a program.</p>
+      <h2>Story</h2>
+      <div class="story">
+        <p>A recipe on the shelf is a <strong>program</strong>. When the building starts it, it becomes a <strong>process</strong>: one running shop, with its own number (PID) and its own money box.</p>
+        <p>You can <strong>copy the whole shop</strong>. That copy is <code>fork</code>. Now there are two buildings. Each has its own money. If shop A writes 5, shop B still has the old number.</p>
+        <p>In the child shop, <code>fork</code> returns 0. In the parent shop, it returns the child’s PID. If it fails, it returns −1.</p>
+        <p><code>exec</code> does not copy the shop. It throws away the work inside the <strong>same</strong> PID and loads a new recipe. After the child runs <code>ls</code>, you still have two processes, not three.</p>
+        <p>If the child closes and the parent never calls <code>waitpid</code>, a tiny <strong>zombie</strong> slot stays. <code>waitpid</code> frees it.</p>
+        <p>Five states of one shop: New (the notebook is not ready), Ready (it wants the CPU), Running (it is on the core), Blocked (it waits for sleep, a pipe, or a ticket), Exit.</p>
+      </div>
+
+      <div class="quiz" data-answer="no">
+        <p><strong>Practice.</strong> After <code>fork</code>, can the two shops see each other’s money box?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Each has a copy. Threads in one shop would share. That is OS2.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no">
+        <p><strong>Practice.</strong> Does <code>exec</code> make a third process?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Same PID, new program. The number of processes does not go up.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="yes">
+        <p><strong>Practice.</strong> Does <code>waitpid</code> stop a child staying a zombie?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. The parent collects the exit code. The kernel can drop the tiny slot.</p>
+        </div>
+      </div>
+<h2>The same story in C</h2>
+      <pre><code>#include &lt;stdio.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;sys/wait.h&gt;
+
+int main(void) {
+  int x = 10;
+  pid_t p = fork();
+  if (p == 0) {
+    x = 20;
+    printf("child x=%d\n", x);
+    return 0;
+  }
+  printf("parent x=%d\n", x);
+  waitpid(p, NULL, 0);
+  return 0;
+}</code></pre>
+      <p class="line-note">x starts 10. fork copies the shop. Child sets x to 20 and prints 20. Parent still prints 10, then waitpid.</p>
+
+      <div class="quiz" data-answer="yes">
+        <p><strong>Practice.</strong> Does the parent print 10?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. The parent’s x was never set to 20. That write happened in the other shop.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no">
+        <p><strong>Practice.</strong> Can you tell parent from child by a global you set before <code>fork</code>?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Both copies start with that same global. You tell them apart with the return value p. “You cannot use variables” is the wrong sentence: p is a variable.</p>
+        </div>
+      </div>
+<h2>Lab 2, same shop</h2>
+<p>Parent prints A, child prints B, in a tight loop. You hope to see ABAB. You often see AAAA then BBBB. <code>printf</code> stores letters in a buffer. The OS sees a chunk, not each time slice. Higher <code>nice</code> means the process is nicer to others: <strong>less</strong> CPU. <code>usleep</code> puts the shop in Blocked, not Ready. A lock <strong>file</strong> can stay after a crash. <code>fcntl</code> is a lock the kernel forgets when the process dies.</p>
+
+      <div class="paper">
+        <p class="yr">SS2018 / many years · true or false</p>
+        <p>After fork, can the two processes use each other’s heap? Does exec create an extra process? Can two forks make a process its own grandfather? Does a parent have at most one child?</p>
+        <details>
+          <summary>Solution steps</summary>
+          <ol>
+          <li>Heap after fork: no. Two copies. Write false for “they can use each other’s heap.”</li>
+          <li>exec: same PID, new program. Write false for “exec creates an extra process.” Write true for “after exec there are as many processes as before.”</li>
+          <li>Fork only makes children, down the tree. Grandfather: false.</li>
+          <li>A parent may have many children. “At most one” is false. waitpid true for zombies.</li>
+          </ol>
+        </details>
+      </div>
+
+      <div class="paper">
+        <p class="yr">Lab 2 · WS2024</p>
+        <p>You raise nice, both use printf, then you add usleep. Why is a lock file a bad lock?</p>
+        <details>
+          <summary>Solution steps</summary>
+          <ol>
+          <li>Higher nice → lower priority → less CPU if both burn the CPU.</li>
+          <li>printf buffers, so the screen is chunks, not time slices. Say the buffer, not “the scheduler is unfair.”</li>
+          <li>usleep is Blocked, not Ready. They stop fighting for the core.</li>
+          <li>A lock file can remain after a crash. fcntl is a kernel lock. F_SETLKW waits.</li>
+          </ol>
+        </details>
+      </div>
+      <div class="pager">
+        <a href="os0.html">← OS0</a>
+        <a href="os2.html">OS2 · Two workers →</a>
+      </div>
+    </div>
+  </main>
+  <footer class="os-foot">
+    <div class="wrap">OS1 · process, fork, Lab 2</div>
+  </footer>
+  <script src="../js/os.js?v=2"></script>
+</body>
+</html>

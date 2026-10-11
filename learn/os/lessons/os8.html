@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>OS8 · Telnet and a bell</title>
+  <meta name="description" content="OS8: xinetd, SIGUSR1, message queue, Lab 3."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/os.css?v=4"/>
+</head>
+<body class="os">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="os-bar">
+    <div class="wrap">
+      <a class="os-brand" href="../index.html">OS · Learn</a>
+      <nav class="os-nav" aria-label="OS">
+        <a href="../index.html">Map</a>
+        <a href="../c/c1.html">C stories</a>
+        <a class="is-on" href="os0.html">OS stories</a>
+        <a href="../../index.html">Learn hub</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <div class="wrap">
+      <p class="kicker"><a href="../index.html">Map</a> · Floor 2 · OS8</p>
+      <h1>Telnet and a bell</h1>
+      <p class="lede">xinetd owns the port. Your program reads 0 and writes 1.</p>
+      <p class="need">Lab 3 and the network lecture. You need <a href="os1.html">OS1</a> (Blocked, fork).</p>
+      <h2>Story</h2>
+      <div class="story">
+        <p>A <strong>socket</strong> is an end of a talk. TCP is a connection. Lost packets are sent again. UDP is a datagram, no connection.</p>
+        <p>If <strong>you</strong> are the client, you know the host and the port. You connect, write, read, close. You do not bind a famous port.</p>
+        <p>If <strong>you</strong> write the server, you bind, listen, then loop on accept. accept waits until a client finishes the handshake. It gives you a new file for that client. The original socket keeps listening.</p>
+        <p>If customers <strong>telnet</strong> in, and each connection should start your program: that is <strong>xinetd</strong>. xinetd already owns the port. It starts your program and gives the open connection as file 0 and 1. Your C only reads 0 and writes 1. If you write socket/bind/accept in <em>this</em> program, you answered the wrong question.</p>
+        <p>Config: port, path, TCP, nowait, UNLISTED if the name is not in services. Reload with SIGHUP. Test with telnet. Wireshark: SYN, SYN-ACK, ACK.</p>
+        <p>Lab 3.1: a program prints a file again and again. You edit the file. You send SIGUSR1. The signal is a bell, not the new text. The handler only sets a flag. You open the file in the main loop, not inside the handler.</p>
+        <p>Lab 3.2: message queue. Empty queue: mq_receive blocks. That process is Blocked, not Ready, not spinning.</p>
+      </div>
+
+      <div class="quiz" data-answer="no">
+        <p><strong>Practice.</strong> When xinetd starts SingleHoliday, does SingleHoliday call bind?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. xinetd already accepted. The program reads 0 and writes 1.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="yes">
+        <p><strong>Practice.</strong> Is accept used by a server to take a client’s connection?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes — if you write the server yourself. Not if xinetd already did it.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no">
+        <p><strong>Practice.</strong> Does SIGUSR1 contain the new file text?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. The file contains the text. The signal says “look again.”</p>
+        </div>
+      </div>
+<h2>The same story in C</h2>
+      <pre><code>int main(void) {
+  char buf[256];
+  int n = read(0, buf, sizeof buf);
+  int log = open("log.txt", O_WRONLY | O_CREAT | O_APPEND, 0666);
+  write(log, buf, n);
+  close(log);
+  return 0;
+}</code></pre>
+      <p class="line-note">xinetd program: no sys/socket.h. stdin is the client. You write a log. Port lives in the xinetd config.</p>
+      <pre><code>volatile sig_atomic_t reload = 0;
+void handler(int sig) { reload = 1; }</code></pre>
+      <p class="line-note">Handler only sets a flag. No fopen, no printf here. Main loop sleeps, checks the flag, then reads the file.</p>
+
+      <div class="paper">
+        <p class="yr">SS2020 / SS2025 Task 3 · telnet</p>
+        <p>Customers telnet to port 6000. Each connection starts SingleHoliday. Which service? Bind? Reload? Test?</p>
+        <details>
+          <summary>Solution steps</summary>
+          <ol>
+          <li>Service: xinetd (internet super-daemon).</li>
+          <li>SingleHoliday does not call socket, bind, listen, or accept.</li>
+          <li>Reload: SIGHUP / sudo service xinetd reload. That rereads config, it does not rerun your log loop.</li>
+          <li>Test: telnet ip 6000. Wireshark: SYN, SYN-ACK, ACK, then data.</li>
+          </ol>
+        </details>
+      </div>
+
+      <div class="paper">
+        <p class="yr">SS2024 primes · client vs global server</p>
+        <p>Send the prime to a host and port. Then let the world telnet in.</p>
+        <details>
+          <summary>Solution steps</summary>
+          <ol>
+          <li>Send to a host: you are a TCP client. socket, connect, write. No bind of a well-known port.</li>
+          <li>World telnets in: xinetd, or bind/listen/accept if the paper did not say super-daemon.</li>
+          </ol>
+        </details>
+      </div>
+      <div class="pager">
+        <a href="os7.html">← OS7</a>
+        <a href="os9.html">OS9 · Windows →</a>
+      </div>
+    </div>
+  </main>
+  <footer class="os-foot">
+    <div class="wrap">OS8 · Lab 3 network</div>
+  </footer>
+  <script src="../js/os.js?v=2"></script>
+</body>
+</html>

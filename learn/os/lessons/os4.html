@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>OS4 · Twenty violins</title>
+  <meta name="description" content="OS4: counting semaphore, pshared, music school."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/os.css?v=4"/>
+</head>
+<body class="os">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="os-bar">
+    <div class="wrap">
+      <a class="os-brand" href="../index.html">OS · Learn</a>
+      <nav class="os-nav" aria-label="OS">
+        <a href="../index.html">Map</a>
+        <a href="../c/c1.html">C stories</a>
+        <a class="is-on" href="os0.html">OS stories</a>
+        <a href="../../index.html">Learn hub</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <div class="wrap">
+      <p class="kicker"><a href="../index.html">Map</a> · Floor 1 · OS4</p>
+      <h1>Twenty violins</h1>
+      <p class="lede">A number on the wall. Not a key. Anyone may take one.</p>
+      <p class="need">You need <a href="os3.html">OS3</a> and <a href="../c/c5.html">C5</a>. Twenty tickets, not one key.</p>
+      <h2>Story</h2>
+      <div class="story">
+        <p>On the wall hang <strong>twenty violins</strong>. The number on the wall is a <strong>semaphore</strong>: a counter. There is no owner. Anyone may take one. Anyone may put one back.</p>
+        <p><code>sem_wait</code> takes one ticket, or waits if there are none. <code>sem_post</code> gives one back and can wake a waiter. Shop A may take. Shop B may return.</p>
+        <p>If the people taking tickets are <strong>workers in one shop</strong> (threads), they already share. <code>sem_init(s, 0, 10)</code> — the 0 means only this process. That is the 2018 gallery: at most 10 visitors, 500 visitor threads.</p>
+        <p>If the people taking tickets are <strong>other programs</strong>, they cannot see a global in the first program. The counter must sit in a window both can see (OS6), and the second argument of <code>sem_init</code> must be <strong>1</strong>. If you pass 0, each program has its own 20. The school thinks it has 20 violins and hands out 40.</p>
+        <p>A mutex is the wrong tool here. A mutex is one key, not twenty tickets.</p>
+      </div>
+
+      <div class="quiz" data-answer="no">
+        <p><strong>Practice.</strong> Is a mutex the right tool for 20 violins?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. One key cannot count 20. You need a counter.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="yes">
+        <p><strong>Practice.</strong> If students are other programs, must pshared be 1?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. 1 means other processes may use this object. 0 means only this process.</p>
+        </div>
+      </div>
+<h2>The same story in C</h2>
+<p>Two programs. Start the rental first, then a student. Both compile with <code>-pthread</code>. The window itself is OS6. Here you see the tickets.</p>
+      <pre><code>/* rental — create the counter of 20, then sleep */
+sem_init(s, 1, 20);
+pause();   /* wait in the kernel. while(1){} burns the CPU */
+
+/* student — five lessons */
+for (i = 0; i &lt; 5; i++) {
+  sem_wait(s);   /* take a violin; Blocked if none left */
+  sleep(1);      /* play */
+  sem_post(s);   /* give it back */
+}</code></pre>
+      <p class="line-note">sem_init: 1 = other programs, 20 = free violins. pause does not burn the CPU. wait takes, post returns. Student opens the page read-write because wait writes the counter.</p>
+
+      <div class="quiz" data-answer="no">
+        <p><strong>Practice.</strong> Is Pause20Hours 22000 seconds?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. sleep(20 * 3600) is 72000 seconds.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="yes">
+        <p><strong>Practice.</strong> If 20 violins are out, does student 21 wait instead of spin?</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">Yes</button>
+          <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. sem_wait blocks. That is Blocked, not a busy loop.</p>
+        </div>
+      </div>
+
+      <div class="paper">
+        <p class="yr">SS2022 · music school (same skeleton: SS2020 holidays, SS2025 robots)</p>
+        <p>A rental process owns 20 violins. Later, other programs (students) start. Five exercises: take, play, return. Never more than 20 out. No busy wait. Rental may live forever.</p>
+        <details>
+          <summary>Solution steps</summary>
+          <ol>
+          <li>Actors: rental program + student programs. Not threads of one process.</li>
+          <li>Shared thing: a counter of 20, not one key. So counting semaphore, not mutex.</li>
+          <li>They cannot see the rental’s heap. Put the semaphore in shared memory (OS6). sem_init(s, 1, 20).</li>
+          <li>Take = sem_wait. Return = sem_post. Rental = pause(). Student mmap must be read-write.</li>
+          <li>2020/2025: four counters in one struct (C5), same skeleton.</li>
+          </ol>
+        </details>
+      </div>
+
+      <div class="paper">
+        <p class="yr">SS2018 · gallery</p>
+        <p>At most 10 visitors at once. 500 visitor threads of one process.</p>
+        <details>
+          <summary>Solution steps</summary>
+          <ol>
+          <li>Same shop: threads. They already share. No shm_open required.</li>
+          <li>sem_init(s, 0, 10). The 0 is pshared: only this process. 10 is the count.</li>
+          </ol>
+        </details>
+      </div>
+      <div class="pager">
+        <a href="os3.html">← OS3</a>
+        <a href="os5.html">OS5 · Two keys →</a>
+      </div>
+    </div>
+  </main>
+  <footer class="os-foot">
+    <div class="wrap">OS4 · semaphore</div>
+  </footer>
+  <script src="../js/os.js?v=2"></script>
+</body>
+</html>
