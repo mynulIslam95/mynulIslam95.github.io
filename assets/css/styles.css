@@ -253,16 +253,19 @@ section { scroll-margin-top: calc(var(--nav-h) + 28px); padding-block: var(--spa
   width: 100%;
 }
 .hero-side .profile-card,
-.hero-side .de-glow {
+.hero-side .de-glow,
+.hero-side .learn-glow {
   width: 100%;
   max-width: none;
 }
-.hero-side .de-glow {
+.hero-side .de-glow,
+.hero-side .learn-glow {
   margin: 0;
   box-sizing: border-box;
   padding: var(--space-5);
 }
-.hero-side .de-glow strong {
+.hero-side .de-glow strong,
+.hero-side .learn-glow strong {
   font-size: clamp(1.35rem, 3.4vw, 1.85rem);
 }
 .lede {
@@ -1029,3 +1032,69 @@ html.motion .profile-card.reveal.is-in {
   .open-work::after { display: none; }
   .term-cmdbtn.is-lit, .term-cmdbtn.is-lit .term-cmdbtn-cmd { animation: none; }
 }
+
+.learn-glow {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 40rem;
+  margin: 0 0 var(--space-4);
+  padding: 18px 18px 16px;
+  border-radius: 16px;
+  color: #fff;
+  text-decoration: none;
+  background: linear-gradient(160deg, #0f766e 0%, #115e59 55%, #0b3d3a 100%);
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow: 0 12px 30px rgba(15, 118, 110, 0.28);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.learn-glow:hover {
+  text-decoration: none;
+  color: #fff;
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px rgba(15, 118, 110, 0.4);
+}
+.learn-glow-kicker {
+  display: block;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #99f6e4;
+  margin-bottom: 6px;
+}
+.learn-glow strong {
+  display: block;
+  font-family: var(--serif);
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.15;
+}
+.learn-glow-sub {
+  display: block;
+  margin-top: 6px;
+  color: #ecfdf5;
+  font-size: 1rem;
+}
+.learn-track { margin-bottom: var(--space-8); }
+.learn-track h2 { margin-top: var(--space-2); }
+.soon {
+  opacity: 0.62;
+  pointer-events: none;
+}
+.soon .tstate { text-transform: lowercase; }
+.lesson { max-width: 42rem; }
+.lesson h2 { margin-top: 1.5em; }
+.lesson ul { margin: 0 0 var(--space-4); padding-left: 1.2em; }
+.lesson li { margin: 0 0 6px; }
+.ask {
+  background: #fff;
+  border: 2px solid var(--accent);
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin: 0 0 var(--space-4);
+}
+.ask p { margin: 0 0 8px; }
+.ask details { color: var(--muted); }

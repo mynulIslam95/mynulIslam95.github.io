@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" translate="no" class="notranslate">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Operating systems · Learn with Mynul</title>
+  <meta name="google" content="notranslate"/>
+  <meta name="description" content="Operating systems with Mynul: what the OS is doing on your laptop."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../../assets/css/styles.css?v=35"/>
+</head>
+<body translate="no" class="notranslate">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap nav">
+      <a class="brand" href="../../index.html">Mynul Islam</a>
+      <input id="nav-toggle" class="nav-toggle" type="checkbox"/>
+      <label class="burger" for="nav-toggle" aria-label="Open menu"><span></span><span></span><span></span></label>
+      <nav class="nav-panel" aria-label="Primary">
+        <ul class="nav-links">
+          <li><a href="../index.html">Learn with Mynul</a></li>
+          <li><a href="../../index.html#projects">Projects</a></li>
+          <li><a href="../../index.html#escalate">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section>
+      <div class="wrap lesson">
+        <p class="section-kicker"><a href="../index.html">Learn with Mynul</a> · Technology</p>
+        <h1>Operating systems</h1>
+        <p class="lede">Lesson 1. What the OS is actually doing. I am not selling a certificate. This is the picture I use at work and the one I learned in Information Engineering.</p>
+
+        <h2>The machine is stupid without this</h2>
+        <p>A laptop has a CPU, RAM and a disk. Those parts do not know Chrome, Word or WhatsApp. If you put electricity in and nothing else, you get a brick. The operating system is the first big program that wakes up, talks to the hardware, and then lets your apps run.</p>
+        <p>Windows is an OS. Linux is an OS. macOS is an OS. Android is an OS on a phone. Same job, different clothes.</p>
+
+        <h2>Two rooms</h2>
+        <p>Think of two rooms.</p>
+        <ul>
+          <li><strong>Kernel.</strong> Close to the metal. Memory, CPU time, disk, network card. You do not click around in here. If this breaks, the whole machine is gone.</li>
+          <li><strong>User programs.</strong> Browser, editor, Teams, your Python script. They ask the kernel: give me RAM, open this file, send this packet.</li>
+        </ul>
+        <p>That asking is a system call. You do not need the list of names yet. You only need the idea: apps are guests. The OS is the building.</p>
+
+        <h2>A program is not a process</h2>
+        <p>Chrome on disk is a program: a file. When you open it, the OS loads it into RAM and gives it a process. Two Chrome windows can be two processes from the same program. Task Manager and <code>top</code> show processes, not the installer.</p>
+        <p>When a process is stuck, you kill the process. You do not delete Chrome from disk. That is the difference, in one ticket.</p>
+
+        <h2>Files are a story the OS tells you</h2>
+        <p>On the disk there are blocks of bits. Folders, file names, C:\ and /home — that layout is the OS. Same USB stick looks different on Windows and Linux because each OS tells the story in its own way.</p>
+
+        <h2>Why this matters on a helpdesk</h2>
+        <p>At Mondia the ticket is almost never “the kernel crashed.” It is: laptop slow, disk full, app frozen, cannot print. Under that, it is still the OS: too many processes, no RAM left, a file lock, a driver. If you only know the app, you guess. If you see the OS, you have a place to look.</p>
+
+        <div class="ask">
+          <p><strong>Check.</strong> You open Word twice. How many programs? How many processes?</p>
+          <details>
+            <summary>Answer</summary>
+            <p>One program on disk. Two processes in RAM, unless Word reuses one — the idea still holds: the file is the program, the running copies are processes.</p>
+          </details>
+        </div>
+
+        <div class="ask">
+          <p><strong>Check.</strong> Chrome freezes. Do you uninstall Chrome, or end the process first?</p>
+          <details>
+            <summary>Answer</summary>
+            <p>End the process first. Uninstall is for when the program itself is broken. Freeze is usually the running copy.</p>
+          </details>
+        </div>
+
+        <p>Next lesson, when I write it: processes and CPU — why “100% CPU” is not always the app you are looking at.</p>
+        <p><a class="btn btn-primary" href="../index.html">Back to Learn with Mynul</a></p>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="wrap">
+      <p>Mynul Islam · Hamburg</p>
+    </div>
+  </footer>
+  <script src="../../assets/js/main.js?v=37" defer></script>
+</body>
+</html>
