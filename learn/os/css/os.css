@@ -315,6 +315,35 @@ a.card {
 }
 .need a { color: var(--neon); }
 
+.q-id {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--neon);
+  margin: 0 0 6px;
+}
+
+.wings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 28px;
+}
+.wings a {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid var(--neon-line);
+  padding: 8px 10px;
+  color: var(--neon);
+}
+.wings a:hover {
+  box-shadow: 0 0 12px var(--neon-dim);
+}
+
 .paper {
   background: var(--panel);
   border: 1px solid var(--neon-line);

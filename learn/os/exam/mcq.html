@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>True or false · OS exam hall</title>
+  <meta name="description" content="56 distinct true-or-false items from HAW OS papers 2018 to 2025. Try first. Then the answer and why."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/os.css?v=5"/>
+</head>
+<body class="os">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="os-bar">
+    <div class="wrap">
+      <a class="os-brand" href="../index.html">OS · Learn</a>
+      <nav class="os-nav" aria-label="OS">
+        <a href="../index.html">Map</a>
+        <a href="../c/c1.html">C stories</a>
+        <a href="../lessons/os0.html">OS stories</a>
+        <a class="is-on" href="mcq.html">Exam</a>
+        <a href="../../index.html">Learn hub</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <div class="wrap">
+      <p class="kicker"><a href="../index.html">Map</a> · Floor 3 · E1</p>
+      <h1>True or false</h1>
+      <p class="lede">These came back every year: fork, exec, wait, kill, threads, signals, mutex, Windows. Same claim is here once. Click True or False. Then read why.</p>
+      <p class="need">Click True or False. The explanation opens after you pick. These are the distinct year-paper items, not 146 repeats.</p>
+      <nav class="wings" aria-label="Topics">
+        <a href="#wing-1">Process, fork, exec, wait, kill</a>
+        <a href="#wing-2">Threads and the CPU</a>
+        <a href="#wing-3">Signals and timers</a>
+        <a href="#wing-4">Locks, deadlock, watchdog</a>
+        <a href="#wing-5">Pipes, files, network words</a>
+        <a href="#wing-6">Hardware, cache, time</a>
+        <a href="#wing-7">Windows</a>
+        <a href="#wing-8">What an OS is</a>
+      </nav>
+      <h2 id="wing-1">Process, fork, exec, wait, kill</h2>
+      <p class="line-note">Story page: OS1</p>
+
+      <div class="quiz" data-answer="no" id="q1">
+        <p class="q-id">Q01</p>
+        <p><strong>True or false.</strong> <code>fork()</code> gives every new process the ID of its parent.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. The child gets 0. The parent gets the child’s PID. The child reads its parent with <code>getppid()</code>.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no" id="q2">
+        <p class="q-id">Q02</p>
+        <p><strong>True or false.</strong> <code>fork()</code> returns the ID of the new child. That is the whole truth.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Only the parent sees the child’s PID. The child sees 0. If <code>fork()</code> fails, the parent sees −1. The bare sentence is false.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no" id="q3">
+        <p class="q-id">Q03</p>
+        <p><strong>True or false.</strong> After <code>fork()</code>, parent and child can read each other’s heap.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Each building has its own money box. The child gets a copy. A write in one heap does not show in the other. That is the point of a process versus a thread.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="yes" id="q4">
+        <p class="q-id">Q04</p>
+        <p><strong>True or false.</strong> A child process never has two parents at the same time.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. One parent. If that parent dies, <code>init</code> may adopt the child. Still one parent.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no" id="q5">
+        <p class="q-id">Q05</p>
+        <p><strong>True or false.</strong> A parent may have only one child.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. <code>fork()</code> as often as the limit allows. Two <code>fork()</code> calls in a row already make more than one child.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no" id="q6">
+        <p class="q-id">Q06</p>
+        <p><strong>True or false.</strong> Two <code>fork()</code> calls in a row can make a process its own grandfather.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. <code>fork()</code> only makes children. It never points back up. You get a tree, not a loop.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no" id="q7">
+        <p class="q-id">Q07</p>
+        <p><strong>True or false.</strong> <code>exec()</code> starts an extra process next to the caller.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. <code>exec()</code> replaces the program in the same process. Same PID. No new building. <code>fork()</code> is the one that copies the shop.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="yes" id="q8">
+        <p class="q-id">Q08</p>
+        <p><strong>True or false.</strong> If a parent calls <code>wait()</code> or <code>waitpid()</code> on its children, those children do not stay zombies.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. A zombie is an exited child whose exit code nobody collected. <code>waitpid()</code> collects it and the table entry goes away.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no" id="q9">
+        <p class="q-id">Q09</p>
+        <p><strong>True or false.</strong> To avoid becoming a zombie, a process should call <code>waitpid()</code> before it itself ends.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. The zombie is the dead child, not you. Your parent must wait for you. You wait for your own children.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no" id="q10">
+        <p class="q-id">Q10</p>
+        <p><strong>True or false.</strong> <code>kill()</code> always sends SIGUSR1.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. You pass the signal as an argument. The usual terminate signal is SIGTERM. SIGUSR1 is only one choice.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no" id="q11">
+        <p class="q-id">Q11</p>
+        <p><strong>True or false.</strong> <code>kill()</code> can never end your own parent.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. <code>kill(getppid(), SIGKILL)</code> is allowed if you have the right. There is no magic shield on the parent.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no" id="q12">
+        <p class="q-id">Q12</p>
+        <p><strong>True or false.</strong> <code>kill()</code> can only terminate a process.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. It sends a signal. That signal may stop, continue, or run a handler. Death is only the famous case.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="yes" id="q13">
+        <p class="q-id">Q13</p>
+        <p><strong>True or false.</strong> A normal global variable cannot tell you, after <code>fork()</code>, whether you are parent or child.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. The global is copied as the same number in both shops. The return value of <code>fork()</code> is what differs: child PID versus 0.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no" id="q14">
+        <p class="q-id">Q14</p>
+        <p><strong>True or false.</strong> After <code>fork()</code> there is no variable at all that can tell parent from child.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. The return value of <code>fork()</code> is that variable. <code>if (fork() == 0)</code> is the child.</p>
+        </div>
+      </div>
+      <h2 id="wing-2">Threads and the CPU</h2>
+      <p class="line-note">Story page: OS2</p>
+
+      <div class="quiz" data-answer="no" id="q15">
+        <p class="q-id">Q15</p>
+        <p><strong>True or false.</strong> The OS protects one thread’s address space from every other thread.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Threads of one process share the same address space. Isolation is per process, not per thread.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no" id="q16">
+        <p class="q-id">Q16</p>
+        <p><strong>True or false.</strong> Multithreading is useless on a machine with only one CPU.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. While one thread waits for the disk, another thread can use the core. Overlap still helps.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="yes" id="q17">
+        <p class="q-id">Q17</p>
+        <p><strong>True or false.</strong> On a 4-core CPU, at most 4 threads can be in the RUNNING state at once.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. RUNNING means “on a core right now.” Extra threads are READY, waiting for a core.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no" id="q18">
+        <p class="q-id">Q18</p>
+        <p><strong>True or false.</strong> The OS may suspend one thread to free main memory.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Swap for memory is a whole-process job. One thread still sits in the same address space as its siblings.</p>
+        </div>
+      </div>
+      <h2 id="wing-3">Signals and timers</h2>
+      <p class="line-note">Story page: OS8</p>
+
+      <div class="quiz" data-answer="yes" id="q19">
+        <p class="q-id">Q19</p>
+        <p><strong>True or false.</strong> A program may register a handler for SIGUSR2.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. SIGUSR1 and SIGUSR2 are for you. SIGKILL is the one you cannot catch.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="yes" id="q20">
+        <p class="q-id">Q20</p>
+        <p><strong>True or false.</strong> After a <code>signal()</code> handler finishes, the program continues where it was interrupted.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. That is the point of a handler. A blocking call may then return EINTR, but you do not jump to <code>main()</code>.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no" id="q21">
+        <p class="q-id">Q21</p>
+        <p><strong>True or false.</strong> After a <code>signal()</code> handler finishes, the program continues at the start of <code>main()</code>.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. That would restart the whole program. Control goes back to the interrupted instruction.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no" id="q22">
+        <p class="q-id">Q22</p>
+        <p><strong>True or false.</strong> Linux delivers ordinary signals in FIFO order.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Ordinary signals do not even queue a second copy of the same signal. There is no FIFO promise.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no" id="q23">
+        <p class="q-id">Q23</p>
+        <p><strong>True or false.</strong> A Linux timer can only wake you with a signal. It cannot start a thread.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. POSIX <code>timer_create</code> can fire a signal, or it can start a callback thread (SIGEV_THREAD).</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no" id="q24">
+        <p class="q-id">Q24</p>
+        <p><strong>True or false.</strong> Linux timers always start a new thread.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Often they only send a signal. A new thread is optional, not the default story.</p>
+        </div>
+      </div>
+      <h2 id="wing-4">Locks, deadlock, watchdog</h2>
+      <p class="line-note">Story page: OS3 / OS5</p>
+
+      <div class="quiz" data-answer="no" id="q25">
+        <p class="q-id">Q25</p>
+        <p><strong>True or false.</strong> Mutexes avoid deadlocks among threads.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. A mutex stops a race on one key. Two threads can still each hold one key and wait for the other. That is deadlock.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no" id="q26">
+        <p class="q-id">Q26</p>
+        <p><strong>True or false.</strong> A watchdog program prevents deadlocks.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. A watchdog notices a stall after it has already happened. The deadlock still occurred.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="yes" id="q27">
+        <p class="q-id">Q27</p>
+        <p><strong>True or false.</strong> A watchdog should be a separate process from the thing it watches.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. If it lives in the same process, the same crash can kill the watcher too.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="yes" id="q28">
+        <p class="q-id">Q28</p>
+        <p><strong>True or false.</strong> A semaphore can count something.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. A counting semaphore is a number: how many violins are still free.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no" id="q29">
+        <p class="q-id">Q29</p>
+        <p><strong>True or false.</strong> Shared memory is a synchronisation tool.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. It is a window both shops can see. It does not take turns. You still need a mutex or a semaphore beside it.</p>
+        </div>
+      </div>
+      <h2 id="wing-5">Pipes, files, network words</h2>
+      <p class="line-note">Story page: OS1 / OS8</p>
+
+      <div class="quiz" data-answer="yes" id="q30">
+        <p class="q-id">Q30</p>
+        <p><strong>True or false.</strong> Bytes in a pipe come out in FIFO order. You cannot reorder them.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. A pipe is a kernel queue. First byte in is first byte out.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="yes" id="q31">
+        <p class="q-id">Q31</p>
+        <p><strong>True or false.</strong> <code>accept()</code> is how a server takes a client’s connection.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. The listening socket stays. <code>accept()</code> returns a new socket for that one client.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no" id="q32">
+        <p class="q-id">Q32</p>
+        <p><strong>True or false.</strong> File bits <code>d-r-r----</code> mean a directory full of runnable programs.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. <code>d</code> is a directory, but there is no <code>x</code>, so you cannot even enter it. Whether files inside can run is their own bits, not these.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="yes" id="q33">
+        <p class="q-id">Q33</p>
+        <p><strong>True or false.</strong> UNIX treats many things as a file.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. Disk files, devices, pipes, sockets: open, read, write, close.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="yes" id="q34">
+        <p class="q-id">Q34</p>
+        <p><strong>True or false.</strong> If an IP packet is lost, a higher layer can still repair the loss.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. IP does not retry. TCP above it can ACK and send again.</p>
+        </div>
+      </div>
+      <h2 id="wing-6">Hardware, cache, time</h2>
+      <p class="line-note">Story page: OS0</p>
+
+      <div class="quiz" data-answer="yes" id="q35">
+        <p class="q-id">Q35</p>
+        <p><strong>True or false.</strong> DMA reduces how much work the CPU must do for a copy.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. The device writes memory itself. The CPU is free for other work during the transfer.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no" id="q36">
+        <p class="q-id">Q36</p>
+        <p><strong>True or false.</strong> The user program controls the switch from kernel mode back to user mode.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. The kernel and the hardware do that (return from trap or interrupt). User code cannot promote itself.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="yes" id="q37">
+        <p class="q-id">Q37</p>
+        <p><strong>True or false.</strong> Virtual memory lets a process use more memory than the machine physically has.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. Unused pages sit on disk. That is paging.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no" id="q38">
+        <p class="q-id">Q38</p>
+        <p><strong>True or false.</strong> A good cache should use the smallest possible block size.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Tiny blocks miss more often. Block size is a trade, not “as small as you can”.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no" id="q39">
+        <p class="q-id">Q39</p>
+        <p><strong>True or false.</strong> Caching always makes the system slower.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. A cache is there to make the average case faster. It only hurts in rare bad patterns.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no" id="q40">
+        <p class="q-id">Q40</p>
+        <p><strong>True or false.</strong> A timer event executes a trap.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. A timer is an interrupt from outside, asynchronous. A trap is a synchronous event from the running instruction, like a syscall.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no" id="q41">
+        <p class="q-id">Q41</p>
+        <p><strong>True or false.</strong> Blocking system calls belong inside interrupt handlers.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. A handler must finish fast. Blocking there can freeze the machine. Blocking waits belong in process context.</p>
+        </div>
+      </div>
+      <h2 id="wing-7">Windows</h2>
+      <p class="line-note">Story page: OS9</p>
+
+      <div class="quiz" data-answer="no" id="q42">
+        <p class="q-id">Q42</p>
+        <p><strong>True or false.</strong> <code>WaitForMultipleObjects()</code> always waits until every object is signalled.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Only if you pass “wait for all”. Otherwise it returns when any one object is signalled.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="yes" id="q43">
+        <p class="q-id">Q43</p>
+        <p><strong>True or false.</strong> Windows 10 window handling is event-driven.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. <code>GetMessage</code> / <code>DispatchMessage</code>. The window procedure runs when a message arrives.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no" id="q44">
+        <p class="q-id">Q44</p>
+        <p><strong>True or false.</strong> The Windows 10 shell is an 8-bit MS-DOS environment.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. <code>cmd.exe</code> is a normal Win32 program. DOS is only old compatibility.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no" id="q45">
+        <p class="q-id">Q45</p>
+        <p><strong>True or false.</strong> The window callback runs again and again inside the main message loop, as the loop body.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. The loop runs again and again. For each message it calls the window procedure once, then comes back.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no" id="q46">
+        <p class="q-id">Q46</p>
+        <p><strong>True or false.</strong> After WM_QUIT, <code>GetMessage()</code> returns TRUE.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. It returns 0. That is how <code>while (GetMessage(...))</code> stops.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="yes" id="q47">
+        <p class="q-id">Q47</p>
+        <p><strong>True or false.</strong> A Windows mutex is a synchronisation object.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. <code>CreateMutex</code> gives a waitable kernel handle. That is not the same as “mutexes stop deadlock”.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no" id="q48">
+        <p class="q-id">Q48</p>
+        <p><strong>True or false.</strong> Unnamed Windows sync objects are how two processes wait on each other.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. With no name, the other process cannot find the handle. Unnamed is for threads in one process, unless you duplicate the handle.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="yes" id="q49">
+        <p class="q-id">Q49</p>
+        <p><strong>True or false.</strong> A Windows event can synchronise threads that live in different processes.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. Give the event a name, or duplicate the handle. Then both processes wait on the same kernel object.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="yes" id="q50">
+        <p class="q-id">Q50</p>
+        <p><strong>True or false.</strong> In Windows, file mapping and memory mapping are almost the same call path.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. Both use <code>CreateFileMapping</code> and <code>MapViewOfFile</code>. Only the backing store differs.</p>
+        </div>
+      </div>
+      <h2 id="wing-8">What an OS is</h2>
+      <p class="line-note">Story page: OS0 / OS1</p>
+
+      <div class="quiz" data-answer="yes" id="q51">
+        <p class="q-id">Q51</p>
+        <p><strong>True or false.</strong> A microkernel often pays extra context switches, so it can be slower.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. Drivers and servers sit in user space. Each ask is an extra IPC hop.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no" id="q52">
+        <p class="q-id">Q52</p>
+        <p><strong>True or false.</strong> Concurrent jobs always run at the same instant.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Concurrent means their lives overlap. On one core they take turns. Parallel means same instant.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="yes" id="q53">
+        <p class="q-id">Q53</p>
+        <p><strong>True or false.</strong> A process is an instance of a running program.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. The file on disk is the program. The running copy with its own memory is the process.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="yes" id="q54">
+        <p class="q-id">Q54</p>
+        <p><strong>True or false.</strong> The stack stores parameters and return addresses.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. Each call pushes a frame: where to return, and the arguments.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no" id="q55">
+        <p class="q-id">Q55</p>
+        <p><strong>True or false.</strong> The stack is part of the PCB.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. The PCB is the kernel’s card about the process. It may hold a pointer to the stack. The stack itself lives in the process memory.</p>
+        </div>
+      </div>
+
+      <div class="quiz" data-answer="no" id="q56">
+        <p class="q-id">Q56</p>
+        <p><strong>True or false.</strong> A plug-and-play OS boots faster.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Plug-and-play spends time finding and setting devices. It is convenience, not a shorter boot.</p>
+        </div>
+      </div>
+      <div class="pager">
+        <a href="../lessons/os9.html">← OS9</a>
+        <a href="../index.html">Map →</a>
+      </div>
+    </div>
+  </main>
+  <footer class="os-foot">
+    <div class="wrap">E1 · 56 distinct true or false, 2018–2025</div>
+  </footer>
+  <script src="../js/os.js?v=3"></script>
+</body>
+</html>

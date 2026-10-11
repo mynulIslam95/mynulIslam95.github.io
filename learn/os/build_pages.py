@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
-"""Build C2–C6 and OS1–OS9 static pages + the map."""
+"""Build C2–C6 and OS1–OS9 static pages + the map + exam MCQ hall."""
 from pathlib import Path
 
+from mcq_bank import GROUPS, all_items
+
 ROOT = Path(__file__).resolve().parent
-CSS = "../css/os.css?v=4"
-JS = "../js/os.js?v=2"
+CSS = "../css/os.css?v=5"
+JS = "../js/os.js?v=3"
 
 
 def esc(s):
@@ -23,6 +25,22 @@ def quiz(ans, q, why):
         <div class="choices">
           <button type="button" data-pick="yes">Yes</button>
           <button type="button" data-pick="no">No</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>{why}</p>
+        </div>
+      </div>"""
+
+
+def tf(n, ans, q, why):
+    return f"""
+      <div class="quiz" data-answer="{ans}" id="q{n}">
+        <p class="q-id">Q{n:02d}</p>
+        <p><strong>True or false.</strong> {q}</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
         </div>
         <div class="why">
           <span class="tag"></span>
@@ -61,23 +79,27 @@ def need(html):
 
 
 def page(rel, title, desc, kicker, h1, lede, body, prev, nxt, foot, nav_on):
-    css = CSS if rel.startswith("c/") or rel.startswith("lessons/") else "css/os.css?v=4"
+    nested = rel.startswith("c/") or rel.startswith("lessons/") or rel.startswith("exam/")
+    css = CSS if nested else "css/os.css?v=5"
     js = JS if rel != "index.html" else None
     brand = "../index.html" if rel != "index.html" else "index.html"
     map_href = "../index.html" if rel != "index.html" else "index.html"
     c_href = "c1.html" if rel.startswith("c/") else ("c/c1.html" if rel == "index.html" else "../c/c1.html")
     os_href = "os0.html" if rel.startswith("lessons/") else ("lessons/os0.html" if rel == "index.html" else "../lessons/os0.html")
+    exam_href = "mcq.html" if rel.startswith("exam/") else ("exam/mcq.html" if rel == "index.html" else "../exam/mcq.html")
     hub = "../../index.html" if rel != "index.html" else "../index.html"
     if rel == "index.html":
-        css = "css/os.css?v=4"
+        css = "css/os.css?v=5"
         c_href = "c/c1.html"
         os_href = "lessons/os0.html"
+        exam_href = "exam/mcq.html"
         brand = "index.html"
         map_href = "index.html"
         hub = "../index.html"
     nav_c = ' class="is-on"' if nav_on == "c" else ""
     nav_os = ' class="is-on"' if nav_on == "os" else ""
     nav_map = ' class="is-on"' if nav_on == "map" else ""
+    nav_ex = ' class="is-on"' if nav_on == "exam" else ""
     script = f'  <script src="{js}"></script>\n' if js else ""
     pager = ""
     if prev or nxt:
@@ -107,6 +129,7 @@ def page(rel, title, desc, kicker, h1, lede, body, prev, nxt, foot, nav_on):
         <a{nav_map} href="{map_href}">Map</a>
         <a{nav_c} href="{c_href}">C stories</a>
         <a{nav_os} href="{os_href}">OS stories</a>
+        <a{nav_ex} href="{exam_href}">Exam</a>
         <a href="{hub}">Learn hub</a>
       </nav>
     </div>
@@ -697,6 +720,26 @@ WaitForSingleObject(h, INFINITE);  /* Control waits */""", "Named event. SetEven
           ]),
 ])
 
+def mcq_body():
+    n = 0
+    parts = [
+        '      <p class="need">Click True or False. The explanation opens after you pick. These are the distinct year-paper items, not 146 repeats.</p>',
+        '      <nav class="wings" aria-label="Topics">',
+    ]
+    for i, (title, _lesson, _items) in enumerate(GROUPS, 1):
+        parts.append(f'        <a href="#wing-{i}">{esc(title)}</a>')
+    parts.append("      </nav>")
+    for i, (title, lesson, items) in enumerate(GROUPS, 1):
+        parts.append(f'      <h2 id="wing-{i}">{esc(title)}</h2>')
+        parts.append(f'      <p class="line-note">Story page: {esc(lesson)}</p>')
+        for ans, q, why in items:
+            n += 1
+            parts.append(tf(n, ans, q, why))
+    if n != all_items():
+        raise SystemExit(f"MCQ count mismatch: built {n}, bank {all_items()}")
+    return "\n".join(parts)
+
+
 INDEX_BODY = f"""
       <div class="floor">
         <p class="floor-label">Floor 0 · if you never wrote C</p>
@@ -732,6 +775,14 @@ INDEX_BODY = f"""
 {card("lessons/os7.html", "OS7", "GPIO on the Pi", "Pin 11, chip RP1, script vs mmap, gaps on the scope. Lab 1.")}
 {card("lessons/os8.html", "OS8", "Telnet and a bell", "xinetd, SIGUSR1, empty queue. Lab 3 and the network paper.")}
 {card("lessons/os9.html", "OS9", "Windows events", "CreateProcess, named events, three processes. Lab 4.")}
+        </div>
+      </div>
+
+      <div class="floor">
+        <p class="floor-label">Floor 3 · exam hall</p>
+        <h2>Year papers as true or false</h2>
+        <div class="grid">
+{card("exam/mcq.html", "E1", "True or false · 56 items", "Distinct Y/N from 2018–2025. You try. Then the answer and why.")}
         </div>
       </div>
 """
@@ -794,10 +845,24 @@ def main():
         ("lessons/os9.html", "OS9 · Windows events", "OS9: CreateProcess, named events, Lab 4.",
          '<a href="../index.html">Map</a> · Floor 2 · OS9', "Windows events",
          "CreateProcess, named events, three processes. Lab 4.",
-         OS9, ("os8.html", "← OS8"), ("../index.html", "Map →"), "OS9 · Lab 4 Windows", "os"),
+         OS9, ("os8.html", "← OS8"), ("../exam/mcq.html", "Exam · True or false →"), "OS9 · Lab 4 Windows", "os"),
     ]
     for args in pages:
         page(*args)
+
+    page(
+        "exam/mcq.html",
+        "True or false · OS exam hall",
+        "56 distinct true-or-false items from HAW OS papers 2018 to 2025. Try first. Then the answer and why.",
+        '<a href="../index.html">Map</a> · Floor 3 · E1',
+        "True or false",
+        "These came back every year: fork, exec, wait, kill, threads, signals, mutex, Windows. Same claim is here once. Click True or False. Then read why.",
+        mcq_body(),
+        ("../lessons/os9.html", "← OS9"),
+        ("../index.html", "Map →"),
+        "E1 · 56 distinct true or false, 2018–2025",
+        "exam",
+    )
 
     page(
         "index.html",
@@ -805,7 +870,7 @@ def main():
         "Operating systems from zero. Stories, then C, then practice. No C and no OS needed to start.",
         '<a href="../index.html">Learn with Mynul</a> · Technology',
         "Operating systems",
-        "You do not need C. You do not need OS. Each page is a short story, then a yes or no, then a few lines of C. Year papers sit on the same page, with steps. If you never wrote a program, start at C1.",
+        "You do not need C. You do not need OS. Each page is a short story, then a yes or no, then a few lines of C. Year papers sit on the same page, with steps. Floor 3 is the distinct true-or-false bank from 2018 to 2025. If you never wrote a program, start at C1.",
         INDEX_BODY,
         None,
         None,
