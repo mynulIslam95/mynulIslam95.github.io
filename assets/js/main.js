@@ -210,7 +210,7 @@
 
   if (!reduce && "IntersectionObserver" in window) {
     document.documentElement.classList.add("motion");
-    var revealSel = ".hero-grid > *, .hero-side > *, .ticket, .skill-groups > .panel, .job-card, .edu-card, .contact-card, section .section-kicker, section h2, .page-header, .prose";
+    var revealSel = ".hero-grid > *, .hero-side > *, .ticket, .skill-groups > .panel, .job-card, .edu-card, .contact-card, section .section-kicker, section h2";
     document.querySelectorAll(revealSel).forEach(function (el) { el.classList.add("reveal"); });
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
@@ -218,8 +218,14 @@
         entry.target.classList.add("is-in");
         io.unobserve(entry.target);
       });
-    }, { threshold: 0.14, rootMargin: "0px 0px -8% 0px" });
+    }, { threshold: 0.01, rootMargin: "0px 0px -4% 0px" });
     document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
+    setTimeout(function () {
+      document.querySelectorAll(".reveal:not(.is-in)").forEach(function (el) {
+        var r = el.getBoundingClientRect();
+        if (r.bottom > 0 && r.top < (window.innerHeight || 800)) el.classList.add("is-in");
+      });
+    }, 80);
   }
 
   var termBtn = document.getElementById("term-run");
