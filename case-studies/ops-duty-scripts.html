@@ -2,13 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
+  <script>
+  (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>ops-duty-scripts - Mynul Islam</title>
   <meta name="description" content="Python shift toolkit: health poll, log scan, duty checklist and incident runbook."/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="../assets/css/styles.css?v=46"/>
+  <link rel="stylesheet" href="../assets/css/styles.css?v=47"/>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -34,6 +37,7 @@
           <img class="flag" src="../assets/icons/flag-de.svg" width="22" height="15" alt=""/>
         </button>
       </div>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode">Light</button>
       <div class="cv-pair nav-cv">
         <a href="../cv-en.pdf" download="Mynul_Islam_CV_EN.pdf"><span class="cv-long">CV-English</span><span class="cv-tiny">EN</span></a>
         <a href="../cv-de.pdf" download="Mynul_Islam_CV_DE.pdf"><span class="cv-long">CV-Deutsch</span><span class="cv-tiny">DE</span></a>
@@ -60,5 +64,6 @@
     <div class="wrap"><p>Mynul Islam · Hamburg</p></div>
   </footer>
   <script src="../assets/js/main.js?v=42" defer></script>
+  <script src="../assets/js/theme.js?v=1"></script>
 </body>
 </html>

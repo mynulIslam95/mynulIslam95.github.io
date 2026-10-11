@@ -200,7 +200,8 @@
       : "";
     return (
       '<div class="top">' +
-      '<div class="top-row"><a class="brand" href="#/">' + t("brand") + "</a>" + extra + "</div>" +
+      '<div class="top-row"><a class="brand" href="#/">' + t("brand") + "</a>" + extra +
+      '<button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode">Light</button></div>' +
       langSwitch() +
       "</div>" +
       (crumb ? '<a class="back" href="' + crumb.href + '">' + crumb.label + "</a>" : "")
@@ -606,6 +607,7 @@
     if (r.kind === "telc" || r.parts[0] === "telc") {
       if (window.Telc) {
         window.Telc.render(r.parts);
+        if (window.applyMynulTheme) window.applyMynulTheme();
         return;
       }
     }
@@ -621,6 +623,7 @@
     else if (r.kind === "words") wordsIndex(r.level || "A1");
     else home();
     bindLang();
+    if (window.applyMynulTheme) window.applyMynulTheme();
   }
 
   I18n.onChange = render;

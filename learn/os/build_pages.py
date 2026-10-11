@@ -5,8 +5,12 @@ from pathlib import Path
 from mcq_bank import GROUPS, all_items
 
 ROOT = Path(__file__).resolve().parent
-CSS = "../css/os.css?v=5"
+CSS = "../css/os.css?v=6"
 JS = "../js/os.js?v=3"
+FOUC = """  <script>
+  (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
+  </script>"""
+THEME_BTN = '<button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode">Light</button>'
 
 
 def esc(s):
@@ -80,7 +84,7 @@ def need(html):
 
 def page(rel, title, desc, kicker, h1, lede, body, prev, nxt, foot, nav_on):
     nested = rel.startswith("c/") or rel.startswith("lessons/") or rel.startswith("exam/")
-    css = CSS if nested else "css/os.css?v=5"
+    css = CSS if nested else "css/os.css?v=6"
     js = JS if rel != "index.html" else None
     brand = "../index.html" if rel != "index.html" else "index.html"
     map_href = "../index.html" if rel != "index.html" else "index.html"
@@ -88,14 +92,16 @@ def page(rel, title, desc, kicker, h1, lede, body, prev, nxt, foot, nav_on):
     os_href = "os0.html" if rel.startswith("lessons/") else ("lessons/os0.html" if rel == "index.html" else "../lessons/os0.html")
     exam_href = "mcq.html" if rel.startswith("exam/") else ("exam/mcq.html" if rel == "index.html" else "../exam/mcq.html")
     hub = "../../index.html" if rel != "index.html" else "../index.html"
+    theme_js = "../../../assets/js/theme.js?v=1" if nested else "../../assets/js/theme.js?v=1"
     if rel == "index.html":
-        css = "css/os.css?v=5"
+        css = "css/os.css?v=6"
         c_href = "c/c1.html"
         os_href = "lessons/os0.html"
         exam_href = "exam/mcq.html"
         brand = "index.html"
         map_href = "index.html"
         hub = "../index.html"
+        theme_js = "../../assets/js/theme.js?v=1"
     nav_c = ' class="is-on"' if nav_on == "c" else ""
     nav_os = ' class="is-on"' if nav_on == "os" else ""
     nav_map = ' class="is-on"' if nav_on == "map" else ""
@@ -113,6 +119,7 @@ def page(rel, title, desc, kicker, h1, lede, body, prev, nxt, foot, nav_on):
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
+{FOUC}
   <title>{esc(title)}</title>
   <meta name="description" content="{esc(desc)}"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -132,6 +139,7 @@ def page(rel, title, desc, kicker, h1, lede, body, prev, nxt, foot, nav_on):
         <a{nav_ex} href="{exam_href}">Exam</a>
         <a href="{hub}">Learn hub</a>
       </nav>
+      {THEME_BTN}
     </div>
   </header>
   <main id="main">
@@ -145,7 +153,8 @@ def page(rel, title, desc, kicker, h1, lede, body, prev, nxt, foot, nav_on):
   <footer class="os-foot">
     <div class="wrap">{esc(foot)}</div>
   </footer>
-{script}</body>
+{script}  <script src="{theme_js}"></script>
+</body>
 </html>
 """
     out = ROOT / rel

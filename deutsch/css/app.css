@@ -2,8 +2,8 @@
   --void: #000000;
   --paper: #000000;
   --panel: #050805;
-  --ink: #c8f5d4;
-  --muted: #5f8a6c;
+  --ink: #f4f5f7;
+  --muted: #8b95a7;
   --line: rgba(0, 255, 156, 0.45);
   --forest: #00ff9c;
   --forest-2: #00cc7d;
@@ -13,12 +13,16 @@
   --ok: #00ff9c;
   --bad: #ff4d6d;
   --card: #050805;
+  --on-accent: #000000;
+  --header-bg: #000000;
   --serif: "Literata", "Iowan Old Style", Georgia, serif;
   --sans: "IBM Plex Sans", "Noto Sans Bengali", "Helvetica Neue", sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, monospace;
 }
 
 * { box-sizing: border-box; }
+html { color-scheme: dark; }
+html[data-theme="light"] { color-scheme: light; }
 html, body {
   margin: 0;
   background: var(--void);
@@ -78,7 +82,7 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   align-items: stretch;
   margin: 0 -20px 18px;
   padding: 12px 20px;
-  background: #000;
+  background: var(--header-bg);
   border-bottom: 1px solid var(--neon-line);
   box-shadow: 0 0 24px var(--neon-dim);
 }
@@ -110,7 +114,7 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   display: inline-flex;
   border: 1px solid var(--neon);
   overflow: hidden;
-  background: #000;
+  background: var(--void);
 }
 .lang-pills button {
   font-family: var(--mono);
@@ -126,7 +130,7 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   cursor: pointer;
 }
 .lang-pills button:last-child { border-right: 0; }
-.lang-pills button.is-on { background: var(--neon); color: #000; }
+.lang-pills button.is-on { background: var(--neon); color: var(--on-accent); }
 .lang-banner {
   background: var(--panel);
   border: 1px solid var(--neon-line);
@@ -255,7 +259,7 @@ h2 { font-size: 1.05rem; }
 .tick {
   display: inline-flex; align-items: center; justify-content: center;
   width: 1.2em; height: 1.2em; margin-left: 8px;
-  background: var(--neon); color: #000; font-size: 0.72rem; font-weight: 700;
+  background: var(--neon); color: var(--on-accent); font-size: 0.72rem; font-weight: 700;
   font-family: var(--mono);
 }
 .word-n { font-family: var(--mono); font-variant-numeric: tabular-nums; font-weight: 600; color: var(--muted); font-size: 0.72em; }
@@ -275,7 +279,7 @@ h2 { font-size: 1.05rem; }
 .sline-de.is-on { border-color: var(--neon); box-shadow: 0 0 16px var(--neon-dim); }
 .sline-en {
   display: block; margin: 8px 0 0; padding: 8px 12px;
-  background: #000;
+  background: var(--void);
   border: 1px solid var(--neon-dim);
   color: var(--muted); font-size: 1rem; line-height: 1.55;
   white-space: normal; overflow-wrap: break-word;
@@ -294,7 +298,7 @@ h2 { font-size: 1.05rem; }
 .row { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0 0; }
 .btn {
   display: inline-block;
-  background: #000;
+  background: var(--void);
   color: var(--neon);
   border: 1px solid var(--neon);
   padding: 10px 14px;
@@ -321,7 +325,7 @@ h2 { font-size: 1.05rem; }
   width: 100%;
   padding: 10px 12px;
   border: 1px solid var(--neon);
-  background: #000;
+  background: var(--void);
   color: var(--ink);
 }
 .field:focus { outline: 2px solid var(--neon); border-color: var(--neon); }
@@ -368,4 +372,60 @@ h2 { font-size: 1.05rem; }
   .lang-switch { width: 100%; }
   .type-row { flex-wrap: wrap; }
   .type-row .btn { width: 100%; }
+}
+
+.theme-toggle {
+  flex-shrink: 0;
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--neon-line);
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-left: auto;
+}
+.theme-toggle:hover {
+  border-color: var(--neon);
+  color: var(--neon);
+}
+
+html[data-theme="light"] {
+  --void: #f6f4ef;
+  --paper: #f6f4ef;
+  --panel: #ffffff;
+  --ink: #141416;
+  --muted: #5c5c64;
+  --line: rgba(11, 124, 106, 0.32);
+  --forest: #0b7c6a;
+  --forest-2: #08685a;
+  --neon: #0b7c6a;
+  --neon-dim: rgba(11, 124, 106, 0.12);
+  --neon-line: rgba(11, 124, 106, 0.32);
+  --ok: #0b7c6a;
+  --card: #ffffff;
+  --on-accent: #ffffff;
+  --header-bg: #fffcf7;
+}
+html[data-theme="light"] body::before { display: none; }
+html[data-theme="light"] h1,
+html[data-theme="light"] h2,
+html[data-theme="light"] h3 {
+  color: var(--ink);
+  text-shadow: none;
+}
+html[data-theme="light"] .brand,
+html[data-theme="light"] a:hover {
+  text-shadow: none;
+}
+html[data-theme="light"] .sline-de,
+html[data-theme="light"] .drill,
+html[data-theme="light"] .card,
+html[data-theme="light"] .bar {
+  box-shadow: 0 8px 24px rgba(20, 20, 24, 0.06);
 }

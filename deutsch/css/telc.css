@@ -23,7 +23,7 @@
 }
 .modes button {
   flex: 1;
-  background: #000;
+  background: var(--void);
   color: var(--neon);
   border: 0;
   border-right: 1px solid var(--neon);
@@ -36,7 +36,7 @@
   cursor: pointer;
 }
 .modes button:last-child { border-right: 0; }
-.modes button.is-on { background: var(--neon); color: #000; }
+.modes button.is-on { background: var(--neon); color: var(--on-accent); }
 .shell-exit { margin-bottom: 10px; }
 .meter {
   height: 8px;
@@ -105,7 +105,7 @@
   min-height: 140px;
   padding: 12px;
   border: 1px solid var(--neon);
-  background: #000;
+  background: var(--void);
   color: var(--ink);
   font: inherit;
 }
