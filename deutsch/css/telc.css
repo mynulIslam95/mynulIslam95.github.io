@@ -7,10 +7,10 @@
 }
 .telc-continue, .telc-gate {
   display: block;
-  background: #fff;
-  border: 2px solid var(--forest);
-  border-radius: 12px;
-  padding: 14px;
+  background: var(--panel);
+  border: 1px solid var(--neon-line);
+  box-shadow: 0 0 16px var(--neon-dim);
+  padding: 14px 16px;
   margin: 0 0 16px;
   color: inherit;
 }
@@ -19,77 +19,96 @@
   display: flex;
   gap: 0;
   margin: 0 0 14px;
-  border: 2px solid var(--forest);
-  border-radius: 10px;
-  overflow: hidden;
+  border: 1px solid var(--neon);
 }
 .modes button {
   flex: 1;
-  background: #fff;
-  color: var(--forest);
+  background: #000;
+  color: var(--neon);
   border: 0;
-  border-right: 1px solid var(--forest);
+  border-right: 1px solid var(--neon);
   padding: 8px 6px;
+  font-family: var(--mono);
   font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   cursor: pointer;
 }
 .modes button:last-child { border-right: 0; }
-.modes button.is-on { background: var(--forest); color: #fff; }
+.modes button.is-on { background: var(--neon); color: #000; }
 .shell-exit { margin-bottom: 10px; }
 .meter {
   height: 8px;
-  background: var(--line);
-  border-radius: 99px;
+  background: var(--neon-dim);
   overflow: hidden;
   margin: 0 0 12px;
 }
-.meter span { display: block; height: 100%; background: var(--forest); width: 0; }
+.meter span { display: block; height: 100%; background: var(--neon); width: 0; }
 .choice {
   display: block;
   width: 100%;
   text-align: left;
-  background: #fff;
-  border: 2px solid var(--forest);
-  border-radius: 10px;
+  background: var(--panel);
+  border: 1px solid var(--neon-dim);
   padding: 10px 12px;
   margin: 0 0 8px;
   cursor: pointer;
   color: inherit;
 }
-.choice.is-on { background: #eef6f2; }
-.choice.is-ok { background: #e7f3ee; }
-.choice.is-bad { background: #f6ece8; }
+.choice.is-on { border-color: var(--neon); }
+.choice.is-ok { border-color: var(--ok); color: var(--ok); }
+.choice.is-bad { border-color: var(--bad); color: var(--bad); }
 .passage {
   font-family: var(--serif);
-  background: #fff;
-  border: 2px solid var(--line);
-  border-radius: 10px;
+  background: var(--panel);
+  border: 1px solid var(--neon-line);
   padding: 12px;
   margin: 0 0 12px;
 }
 .passage mark {
-  background: #cfe6db;
-  color: inherit;
+  background: transparent;
+  color: var(--neon);
   padding: 0 2px;
+  box-shadow: 0 1px 0 var(--neon);
 }
-.area-h { font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin: 16px 0 8px; }
-.clock { font-variant-numeric: tabular-nums; color: var(--forest); font-weight: 700; margin: 0 0 10px; }
+.area-h {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--neon);
+  font-family: var(--mono);
+  margin: 16px 0 8px;
+}
+.clock {
+  font-variant-numeric: tabular-nums;
+  color: var(--neon);
+  font-weight: 700;
+  font-family: var(--mono);
+  margin: 0 0 10px;
+}
 .mic-dot {
   display: inline-block;
   width: 10px; height: 10px;
-  border-radius: 50%;
   background: var(--bad);
   margin-right: 6px;
 }
 .level {
   height: 10px;
-  background: var(--line);
-  border-radius: 99px;
+  background: var(--neon-dim);
   overflow: hidden;
   margin: 8px 0 12px;
 }
-.level span { display: block; height: 100%; width: 0; background: var(--forest); }
-.area { width: 100%; min-height: 140px; padding: 12px; border: 1px solid var(--line); border-radius: 8px; font: inherit; }
+.level span { display: block; height: 100%; width: 0; background: var(--neon); }
+.area {
+  width: 100%;
+  min-height: 140px;
+  padding: 12px;
+  border: 1px solid var(--neon);
+  background: #000;
+  color: var(--ink);
+  font: inherit;
+}
 .check-row { display: flex; gap: 8px; align-items: flex-start; margin: 12px 0; }
 .locked-hint { color: var(--muted); font-size: 0.92rem; margin: 0 0 12px; }
 .ok { color: var(--ok); }
