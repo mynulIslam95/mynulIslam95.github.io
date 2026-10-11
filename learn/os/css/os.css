@@ -2,7 +2,7 @@
   --void: #000000;
   --panel: #111111;
   --ink: #ffffff;
-  --dim: #9a9a9a;
+  --dim: #ffffff;
   --neon: #ffffff;
   --neon-dim: rgba(255, 255, 255, 0.16);
   --neon-line: rgba(255, 255, 255, 0.42);
@@ -429,7 +429,7 @@ html[data-theme="light"] {
   --void: #f5f5f5;
   --panel: #ffffff;
   --ink: #000000;
-  --dim: #5c5c5c;
+  --dim: #000000;
   --neon: #000000;
   --neon-dim: rgba(0, 0, 0, 0.08);
   --neon-line: rgba(0, 0, 0, 0.28);

@@ -3,10 +3,10 @@
   --paper: #000000;
   --panel: #111111;
   --ink: #ffffff;
-  --muted: #9a9a9a;
+  --muted: #ffffff;
   --line: rgba(255, 255, 255, 0.42);
   --forest: #ffffff;
-  --forest-2: #e8e8e8;
+  --forest-2: #ffffff;
   --neon: #ffffff;
   --neon-dim: rgba(255, 255, 255, 0.16);
   --neon-line: rgba(255, 255, 255, 0.42);
@@ -400,10 +400,10 @@ html[data-theme="light"] {
   --paper: #f5f5f5;
   --panel: #ffffff;
   --ink: #000000;
-  --muted: #5c5c5c;
+  --muted: #000000;
   --line: rgba(0, 0, 0, 0.28);
   --forest: #000000;
-  --forest-2: #222222;
+  --forest-2: #000000;
   --neon: #000000;
   --neon-dim: rgba(0, 0, 0, 0.08);
   --neon-line: rgba(0, 0, 0, 0.28);
