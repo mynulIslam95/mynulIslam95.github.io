@@ -82,8 +82,7 @@ body::after {
   );
 }
 
-img { max-width: 100%; height: auto; display: block; filter: grayscale(1); }
-svg { filter: grayscale(1); }
+img { max-width: 100%; height: auto; display: block; }
 a { color: var(--neon); text-underline-offset: 3px; }
 a:hover { color: var(--accent-hover); text-shadow: 0 0 10px var(--neon-dim); }
 a:focus-visible, button:focus-visible, .btn:focus-visible {

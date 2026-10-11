@@ -60,7 +60,9 @@
       notYetTry: "Not yet. Have one more go.",
       notLiveGrammar: "This chapter is not open yet.",
       loading: "Loading.",
-      telc: "TELC B1 exam practice",
+      telc: "TELC B1",
+      telcKicker: "Exam",
+      telcCard: "Lesen, Hören, Schreiben, Sprechen. One paper at a time.",
       portfolio: "Portfolio"
     },
     bn: {
@@ -123,6 +125,8 @@
       notLiveGrammar: "এইটা এখনো খোলে নাই।",
       loading: "একটু লাগবে…",
       telc: "TELC B1",
+      telcKicker: "পরীক্ষা",
+      telcCard: "পড়া, শোনা, লেখা, কথা। একটা করে।",
       portfolio: "পোর্টফোলিও"
     }
   };

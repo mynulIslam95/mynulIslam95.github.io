@@ -226,10 +226,10 @@
         t("homeCard")
       );
     });
-    html += "</div>";
     if (window.Telc) {
-      html += '<p class="lede"><a href="#/telc">' + t("telc") + "</a></p>";
+      html += card("#/telc", t("telc"), t("telcKicker"), t("telcCard"));
     }
+    html += "</div>";
     root.innerHTML = html;
   }
 
