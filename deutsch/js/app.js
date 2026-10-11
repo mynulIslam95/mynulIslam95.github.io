@@ -625,7 +625,7 @@
 
   I18n.onChange = render;
 
-  fetch("data/live.json?v=22")
+  fetch("data/live.json?v=23")
     .then(function (res) { return res.json(); })
     .then(function (d) {
       DATA = d;
