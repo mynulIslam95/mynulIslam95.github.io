@@ -28,6 +28,7 @@ html, body {
   font-size: 17px;
   line-height: 1.65;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 body.os {
@@ -118,12 +119,18 @@ a:focus-visible, button:focus-visible {
 }
 
 .wrap {
-  width: min(var(--content), calc(100% - 40px));
-  margin: 0 auto 0 max(20px, 6vw);
-  padding-inline: 0 20px;
+  width: min(var(--content), calc(100% - 32px));
+  max-width: 100%;
+  margin: 0 auto 0 max(16px, 6vw);
+  padding-inline: 0 16px;
+  box-sizing: border-box;
 }
 @media (max-width: 700px) {
-  .wrap { margin-left: 20px; padding-inline: 0; }
+  .wrap {
+    width: calc(100% - 24px);
+    margin: 0 auto;
+    padding-inline: 0;
+  }
 }
 
 main { padding: 36px 0 80px; }
@@ -166,6 +173,8 @@ code, .code {
   font-family: var(--mono);
   font-size: 0.9em;
   color: var(--neon);
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 pre {
@@ -174,12 +183,20 @@ pre {
   box-shadow: 0 0 20px var(--neon-dim);
   padding: 16px 18px;
   overflow-x: auto;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: pre-wrap;
+  max-width: 100%;
+  min-width: 0;
   margin: 0 0 20px;
 }
 pre code {
   color: var(--ink);
   font-size: 0.86rem;
   line-height: 1.55;
+  white-space: inherit;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .floor {
@@ -204,6 +221,18 @@ pre code {
   .grid { grid-template-columns: 1fr 1fr; }
 }
 
+.card, .ask, .quiz, .need, .paper, .story {
+  max-width: 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+.card p, .card h3, .card .id, .ask p, .quiz p, .need,
+.paper p, .paper li, .story p, .q-id, .why {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
 .card {
   display: block;
   text-decoration: none;
@@ -400,9 +429,16 @@ footer.os-foot {
 }
 
 @media (max-width: 640px) {
+  body.os { font-size: 16px; }
   .os-nav { display: none; }
   .choices { flex-direction: column; }
   .choices button { width: 100%; }
+  .card, .ask, .quiz, .need, .paper, pre {
+    padding: 12px;
+  }
+  pre, pre code { font-size: 0.76rem; line-height: 1.5; }
+  .pager { flex-wrap: wrap; }
+  .pager a { max-width: 100%; overflow-wrap: anywhere; }
 }
 
 .theme-toggle {

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <script>
+  (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
+  </script>
+  <title>P3 Hard · Shared memory · C for OS</title>
+  <meta name="description" content="Hard project: shared memory, process-shared mutex, fork, SIGUSR1. Then publish on GitHub. Step-by-step hints, submit, commented answers."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/c.css?v=6"/>
+</head>
+<body class="cos">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="cos-bar">
+    <div class="wrap">
+      <a class="cos-brand" href="index.html">C · OS</a>
+      <nav class="cos-nav" aria-label="C course">
+        <a href="index.html">Map</a>
+        <a href="ch01.html">1</a>
+        <a href="ch02.html">2</a>
+        <a href="ch03.html">3</a>
+        <a href="ch04.html">4</a>
+        <a href="ch05.html">5</a>
+        <a href="ch06.html">6</a>
+        <a href="ch07.html">7</a>
+        <a href="ch08.html">8</a>
+        <a href="ch09.html">9</a>
+        <a href="ch10.html">10</a>
+        <a href="p1.html">P1</a>
+        <a href="p2.html">P2</a>
+        <a class="is-on" href="p3.html">P3</a>
+        <a href="../os/index.html">OS</a>
+        <a href="../index.html">Learn hub</a>
+      </nav>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode">Light</button>
+    </div>
+  </header>
+  <main id="main">
+    <div class="wrap">
+      <p class="kicker"><a href="index.html">C for OS</a> · Project 3 · hard</p>
+      <h1>Shared memory, two processes</h1>
+      <p class="lede">File <code>share.c</code>. This is the whole C-for-OS ladder in one program. Two <em>processes</em> (not two threads). Named shared memory <code>/myshm</code>, <code>mmap</code> with <code>MAP_SHARED</code>, a mutex that both processes can take, <code>fork</code>, a <code>SIGUSR1</code> handler that sets <code>got</code> only, then <code>wait</code>. After every C step is submitted right, the GitHub publish path opens. You publish <em>your</em> <code>share.c</code> repo — not this teaching site.</p>
+      <p class="jump"><a href="#practice">Jump to steps</a> <a href="p2.html">P2 medium</a> <a href="index.html">Map</a></p>
+
+      <div class="rule">
+        <span class="tag">What done looks like</span>
+        <p><code>gcc share.c -o share -lpthread -lrt</code> then <code>./share</code> prints <code>1</code>. Child adds one under the lock, then signals the parent. Parent’s handler sets a flag. Parent then <code>wait</code>s and prints the count from the mapped bytes. If you forget <code>MAP_SHARED</code> or the process-shared mutex, the parent never sees the add.</p>
+      </div>
+      <div class="os-door">
+        <span class="tag">Chapters</span>
+        <p>1 compile · 2 ints · 3 printf/perror · 4 if (r == 0) · 5 flag while · 6 name "/myshm" · 7 handler is a function · 8 mmap paper · 9 struct Block · 10 pthread.h + sys/mman.h and -lpthread -lrt. P1 was a fake table. P2 was threads. This is the real two-process box.</p>
+      </div>
+      <div class="need">
+        <span class="tag">GitHub is locked until share.c is done</span>
+        <p>Submit every C step below. The score counts those C steps only. When they are all right, the Publish on GitHub group appears: init, ignore, README, add, commit, create the repo, push. No force push. No skipped hooks.</p>
+      </div>
+
+      <h2 id="practice">Steps</h2>
+      <div class="scorebox">
+        <span class="tag">This project</span>
+        <p><strong data-drill-score>0 / ? project steps submitted right</strong></p>
+        <p style="margin-bottom:0">GitHub steps do not count in this score. They open after the C file is done.</p>
+      </div>
+      <div id="drills"></div>
+      <div class="pager">
+        <a href="p2.html">← P2 · Two threads</a>
+        <a href="index.html">Map →</a>
+      </div>
+    </div>
+  </main>
+  <footer class="cos-foot">
+    <div class="wrap">P3 hard · shared memory then GitHub</div>
+  </footer>
+  <script src="js/p3-data.js?v=1"></script>
+  <script src="js/practice.js?v=2"></script>
+  <script src="../../assets/js/theme.js?v=1"></script>
+</body>
+</html>

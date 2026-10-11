@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="css/c.css?v=3"/>
+  <link rel="stylesheet" href="css/c.css?v=6"/>
 </head>
 <body class="cos">
   <a class="skip" href="#main">Skip to content</a>
@@ -30,6 +30,9 @@
         <a href="ch08.html">8</a>
         <a href="ch09.html">9</a>
         <a href="ch10.html">10</a>
+        <a href="p1.html">P1</a>
+        <a href="p2.html">P2</a>
+        <a href="p3.html">P3</a>
         <a href="../os/index.html">OS</a>
         <a href="../index.html">Learn hub</a>
       </nav>
@@ -40,7 +43,7 @@
     <div class="wrap">
       <p class="kicker"><a href="../index.html">Learn with Mynul</a> · Technology</p>
       <h1>C programming for Operating System</h1>
-      <p class="lede">This course sits outside the OS classroom. No shop stories. Ten chapters, each a long rule then a large practice set. Every item has Hint, Submit, and See answer. The answer is C with comments on every important line. Start at Chapter 1 if you have never written C.</p>
+      <p class="lede">This course sits outside the OS classroom. No shop stories. Ten chapters, each a long rule then a large practice set. Then three big projects — easy, medium, hard — that use all ten chapters. Every item has Hint (step by step), Submit, and See answer. The answer is C with comments on every important line. After the hard project, you can publish your own <code>share.c</code> on GitHub. Start at Chapter 1 if you have never written C.</p>
 
       <div class="need">
         <span class="tag">How to practice</span>
@@ -112,10 +115,33 @@
           </a>
         </div>
       </div>
+
+      <div class="floor">
+        <p class="floor-label">Projects · after the ten chapters</p>
+        <h2>Three programs, then GitHub</h2>
+        <p>Each project is a full file you can compile. Hint opens one clue at a time. Submit your C. See answer is the full file with comments. After every C step of the hard project is submitted right, Publish on GitHub unlocks on that page.</p>
+        <div class="grid">
+          <a class="card" href="p1.html">
+            <p class="id">P1 · easy <span class="lvl">desk.c</span></p>
+            <h3>Mini process table</h3>
+            <p>Array of structs. Add, list, kill, menu. gcc desk.c -o desk. No fork yet.</p>
+          </a>
+          <a class="card" href="p2.html">
+            <p class="id">P2 · medium <span class="lvl">twins.c</span></p>
+            <h3>Two threads, one counter</h3>
+            <p>struct Block with a mutex. Two workers, 200000. gcc … -lpthread.</p>
+          </a>
+          <a class="card" href="p3.html">
+            <p class="id">P3 · hard <span class="lvl">share.c</span></p>
+            <h3>Shared memory, then GitHub</h3>
+            <p>shm_open, MAP_SHARED, process-shared mutex, fork, SIGUSR1. Then publish your repo.</p>
+          </a>
+        </div>
+      </div>
     </div>
   </main>
   <footer class="cos-foot">
-    <div class="wrap">C programming for Operating System · ten chapters · logic first</div>
+    <div class="wrap">C programming for Operating System · ten chapters · three projects</div>
   </footer>
   <script src="../../assets/js/theme.js?v=1"></script>
 </body>

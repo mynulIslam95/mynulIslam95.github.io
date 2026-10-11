@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <script>
+  (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
+  </script>
+  <title>P2 Medium · Two threads · C for OS</title>
+  <meta name="description" content="Medium project: two threads, one mutex, one counter. Step-by-step hints, submit, commented answers."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/c.css?v=6"/>
+</head>
+<body class="cos">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="cos-bar">
+    <div class="wrap">
+      <a class="cos-brand" href="index.html">C · OS</a>
+      <nav class="cos-nav" aria-label="C course">
+        <a href="index.html">Map</a>
+        <a href="ch01.html">1</a>
+        <a href="ch02.html">2</a>
+        <a href="ch03.html">3</a>
+        <a href="ch04.html">4</a>
+        <a href="ch05.html">5</a>
+        <a href="ch06.html">6</a>
+        <a href="ch07.html">7</a>
+        <a href="ch08.html">8</a>
+        <a href="ch09.html">9</a>
+        <a href="ch10.html">10</a>
+        <a href="p1.html">P1</a>
+        <a class="is-on" href="p2.html">P2</a>
+        <a href="p3.html">P3</a>
+        <a href="../os/index.html">OS</a>
+        <a href="../index.html">Learn hub</a>
+      </nav>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode">Light</button>
+    </div>
+  </header>
+  <main id="main">
+    <div class="wrap">
+      <p class="kicker"><a href="index.html">C for OS</a> · Project 2 · medium</p>
+      <h1>Two threads, one counter</h1>
+      <p class="lede">File <code>twins.c</code>. Two workers, one <code>struct Block</code> with a mutex and a count. Each worker adds 1, one hundred thousand times, under the lock. Print the count. It must be 200000. Same process — not <code>fork</code> yet. That is P3.</p>
+      <p class="jump"><a href="#practice">Jump to steps</a> <a href="p1.html">P1 easy</a> <a href="p3.html">P3 hard</a></p>
+
+      <div class="rule">
+        <span class="tag">What done looks like</span>
+        <p><code>gcc twins.c -o twins -lpthread</code> then <code>./twins</code> prints <code>200000</code>. If you drop the lock, the number is often smaller. That is the race. This project makes you feel why Chapter 8 said two papers, one box.</p>
+      </div>
+      <div class="os-door">
+        <span class="tag">Chapters</span>
+        <p>7 worker function · 8 &amp;b · 9 lock+count in one struct · 10 pthread.h and -lpthread. Loops, ints, printf still sit underneath.</p>
+      </div>
+
+      <h2 id="practice">Steps</h2>
+      <div class="scorebox">
+        <span class="tag">This project</span>
+        <p><strong data-drill-score>0 / ? project steps submitted right</strong></p>
+      </div>
+      <div id="drills"></div>
+      <div class="pager">
+        <a href="p1.html">← P1 · Process table</a>
+        <a href="p3.html">P3 · Shared memory →</a>
+      </div>
+    </div>
+  </main>
+  <footer class="cos-foot">
+    <div class="wrap">P2 medium · two threads one lock</div>
+  </footer>
+  <script src="js/p2-data.js?v=1"></script>
+  <script src="js/practice.js?v=2"></script>
+  <script src="../../assets/js/theme.js?v=1"></script>
+</body>
+</html>

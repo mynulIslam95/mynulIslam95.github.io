@@ -23,6 +23,12 @@
     } catch (err) {}
   }
 
+  function hintList(d) {
+    if (d.hints && d.hints.length) return d.hints;
+    if (d.hint) return [d.hint];
+    return [];
+  }
+
   function normSpace(s) {
     return String(s).replace(/\r\n/g, "\n").replace(/[ \t]+/g, " ").trim();
   }
@@ -70,21 +76,48 @@
     return false;
   }
 
+  function githubReady() {
+    var chap = window.C_OS_CHAPTER;
+    if (!chap || !chap.unlockGroup) return true;
+    var p = loadProgress();
+    return (chap.drills || []).every(function (d) {
+      if (d.group === chap.unlockGroup) return true;
+      return !!p[d.id];
+    });
+  }
+
+  function applyUnlock() {
+    var wrap = document.querySelector("[data-unlock]");
+    var gate = document.querySelector("[data-unlock-gate]");
+    if (!wrap && !gate) return;
+    var ok = githubReady();
+    if (wrap) wrap.hidden = !ok;
+    if (gate) gate.hidden = ok;
+  }
+
   function markSolved(id) {
     var p = loadProgress();
     p[id] = true;
     saveProgress(p);
     paintScore();
+    applyUnlock();
   }
 
   function paintScore() {
     var el = document.querySelector("[data-drill-score]");
     if (!el || !window.C_OS_CHAPTER) return;
-    var drills = window.C_OS_CHAPTER.drills || [];
+    var chap = window.C_OS_CHAPTER;
+    var drills = chap.drills || [];
     var p = loadProgress();
+    var unlock = chap.unlockGroup;
+    var core = drills.filter(function (d) {
+      return !unlock || d.group !== unlock;
+    });
     var n = 0;
-    drills.forEach(function (d) { if (p[d.id]) n += 1; });
-    el.textContent = n + " / " + drills.length + " submitted right";
+    core.forEach(function (d) { if (p[d.id]) n += 1; });
+    var isProj = /^p\d/.test(chap.id || "");
+    el.textContent = n + " / " + core.length +
+      (isProj ? " project steps submitted right" : " submitted right");
   }
 
   function inputHtml(d) {
@@ -94,13 +127,15 @@
         '<button type="button" data-pick="no">No</button>' +
         "</div>";
     }
+    var rows = d.rows || (d.kind === "write" ? 10 : 0);
     if (d.kind === "write") {
       return '<label class="sr">Your C</label>' +
-        '<textarea class="drill-in" rows="8" spellcheck="false" placeholder="Write C here."></textarea>';
+        '<textarea class="drill-in" rows="' + rows +
+        '" spellcheck="false" placeholder="Write C here. Comments are allowed."></textarea>';
     }
     if (d.kind === "fill") {
       return '<label class="sr">Fill</label>' +
-        '<input class="drill-in" type="text" spellcheck="false" placeholder="One word, token, or short line"/>';
+        '<input class="drill-in" type="text" spellcheck="false" placeholder="One word, token, command, or short line"/>';
     }
     return '<label class="sr">Output</label>' +
       '<input class="drill-in" type="text" spellcheck="false" placeholder="What prints? Type it exactly."/>';
@@ -112,28 +147,50 @@
     art.className = "drill" + (loadProgress()[d.id] ? " is-solved" : "");
     art.id = d.id;
     art.setAttribute("data-id", d.id);
+    art.setAttribute("data-hint-n", "0");
     var code = d.code ? "<pre><code>" + esc(d.code) + "</code></pre>" : "";
+    var more = hintList(d).length > 1 ? " (step by step)" : "";
     art.innerHTML =
       '<p class="drill-id">' + esc(d.id) + " · " + esc(d.kind) +
         (d.title ? " · " + esc(d.title) : "") + "</p>" +
-      "<h3>" + n + ". " + esc(d.prompt) + "</h3>" +
+      "<h3>Step " + n + ". " + esc(d.prompt) + "</h3>" +
       (d.note ? '<p class="drill-note">' + esc(d.note) + "</p>" : "") +
       code +
       inputHtml(d) +
       '<div class="drill-actions">' +
-        '<button type="button" data-act="hint">Hint</button>' +
+        '<button type="button" data-act="hint">Hint' + more + "</button>" +
         '<button type="button" data-act="submit">Submit</button>' +
         '<button type="button" data-act="answer">See answer</button>' +
       "</div>" +
-      '<div class="drill-hint" hidden><p class="tag">Hint</p><p>' + esc(d.hint) + "</p></div>" +
+      '<div class="drill-hint" hidden></div>' +
       '<div class="drill-fb" hidden></div>' +
       '<div class="drill-ans" hidden>' +
-        '<p class="tag">Answer with comments</p>' +
+        '<p class="tag">Full answer with comments</p>' +
         (d.answerCode ? "<pre><code>" + esc(d.answerCode) + "</code></pre>" : "") +
         (d.answerWhy ? "<p>" + esc(d.answerWhy) + "</p>" : "") +
       "</div>";
     bind(art, d);
     return art;
+  }
+
+  function showHint(art, d) {
+    var list = hintList(d);
+    if (!list.length) return;
+    var shown = parseInt(art.getAttribute("data-hint-n") || "0", 10);
+    if (shown < list.length) shown += 1;
+    art.setAttribute("data-hint-n", String(shown));
+    var box = art.querySelector(".drill-hint");
+    box.hidden = false;
+    var html = '<p class="tag">Hint ' + shown + " / " + list.length + "</p>";
+    var i;
+    for (i = 0; i < shown; i++) {
+      html += "<p><strong>" + (i + 1) + ".</strong> " + esc(list[i]) + "</p>";
+    }
+    box.innerHTML = html;
+    var btn = art.querySelector('[data-act="hint"]');
+    if (btn) {
+      btn.textContent = shown < list.length ? "Next hint" : "Hints (all open)";
+    }
   }
 
   function userValue(art, d) {
@@ -156,11 +213,11 @@
     fb.className = "drill-fb " + (ok ? "is-ok" : "is-bad");
     if (ok) {
       fb.innerHTML = '<p class="tag">That is right.</p><p>' +
-        esc(d.shortWhy || "Your answer matches.") +
+        esc(d.shortWhy || "Your answer matches. Next step.") +
         "</p>";
     } else {
       fb.innerHTML = '<p class="tag">Not yet.</p>' +
-        "<p>Use Hint and try again, or open See answer. The answer comments every important line.</p>";
+        "<p>Use Hint (step by step), try again, or See answer. The answer comments every important line.</p>";
     }
   }
 
@@ -177,12 +234,8 @@
       var act = e.target.closest("[data-act]");
       if (!act) return;
       var what = act.getAttribute("data-act");
-      if (what === "hint") {
-        art.querySelector(".drill-hint").hidden = false;
-      }
-      if (what === "answer") {
-        art.querySelector(".drill-ans").hidden = false;
-      }
+      if (what === "hint") showHint(art, d);
+      if (what === "answer") art.querySelector(".drill-ans").hidden = false;
       if (what === "submit") {
         var val = userValue(art, d);
         if (!String(val).trim()) {
@@ -212,6 +265,7 @@
     var root = document.querySelector(sel || "#drills");
     var chap = window.C_OS_CHAPTER;
     if (!root || !chap) return;
+    var unlockName = chap.unlockGroup || "";
     var groups = [];
     var map = {};
     (chap.drills || []).forEach(function (d, i) {
@@ -223,14 +277,31 @@
       map[g].push({ d: d, i: i });
     });
     groups.forEach(function (g) {
+      var locked = unlockName && g === unlockName;
+      var host = root;
+      if (locked) {
+        var gate = document.createElement("div");
+        gate.className = "gate";
+        gate.setAttribute("data-unlock-gate", "1");
+        gate.innerHTML =
+          '<span class="tag">Locked until share.c is done</span>' +
+          "<p>Submit every C step above right. This GitHub publish path then opens: init, ignore list, README, add, commit, create the repo, push. No force push. No skipped hooks. You publish <em>your</em> share.c — not this teaching site.</p>";
+        root.appendChild(gate);
+        var wrap = document.createElement("div");
+        wrap.setAttribute("data-unlock", "1");
+        wrap.hidden = true;
+        root.appendChild(wrap);
+        host = wrap;
+      }
       var h = document.createElement("h2");
       h.textContent = g;
-      root.appendChild(h);
+      host.appendChild(h);
       map[g].forEach(function (item) {
-        root.appendChild(renderDrill(item.d, item.i));
+        host.appendChild(renderDrill(item.d, item.i));
       });
     });
     paintScore();
+    applyUnlock();
   }
 
   window.COsPractice = { mount: mount };

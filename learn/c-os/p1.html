@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <script>
+  (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
+  </script>
+  <title>P1 Easy · Mini process table · C for OS</title>
+  <meta name="description" content="Easy project: a full mini process table in C. Step-by-step hints, submit, commented answers."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/c.css?v=6"/>
+</head>
+<body class="cos">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="cos-bar">
+    <div class="wrap">
+      <a class="cos-brand" href="index.html">C · OS</a>
+      <nav class="cos-nav" aria-label="C course">
+        <a href="index.html">Map</a>
+        <a href="ch01.html">1</a>
+        <a href="ch02.html">2</a>
+        <a href="ch03.html">3</a>
+        <a href="ch04.html">4</a>
+        <a href="ch05.html">5</a>
+        <a href="ch06.html">6</a>
+        <a href="ch07.html">7</a>
+        <a href="ch08.html">8</a>
+        <a href="ch09.html">9</a>
+        <a href="ch10.html">10</a>
+        <a class="is-on" href="p1.html">P1</a>
+        <a href="p2.html">P2</a>
+        <a href="p3.html">P3</a>
+        <a href="../os/index.html">OS</a>
+        <a href="../index.html">Learn hub</a>
+      </nav>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode">Light</button>
+    </div>
+  </header>
+  <main id="main">
+    <div class="wrap">
+      <p class="kicker"><a href="index.html">C for OS</a> · Project 1 · easy</p>
+      <h1>Mini process table</h1>
+      <p class="lede">A big, real program. One file: <code>desk.c</code>. A table of fake processes. Add, list, find, “kill” (set alive to 0). Menu loop until quit. You do not call real <code>fork</code> yet. You use Chapters 1–10 as C: file, boxes, print, if, loops, arrays, functions, pointers, structs, headers.</p>
+      <p class="jump"><a href="#practice">Jump to steps</a> <a href="ch10.html">Ch10</a> <a href="p2.html">P2 medium</a></p>
+
+      <div class="rule">
+        <span class="tag">What you will have when it is done</span>
+        <p>A program you compile with <code>gcc desk.c -o desk</code> and run with <code>./desk</code>. You type <code>1</code> to add a name, <code>2</code> to list, <code>3</code> to kill a pid, <code>4</code> to quit. Each process is one struct: pid, name, alive. The table is an array. Functions take papers to those boxes.</p>
+      </div>
+
+      <div class="os-door">
+        <span class="tag">Chapters you will touch</span>
+        <p>1 compile/run · 2 int/char · 3 printf/scanf · 4 if · 5 while menu · 6 name array · 7 functions · 8 &amp; and * · 9 struct Process · 10 #include &lt;stdio.h&gt; (no -lpthread on this easy build).</p>
+      </div>
+
+      <div class="need">
+        <span class="tag">How a project step works</span>
+        <p>Read the step. Click Hint — it opens one clue, then Next hint for the next clue. Submit your C or your short answer. See answer is the full commented solution. Do not paste the whole file until the last assemble step.</p>
+      </div>
+
+      <h2 id="practice">Steps</h2>
+      <div class="scorebox">
+        <span class="tag">This project</span>
+        <p><strong data-drill-score>0 / ? project steps submitted right</strong></p>
+        <p style="margin-bottom:0">Finish every step. Then go to P2.</p>
+      </div>
+      <div id="drills"></div>
+      <div class="pager">
+        <a href="index.html">← Map</a>
+        <a href="p2.html">P2 · Two threads →</a>
+      </div>
+    </div>
+  </main>
+  <footer class="cos-foot">
+    <div class="wrap">P1 easy · mini process table</div>
+  </footer>
+  <script src="js/p1-data.js?v=1"></script>
+  <script src="js/practice.js?v=2"></script>
+  <script src="../../assets/js/theme.js?v=1"></script>
+</body>
+</html>

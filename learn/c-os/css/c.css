@@ -28,6 +28,7 @@ html, body {
   font-size: 17px;
   line-height: 1.65;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 body.cos::before {
@@ -79,9 +80,10 @@ a:focus-visible, button:focus-visible, textarea:focus-visible, input:focus-visib
 .cos-bar .wrap {
   min-height: var(--nav-h);
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 10px 16px;
 }
 .cos-brand {
   font-family: var(--mono);
@@ -108,12 +110,18 @@ a:focus-visible, button:focus-visible, textarea:focus-visible, input:focus-visib
 .cos-nav a.is-on { color: var(--neon); }
 
 .wrap {
-  width: min(var(--content), calc(100% - 40px));
-  margin: 0 auto 0 max(20px, 6vw);
-  padding-inline: 0 20px;
+  width: min(var(--content), calc(100% - 32px));
+  max-width: 100%;
+  margin: 0 auto 0 max(16px, 6vw);
+  padding-inline: 0 16px;
+  box-sizing: border-box;
 }
 @media (max-width: 700px) {
-  .wrap { margin-left: 20px; padding-inline: 0; }
+  .wrap {
+    width: calc(100% - 24px);
+    margin: 0 auto;
+    padding-inline: 0;
+  }
 }
 
 main { padding: 36px 0 80px; }
@@ -150,6 +158,8 @@ code, .code {
   font-family: var(--mono);
   font-size: 0.9em;
   color: var(--neon);
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 pre {
   background: var(--panel);
@@ -157,14 +167,36 @@ pre {
   box-shadow: 0 0 20px var(--neon-dim);
   padding: 16px 18px;
   overflow-x: auto;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: pre-wrap;
+  max-width: 100%;
+  min-width: 0;
   margin: 0 0 20px;
 }
 pre code {
   color: var(--ink);
   font-size: 0.86rem;
   line-height: 1.55;
+  white-space: inherit;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
+.rule, .trace, .os-door, .need, .scorebox,
+.drill, .gate, .card, .drill-hint, .drill-fb, .drill-ans {
+  max-width: 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+.rule p, .trace p, .os-door p, .need p, .scorebox p,
+.gate p, .card p, .card h3, .drill h3, .drill p,
+.drill-hint p, .drill-fb p, .drill-ans p, .drill-id, .card .id {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
 .rule, .trace, .os-door, .need, .scorebox {
   background: var(--panel);
   border: 1px solid var(--neon-line);
@@ -260,6 +292,21 @@ pre code {
   margin: 0 0 16px;
 }
 .drill.is-solved { box-shadow: 0 0 22px var(--neon); }
+
+.gate {
+  background: var(--panel);
+  border: 1px dashed var(--neon-line);
+  padding: 16px 18px;
+  margin: 0 0 18px;
+}
+.gate[hidden],
+[data-unlock][hidden],
+[data-unlock-gate][hidden] { display: none; }
+.card .id .lvl {
+  display: block;
+  margin-top: 4px;
+  letter-spacing: 0.12em;
+}
 .drill-id {
   font-family: var(--mono);
   font-size: 11px;
@@ -277,7 +324,8 @@ pre code {
 .drill-in {
   display: block;
   width: 100%;
-  max-width: 42rem;
+  max-width: 100%;
+  box-sizing: border-box;
   font-family: var(--mono);
   font-size: 0.9rem;
   line-height: 1.5;
@@ -287,6 +335,12 @@ pre code {
   padding: 10px 12px;
   margin: 0 0 12px;
   resize: vertical;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+textarea.drill-in {
+  overflow-y: auto;
+  max-height: min(18rem, 50vh);
 }
 .sr {
   position: absolute;
@@ -374,9 +428,21 @@ footer.cos-foot {
 }
 
 @media (max-width: 640px) {
+  body.cos { font-size: 16px; }
   .cos-nav { justify-content: flex-start; gap: 8px 10px; font-size: 11px; }
   .choices { flex-direction: column; }
   .choices button { width: 100%; }
+  .rule, .trace, .os-door, .need, .scorebox, .drill, .gate, .card, pre {
+    padding: 12px;
+  }
+  .drill h3 {
+    font-size: 0.88rem;
+    line-height: 1.45;
+  }
+  pre, pre code { font-size: 0.76rem; line-height: 1.5; }
+  .drill-actions button { flex: 1 1 calc(50% - 8px); }
+  .pager { flex-wrap: wrap; }
+  .pager a { max-width: 100%; overflow-wrap: anywhere; }
 }
 
 html[data-theme="light"] {
