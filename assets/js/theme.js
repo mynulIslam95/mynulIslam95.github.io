@@ -25,7 +25,7 @@
     document.querySelectorAll("[data-theme-toggle]").forEach(function (btn) {
       btn.setAttribute("aria-pressed", light ? "true" : "false");
       btn.setAttribute("aria-label", light ? "Switch to dark mode" : "Switch to light mode");
-      btn.textContent = light ? "Dark" : "Light";
+      btn.title = light ? "Dark mode" : "Light mode";
     });
   }
 

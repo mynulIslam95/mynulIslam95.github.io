@@ -201,7 +201,7 @@
     return (
       '<div class="top">' +
       '<div class="top-row"><a class="brand" href="#/">' + t("brand") + "</a>" + extra +
-      '<button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode">Light</button></div>' +
+      '<button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode"><img src="../assets/images/mynul.webp" width="40" height="40" alt=""/></button></div>' +
       langSwitch() +
       "</div>" +
       (crumb ? '<a class="back" href="' + crumb.href + '">' + crumb.label + "</a>" : "")

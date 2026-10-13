@@ -1170,7 +1170,7 @@ code { font-family: var(--mono); font-size: 0.88em; color: var(--neon); }
   .nav { padding: 8px 8px 8px 12px; gap: 6px; flex-wrap: wrap; }
   .brand { order: 1; font-size: 1.02rem; }
   .lang-switch { order: 2; display: inline-flex; flex-shrink: 0; }
-  .theme-toggle { order: 3; min-height: 36px; padding: 0 10px; font-size: 0.72rem; }
+  .theme-toggle { order: 3; }
   .cv-pair { order: 4; margin-left: auto; }
   .cv-pair a { padding: 0 8px; min-height: 36px; font-size: 0.7rem; }
   .burger { display: flex; order: 5; margin-left: 0; }
@@ -1422,22 +1422,28 @@ html.motion .profile-card.reveal.is-in {
 
 .theme-toggle {
   flex-shrink: 0;
-  min-height: 38px;
-  padding: 0 14px;
-  border-radius: 999px;
-  border: 1px solid var(--neon-line);
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  padding: 0;
+  border-radius: 50%;
+  border: 2px solid var(--neon-line);
   background: transparent;
-  color: var(--ink);
-  font-family: var(--sans);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  overflow: hidden;
   cursor: pointer;
+}
+.theme-toggle img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  filter: none;
 }
 .theme-toggle:hover {
   border-color: var(--neon);
-  color: var(--neon);
-  background: var(--neon-dim);
+  box-shadow: 0 0 14px var(--neon-dim);
 }
 
 html[data-theme="light"] {
