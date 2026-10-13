@@ -384,18 +384,21 @@ h2 { font-size: 1.05rem; }
   border-radius: 50%;
   border: 2px solid var(--neon-line);
   background: transparent;
-  overflow: hidden;
+  overflow: visible;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   margin-left: auto;
 }
-.theme-toggle img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  max-width: none;
-  object-fit: cover;
+.theme-toggle svg {
+  width: 22px;
+  height: 22px;
+  display: none;
   filter: none;
 }
+html[data-theme="dark"] .theme-toggle .theme-sun { display: block; }
+html[data-theme="light"] .theme-toggle .theme-moon { display: block; }
 .theme-toggle:hover {
   border-color: var(--neon);
   box-shadow: 0 0 14px var(--neon-dim);

@@ -84,7 +84,7 @@
     var s = state();
     mode = s.mode || "learn";
     var html =
-      '<div class="top"><div class="top-row"><a class="brand" href="#/">German desk</a><a class="home" href="../index.html">Portfolio</a><button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode"><img src="../assets/images/mynul.webp" width="40" height="40" alt=""/></button></div></div>' +
+      '<div class="top"><div class="top-row"><a class="brand" href="#/">German desk</a><a class="home" href="../index.html">Portfolio</a><button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode"><svg class="theme-sun" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="#F5C518"/><g stroke="#F5C518" stroke-width="1.8" stroke-linecap="round" fill="none"><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M5.6 18.4l1.7-1.7M16.7 7.3l1.7-1.7"/></g></svg><svg class="theme-moon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="#8EA0FF" d="M16.2 3.1A8.9 8.9 0 1 0 21.1 18 7.4 7.4 0 0 1 16.2 3.1z"/></svg></button></div></div>' +
       '<a class="back" href="#/">All sections</a>' +
       "<h1>Master TELC B1</h1>" +
       '<p class="lede">Train for the exam one step at a time.</p>' +
@@ -184,7 +184,7 @@
     };
     var spec = maps[id];
     var html =
-      '<div class="top"><div class="top-row"><a class="brand" href="#/">German desk</a><a class="home" href="../index.html">Portfolio</a><button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode"><img src="../assets/images/mynul.webp" width="40" height="40" alt=""/></button></div></div>' +
+      '<div class="top"><div class="top-row"><a class="brand" href="#/">German desk</a><a class="home" href="../index.html">Portfolio</a><button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode"><svg class="theme-sun" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="#F5C518"/><g stroke="#F5C518" stroke-width="1.8" stroke-linecap="round" fill="none"><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M5.6 18.4l1.7-1.7M16.7 7.3l1.7-1.7"/></g></svg><svg class="theme-moon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="#8EA0FF" d="M16.2 3.1A8.9 8.9 0 1 0 21.1 18 7.4 7.4 0 0 1 16.2 3.1z"/></svg></button></div></div>' +
       '<a class="back" href="#/telc">Master TELC B1</a>' +
       "<h1>" + spec.title + "</h1>" +
       modesBar(id) +
@@ -550,7 +550,7 @@
   function mockHome(root) {
     var s = state();
     var html =
-      '<div class="top"><div class="top-row"><a class="brand" href="#/">German desk</a><a class="home" href="../index.html">Portfolio</a><button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode"><img src="../assets/images/mynul.webp" width="40" height="40" alt=""/></button></div></div>' +
+      '<div class="top"><div class="top-row"><a class="brand" href="#/">German desk</a><a class="home" href="../index.html">Portfolio</a><button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode"><svg class="theme-sun" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="#F5C518"/><g stroke="#F5C518" stroke-width="1.8" stroke-linecap="round" fill="none"><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M5.6 18.4l1.7-1.7M16.7 7.3l1.7-1.7"/></g></svg><svg class="theme-moon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="#8EA0FF" d="M16.2 3.1A8.9 8.9 0 1 0 21.1 18 7.4 7.4 0 0 1 16.2 3.1z"/></svg></button></div></div>' +
       '<a class="back" href="#/telc">Master TELC B1</a>' +
       "<h1>Full mock exams</h1><div class=\"bars\">";
     var i;
@@ -674,7 +674,7 @@
     var s = state();
     var keys = ["lesen", "sprachbausteine", "hoeren", "schreiben", "sprechen"];
     var html =
-      '<div class="top"><div class="top-row"><a class="brand" href="#/">German desk</a><a class="home" href="../index.html">Portfolio</a><button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode"><img src="../assets/images/mynul.webp" width="40" height="40" alt=""/></button></div></div>' +
+      '<div class="top"><div class="top-row"><a class="brand" href="#/">German desk</a><a class="home" href="../index.html">Portfolio</a><button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode"><svg class="theme-sun" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="#F5C518"/><g stroke="#F5C518" stroke-width="1.8" stroke-linecap="round" fill="none"><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M5.6 18.4l1.7-1.7M16.7 7.3l1.7-1.7"/></g></svg><svg class="theme-moon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="#8EA0FF" d="M16.2 3.1A8.9 8.9 0 1 0 21.1 18 7.4 7.4 0 0 1 16.2 3.1z"/></svg></button></div></div>' +
       '<a class="back" href="#/telc">Master TELC B1</a>' +
       "<h1>Progress</h1><div class=\"bars\">";
     keys.forEach(function (k) {
