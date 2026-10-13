@@ -288,6 +288,70 @@ a.card {
   margin: 0 0 16px;
 }
 .ask p, .quiz p { margin-bottom: 10px; }
+.quiz-hint { margin: 8px 0 10px; }
+.quiz-hint[hidden] { display: none; }
+.quiz .actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 10px;
+}
+.quiz .actions button {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--void);
+  color: var(--neon);
+  border: 1px solid var(--neon);
+  min-height: 40px;
+  padding: 0 14px;
+  cursor: pointer;
+}
+.short-in {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  font-family: var(--mono);
+  font-size: 0.95rem;
+  color: var(--ink);
+  background: var(--void);
+  border: 1px solid var(--neon-line);
+  padding: 10px 12px;
+  margin: 0 0 12px;
+  overflow-wrap: anywhere;
+}
+.twist {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--neon);
+  display: block;
+  margin-bottom: 6px;
+}
+.room-jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 28px;
+}
+.room-jump a {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid var(--neon-line);
+  padding: 8px 10px;
+  color: var(--neon);
+}
+.quiz, .ask, .paper, .story {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
 .ask details { font-size: 0.95rem; }
 .ask summary {
   cursor: pointer;
@@ -347,6 +411,13 @@ a.card {
   margin: 0 0 22px;
 }
 .need a { color: var(--neon); }
+.need .tag {
+  display: block;
+  margin-bottom: 6px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--neon);
+}
 
 .q-id {
   font-family: var(--mono);
@@ -485,7 +556,8 @@ html[data-theme="light"] .os-brand,
 html[data-theme="light"] a:hover {
   text-shadow: none;
 }
-html[data-theme="light"] .choices button {
+html[data-theme="light"] .choices button,
+html[data-theme="light"] .quiz .actions button {
   background: #fff;
   color: var(--neon);
 }

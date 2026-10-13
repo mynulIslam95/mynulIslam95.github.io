@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <script>
+  (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
+  </script>
+  <title>OS10 · The computer and the OS</title>
+  <meta name="description" content="OS foundations: what an OS is, registers, interrupts, cache, DMA. Machine, then a twist, then True/False. He may ask a new sentence. Own the machine."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/os.css?v=10"/>
+</head>
+<body class="os">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="os-bar">
+    <div class="wrap">
+      <a class="os-brand" href="../index.html">OS · Learn</a>
+      <nav class="os-nav" aria-label="OS">
+        <a href="../index.html">Map</a>
+        <a href="../c/c1.html">C stories</a>
+        <a class="is-on" href="os0.html">OS stories</a>
+        <a href="../exam/mcq.html">Exam</a>
+        <a href="../../index.html">Learn hub</a>
+      </nav>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode">Light</button>
+    </div>
+  </header>
+  <main id="main">
+    <div class="wrap">
+      <p class="kicker"><a href="../index.html">Map</a> · Foundations · OS10</p>
+      <h1>The computer and the OS</h1>
+      <p class="lede">Lectures 02 Motivation and 03 Computer system overview. He is not required to repeat last year’s sentence. He can write a new story about the same machine. Each room: the machine, then a twist, then True/False. Old papers sit at the end as traps, not as the syllabus. Mutex, fork, deadlock have their own pages — only a door from here.</p>
+      <p class="need"><a href="os0.html">OS0</a> is the five-minute door. This page is 100/100 on this family. C without stories: <a href="../../c-os/index.html">C for OS</a>.</p>
+      <nav class="room-jump" aria-label="Rooms">
+        <a href="#r1">OS</a>
+        <a href="#r2">Four pieces</a>
+        <a href="#r3">Registers</a>
+        <a href="#r4">One instruction</a>
+        <a href="#r5">Kernel</a>
+        <a href="#r6">Interrupt</a>
+        <a href="#r7">Second interrupt</a>
+        <a href="#r8">Ladder</a>
+        <a href="#r9">Cache</a>
+        <a href="#r10">I/O</a>
+        <a href="#r11">Resources</a>
+        <a href="#harvest">Harvest</a>
+      </nav>
+
+      <h2 id="r1">1. What the OS is</h2>
+      <div class="story">
+        <p>The laptop is rooms: a worker (CPU), a table (RAM), a store (disk), doors to the street (keyboard, network, screen). The rooms do not know Chrome.</p>
+        <p>The <strong>operating system</strong> does two jobs at once. From the top, it is an <strong>easier machine</strong>: a program opens a named file instead of talking to the disk chip. From the bottom, it is a <strong>resource manager</strong>: it plans processes, memory, files and devices, and it stops one guest from taking another guest’s table.</p>
+        <p>The <strong>kernel</strong> is the part with the keys. A desktop picture is not the kernel. A system can run with no GUI and still be an OS.</p>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> If the CPU already executes instructions, we do not need an OS.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. The CPU runs lines. The OS decides who runs, who may touch memory, and how a device request is handled. A tiny embedded loop can live without a general OS. A laptop with Chrome cannot.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="no">
+        <p><strong>True or false.</strong> Windows Explorer / the graphical desktop is the whole operating system.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. That is a user interface. The kernel still manages CPU, memory, files and devices if the desktop is gone.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="yes">
+        <p><strong>True or false.</strong> “Manage processes and files, and be the programs that start and control other programs” is a fair exam sentence for what an OS is.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. That is the DIN idea on the Motivation slides: resource manager, and the basis that starts and controls other programs.</p>
+        </div>
+      </div>
+
+      <h2 id="r2">2. Four pieces of the computer</h2>
+      <div class="story">
+        <p>Lecture 03 starts with four boxes, not with Linux commands.</p>
+        <ol>
+          <li><strong>Processor</strong> — runs instructions. Old name: CPU. Often sold by GHz.</li>
+          <li><strong>Main memory</strong> — holds the program and data that are in use now. Not permanent. Today we count it in GB.</li>
+          <li><strong>I/O modules</strong> — move data between the computer and the outside (disk, net, keys, screen).</li>
+          <li><strong>System bus</strong> — the road between processor, memory and I/O.</li>
+        </ol>
+        <p>A new exam story can name a keyboard, a disk, or a timer. You still point at these four, plus devices the OS must manage (CPU time, RAM, disk, network, printer, timer).</p>
+      </div>
+      <div class="quiz" data-kind="short" data-need="4" data-pool="cpu/processor|memory/ram|disk/storage/ssd/file|device/io/network/printer/keyboard|timer|bus" data-hints="Name things the OS must plan or protect.||CPU, memory, disk, network are four. Timer and bus also count.||Do not write Chrome or Word. Those are programs.">
+        <p><strong>Short (Westerkamp shape).</strong> Name at least four hardware resources an OS typically controls.</p>
+        <input class="short-in" type="text" spellcheck="false" placeholder="Four names, any order"/>
+        <div class="actions">
+          <button type="button" data-act="hint">Hint</button>
+          <button type="button" data-act="submit">Submit</button>
+        </div>
+        <div class="quiz-hint" hidden></div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>CPU, main memory, disk/storage, I/O devices (network, keyboard, printer), timer, bus. Four of those is enough. Chrome is not a hardware resource.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> Main memory keeps your files after you pull the power plug.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. RAM is not permanent. The store room is disk or SSD. That is why the hierarchy has a slower, lasting level.</p>
+        </div>
+      </div>
+
+      <h2 id="r3">3. Registers — tiny boxes in the worker</h2>
+      <div class="story">
+        <p>Registers sit <em>inside</em> the processor. Fast. Small. Not RAM.</p>
+        <ul>
+          <li><strong>PC</strong> — program counter. Paper to the <em>place</em> of the next instruction in memory.</li>
+          <li><strong>IR</strong> — instruction register. Holds the instruction we are decoding or running <em>now</em>.</li>
+          <li><strong>MAR</strong> — memory address register. Paper to a data place in memory.</li>
+          <li><strong>MBR</strong> — memory buffer register. The bytes going to memory or coming back. Sometimes called MDR.</li>
+          <li><strong>PSW / flags</strong> — ZERO, overflow, and a KERNEL bit: are we in kernel mode?</li>
+        </ul>
+        <p>User-visible registers: a compiled program uses them so it does not walk to RAM for every add. Control/status registers: ordinary user code does not own them. Privileged OS code does.</p>
+        <p>The lecture’s cycle text once mixes PC and IR. For the exam use the table: <strong>PC = where next, IR = what instruction</strong>.</p>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> The program counter holds the instruction itself.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. PC is an address. IR holds the instruction. Room number versus the person in the room. Same idea as a C pointer versus the int in the box.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="yes">
+        <p><strong>True or false.</strong> Control and status registers are for kernel / control mode, not for ordinary machine code.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. Lecture 03: they are usually not visible to ordinary machine code. The KERNEL flag lives here.</p>
+        </div>
+      </div>
+
+      <h2 id="r4">4. One instruction</h2>
+      <div class="story">
+        <p>A simple cycle: <strong>fetch</strong> (use PC, load into IR), <strong>decode</strong>, <strong>execute</strong>, then go to the next PC, or a jump, or an interrupt.</p>
+        <p>An instruction has an <strong>opcode</strong> (what to do) and often an <strong>address / operand</strong> (where the data is). Four families: move memory, move I/O, arithmetic/logic, change the flow (jump).</p>
+        <p>Worked numbers from the slide: memory 940 holds 3, memory 941 holds 2. LOAD 940, ADD 941, STORE 941. After that, 940 is still 3. 941 is 5.</p>
+        <p>Pipelines overlap parts of different instructions. Not every instruction is one clock.</p>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> After LOAD A; ADD B; STORE B, A holds the sum.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. STORE writes the sum to B. A is only read. Change A and B in a new question: same rule, new numbers.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="no">
+        <p><strong>True or false.</strong> Every instruction takes exactly one clock cycle.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Time depends on the instruction and the chip. A pipeline can overlap fetch of the next with execute of this one.</p>
+        </div>
+      </div>
+
+      <h2 id="r5">5. User mode, kernel, privileged</h2>
+      <div class="story">
+        <p>Guests run in <strong>user mode</strong>: restricted. The kernel runs in <strong>kernel mode</strong>: more keys. Hardware helps stop a guest from talking to the disk chip itself.</p>
+        <p>A <strong>system call</strong> is a controlled ask. It is not every C function. Some library functions enter the kernel. Some do not.</p>
+        <p>A <strong>mode switch</strong> is a change of privilege. It is not automatically a <strong>process switch</strong>. The kernel may do the work and return to the same process.</p>
+        <p>A <strong>privileged instruction</strong> must not run in user mode. Examples: halt the CPU, load the page table, clear interrupt-enable, talk to an I/O port. If a user program could halt the CPU or turn the timer off, it could steal the shop.</p>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> The user program controls the switch from kernel mode back to user mode.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Hardware plus kernel (return from trap or interrupt). User code cannot promote itself.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="no">
+        <p><strong>True or false.</strong> Every system call switches to a different process.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Often the same process continues after the kernel returns. If the call blocks, another process may run. That is a later story (OS1).</p>
+        </div>
+      </div>
+      <div class="quiz" data-kind="short" data-pool="halt/hlt|cli/interrupt|cr3/page table/mmu|in/out/port/io" data-need="1" data-hints="Think of something a guest must never do to the whole machine.||Halt, turn interrupts off, load the page table, or talk to an I/O port.||Then say why: a user could freeze the timer or the CPU.">
+        <p><strong>Short (Westerkamp 2021, privileged instruction).</strong> Name one privileged instruction, and in a few words say why it must be privileged.</p>
+        <input class="short-in" type="text" spellcheck="false" placeholder="Name + why"/>
+        <div class="actions">
+          <button type="button" data-act="hint">Hint</button>
+          <button type="button" data-act="submit">Submit</button>
+        </div>
+        <div class="quiz-hint" hidden></div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Example: HALT — a user could stop the CPU for everyone. Or CLI — turn the timer off and never give the CPU back. Or load CR3 / page table — map anyone’s memory. Or IN/OUT to a device port. One name plus that story is the mark.</p>
+        </div>
+      </div>
+
+      <h2 id="r6">6. Interrupt: pause, handle, resume</h2>
+      <div class="story">
+        <p>You read a book. The doorbell rings. You mark the page, open the door, then come back. That mark is saving the <strong>PC and PSW</strong>.</p>
+        <p>Four families on the slide:</p>
+        <ul>
+          <li><strong>Program</strong> — this instruction went wrong: divide by zero, illegal opcode, overflow, touch memory you do not own. Synchronous. Many people say <strong>trap / exception</strong>.</li>
+          <li><strong>Timer</strong> — a clock inside the processor. Lets the OS run on a regular beat. Asynchronous. Not a trap.</li>
+          <li><strong>I/O</strong> — a controller says “done” or “error”.</li>
+          <li><strong>Hardware failure</strong> — power, parity.</li>
+        </ul>
+        <p>Hardware job, in order: device signals → CPU finishes the current instruction → ack, device drops the line → push PC and PSW → jump to a handler (fixed, or per interrupt, or per device).</p>
+        <p>Software job: save the rest of the registers → talk to the device → restore registers → restore PC and PSW.</p>
+        <p>The program does <em>not</em> restart from line 1. An interrupt does <em>not</em> by itself mean “run a different process.” The OS may resume the same one.</p>
+        <p>A handler must be short. Do not sleep, do not take a mutex, do not printf. Set a flag. That is also C-for-OS P3.</p>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> A timer event executes a trap.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. The timer is an interrupt from outside the current instruction. A trap is synchronous: this line caused it (syscall, fault). New wording, same split.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="no">
+        <p><strong>True or false.</strong> Blocking system calls belong inside interrupt handlers.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. The handler must finish. Blocking there can freeze the machine. Wait in process context. Motivation slide: do not change the shared object in the ISR, or disable interrupts for a very short time — not a mutex.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="yes">
+        <p><strong>True or false.</strong> Before the handler runs, the processor finishes the current instruction and saves PC and PSW.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. Lecture 03 interrupt processing, steps 2 and 4. If he asks “list the actions,” start there, then software save of the other registers.</p>
+        </div>
+      </div>
+      <div class="quiz" data-kind="short" data-pool="interrupt/isr|disk/network/keyboard/io/device" data-need="1" data-hints="Pick a slow device: disk, network, keyboard.||CPU would waste time polling. The device rings when done.||Say: save PC/PSW, run the ISR, restore, CPU was free during the wait.">
+        <p><strong>Short (Westerkamp 2021, interrupts).</strong> Give one example where an interrupt makes sense, and say why (not polling).</p>
+        <input class="short-in" type="text" spellcheck="false" placeholder="Device + why"/>
+        <div class="actions">
+          <button type="button" data-act="hint">Hint</button>
+          <button type="button" data-act="submit">Submit</button>
+        </div>
+        <div class="quiz-hint" hidden></div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Disk or network done: I/O is slow. Without an interrupt the CPU would sit in a check-loop. With an interrupt the CPU works on another program, the controller rings, PC/PSW are saved, the ISR runs, then we resume or schedule. Keyboard is also fine. “Makes sense” = CPU can use the wait time.</p>
+        </div>
+      </div>
+
+      <h2 id="r7">7. A second interrupt arrives</h2>
+      <div class="story">
+        <p>Ask two facts first: is that interrupt <strong>enabled</strong>? Does its <strong>priority</strong> beat the handler that is already running?</p>
+        <p><strong>Sequential:</strong> finish this ISR, then take the next. Simple. Urgent work can wait.</p>
+        <p><strong>Nested / priority:</strong> a higher-priority interrupt may interrupt a lower ISR. Faster for urgent work. More stacks to save.</p>
+        <p>Do not disable interrupts for a long time. And: masking interrupts on <em>this</em> CPU does not stop another CPU from touching the same bytes. That needs a lock across CPUs — later page OS3.</p>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> If an interrupt hits during an ISR, the new event is always lost.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. It may wait (sequential) or nest (higher priority, enabled). You need those two facts. Guessing “lost” is the fail.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="no">
+        <p><strong>True or false.</strong> Disabling interrupts on one CPU protects a shared variable from every other CPU.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. The other core can still write. Cross-CPU needs a real lock. This is the twist he can add to a “just disable interrupts” answer.</p>
+        </div>
+      </div>
+
+      <h2 id="r8">8. Memory ladder and locality</h2>
+      <div class="story">
+        <p>You cannot have fast, huge, and cheap in one technology. So we stack:</p>
+        <p>registers → CPU cache → RAM → SSD/disk.</p>
+        <p>Down the ladder: cheaper per bit, bigger, slower, used less often (if the program is kind).</p>
+        <p><strong>Temporal locality:</strong> you will touch this again soon (a loop counter). <strong>Spatial locality:</strong> you will touch the neighbour (the next array cell). A cache line is a block of neighbours, not one byte.</p>
+        <p>A cache hit is not a page fault. Paging is virtual memory, later. A cache does not make RAM permanently larger. It holds <em>copies</em>.</p>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> A cache hit is the same as a page fault.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Hit = found in this cache. Page fault = virtual memory / not in RAM (or protection). New question can mix the words. Keep them apart.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="yes">
+        <p><strong>True or false.</strong> Virtual memory lets a process use more memory than the machine physically has in RAM.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. Unused pages can sit on disk. That is paging. Do not mix it with “the L1 cache grew.”</p>
+        </div>
+      </div>
+
+      <h2 id="r9">9. Cache — the calculation room</h2>
+      <div class="story">
+        <p>Faster than RAM, slower than registers. The programmer and the OS usually <strong>do not see</strong> it. Dedicated hardware walks the <strong>tags</strong>: is this block in a line?</p>
+        <p>On a miss, a whole <strong>line / block</strong> comes in. If the cache is full, a line leaves. LRU is the standard replacement on the slide. Mapping can be “only one legal line” or “any line.”</p>
+        <p><strong>Write-through:</strong> write RAM now as well. <strong>Write-back:</strong> mark dirty, write RAM later (on replace). Problem of write-back: RAM can be stale; I/O / DMA / other CPUs must see the truth or you need extra rules.</p>
+        <p>Lecture numbers: first level 0.1 µs, second 1 µs extra, hit ratio 95%.</p>
+        <p>Average = 0.95 × 0.1 + 0.05 × (0.1 + 1) = 0.15 µs.</p>
+        <p>If he gives a <em>total</em> miss time already including the cache check, do not add 0.1 twice.</p>
+        <p>Larger blocks help spatial locality — until you have too few lines and thrash. “Smallest possible block” is false.</p>
+      </div>
+      <div class="quiz" data-kind="short" data-accept="0.15|0.15 us|0.15us|0.15 microseconds|0,15" data-hints="Hit time is 0.1. Miss time is 0.1 plus 1.||95% hits, 5% misses.||0.95*0.1 + 0.05*1.1 = 0.15">
+        <p><strong>Short.</strong> Hit 95%, cache check 0.1 µs, extra memory 1 µs. Average access time in µs? Number only is enough.</p>
+        <input class="short-in" type="text" spellcheck="false" placeholder="0.15"/>
+        <div class="actions">
+          <button type="button" data-act="hint">Hint</button>
+          <button type="button" data-act="submit">Submit</button>
+        </div>
+        <div class="quiz-hint" hidden></div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>0.15 µs. He can change 95% to 80%: then 0.1 + 0.20×1 = 0.30 µs. Same formula, new number. That is a new question you still own.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> A good cache should use the smallest possible block size.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Hit ratio often rises with block size because of spatial locality, then falls when you have too few lines. It is a trade, not “as small as you can.”</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="no">
+        <p><strong>True or false.</strong> Caching always makes the system slower.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. The point is a faster average. A rare bad pattern can hurt. Do not write “always.”</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="no">
+        <p><strong>True or false.</strong> The OS picks, in software, which L1 cache line to replace on every miss.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Lecture: cache is not visible to the programmer nor to the OS; dedicated hardware. The OS does pages in RAM vs disk. Different ladder step.</p>
+        </div>
+      </div>
+      <div class="paper">
+        <p class="yr">Westerkamp SS2021 · 18 points · cache loop</p>
+        <p>One CPU, one process, cache 1 MiB, line 64 bytes. Array of 64-byte blocks, loop <code>i</code> from 0 to 0x4000−1, always <code>block[i][0]</code>. FIFO vs LRU vs Random: who has the highest hit rate, on average? Why?</p>
+        <details>
+          <summary>Solution steps — do this, do not quote a slogan</summary>
+          <ol>
+            <li>0x4000 = 16384 iterations. Each iteration touches one 64-byte block. Working set = 16384 × 64 B = 1 048 576 B = <strong>1 MiB</strong>.</li>
+            <li>That equals the cache size. After the first cold pass, the cache can hold exactly the loop.</li>
+            <li>Next passes: FIFO and LRU keep that set → hits. Random is not better; it is not systematically worse only if no further misses occur. The mark is: <strong>the working set fits</strong>, so replacement barely matters after warmup.</li>
+            <li>If he changes the loop to 2 MiB, the set no longer fits. Then LRU usually beats FIFO on a tight loop, and Random is noisy. Same machine, new size. Compute first.</li>
+          </ol>
+        </details>
+      </div>
+
+      <h2 id="r10">10. Three ways to do I/O</h2>
+      <div class="story">
+        <p>Ask two questions: <strong>How do we know the device is ready?</strong> and <strong>Who copies the bytes?</strong></p>
+        <ul>
+          <li><strong>Programmed I/O / polling:</strong> CPU checks status again and again, then CPU copies. Control / status / transfer commands. Burns CPU. Fine if the wait is tiny.</li>
+          <li><strong>Interrupt-driven:</strong> device rings. No busy wait. Still the CPU usually copies each byte in the simple model. Extra cost: interrupt overhead.</li>
+          <li><strong>DMA:</strong> CPU tells a DMA box: read or write, which device, start address in RAM, how many words. Then the DMA box copies. CPU is out of the copy loop. Finish often still an interrupt. You still need a DMA module. CPU is not “doing nothing forever” — it sets up and it finishes.</li>
+        </ul>
+      </div>
+      <div class="quiz" data-answer="yes">
+        <p><strong>True or false.</strong> DMA reduces how much work the CPU must do for the copy itself.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. The device/DMA writes memory. The CPU is free during that copy. Setup and completion still exist.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> DMA means the CPU never talks to that transfer at all.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. The CPU/OS sends direction, device, start address, size. Then it is out of the byte loop. A new question can hide that setup list. Recite the four fields.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="no">
+        <p><strong>True or false.</strong> Polling is always the wrong design.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. A very short wait can be cheaper than an interrupt. The trade is CPU time versus delay versus interrupt cost.</p>
+        </div>
+      </div>
+
+      <h2 id="r11">11. Resources: share, steal, clash</h2>
+      <div class="story">
+        <p>Motivation bottom-up, and the SS2018 six short prompts, live here. Details of mutex code are <a href="os3.html">OS3</a>. Deadlock and priority inversion are <a href="os5.html">OS5</a>. You still must classify a resource on this page.</p>
+        <ul>
+          <li>Many at once, no problem: a <strong>read-only</strong> file.</li>
+          <li>Must not be concurrent: a counter <code>x = x + 1</code> with no lock (lost update).</li>
+          <li>Easy to take away (preemptible): the <strong>CPU</strong>.</li>
+          <li>Cannot safely take away: a mutex held in the middle, or a printer mid-page.</li>
+          <li>Two tools that keep consistency: <strong>mutex</strong> and <strong>semaphore</strong>.</li>
+        </ul>
+        <p>Even a file you <em>can</em> share should sometimes be exclusive — if someone writes. Concurrent does not mean “same instant.” On one core, lives overlap and take turns. Parallel is same instant (more cores).</p>
+        <p>History you need as <em>why</em>, not as lawsuits: one job at a time wasted the CPU on I/O wait → <strong>multiprogramming</strong> keeps another job ready → <strong>time sharing</strong> gives short slices so a human can type. Three OS aims on the overview: convenience, efficiency, ability to evolve.</p>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> Concurrent jobs always run at the same instant.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Concurrent = lives overlap. On one core they take turns. Parallel = same instant. Motivation definition of concurrency: no well-defined predecessor-successor.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="yes">
+        <p><strong>True or false.</strong> The CPU is a resource the OS can take away from a thread at an instruction boundary.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. Preemptible. A held lock or a printer mid-page is the opposite. SS2018 task 1 uses this split.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="yes">
+        <p><strong>True or false.</strong> A process is an instance of a running program.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. File on disk = program. Running copy with its own memory = process. Two Word windows: still one program file. Full fork story is OS1.</p>
+        </div>
+      </div>
+      <div class="quiz" data-kind="short" data-pool="timer/interrupt|io/device/disk/network|syscall/trap/exception/fault|block/wait" data-need="3" data-hints="Hardware: timer interrupt. I/O done interrupt. Trap / syscall.||Also: the process blocks (wait for disk) — that is OS1, still a cause.||Name three. Do not write only fork.">
+        <p><strong>Short (Westerkamp, process switch — hardware half).</strong> Name at least three incidents that can cause a process switch.</p>
+        <input class="short-in" type="text" spellcheck="false" placeholder="Three causes"/>
+        <div class="actions">
+          <button type="button" data-act="hint">Hint</button>
+          <button type="button" data-act="submit">Submit</button>
+        </div>
+        <div class="quiz-hint" hidden></div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Timer interrupt (time slice). I/O interrupt (disk done, wake someone). Trap / system call / fault. Blocking wait. Yield. The first three are this page. Blocking wait is OS1. A new question may mix them. List what the story actually contains.</p>
+        </div>
+      </div>
+
+      <h2 id="harvest">Harvest — old wording, after the machine</h2>
+      <p class="line-note">These are traps he already used. A new paper can change the sentence. If you only memorise these, you are not done. If you finished the rooms, these should feel easy.</p>
+
+      <div class="paper">
+        <p class="yr">SS2018 task 1 · six resource prompts</p>
+        <p>Shareable? Must not share? Preemptible? Not preemptible? Inconsistency example? Two consistency tools?</p>
+        <details>
+          <summary>Solution steps</summary>
+          <ol>
+            <li>Shareable: read-only file or table.</li>
+            <li>Must not share: <code>x = x + 1</code> with no lock.</li>
+            <li>Preemptible: CPU.</li>
+            <li>Not: held mutex, or printer mid-page.</li>
+            <li>Inconsistency: two threads read a balance, both add, both write — one add lost.</li>
+            <li>Tools: mutex and semaphore. How they work: OS3.</li>
+          </ol>
+        </details>
+      </div>
+      <div class="paper">
+        <p class="yr">Gräßner T/F · hardware family (also Floor 3)</p>
+        <p>DMA reduces CPU copy work? User program returns itself to user mode? Virtual memory bigger than RAM? Smallest cache block is best? Cache always slower? Timer is a trap? Blocking calls inside an ISR?</p>
+        <details>
+          <summary>Solution steps</summary>
+          <ol>
+            <li>DMA yes. User cannot promote itself: false. Virtual memory yes.</li>
+            <li>Smallest block: false. Cache always slower: false. Timer = trap: false. Block in ISR: false.</li>
+          </ol>
+        </details>
+      </div>
+      <div class="paper">
+        <p class="yr">Gräßner T/F · what an OS is</p>
+        <p>Microkernel extra switches, can be slower? Concurrent means same instant? Process = running instance?</p>
+        <details>
+          <summary>Solution steps</summary>
+          <ol>
+            <li>Microkernel: often yes, extra IPC. Concurrent: false for “same instant.” Process: true.</li>
+          </ol>
+        </details>
+      </div>
+      <div class="paper">
+        <p class="yr">Westerkamp SS2021 · this family only</p>
+        <p>1 hardware resources · 2 interrupt example · 3 process switch · 6 cache loop · 13 privileged instruction. Other 2021 rooms (fork, pipes, deadlock, make) are other pages.</p>
+        <details>
+          <summary>Where on this page</summary>
+          <ol>
+            <li>Room 2 short. Room 6 short. Room 11 short. Room 9 paper. Room 5 short.</li>
+            <li>If a new 2021-style room appears, map it to a room: who copies, who has the key, does the working set fit, is it a trap or a doorbell.</li>
+          </ol>
+        </details>
+      </div>
+
+      <div class="need">
+        <span class="tag">You are ready on this family when</span>
+        <p>You can name the parts in a story you have not seen, say the order, say who is not allowed, and plug new numbers into the cache formula. Then the harvest is boring. Then go to <a href="os1.html">OS1</a> for fork, or back to <a href="os0.html">OS0</a>.</p>
+      </div>
+
+      <div class="pager">
+        <a href="os0.html">← OS0 · Door</a>
+        <a href="os1.html">OS1 · Process →</a>
+      </div>
+    </div>
+  </main>
+  <footer class="os-foot">
+    <div class="wrap">OS10 · Motivation + computer system · machine then twist</div>
+  </footer>
+  <script src="../js/os.js?v=4"></script>
+  <script src="../../../assets/js/theme.js?v=1"></script>
+</body>
+</html>
