@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <script>
+  (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
+  </script>
+  <title>OS13 · Linux basics</title>
+  <meta name="description" content="Lecture 06 Linux basics I: commands, shell, gcc. Twist, True/False, written papers with answers. He may ask a new sentence."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/os.css?v=13"/>
+</head>
+<body class="os">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="os-bar">
+    <div class="wrap">
+      <a class="os-brand" href="../index.html">OS · Learn</a>
+      <nav class="os-nav" aria-label="OS">
+        <a href="../index.html">Map</a>
+        <a href="../c/c1.html">C stories</a>
+        <a class="is-on" href="os0.html">OS stories</a>
+        <a href="../exam/mcq.html">Exam</a>
+        <a href="../../index.html">Learn hub</a>
+      </nav>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode"><svg class="theme-sun" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="#F5C518"/><g stroke="#F5C518" stroke-width="1.8" stroke-linecap="round" fill="none"><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M5.6 18.4l1.7-1.7M16.7 7.3l1.7-1.7"/></g></svg><svg class="theme-moon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="#8EA0FF" d="M16.2 3.1A8.9 8.9 0 1 0 21.1 18 7.4 7.4 0 0 1 16.2 3.1z"/></svg></button>
+    </div>
+  </header>
+  <main id="main">
+    <div class="wrap">
+      <p class="kicker"><a href="../index.html">Map</a> · Linux basics · OS13</p>
+      <h1>Linux basics</h1>
+      <p class="lede">Lecture 06. Commands, shell scripts, <code>gcc</code>. He is not required to repeat last year’s sentence. Each room: the machine, then a twist, then True/False. Written papers with full answers sit at the end. Process states are <a href="os12.html">OS12</a>. <code>fork</code> as a shop story is <a href="os1.html">OS1</a>.</p>
+      <p class="need">You need <a href="../c/c1.html">C1</a>–<a href="../c/c4.html">C4</a> before the C compiler room. The commands you can read now. C without stories: <a href="../../c-os/index.html">C for OS</a>.</p>
+      <nav class="room-jump" aria-label="Rooms">
+        <a href="#r1">Files</a>
+        <a href="#r2">Rights</a>
+        <a href="#r3">Find vs grep</a>
+        <a href="#r4">Process cmds</a>
+        <a href="#r5">Redirect</a>
+        <a href="#r6">Variables</a>
+        <a href="#r7">Special vars</a>
+        <a href="#r8">Scripts</a>
+        <a href="#r9">if and for</a>
+        <a href="#r10">gcc, argv</a>
+        <a href="#written">Written exam</a>
+      </nav>
+
+      <h2 id="r1">1. Files and directories</h2>
+      <div class="story">
+        <p>The terminal is the shop counter. You type a command. The shell starts a program, then comes back.</p>
+        <ul>
+          <li><code>pwd</code> — print working directory. Where am I?</li>
+          <li><code>cd</code> — change directory.</li>
+          <li><code>ls</code> — list names. <code>ls -l</code> — long: type, rights, size, date.</li>
+          <li><code>mkdir</code> / <code>rmdir</code> — make / remove an empty directory.</li>
+          <li><code>cp</code> copy. <code>mv</code> move or rename. <code>rm</code> delete a file.</li>
+          <li><code>cat</code> dump a file. <code>less</code> / <code>more</code> page it. <code>head</code> start. <code>tail</code> end.</li>
+        </ul>
+        <p>A new exam can swap the names. Own the job, not the slogan: copy, rename, list, go, show the start, show the end.</p>
+      </div>
+      <div class="quiz" data-kind="short" data-need="4" data-pool="pwd|cd|ls|mkdir|rmdir|cp|mv|rm|cat|head|tail" data-hints="Name commands, not stories.||pwd, cd, ls, cp, mv, rm, mkdir.||Four is enough.">
+        <p><strong>Short.</strong> Name at least four commands that work on files or directories.</p>
+        <input class="short-in" type="text" spellcheck="false" placeholder="Four commands"/>
+        <div class="actions">
+          <button type="button" data-act="hint">Hint</button>
+          <button type="button" data-act="submit">Submit</button>
+        </div>
+        <div class="quiz-hint" hidden></div>
+        <div class="why">
+          <span class="tag"></span>
+          <p><code>pwd</code> <code>cd</code> <code>ls</code> <code>mkdir</code> <code>rmdir</code> <code>cp</code> <code>mv</code> <code>rm</code> <code>cat</code> <code>head</code> <code>tail</code>. Four is enough.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> <code>mv</code> can only move a file to another folder. It cannot rename.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Move and rename are the same job: change the name in the directory. <code>mv old.c new.c</code> is a rename.</p>
+        </div>
+      </div>
+
+      <h2 id="r2">2. Rights — ls -l and chmod</h2>
+      <div class="story">
+        <p><code>ls -l</code> prints three groups of <code>rwx</code>: <strong>U</strong>ser (owner), <strong>G</strong>roup, <strong>O</strong>thers. <code>r</code> read, <code>w</code> write, <code>x</code> execute (for a directory: enter it).</p>
+        <p>The first character is the type: <code>-</code> file, <code>d</code> directory, <code>l</code> symlink.</p>
+        <p>Example: <code>-rwxr-xr--</code> — a file. Owner may read, write, run. Group may read and run. Others may only read.</p>
+        <p><code>chmod</code> changes those bits. Lecture homework: <code>chmod u+x myscriptfile</code> — add execute for the user, so you may run the script.</p>
+        <p>Exam trap: <code>d-r-r----</code> is a directory with no <code>x</code>. You cannot <code>cd</code> into it. “Full of runnable programs” is the wrong story. Whether files inside can run is <em>their</em> bits.</p>
+      </div>
+      <div class="quiz" data-answer="no">
+        <p><strong>True or false.</strong> File bits <code>d-r-r----</code> mean a directory full of runnable programs.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. <code>d</code> is a directory. There is no <code>x</code>, so you cannot enter it. Inner files have their own bits. This is a year-paper Y/N.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="yes">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> On a directory, <code>x</code> means “you may enter this folder,” not “this folder is a program.”</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. Same letter, different meaning on a directory. That is why the trap above works.</p>
+        </div>
+      </div>
+
+      <h2 id="r3">3. Find names, find text</h2>
+      <div class="story">
+        <p>Two different jobs:</p>
+        <ul>
+          <li><code>find</code> — walk the tree, match <strong>names</strong> (and more). “Where is this file?”</li>
+          <li><code>grep</code> — search <strong>inside</strong> a file. “Which line has this word?”</li>
+        </ul>
+        <p>Also: <code>diff</code> two files. <code>sort</code> lines. <code>sed</code> stream editor. <code>awk</code> pattern + action. <code>expand</code> / <code>unexpand</code> tabs vs spaces. You do not need to write awk in the written exam from this slide. You must not mix find and grep.</p>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> <code>find</code> is how you search the text inside a <code>.c</code> file.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Inside the file is <code>grep</code>. <code>find</code> looks for files in the tree.</p>
+        </div>
+      </div>
+
+      <h2 id="r4">4. Commands that touch processes</h2>
+      <div class="story">
+        <ul>
+          <li><code>ps</code> / <code>htop</code> — what is running.</li>
+          <li><code>kill</code> — send a <strong>signal</strong> to a PID. Often SIGTERM, so it usually dies. Not the only signal. “kill can only terminate” is false. That Y/N already lived with fork on OS12.</li>
+          <li><code>nohup</code> — start a process that does not die when the terminal closes.</li>
+          <li><code>renice</code> — change priority of a process that is already running. Lab 2 used <code>nice</code> at start: higher nice = nicer to others = less CPU.</li>
+          <li><code>sleep</code> — wait. The process is Blocked, not Ready. Lab 2: <code>usleep</code>.</li>
+          <li><code>time</code> — how long a command took.</li>
+          <li><code>man</code> — the manual page. <code>login</code> / <code>logout</code>.</li>
+        </ul>
+        <p>Also on the slide: <code>git</code>, <code>make</code>, <code>tee</code> (copy the stream to a file and still pass it on).</p>
+      </div>
+      <div class="quiz" data-answer="no">
+        <p><strong>True or false.</strong> <code>kill</code> can only terminate a process.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. You name a signal. Default often ends it. A handler can catch SIGINT. You can also signal the parent.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="yes">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> <code>nohup ./job</code> can keep running after you close the terminal.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. That is the point of the lecture line: independent of the terminal, no hangup.</p>
+        </div>
+      </div>
+
+      <h2 id="r5">5. Redirect and pipe</h2>
+      <div class="story">
+        <p>Every process has three streams: <strong>0</strong> stdin, <strong>1</strong> stdout, <strong>2</strong> stderr.</p>
+        <ul>
+          <li><code>cmd &gt; file</code> — stdout replaces the file.</li>
+          <li><code>cmd &gt;&gt; file</code> — stdout appends.</li>
+          <li><code>cmd 2&gt; file</code> — stderr replaces the file. Write <code>2&gt;</code> as one token. A space between <code>2</code> and <code>&gt;</code> is a trap: then <code>2</code> is an argument and you only redirected stdout.</li>
+          <li><code>cmd 2&gt;&gt; file</code> — stderr appends.</li>
+          <li><code>cmd &lt; file</code> — stdin from a file.</li>
+          <li><code>cmd1 | cmd2</code> — stdout of the first becomes stdin of the second. A pipe. Bytes come out FIFO.</li>
+        </ul>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> <code>cmd 2&gt; err.txt</code> writes the normal printout into <code>err.txt</code>.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. <code>2&gt;</code> is stderr. Normal printout is stdout (1). Errors go to the file. Prints still hit the screen unless you also redirect 1.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="yes">
+        <p><strong>True or false.</strong> Bytes in a pipe come out in FIFO order.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. First byte in, first byte out. Year-paper Y/N. A pipe is a kernel queue, not a file you seek in.</p>
+        </div>
+      </div>
+
+      <h2 id="r6">6. Shell variables</h2>
+      <div class="story">
+        <p>A name: letters, digits, underscore. Digits not at the start. Assign with <code>=</code> and <strong>no spaces</strong>: <code>myVar=4711</code>. Read with <code>$</code>: <code>echo $myVar</code>.</p>
+        <p>Expansion: a string with a placeholder is filled at run time. Lecture: <code>date +%Y_%m_%d</code> → <code>2024_10_08</code>. Used in the backup script for a folder name.</p>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> <code>myVar = 4711</code> (spaces around <code>=</code>) is a valid assignment.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. The shell then thinks <code>myVar</code> is a command. Write <code>myVar=4711</code> with no spaces.</p>
+        </div>
+      </div>
+
+      <h2 id="r7">7. Special variables</h2>
+      <div class="story">
+        <ul>
+          <li><code>$1</code>, <code>$2</code>, … — arguments of the script.</li>
+          <li><code>$#</code> — how many arguments.</li>
+          <li><code>$*</code> / <code>$@</code> — all arguments. Quoted <code>"$@"</code> keeps words intact.</li>
+          <li><code>$?</code> — exit status of the last command. 0 usually means ok.</li>
+          <li><code>$$</code> — PID of this shell.</li>
+          <li><code>$!</code> — PID of the last background job (<code>&amp;</code>).</li>
+          <li><code>$PATH</code> — directories the shell searches for commands.</li>
+        </ul>
+        <p>Do not mix <code>$?</code> and <code>$$</code>. One is a status. One is a process id.</p>
+      </div>
+      <div class="quiz" data-kind="short" data-need="3" data-pool="1/arg|$1|#|count|?|status|pid/$$|path" data-hints="Arguments, count, last status, PID, PATH.||$1 $# $? $$ $PATH.">
+        <p><strong>Short.</strong> Name at least three special shell variables and what they mean.</p>
+        <input class="short-in" type="text" spellcheck="false" placeholder="$1 $? PATH …"/>
+        <div class="actions">
+          <button type="button" data-act="hint">Hint</button>
+          <button type="button" data-act="submit">Submit</button>
+        </div>
+        <div class="quiz-hint" hidden></div>
+        <div class="why">
+          <span class="tag"></span>
+          <p><code>$1</code> first argument. <code>$#</code> count. <code>$?</code> last status. <code>$$</code> this shell’s PID. <code>$PATH</code> search list. Three is enough.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> <code>$$</code> is the exit status of the last command.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Status is <code>$?</code>. <code>$$</code> is the PID of the shell that is running now.</p>
+        </div>
+      </div>
+
+      <h2 id="r8">8. How a script actually runs</h2>
+      <div class="story">
+        <p>First line: <code>#! /bin/sh</code> — shebang. The kernel uses that program to run the file. History: <code>sh</code> 1978, then csh, ksh, zsh, ash. Today’s Linux default is <strong>bash</strong> (Bourne Again). Sometimes <code>/bin/sh</code> is a symlink to bash.</p>
+        <p>To run it:</p>
+        <ol>
+          <li>Write it (<code>nano myscriptfile</code>).</li>
+          <li><code>chmod u+x myscriptfile</code> — user may execute.</li>
+          <li><code>./myscriptfile</code> — the dot means this directory.</li>
+        </ol>
+        <p>Why <code>./</code>? Because <code>.</code> is usually <strong>not</strong> in <code>$PATH</code>. If you type only the name, the shell looks in <code>/usr/bin</code> and friends, not here. That is a safety rule, not a bug.</p>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> After <code>chmod u+x ./job</code>, typing <code>job</code> (no <code>./</code>) always runs it, because it is executable.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Execute bit is necessary, not enough. The shell still searches <code>$PATH</code>. Current directory is usually missing. Use <code>./job</code>.</p>
+        </div>
+      </div>
+
+      <h2 id="r9">9. if, test, for</h2>
+      <div class="story">
+        <p><code>if condition; then …; else …; fi</code></p>
+        <p>Useful tests:</p>
+        <ul>
+          <li><code>test -f name</code> — that file exists (regular file).</li>
+          <li><code>test -d name</code> — that directory exists.</li>
+          <li>Strings: <code>test zk1 = zk2</code></li>
+          <li>Numbers: <code>-eq -ne -lt -le -gt -ge</code></li>
+          <li><code>!</code> not, <code>-a</code> and, <code>-o</code> or</li>
+        </ul>
+        <p>Homework on the slide: a script <code>exam</code> that takes a percentage 0…100. Print <code>passed</code> if it is <strong>above 50</strong>, else <code>failed</code>. So 50 is failed.</p>
+        <p><code>case</code> / <code>esac</code> — pick a branch by a word (weekday homework).</p>
+        <p><code>for i in list; do …; done</code>. Also <code>while</code> and <code>until</code>.</p>
+        <p>Lecture trap. What does this do?</p>
+        <pre><code>k=".c"
+for i in *$k
+do
+  j=${i%$k}
+  make $j
+  rm -fv ${j}.o
+done</code></pre>
+        <p>For each file ending in <code>.c</code>, strip the suffix, run <code>make</code> on that name, delete the <code>.o</code>. <code>${i%$k}</code> means: take <code>i</code>, remove the shortest suffix that matches <code>.c</code>.</p>
+      </div>
+      <div class="quiz" data-answer="no">
+        <p><strong>True or false.</strong> The lecture <code>exam</code> script prints <code>passed</code> for 50 percent.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. The slide says above 50. 50 is not above 50. Print <code>failed</code>.</p>
+        </div>
+      </div>
+      <div class="quiz" data-kind="short" data-must="make" data-hints="Look at each .c file.||Strip .c, then make that name.||${i%.c} removes the suffix.">
+        <p><strong>Short.</strong> In one sentence: what does the <code>for i in *.c</code> / <code>make</code> script do?</p>
+        <input class="short-in" type="text" spellcheck="false" placeholder="For each .c file …"/>
+        <div class="actions">
+          <button type="button" data-act="hint">Hint</button>
+          <button type="button" data-act="submit">Submit</button>
+        </div>
+        <div class="quiz-hint" hidden></div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>For every <code>.c</code> file, strip <code>.c</code>, run <code>make</code> on that name, remove the object file.</p>
+        </div>
+      </div>
+
+      <h2 id="r10">10. gcc and argv</h2>
+      <div class="story">
+        <p>Compile: <code>gcc -o mycfile mycfile.c</code> then <code>./mycfile</code>.</p>
+        <p>Without <code>-o mycfile</code>, the executable is named <code>a.out</code>. That default is an exam favourite.</p>
+        <p>Command-line arguments in C:</p>
+        <pre><code>int main(int argc, char *argv[])</code></pre>
+        <p><code>argc</code> is the count. <code>argv[0]</code> is the program name as typed. <code>argv[1]</code> is the first real argument. For <code>./argvdemo one two three</code>: <code>argc</code> is 4, not 3.</p>
+        <p>UNIX treats many things as a file: disk files, devices, pipes. Open, read, write, close. That Y/N sits in the exam hall with this lecture.</p>
+      </div>
+      <div class="quiz" data-answer="yes">
+        <p><strong>True or false.</strong> If you forget <code>-o</code>, <code>gcc</code> still builds a program named <code>a.out</code>.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. Default name. Then you run <code>./a.out</code>.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> For <code>./argvdemo one two three</code>, <code>argc</code> is 3 because there are three words after the program.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Count includes <code>argv[0]</code>. 1 + 3 = 4. The loop on the slide starts at <code>i = 1</code>, so it prints the three words and skips the name.</p>
+        </div>
+      </div>
+
+      <h2 id="written">Written exam — this family</h2>
+      <p class="line-note">Try the question first. Then open the answer. A new paper can change the numbers. The jobs of the commands stay.</p>
+
+      <div class="paper">
+        <p class="yr">Lecture 06 · rights · also exam-hall Y/N</p>
+        <p>What does <code>ls -l</code> show in the nine <code>rwx</code> bits? Why is <code>d-r-r----</code> not “a directory of runnable programs”? How do you make a script executable for yourself?</p>
+        <details>
+          <summary>Answer and steps</summary>
+          <ol>
+            <li>Three groups: owner, group, others. Each group: read, write, execute.</li>
+            <li>First character is the type: <code>d</code> directory, <code>-</code> file.</li>
+            <li>On a directory, <code>x</code> means enter (<code>cd</code>). <code>d-r-r----</code> has no <code>x</code>, so you cannot enter. Inner files have their own bits. Write false for “runnable programs.”</li>
+            <li><code>chmod u+x myscriptfile</code> adds execute for the user. Then <code>./myscriptfile</code>.</li>
+          </ol>
+        </details>
+      </div>
+
+      <div class="paper">
+        <p class="yr">Lecture 06 · redirect and pipe</p>
+        <p>Write the six redirections from the slide. What is the difference between <code>&gt;</code> and <code>2&gt;</code>? What does a pipe do?</p>
+        <details>
+          <summary>Answer and steps</summary>
+          <ol>
+            <li><code>&gt;</code> stdout, replace. <code>&gt;&gt;</code> stdout, append.</li>
+            <li><code>2&gt;</code> stderr, replace. <code>2&gt;&gt;</code> stderr, append. No space between <code>2</code> and <code>&gt;</code>.</li>
+            <li><code>&lt;</code> stdin from a file.</li>
+            <li><code>cmd1 | cmd2</code>: stdout of the first is stdin of the second. FIFO. Not the same as writing a file.</li>
+          </ol>
+        </details>
+      </div>
+
+      <div class="paper">
+        <p class="yr">Lecture 06 · why ./script</p>
+        <p>You wrote a script, set the execute bit, typed the name, and got “command not found.” Why? How do you run it?</p>
+        <details>
+          <summary>Answer and steps</summary>
+          <ol>
+            <li>The shell searches <code>$PATH</code>. Current directory is usually not on that list. Safety: you do not run a random <code>ls</code> from this folder by accident.</li>
+            <li>Run <code>./myscriptfile</code>. The <code>./</code> names this folder, so PATH is not asked.</li>
+            <li>You still need <code>chmod u+x</code> once, and a shebang <code>#! /bin/sh</code> at the top is the clean way.</li>
+          </ol>
+        </details>
+      </div>
+
+      <div class="paper">
+        <p class="yr">Lecture 06 · gcc and argvdemo.c</p>
+        <p>How do you compile <code>mycfile.c</code>? What if you omit <code>-o</code>? For <code>./argvdemo one two three</code>, what is <code>argc</code>, and what is <code>argv[0]</code>?</p>
+        <details>
+          <summary>Answer and steps</summary>
+          <ol>
+            <li><code>gcc -o mycfile mycfile.c</code> then <code>./mycfile</code>.</li>
+            <li>Without <code>-o</code>, the file is <code>a.out</code>. Run <code>./a.out</code>.</li>
+            <li><code>argc</code> = 4. <code>argv[0]</code> is <code>./argvdemo</code> (the name as typed). <code>argv[1..3]</code> are <code>one</code>, <code>two</code>, <code>three</code>. The slide’s loop starts at 1, so it prints the three words.</li>
+          </ol>
+        </details>
+      </div>
+
+      <div class="paper">
+        <p class="yr">Lecture 06 · backup script and date</p>
+        <p>What does the lecture backup script do, line by line?</p>
+        <pre><code>datum=$(date +%Y_%m_%d)
+mkdir backup_$datum
+cp $HOME/*.c backup_$datum</code></pre>
+        <details>
+          <summary>Answer and steps</summary>
+          <ol>
+            <li><code>date +%Y_%m_%d</code> expands to a string like <code>2024_10_08</code>. Stored in <code>datum</code>.</li>
+            <li><code>mkdir backup_2024_10_08</code> (that day’s name).</li>
+            <li>Copy every <code>.c</code> file from the home directory into that folder. <code>$HOME</code> is the home path. <code>*.c</code> is expanded by the shell before <code>cp</code> runs.</li>
+            <li>It does not compile. It does not copy headers unless they end in <code>.c</code>.</li>
+          </ol>
+        </details>
+      </div>
+
+      <div class="paper">
+        <p class="yr">Lecture 06 · for + make  · “what is going on here?”</p>
+        <p><code>k=".c"; for i in *$k; do j=${i%$k}; make $j; rm -fv ${j}.o; done</code></p>
+        <details>
+          <summary>Answer and steps</summary>
+          <ol>
+            <li><code>*$k</code> is <code>*.c</code>: each C source in this folder.</li>
+            <li><code>${i%$k}</code> removes the suffix <code>.c</code>. So <code>hello.c</code> becomes <code>hello</code>.</li>
+            <li><code>make hello</code> builds that program (using a makefile or default rules).</li>
+            <li><code>rm</code> deletes <code>hello.o</code>. The executable can stay.</li>
+            <li>If there is no <code>.c</code> file, <code>*.c</code> may stay as the literal string. Then the loop is one broken step. Say that if he asks “and if the folder is empty?”</li>
+          </ol>
+        </details>
+      </div>
+
+      <div class="paper">
+        <p class="yr">Lecture 06 homework · exam pass/fail</p>
+        <p>Write a script that takes a percentage 0…100 and prints <code>passed</code> or <code>failed</code>. Above 50 is passed.</p>
+        <details>
+          <summary>Answer and steps</summary>
+          <ol>
+            <li>Shebang. Use <code>$1</code> as the percentage.</li>
+            <li><code>if test "$1" -gt 50; then echo passed; else echo failed; fi</code></li>
+            <li><code>-gt</code> is numeric greater-than. 50 is not greater than 50 → failed.</li>
+            <li>Call: <code>./exam 70</code> → passed. <code>./exam 50</code> → failed.</li>
+          </ol>
+        </details>
+      </div>
+
+      <div class="paper">
+        <p class="yr">Signals and priority · kill / nohup / renice (with Lab 2)</p>
+        <p><code>kill</code> only terminates? What is <code>nohup</code>? What does a higher nice value mean?</p>
+        <details>
+          <summary>Answer and steps</summary>
+          <ol>
+            <li><code>kill</code> sends a signal to a PID. Default often ends the process. Other signals exist. Write false for “only terminate.”</li>
+            <li><code>nohup</code>: hangup from closing the terminal does not kill the job.</li>
+            <li>Higher <code>nice</code> / <code>renice</code> = nicer to others = <strong>less</strong> CPU when both burn the core. Lab 2 lives on OS1.</li>
+          </ol>
+        </details>
+      </div>
+
+      <div class="need">
+        <span class="tag">You are ready on this family when</span>
+        <p>You can decode <code>ls -l</code>, write <code>2&gt;</code> without a space, explain <code>./script</code>, count <code>argc</code> including <code>argv[0]</code>, and say what the backup script and the <code>*.c</code> make-loop do. Then <a href="os1.html">OS1</a> for fork and Lab 2.</p>
+      </div>
+
+      <div class="pager">
+        <a href="os12.html">← OS12 · Processes</a>
+        <a href="os1.html">OS1 · Shop and Lab 2 →</a>
+      </div>
+    </div>
+  </main>
+  <footer class="os-foot">
+    <div class="wrap">OS13 · Linux basics · commands, shell, gcc</div>
+  </footer>
+  <script src="../js/os.js?v=4"></script>
+  <script src="../../../assets/js/theme.js?v=3"></script>
+</body>
+</html>
