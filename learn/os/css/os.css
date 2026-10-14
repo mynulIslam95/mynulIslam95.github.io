@@ -580,3 +580,22 @@ html[data-theme="light"] pre,
 html[data-theme="light"] .card {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 }
+
+.exam-fig {
+  margin: 14px 0 18px;
+}
+.exam-fig img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  background: #fff;
+  border: 1px solid var(--neon-line);
+  padding: 8px;
+  filter: none;
+}
+.exam-fig figcaption {
+  margin-top: 8px;
+  font-size: 0.95rem;
+  color: var(--ink);
+}

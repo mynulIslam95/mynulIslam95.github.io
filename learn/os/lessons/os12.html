@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="../css/os.css?v=12"/>
+  <link rel="stylesheet" href="../css/os.css?v=13"/>
 </head>
 <body class="os">
   <a class="skip" href="#main">Skip to content</a>
@@ -242,6 +242,10 @@
           <li><strong>Blocked/Suspend</strong> — on disk, still waiting for an event.</li>
         </ul>
         <p>That is two-dimensional: Ready vs Blocked, and in-memory vs swapped. Exam guide: 7-state Stallings model. Under time pressure a single Suspend node can still score if you say “swapped out to free memory.”</p>
+        <figure class="exam-fig">
+          <img src="../img/process-states.jpg" width="1780" height="1020" alt="Seven-state process machine. New at the top. In memory: Ready, Running, Blocked. On disk: Ready/Suspend and Blocked/Suspend. Exit on the right. Wake-up is Blocked to Ready, not Running."/>
+          <figcaption>Copy this layout in the exam. Wake-up is Blocked → Ready, never Running.</figcaption>
+        </figure>
         <p>A suspended process is not immediately available. An event that would unblock it does <em>not</em> make it Running. An agent (itself, parent, OS) put it there and must take it out.</p>
         <p>Why suspend a process: need RAM for a ready job; OS suspects a problem; user debug; periodic job waiting for the next interval; parent wants to freeze a child.</p>
         <p>Why suspending a <strong>thread</strong> usually makes little sense: suspend exists to free the process’s memory. Threads of one process share that memory. You cannot swap one thread and keep the others. Three thread states on the oral/written: running, ready, blocked — no suspend. WS2019 Task 1.</p>
@@ -440,12 +444,16 @@
         <p>a) Draw a process state machine including the suspend state. b) Explain each state. c) Conditions to enter suspend, and why the OS does it. d) Why suspending a thread usually makes no sense. e) Name the three thread states.</p>
         <details>
           <summary>Answer and steps</summary>
+          <p><strong>a)</strong> Draw the seven-state machine. Two columns: in RAM vs on disk. New at the top. Exit on the right. Wake-up is Blocked → Ready, not Running.</p>
+        <figure class="exam-fig">
+          <img src="../img/process-states.jpg" width="1780" height="1020" alt="Seven-state process machine. New at the top. In memory: Ready, Running, Blocked. On disk: Ready/Suspend and Blocked/Suspend. Exit on the right. Wake-up is Blocked to Ready, not Running."/>
+          <figcaption>Copy this layout in the exam. Wake-up is Blocked → Ready, never Running.</figcaption>
+        </figure>
           <ol>
-            <li>Draw five states: New, Ready, Running, Blocked, Exit, with the usual arrows. Add Ready/Suspend and Blocked/Suspend (swapped). Arrows: Blocked → Blocked/Suspend (need RAM); Blocked/Suspend → Ready/Suspend (event happened, still on disk); Ready/Suspend → Ready (swap in); also Ready → Ready/Suspend if you must make room. Under time pressure, one Suspend node plus “swapped to disk to free memory” still scores the idea.</li>
-            <li>New: created (e.g. <code>fork</code>), not yet admitted. Ready: in RAM, needs only the CPU. Running: on the core (at most one per core). Blocked: in RAM, waits for an event. Exit: finished or killed. Ready/Suspend: would run, but on disk. Blocked/Suspend: waits, and on disk.</li>
-            <li>Enter suspend when RAM is tight and you need space for a ready job (or a new one). The OS swaps a blocked (or even a ready) process out. Point: free main memory.</li>
-            <li>Suspend is about the process’s memory. Threads of one process share that memory. You cannot swap one thread and keep the others. So thread-suspend is the wrong tool.</li>
-            <li>Thread states: running, ready, blocked (waiting). No suspend.</li>
+            <li><strong>b)</strong> New: created (e.g. <code>fork</code>), not yet admitted. Ready: in RAM, needs only the CPU. Running: on the core (at most one per core). Blocked: in RAM, waits for an event. Exit: finished or killed. Ready/Suspend: would run, but on disk. Blocked/Suspend: waits, and on disk.</li>
+            <li><strong>c)</strong> Enter suspend when RAM is tight and you need space for a ready job (or a new one). The OS swaps a blocked (or even a ready) process out. Point: free main memory.</li>
+            <li><strong>d)</strong> Suspend is about the process’s memory. Threads of one process share that memory. You cannot swap one thread and keep the others. So thread-suspend is the wrong tool.</li>
+            <li><strong>e)</strong> Thread states: running, ready, blocked (waiting). No suspend.</li>
           </ol>
         </details>
       </div>
