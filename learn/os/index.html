@@ -7,7 +7,7 @@
   (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
   </script>
   <title>Operating systems · Learn with Mynul</title>
-  <meta name="description" content="Operating systems from zero. Stories, then C, then practice. No C and no OS needed to start."/>
+  <meta name="description" content="Operating systems: lectures with practice and written papers. Labs and the exam hall."/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
@@ -21,7 +21,7 @@
       <nav class="os-nav" aria-label="OS">
         <a class="is-on" href="index.html">Map</a>
         <a href="../c-os/index.html">C for OS</a>
-        <a href="lessons/os0.html">OS stories</a>
+        <a href="lessons/os10.html">OS lessons</a>
         <a href="exam/mcq.html">Exam</a>
         <a href="../index.html">Learn hub</a>
       </nav>
@@ -32,13 +32,13 @@
     <div class="wrap">
       <p class="kicker"><a href="../index.html">Learn with Mynul</a> · Technology</p>
       <h1>Operating systems</h1>
-      <p class="lede">Each page is a story, then a yes or no, then practice. Year papers sit on the same page, with steps. The exam hall is the distinct true-or-false bank from 2018 to 2025. C without stories lives in the other course.</p>
+      <p class="lede">Each lecture page has the machine, a twist, True/False, and written papers with steps. The exam hall is the distinct true-or-false bank from 2018 to 2025. C lives in the other course.</p>
       <p class="need"><a href="../c-os/index.html">C programming for Operating System</a> — outside this classroom. Functions, pointers, structs, headers. Hint, submit, commented answers.</p>
 
       <div class="floor">
         <p class="floor-label">Floor 1 · Foundations · 100/100</p>
         <h2>The computer and the OS</h2>
-        <p>Lectures 02 to 06. He may ask a new sentence. Own the machine, then how the OS grew, then what a process is, then the Linux command line. Old papers are traps at the end, not the syllabus. Start at <a href="lessons/os0.html">OS0</a> if you want the five-minute door first. Linux fork as a shop story is <a href="lessons/os1.html">OS1</a>.</p>
+        <p>Lectures 02 to 06. He may ask a new sentence. Own the machine, then how the OS grew, then what a process is, then the Linux command line. Old papers are traps at the end, not the syllabus.</p>
         <div class="grid">
           <a class="card" href="lessons/os10.html">
             <p class="id">OS10 · open</p>
@@ -64,49 +64,7 @@
       </div>
 
       <div class="floor">
-        <p class="floor-label">Floor 2 · Shop stories</p>
-        <h2>Shop stories</h2>
-        <div class="grid">
-          <a class="card" href="lessons/os0.html">
-            <p class="id">OS0 · open</p>
-            <h3>The building and the work</h3>
-            <p>The shop building vs the work inside. You can read this before C.</p>
-          </a>
-          <a class="card" href="lessons/os1.html">
-            <p class="id">OS1 · open</p>
-            <h3>Copy the whole shop</h3>
-            <p>Two buildings. Each has its own money box. That is a process. Lab 2 lives here.</p>
-          </a>
-          <a class="card" href="lessons/os2.html">
-            <p class="id">OS2 · open</p>
-            <h3>Two workers, one shop</h3>
-            <p>Same money box. Both add one. Sometimes one add is lost.</p>
-          </a>
-          <a class="card" href="lessons/os3.html">
-            <p class="id">OS3 · open</p>
-            <h3>One key for the drawer</h3>
-            <p>The worker who took the key must give it back. Mutex.</p>
-          </a>
-          <a class="card" href="lessons/os4.html">
-            <p class="id">OS4 · open</p>
-            <h3>Twenty violins</h3>
-            <p>A number on the wall. Not a key. Anyone may take one.</p>
-          </a>
-          <a class="card" href="lessons/os5.html">
-            <p class="id">OS5 · open</p>
-            <h3>Two keys, both wait</h3>
-            <p>A has key 1. B has key 2. Nobody can move. Banker's lives here.</p>
-          </a>
-          <a class="card" href="lessons/os6.html">
-            <p class="id">OS6 · open</p>
-            <h3>A window both shops can see</h3>
-            <p>The violin board sits in a shared window.</p>
-          </a>
-        </div>
-      </div>
-
-      <div class="floor">
-        <p class="floor-label">Floor 3 · labs on the machine</p>
+        <p class="floor-label">Floor 2 · labs on the machine</p>
         <h2>See it on the machine</h2>
         <div class="grid">
           <a class="card" href="lessons/os7.html">
@@ -128,7 +86,7 @@
       </div>
 
       <div class="floor">
-        <p class="floor-label">Floor 4 · exam hall</p>
+        <p class="floor-label">Floor 3 · exam hall</p>
         <h2>Year papers as true or false</h2>
         <div class="grid">
           <a class="card" href="exam/mcq.html">
@@ -142,7 +100,7 @@
     </div>
   </main>
   <footer class="os-foot">
-    <div class="wrap">Mynul Islam · Hamburg · stories first, then C</div>
+    <div class="wrap">Mynul Islam · Hamburg · lectures, then labs, then papers</div>
   </footer>
   <script src="../../assets/js/theme.js?v=3"></script>
 </body>
