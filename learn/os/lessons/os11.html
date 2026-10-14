@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <script>
+  (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
+  </script>
+  <title>OS11 · How an OS grew</title>
+  <meta name="description" content="Lecture 04 OS overview: three aims, services, serial then batch then multiprogramming then time sharing. Machine, twist, True/False. He may ask a new sentence."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/os.css?v=12"/>
+</head>
+<body class="os">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="os-bar">
+    <div class="wrap">
+      <a class="os-brand" href="../index.html">OS · Learn</a>
+      <nav class="os-nav" aria-label="OS">
+        <a href="../index.html">Map</a>
+        <a href="../c/c1.html">C stories</a>
+        <a class="is-on" href="os0.html">OS stories</a>
+        <a href="../exam/mcq.html">Exam</a>
+        <a href="../../index.html">Learn hub</a>
+      </nav>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode"><svg class="theme-sun" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="#F5C518"/><g stroke="#F5C518" stroke-width="1.8" stroke-linecap="round" fill="none"><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M5.6 18.4l1.7-1.7M16.7 7.3l1.7-1.7"/></g></svg><svg class="theme-moon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="#8EA0FF" d="M16.2 3.1A8.9 8.9 0 1 0 21.1 18 7.4 7.4 0 0 1 16.2 3.1z"/></svg></button>
+    </div>
+  </header>
+  <main id="main">
+    <div class="wrap">
+      <p class="kicker"><a href="../index.html">Map</a> · Foundations · OS11</p>
+      <h1>How an OS grew</h1>
+      <p class="lede">Lecture 04, operating system overview. He is not required to repeat last year’s sentence. He can tell a new story about the same growth: why we have an OS, what it must do, and why serial jobs became batch, then several jobs in memory, then short slices for humans. Each room: the machine, then a twist, then True/False. Old papers sit at the end as traps. Registers, interrupt, cache, DMA are <a href="os10.html">OS10</a>. Fork is <a href="os1.html">OS1</a>.</p>
+      <p class="need"><a href="os0.html">OS0</a> is the five-minute door. This page is 100/100 on this family. C without stories: <a href="../../c-os/index.html">C for OS</a>.</p>
+      <nav class="room-jump" aria-label="Rooms">
+        <a href="#r1">Three aims</a>
+        <a href="#r2">Three views</a>
+        <a href="#r3">Services</a>
+        <a href="#r4">Errors</a>
+        <a href="#r5">Odd manager</a>
+        <a href="#r6">Evolve</a>
+        <a href="#r7">Serial</a>
+        <a href="#r8">Batch</a>
+        <a href="#r9">Several jobs</a>
+        <a href="#r10">Slices</a>
+        <a href="#r11">Five names</a>
+        <a href="#harvest">Harvest</a>
+      </nav>
+
+      <h2 id="r1">1. Three aims</h2>
+      <div class="story">
+        <p>The lecture opens with three jobs an OS must do, not with Linux commands.</p>
+        <ol>
+          <li><strong>Convenience.</strong> A program opens a named file. You do not talk to the disk chip.</li>
+          <li><strong>Efficiency.</strong> CPU, memory, disk and devices are shared. One guest must not waste the whole shop.</li>
+          <li><strong>Ability to evolve.</strong> New hardware and new services can arrive without stopping the rest. You test a new piece without breaking the old service.</li>
+        </ol>
+        <p>A new exam story can say “USB stick that did not exist when the laptop was bought” or “a nicer file window.” You still point at these three.</p>
+      </div>
+      <div class="quiz" data-kind="short" data-need="3" data-pool="convenience/convenient/easy|efficiency/efficient/share|evolve/evolution/upgrade/fix" data-hints="Three words from the overview slide.||Not Chrome. Not kernel.||Convenience, efficiency, ability to evolve.">
+        <p><strong>Short.</strong> Name the three OS objectives from the overview lecture.</p>
+        <input class="short-in" type="text" spellcheck="false" placeholder="Three aims"/>
+        <div class="actions">
+          <button type="button" data-act="hint">Hint</button>
+          <button type="button" data-act="submit">Submit</button>
+        </div>
+        <div class="quiz-hint" hidden></div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Convenience. Efficiency. Ability to evolve. A new paper may use “easy to use”, “use resources well”, “grow without breaking service.” Same three.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> If the OS is convenient, it does not need to be efficient.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. The slide lists all three. A nice file name that wastes the CPU for every other program fails the second aim.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="yes">
+        <p><strong>True or false.</strong> “Ability to evolve” means you can add a new function, test it, and put it in, without stopping the whole service.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. That is the third bullet: development, testing, and introduction of new system functions without interfering with service.</p>
+        </div>
+      </div>
+
+      <h2 id="r2">2. Three views of the same machine</h2>
+      <div class="story">
+        <p>The computer is a stack of layers. Who you are changes what you are allowed to see.</p>
+        <ul>
+          <li><strong>End user.</strong> Wants the application. Does not want the chip.</li>
+          <li><strong>Programmer.</strong> Wants the whole computer as a clean machine: open, read, write. Does not want the disk geometry, which may change next year.</li>
+          <li><strong>OS designer.</strong> Sees everything. Job: give service to the other two.</li>
+        </ul>
+        <p>Windows Explorer is a utility for the end user. It is not the kernel. The kernel still runs if the window is gone. That trap already lives on <a href="os10.html">OS10</a>.</p>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> The programmer should write sector numbers for every disk, so the program is faster.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. The OS hides that. Hardware changes. The programmer uses a uniform read and write. Convenience plus ability to evolve.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="yes">
+        <p><strong>True or false.</strong> The OS designer’s job is to provide service to the end user and to the programmer.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. The designer sees the whole machine. The other two must not be annoyed by the internal details.</p>
+        </div>
+      </div>
+
+      <h2 id="r3">3. Services: start a program, hide a device, hide a file</h2>
+      <div class="story">
+        <p>The slide “Services provided by an OS (I)” is a list you can unpack in any new story.</p>
+        <ul>
+          <li><strong>Program development</strong> — editors, debuggers. These are utility programs, not the kernel itself.</li>
+          <li><strong>Program execution</strong> — the OS initialises, suspends, schedules, and terminates programs.</li>
+          <li><strong>Access to I/O devices</strong> — a uniform interface. The programmer does simple reads and writes. The chip stays hidden.</li>
+          <li><strong>Controlled access to files</strong> — how bits sit on this disk is hidden. Who may open the file is not hidden: the OS checks.</li>
+          <li><strong>System access</strong> — who may use the machine at all, and who may use this printer. Conflicts get a decision, not a crash.</li>
+        </ul>
+      </div>
+      <div class="quiz" data-kind="short" data-need="4" data-pool="develop/editor/debug|execut/schedul/start/terminat/suspend|io/device/read/write|file|access/login/protect/author" data-hints="Look at the service table, not at Chrome.||Development, execution, I/O, files, system access.||Four of those is enough.">
+        <p><strong>Short.</strong> Name at least four services an OS typically provides.</p>
+        <input class="short-in" type="text" spellcheck="false" placeholder="Four services"/>
+        <div class="actions">
+          <button type="button" data-act="hint">Hint</button>
+          <button type="button" data-act="submit">Submit</button>
+        </div>
+        <div class="quiz-hint" hidden></div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Program development, program execution, I/O access, files, system access, error handling, accounting. Four of those is enough. Word is an application, not an OS service name.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> The editor and the debugger are the kernel.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. The slide says they are utility programs. The OS makes them easy to run. They are not the part with the keys.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="yes">
+        <p><strong>True or false.</strong> File layout on disk can differ by device, and the OS still offers one open/read/write story to the programmer.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. “Depends on the nature of the device. This is hidden to the user.” Plus protection on who may touch the file.</p>
+        </div>
+      </div>
+
+      <h2 id="r4">4. Services: errors and accounting</h2>
+      <div class="story">
+        <p>Two more lines on the second service slide. They look boring. Oral exams like them because they are not “fork.”</p>
+        <p><strong>Error detection and response.</strong> Hardware: memory error, device dead. Software: divide by zero, touch memory you must not touch. The OS must react in a way that matches the error — stop that program, retry the disk, tell the log — not freeze the whole machine every time.</p>
+        <p><strong>Accounting.</strong> Count who used what. Watch performance. Sometimes used for billing. Even if nobody is billed, the OS still needs numbers: who held the CPU, who filled the disk.</p>
+      </div>
+      <div class="quiz" data-answer="yes">
+        <p><strong>True or false.</strong> Divide by zero is a software failure the OS should handle.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. The slide lists software failures: division by zero, forbidden memory. Hardware failures are listed too: memory error, device malfunction.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> Accounting exists only so the university can send you an invoice.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. The slide says statistics of usage and performance. Billing is one possible use, not the only one. A timer interrupt that counts slices is this family — details of the doorbell are OS10.</p>
+        </div>
+      </div>
+
+      <h2 id="r5">5. The OS is an odd manager</h2>
+      <div class="story">
+        <p>The OS manages CPU, memory, files, devices. Then the slide says something that sounds wrong until you sit with it:</p>
+        <ol>
+          <li>The OS is itself a <strong>program</strong> (or a suite of programs) that the processor executes. It is not a second computer sitting beside the CPU.</li>
+          <li>It often <strong>gives up control</strong>. A user program then runs. The OS must depend on the processor to <strong>give control back</strong>.</li>
+        </ol>
+        <p>How does it get the keys back? A <strong>timer interrupt</strong>, an I/O interrupt, a trap from a system call. That hardware story is OS10. Here you only need the odd fact: a manager that is also a guest of the same CPU.</p>
+      </div>
+      <div class="quiz" data-kind="short" data-pool="timer/interrupt|io/device/disk|syscall/trap/exception" data-need="1" data-hints="The OS gave the CPU to a user program.||What doorbell brings the kernel back?||Timer interrupt is the clean exam word.">
+        <p><strong>Short.</strong> The OS gave the CPU to a user program. Name one way it can regain control.</p>
+        <input class="short-in" type="text" spellcheck="false" placeholder="One mechanism"/>
+        <div class="actions">
+          <button type="button" data-act="hint">Hint</button>
+          <button type="button" data-act="submit">Submit</button>
+        </div>
+        <div class="quiz-hint" hidden></div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Timer interrupt (time slice). I/O interrupt. Trap / system call / exception. Without a doorbell, a looping program never returns the keys. OS10 is the doorbell. This page is why the manager is odd.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> The OS is a separate processor that watches the main CPU from the outside.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. “It functions in the same way as ordinary computer software; it is a program executed by the processor.” There is no second brain. That is why interrupts matter.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="yes">
+        <p><strong>True or false.</strong> After the OS starts a user program, it may have no CPU until an interrupt or a trap comes back.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. It relinquishes control and must depend on the processor to allow it to regain control.</p>
+        </div>
+      </div>
+
+      <h2 id="r6">6. Why a live OS must change</h2>
+      <div class="story">
+        <p>A major OS lives for years. Three reasons it cannot stay frozen:</p>
+        <ul>
+          <li><strong>Hardware upgrades, new types of hardware.</strong> You keep a computer five years. Then you plug in a device that did not exist on the day you bought it. The OS must cope.</li>
+          <li><strong>New services.</strong> The lecture’s example: Windows Explorer as a later utility, not as “the OS was always a desktop.”</li>
+          <li><strong>Fixes.</strong> “Any OS has faults.” If you never update, it stays open to old holes.</li>
+        </ul>
+        <p>This is the third aim (evolve) with stories attached. A new exam can change the device name. The reason stays.</p>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> If the laptop is five years old, the OS never needs a new device driver, because the hardware is finished.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. The slide’s example is a peripheral invented after you bought the machine. The OS must evolve.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="yes">
+        <p><strong>True or false.</strong> Leaving an OS unpatched because “it works” fights the lecture’s reason called fixes.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. Faults stay. An OS that is never updated is vulnerable. Convenience of “do not touch it” is not the third aim.</p>
+        </div>
+      </div>
+
+      <h2 id="r7">7. Serial processing — no OS yet</h2>
+      <div class="story">
+        <p>ENIAC-class machines had nothing you would call an OS. A human owned a time slot. Two wastes:</p>
+        <ul>
+          <li><strong>Scheduling.</strong> You booked one hour. The job finished in twenty minutes, or it overran. Either way, the machine sat wrong.</li>
+          <li><strong>Setup time.</strong> Load compiler, load program, save, load again, link. Each step: mount a tape, pull cards, put them back.</li>
+        </ul>
+        <p>Pictures of Zuse Z1 and ENIAC on the slides are history. The exam wants the two wastes, not the year 1936.</p>
+      </div>
+      <div class="quiz" data-kind="short" data-need="2" data-pool="schedul/slot/book/hour|setup/mount/tape/card/compiler" data-hints="Two wastes on the serial slide.||People booked a slot. Jobs were shorter or longer.||Each job needed tapes and cards mounted.">
+        <p><strong>Short.</strong> Name the two major problems of serial processing (no OS).</p>
+        <input class="short-in" type="text" spellcheck="false" placeholder="Two problems"/>
+        <div class="actions">
+          <button type="button" data-act="hint">Hint</button>
+          <button type="button" data-act="submit">Submit</button>
+        </div>
+        <div class="quiz-hint" hidden></div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Scheduling (fixed slots, jobs early or late). Setup time (mount compiler, program, tapes, cards). A new story may say “USB stick” instead of tape. Point at setup waste.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> ENIAC already had a kernel that scheduled jobs overnight.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. “The earliest computers had nothing that could be called OS.” Humans ran the slot. Batch comes next.</p>
+        </div>
+      </div>
+
+      <h2 id="r8">8. Simple batch — a monitor runs the queue</h2>
+      <div class="story">
+        <p>To kill setup waste, the first OS was a <strong>monitor</strong> that ran a sequence of programs automatically. Jobs sat on cards or tape in a row — a <strong>batch</strong>. IBM 7090, early 1960s, IBSYS is the named example. You do not need the product name in every answer. You need the idea.</p>
+        <p>The monitor starts a job. When the job ends, it must <strong>branch back to the monitor</strong>. The monitor starts the next job.</p>
+        <p>Lessons learned, still true on a laptop:</p>
+        <ul>
+          <li><strong>Memory protection</strong> — a job must not write the monitor.</li>
+          <li><strong>Timeouts</strong> — a looping job must not sit forever. That needs a <strong>timer</strong>.</li>
+          <li><strong>Different modes</strong> — user job vs monitor. Privileged instructions stay with the OS. OS10 names those instructions.</li>
+        </ul>
+      </div>
+      <div class="quiz" data-answer="yes">
+        <p><strong>True or false.</strong> In a simple batch system, a finished user program must return to the monitor so the next job can start.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. “When the user program terminates it had to branch back to the monitor. The latter started the next program.”</p>
+        </div>
+      </div>
+      <div class="quiz" data-kind="short" data-need="2" data-pool="protect/memory|timer/timeout|mode/kernel/user/privileg" data-hints="Three lessons after simple batch.||A job must not overwrite the monitor.||A loop must not run forever. Modes separate user and monitor.">
+        <p><strong>Short.</strong> Simple batch taught three needs. Name at least two.</p>
+        <input class="short-in" type="text" spellcheck="false" placeholder="Two lessons"/>
+        <div class="actions">
+          <button type="button" data-act="hint">Hint</button>
+          <button type="button" data-act="submit">Submit</button>
+        </div>
+        <div class="quiz-hint" hidden></div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Memory protection. Timeouts (timer). Different modes (user vs monitor). A new wording may say “kernel mode.” Same lesson.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> Simple batch already keeps a second job running while the first job waits for the printer.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Simple batch is one job after another. While that job waits for I/O, the CPU can sit idle. Several jobs in memory is the next room.</p>
+        </div>
+      </div>
+
+      <h2 id="r9">9. Multiprogrammed batch — do not idle on I/O</h2>
+      <div class="story">
+        <p>I/O devices were already much slower than the processor. Simple batch raised utilisation by removing human setup. Then people measured: while job A waits for disk or printer, the CPU is empty.</p>
+        <p><strong>Multiprogramming</strong> (the slide also says <strong>multitasking</strong>) needs enough RAM for several programs at once. When A waits, run B. When the disk finishes, A is ready again. The scheduler chooses.</p>
+        <p>Goal of this step: <strong>processor utilisation</strong>. Not yet “a student typing at a terminal.”</p>
+        <p>You still need protection and scheduling. Two programs in RAM can destroy each other if they share with no rules. Mutex is OS3. Here you only classify the invention: another ready job while one waits.</p>
+      </div>
+      <div class="quiz" data-answer="yes">
+        <p><strong>True or false.</strong> Multiprogramming needs enough main memory to hold more than one program.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. “Provided that the main memory was sufficiently large to store several programs.”</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> On one core, two multiprogrammed jobs always execute their instructions in the same instant.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. One core, one instruction stream at a time. Lives overlap; they take turns. Parallel same-instant needs more cores. OS10 already used this split. The overview lecture is why they overlap: A waits for I/O, B runs.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="yes">
+        <p><strong>True or false.</strong> The main reason for multiprogrammed batch was to use the CPU while another job waited for slow I/O.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. Simple batch still wasted the processor on I/O wait. Several jobs in memory fix that. Interactive typing is the next room, not this one.</p>
+        </div>
+      </div>
+
+      <h2 id="r10">10. Time sharing — short slices for humans</h2>
+      <div class="story">
+        <p>Multiprogrammed batch maximised the processor. Then many people shared one computer through <strong>terminals</strong>. Utilisation is no longer the only issue. A human who types must get an answer soon.</p>
+        <p><strong>Time sharing</strong> gives each user a short <strong>time slice</strong>. From her seat, it feels like a machine of speed about <strong>1/n</strong>, where n is the number of users (ignore OS overhead).</p>
+        <p>Named early system: <strong>CTSS</strong> (Compatible Time-Sharing System), early 1960s, IBM 7094, up to 32 users. The name is useful. The idea is required: slices, response, many humans.</p>
+        <p>Extra lessons, on top of batch:</p>
+        <ul>
+          <li>Memory protection, now also <strong>between users</strong>.</li>
+          <li>Resource allocation.</li>
+          <li>Mutual exclusive access to devices — two users must not print through each other.</li>
+        </ul>
+        <p>The timer that cuts a slice is OS10. Mutex for a device is OS3. Here you name why those tools appeared.</p>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> Time sharing was invented only to raise CPU utilisation above multiprogrammed batch.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Batch already chased utilisation. Time sharing adds interactive response. Short slices. A terminal user must not wait for someone else’s overnight job.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="yes">
+        <p><strong>True or false.</strong> If n users share one processor in time sharing, each can feel about 1/n of the speed, ignoring OS overhead.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. That is the lecture sentence. A new paper may change n. Plug in the number. Do not forget overhead if he asks “exactly 1/n?”</p>
+        </div>
+      </div>
+      <div class="quiz" data-kind="short" data-need="2" data-pool="protect/memory/user|allocat/resource/schedul|exclusiv/mutex/device/printer" data-hints="Time sharing adds lessons beyond simple batch.||Users must not write each other’s memory.||Devices need exclusive access. Resources must be allocated.">
+        <p><strong>Short.</strong> Time sharing added extra needs. Name at least two.</p>
+        <input class="short-in" type="text" spellcheck="false" placeholder="Two lessons"/>
+        <div class="actions">
+          <button type="button" data-act="hint">Hint</button>
+          <button type="button" data-act="submit">Submit</button>
+        </div>
+        <div class="quiz-hint" hidden></div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Memory protection between users. Resource allocation. Mutual exclusive access to devices. Timer slices (OS10) enforce the sharing.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="no">
+        <p><strong>True or false.</strong> CTSS is a current Linux scheduler name you must configure on the Pi.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. CTSS is the early 1960s time-sharing system on the slide (IBM 7094, up to 32 users). Lab 2 CFS/nice is OS7. Do not mix the museum name with the Pi.</p>
+        </div>
+      </div>
+
+      <h2 id="r11">11. Five achievements — a map, not the later chapters</h2>
+      <div class="story">
+        <p>Stallings names five major achievements in OS history. This lecture lists them. Later pages own the details. On the oral, if he says “name the big five,” you list. If he says “explain a mutex,” you go to OS3, not this list.</p>
+        <ol>
+          <li><strong>Processes</strong> — OS1.</li>
+          <li><strong>Memory management</strong> — virtual memory, protection. Doors on OS10 (virtual vs RAM) and later lectures.</li>
+          <li><strong>Information protection and security</strong> — modes, file access, system access from rooms 3–4.</li>
+          <li><strong>Scheduling and resource management</strong> — slices, allocation, exclusive devices. Deadlock is OS5.</li>
+          <li><strong>System structure</strong> — how the OS is built (layers, later: microkernel extra switches on the exam hall).</li>
+        </ol>
+        <p>Vista vs Apollo, and “Linux worth a billion euro,” are colour on the slide. Do not treat them as exam facts. The five names are.</p>
+      </div>
+      <div class="quiz" data-kind="short" data-need="4" data-pool="process|memory|protect/secur|schedul/resource|structure" data-hints="Five Stallings names.||Process, memory, protection/security, scheduling/resources, system structure.||Four of five is enough here.">
+        <p><strong>Short.</strong> Name at least four of Stallings’ major OS achievements from this lecture.</p>
+        <input class="short-in" type="text" spellcheck="false" placeholder="Four names"/>
+        <div class="actions">
+          <button type="button" data-act="hint">Hint</button>
+          <button type="button" data-act="submit">Submit</button>
+        </div>
+        <div class="quiz-hint" hidden></div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Processes. Memory management. Information protection and security. Scheduling and resource management. System structure. Four of five is enough. “Chrome” is not on the list.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> If you can recite the five names, you already know mutex, fork, and deadlock for 100/100.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. This page classifies the map. Process details OS1. Mutex OS3. Deadlock OS5. He may ask a new sentence inside one of those rooms.</p>
+        </div>
+      </div>
+
+      <h2 id="harvest">Harvest — old wording, after the growth story</h2>
+      <p class="line-note">These are traps he already used, or the lecture’s own lists. A new paper can change the sentence. If you only memorise these, you are not done. If you finished the rooms, these should feel easy.</p>
+
+      <div class="paper">
+        <p class="yr">Lecture 04 · three aims</p>
+        <p>Convenience · efficiency · ability to evolve. A new device five years later. A new utility window. A security fix.</p>
+        <details>
+          <summary>Solution steps</summary>
+          <ol>
+            <li>Easy machine for programs (named files, simple I/O).</li>
+            <li>Share CPU, memory, devices without waste.</li>
+            <li>Add, test, and ship a function without stopping service. Hardware, services, fixes are the three evolve stories.</li>
+          </ol>
+        </details>
+      </div>
+      <div class="paper">
+        <p class="yr">Lecture 04 · serial → batch → multi → time share</p>
+        <p>What problem did each step kill? What did it still leave?</p>
+        <details>
+          <summary>Solution steps</summary>
+          <ol>
+            <li>Serial: humans, slot waste, setup waste. No OS.</li>
+            <li>Simple batch: monitor runs a queue. Still idle on I/O. Needs protection, timer, modes.</li>
+            <li>Multiprogramming: several jobs in RAM, run another while one waits. Goal = utilisation.</li>
+            <li>Time sharing: short slices, terminals, ~1/n, response. Extra: protect users, allocate, exclusive devices.</li>
+          </ol>
+        </details>
+      </div>
+      <div class="paper">
+        <p class="yr">Lecture 04 · odd manager</p>
+        <p>How can a program that gave away the CPU ever manage the CPU?</p>
+        <details>
+          <summary>Solution steps</summary>
+          <ol>
+            <li>The OS is software on the same processor.</li>
+            <li>It relinquishes control.</li>
+            <li>Timer interrupt, I/O interrupt, or trap brings it back. Hardware detail: OS10.</li>
+          </ol>
+        </details>
+      </div>
+      <div class="paper">
+        <p class="yr">Oral follow-up (foundations workbook) · this family</p>
+        <p>Three OS objectives? Why did OS evolve? Do two programs run simultaneously on one core? Batch vs multiprogramming vs time sharing?</p>
+        <details>
+          <summary>Where on this page</summary>
+          <ol>
+            <li>Room 1 short. Room 6. Room 9 twist. Rooms 8–10 harvest.</li>
+            <li>If a new lab story appears (one long simulation, students typing), map it: utilisation = multi, response = slices, protection = users must not overwrite each other.</li>
+          </ol>
+        </details>
+      </div>
+      <div class="paper">
+        <p class="yr">Stallings five · list only</p>
+        <p>Processes · memory management · protection and security · scheduling and resource management · system structure.</p>
+        <details>
+          <summary>Solution steps</summary>
+          <ol>
+            <li>List the five if he asks for names.</li>
+            <li>Do not dump mutex code here. Point to the later page.</li>
+          </ol>
+        </details>
+      </div>
+
+      <div class="need">
+        <span class="tag">You are ready on this family when</span>
+        <p>You can hear a new story (overnight tape, 30 terminals, a USB that did not exist at purchase) and say which aim, which service, and which history step it is. Then the harvest is boring. Hardware doorbells: <a href="os10.html">OS10</a>. Then <a href="os1.html">OS1</a> for fork.</p>
+      </div>
+
+      <div class="pager">
+        <a href="os10.html">← OS10 · Computer and OS</a>
+        <a href="os1.html">OS1 · Process →</a>
+      </div>
+    </div>
+  </main>
+  <footer class="os-foot">
+    <div class="wrap">OS11 · Overview · aims, services, serial to time sharing</div>
+  </footer>
+  <script src="../js/os.js?v=4"></script>
+  <script src="../../../assets/js/theme.js?v=3"></script>
+</body>
+</html>
