@@ -46,7 +46,7 @@
         <a href="#r9">Several jobs</a>
         <a href="#r10">Slices</a>
         <a href="#r11">Five names</a>
-        <a href="#harvest">Harvest</a>
+        <a href="#written">Written exam</a>
       </nav>
 
       <h2 id="r1">1. Three aims</h2>
@@ -512,72 +512,128 @@
         </div>
       </div>
 
-      <h2 id="harvest">Harvest — old wording, after the growth story</h2>
-      <p class="line-note">These are traps he already used, or the lecture’s own lists. A new paper can change the sentence. If you only memorise these, you are not done. If you finished the rooms, these should feel easy.</p>
+            <h2 id="written">Written exam — this family</h2>
+      <p class="line-note">Same topic as the rooms. Try first. Then open the answer. A new paper can change the story (overnight tape, 30 terminals, a USB that did not exist at purchase). Map it to an aim, a service, or a history step.</p>
 
       <div class="paper">
-        <p class="yr">Lecture 04 · three aims</p>
-        <p>Convenience · efficiency · ability to evolve. A new device five years later. A new utility window. A security fix.</p>
+        <p class="yr">Lecture 04 shape · three aims (short list)</p>
+        <p>Name the three OS objectives. One sentence each.</p>
         <details>
-          <summary>Solution steps</summary>
+          <summary>Answer and steps</summary>
           <ol>
-            <li>Easy machine for programs (named files, simple I/O).</li>
-            <li>Share CPU, memory, devices without waste.</li>
-            <li>Add, test, and ship a function without stopping service. Hardware, services, fixes are the three evolve stories.</li>
+            <li><strong>Convenience.</strong> Programs use named files and simple read/write. They do not talk to the disk chip.</li>
+            <li><strong>Efficiency.</strong> CPU, memory and devices are shared. One guest must not waste the whole machine.</li>
+            <li><strong>Ability to evolve.</strong> You can add, test and ship a new function without stopping the rest. New hardware, new services, and fixes are the three evolve stories.</li>
+            <li>A new wording may say “easy to use / use resources well / grow without breaking service.” Same three.</li>
           </ol>
         </details>
       </div>
+
       <div class="paper">
-        <p class="yr">Lecture 04 · serial → batch → multi → time share</p>
-        <p>What problem did each step kill? What did it still leave?</p>
+        <p class="yr">Lecture 04 shape · services</p>
+        <p>Name OS services a written short can ask. Give four, with one line each.</p>
         <details>
-          <summary>Solution steps</summary>
+          <summary>Answer and steps</summary>
           <ol>
-            <li>Serial: humans, slot waste, setup waste. No OS.</li>
-            <li>Simple batch: monitor runs a queue. Still idle on I/O. Needs protection, timer, modes.</li>
-            <li>Multiprogramming: several jobs in RAM, run another while one waits. Goal = utilisation.</li>
-            <li>Time sharing: short slices, terminals, ~1/n, response. Extra: protect users, allocate, exclusive devices.</li>
+            <li>Program development — editors, debuggers (utilities, not the kernel).</li>
+            <li>Program execution — start, suspend, schedule, stop.</li>
+            <li>I/O — uniform read/write. Device details hidden.</li>
+            <li>Files — layout hidden; who may open is checked.</li>
+            <li>System access — who may use the machine / this printer.</li>
+            <li>Errors — HW (memory, device) and SW (divide by zero, bad address). React in a way that matches the error.</li>
+            <li>Accounting — count usage, watch performance. Billing is one use, not the only use.</li>
           </ol>
         </details>
       </div>
+
       <div class="paper">
-        <p class="yr">Lecture 04 · odd manager</p>
-        <p>How can a program that gave away the CPU ever manage the CPU?</p>
+        <p class="yr">Lecture 04 shape · odd manager</p>
+        <p>The OS manages the CPU, but it is also a program on that CPU. How can it ever get control back?</p>
         <details>
-          <summary>Solution steps</summary>
+          <summary>Answer and steps</summary>
           <ol>
-            <li>The OS is software on the same processor.</li>
-            <li>It relinquishes control.</li>
-            <li>Timer interrupt, I/O interrupt, or trap brings it back. Hardware detail: OS10.</li>
+            <li>The OS is software. There is no second processor watching from outside.</li>
+            <li>It often gives the CPU to a user program (relinquishes control).</li>
+            <li>It gets the keys back by a <strong>timer interrupt</strong>, an <strong>I/O interrupt</strong>, or a <strong>trap / system call</strong>.</li>
+            <li>Hardware detail of save-PC-then-ISR is OS10. Here you must say why that doorbell exists.</li>
           </ol>
         </details>
       </div>
+
       <div class="paper">
-        <p class="yr">Oral follow-up (foundations workbook) · this family</p>
-        <p>Three OS objectives? Why did OS evolve? Do two programs run simultaneously on one core? Batch vs multiprogramming vs time sharing?</p>
+        <p class="yr">Lecture 04 shape · serial → batch → multiprogramming → time sharing</p>
+        <p>What problem did each step kill? What did it still leave? A written paper can ask this as four short boxes.</p>
         <details>
-          <summary>Where on this page</summary>
+          <summary>Answer and steps</summary>
           <ol>
-            <li>Room 1 short. Room 6. Room 9 twist. Rooms 8–10 harvest.</li>
-            <li>If a new lab story appears (one long simulation, students typing), map it: utilisation = multi, response = slices, protection = users must not overwrite each other.</li>
+            <li><strong>Serial (no OS).</strong> Humans own a slot. Two wastes: scheduling (job early or late) and setup (mount compiler, tapes, cards). Nothing automatic.</li>
+            <li><strong>Simple batch.</strong> A monitor runs a queue. Job ends, branch back, next job. Kills setup waste. Still idle while that one job waits for I/O. Lessons: memory protection, timer/timeout, user vs monitor modes.</li>
+            <li><strong>Multiprogramming.</strong> Several programs in RAM. When A waits for disk, run B. Goal: CPU utilisation. Needs enough memory, protection, a scheduler.</li>
+            <li><strong>Time sharing.</strong> Terminals. Goal is now also response, not only utilisation. Short slices. About 1/n speed for n users, ignore OS overhead. Extra: protect users from each other, allocate resources, exclusive devices. Early name on the slide: CTSS.</li>
+            <li>One core: concurrent means lives overlap, not “same instant.” Parallel same-instant needs more cores.</li>
           </ol>
         </details>
       </div>
+
       <div class="paper">
-        <p class="yr">Stallings five · list only</p>
-        <p>Processes · memory management · protection and security · scheduling and resource management · system structure.</p>
+        <p class="yr">SS2018 written 3.7.2018 · Task 7 item 3</p>
+        <p>True or false: multithreading is useless on systems with only one processor.</p>
         <details>
-          <summary>Solution steps</summary>
+          <summary>Answer and steps</summary>
           <ol>
-            <li>List the five if he asks for names.</li>
-            <li>Do not dump mutex code here. Point to the later page.</li>
+            <li><strong>False.</strong></li>
+            <li>One core can still overlap: thread A waits for I/O, thread B runs.</li>
+            <li>That is the same reason multiprogramming was invented. Do not need two sockets.</li>
+          </ol>
+        </details>
+      </div>
+
+      <div class="paper">
+        <p class="yr">Westerkamp SS2021 · Task 12 · 5 points · Cooperative multitasking</p>
+        <p>Explain cooperative multitasking. One advantage. One disadvantage.</p>
+        <details>
+          <summary>Answer and steps</summary>
+          <ol>
+            <li><strong>Meaning.</strong> A task gives up the CPU itself (<code>yield</code> or a blocking wait). The OS does not forcibly preempt.</li>
+            <li><strong>Advantage.</strong> Lower overhead. Simpler: a task runs until it yields, so some mid-instruction races cannot happen. (Classic Mac OS, Windows 3.1.)</li>
+            <li><strong>Disadvantage.</strong> One greedy or buggy task that never yields hangs everyone. No timer can take the CPU back.</li>
+            <li>Time sharing on a laptop is the opposite idea: the timer interrupt (OS10) forces a slice. That is why lecture 04 needed timeouts already at simple batch.</li>
+          </ol>
+        </details>
+      </div>
+
+      <div class="paper">
+        <p class="yr">Later Gräßner Y/N · this family (also Floor 4)</p>
+        <p>Microkernel extra switches, can be slower? Concurrent jobs always run at the same instant? A process is an instance of a running program?</p>
+        <details>
+          <summary>Answer and steps</summary>
+          <ol>
+            <li>Microkernel slower: <strong>Y</strong> often. Drivers live in user space. Each ask is extra IPC / extra switches. That is Stallings “system structure,” not “the desktop is the OS.”</li>
+            <li>Concurrent = same instant: <strong>N</strong>. Concurrent = lives overlap. On one core they take turns. Parallel = same instant.</li>
+            <li>Process = running instance: <strong>Y</strong>. File on disk = program. Running copy with its own memory = process. Two Word windows: still one program file. Fork detail is OS1.</li>
+          </ol>
+        </details>
+      </div>
+
+      <div class="paper">
+        <p class="yr">Lecture 04 · Stallings five names</p>
+        <p>Name the major OS achievements listed on the overview slide.</p>
+        <details>
+          <summary>Answer and steps</summary>
+          <ol>
+            <li>Processes — OS1.</li>
+            <li>Memory management.</li>
+            <li>Information protection and security.</li>
+            <li>Scheduling and resource management — deadlock is OS5.</li>
+            <li>System structure (how the OS is built).</li>
+            <li>If he asks “explain a mutex,” do not stay on this list. Go to OS3. Vista vs Apollo is colour on the slide, not an exam fact.</li>
           </ol>
         </details>
       </div>
 
       <div class="need">
         <span class="tag">You are ready on this family when</span>
-        <p>You can hear a new story (overnight tape, 30 terminals, a USB that did not exist at purchase) and say which aim, which service, and which history step it is. Then the harvest is boring. Hardware doorbells: <a href="os10.html">OS10</a>. Then <a href="os1.html">OS1</a> for fork.</p>
+        <p>You can hear a new story (overnight tape, 30 terminals, a USB that did not exist at purchase) and write which aim, which service, and which history step it is, with steps. Then these papers are boring. Hardware doorbells: <a href="os10.html">OS10</a>. Then <a href="os1.html">OS1</a> for fork.</p>
       </div>
 
       <div class="pager">

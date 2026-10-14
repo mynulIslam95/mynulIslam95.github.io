@@ -46,7 +46,7 @@
         <a href="#r9">Cache</a>
         <a href="#r10">I/O</a>
         <a href="#r11">Resources</a>
-        <a href="#harvest">Harvest</a>
+        <a href="#written">Written exam</a>
       </nav>
 
       <h2 id="r1">1. What the OS is</h2>
@@ -541,60 +541,153 @@
         </div>
       </div>
 
-      <h2 id="harvest">Harvest — old wording, after the machine</h2>
-      <p class="line-note">These are traps he already used. A new paper can change the sentence. If you only memorise these, you are not done. If you finished the rooms, these should feel easy.</p>
+            <h2 id="written">Written exam — this family</h2>
+      <p class="line-note">Same topic as the rooms. Try the question first. Then open the answer. A new paper can change the numbers or the story. Do not memorise only the old sentence.</p>
 
       <div class="paper">
-        <p class="yr">SS2018 task 1 · six resource prompts</p>
-        <p>Shareable? Must not share? Preemptible? Not preemptible? Inconsistency example? Two consistency tools?</p>
+        <p class="yr">SS2018 test exam · Task 1 · 6 points</p>
+        <p>Six short prompts on concurrent resource access. Name: (1) a resource many threads can use at once with no problem; (2) one that must never be concurrent; (3) one the OS can easily take away; (4) one it cannot; (5) an example where concurrent access causes inconsistency; (6) two OS tools that keep consistency.</p>
         <details>
-          <summary>Solution steps</summary>
+          <summary>Answer and steps</summary>
           <ol>
-            <li>Shareable: read-only file or table.</li>
-            <li>Must not share: <code>x = x + 1</code> with no lock.</li>
-            <li>Preemptible: CPU.</li>
-            <li>Not: held mutex, or printer mid-page.</li>
-            <li>Inconsistency: two threads read a balance, both add, both write — one add lost.</li>
-            <li>Tools: mutex and semaphore. How they work: OS3.</li>
+            <li>Read-only file or static table — many readers, nobody writes.</li>
+            <li>A shared counter <code>x = x + 1</code> with no lock — lost update.</li>
+            <li>CPU — the scheduler can take it at an instruction boundary (preemptible).</li>
+            <li>A mutex held in the middle of the critical section, or a printer mid-page (not preemptible).</li>
+            <li>Two threads read a balance, both add, both write — one add is lost.</li>
+            <li>Mutex and semaphore. How they work is OS3. Here you only name them.</li>
           </ol>
         </details>
       </div>
+
       <div class="paper">
-        <p class="yr">Gräßner T/F · hardware family (also Floor 3)</p>
+        <p class="yr">SS2018 written 3.7.2018 · Task 1 · 3 points · Interrupts</p>
+        <p>Give at least three conditions that can generate an interrupt. Explain each. Add a typical example.</p>
+        <details>
+          <summary>Answer and steps</summary>
+          <ol>
+            <li>Group by where the trigger comes from: the running instruction, the clock, or a device.</li>
+            <li><strong>Program interrupt</strong> — from executing an instruction. Example: divide by zero, overflow. (Close to a trap. If he says “trap vs interrupt”, OS10 room 6.)</li>
+            <li><strong>Timer interrupt</strong> — from the processor timer, on a regular beat. Example: scheduler preemption tick, so one program cannot keep the CPU forever.</li>
+            <li><strong>I/O interrupt</strong> — from a device controller: done, or error. Example: disk finished a read, mouse click, key press.</li>
+            <li>A new paper may add “network packet arrived.” That is still I/O. Do not write only “hardware.” Name the source.</li>
+          </ol>
+        </details>
+      </div>
+
+      <div class="paper">
+        <p class="yr">SS2018 written 3.7.2018 · Task 7 · Y/N · 5 points</p>
+        <p>1. DMA reduces the usage of the processor. 2. Switching from kernel mode to user mode is under control of the user. 3. Multithreading is useless on systems with only one processor. 4. Virtual memory allows processes to have more memory than physically available. 5. A good cache design uses a block size as small as possible.</p>
+        <details>
+          <summary>Answer and steps</summary>
+          <ol>
+            <li><strong>Y.</strong> DMA copies between device and memory. The CPU does not copy every byte. That is the point of DMA.</li>
+            <li><strong>N.</strong> User code cannot promote itself. Kernel and hardware return from kernel (iret / sysret). A user program that “returns itself to user mode” is false on later papers too.</li>
+            <li><strong>N.</strong> One core: while thread A waits for disk, thread B can run. Overlap, not two cores. (This sentence is also OS11: why multiprogramming exists.)</li>
+            <li><strong>Y.</strong> That is paging / swapping: address space can be larger than RAM.</li>
+            <li><strong>N.</strong> Too-small a block raises miss rate and transfer overhead. Compute, do not chant “small is best.”</li>
+          </ol>
+        </details>
+      </div>
+
+      <div class="paper">
+        <p class="yr">Westerkamp SS2021 · Task 1 · 4 points · Hardware resources</p>
+        <p>Name at least four hardware resources typically under OS control.</p>
+        <details>
+          <summary>Answer and steps</summary>
+          <ol>
+            <li>CPU (time, via scheduling).</li>
+            <li>Main memory / RAM (allocate and protect).</li>
+            <li>Secondary storage (disk / SSD, via the file system).</li>
+            <li>I/O devices (network, keyboard, printer — via drivers).</li>
+            <li>Fifth if he wants more: timer / clock, which cuts time slices.</li>
+            <li>Do not write Chrome or Word. Those are programs.</li>
+          </ol>
+        </details>
+      </div>
+
+      <div class="paper">
+        <p class="yr">Westerkamp SS2021 · Task 2 · 5 points · Interrupt example</p>
+        <p>Explain an example where using an interrupt makes sense. Give example, reason, and invoking / processing / result.</p>
+        <details>
+          <summary>Answer and steps</summary>
+          <ol>
+            <li><strong>Example.</strong> Disk or network controller signals “data is ready.”</li>
+            <li><strong>Reason.</strong> Without the interrupt the CPU would poll the slow device and waste cycles.</li>
+            <li><strong>Invoking.</strong> The controller raises the interrupt line when data is ready.</li>
+            <li><strong>Processing.</strong> CPU finishes the current instruction, saves PC and registers / PSW, jumps to the ISR. The ISR reads the buffer, marks I/O done, moves the waiter from Blocked to Ready.</li>
+            <li><strong>Result.</strong> Return-from-interrupt restores context. Later the scheduler runs the now-Ready process. Data is there. Polling is gone.</li>
+            <li>A new paper can use keyboard instead of disk. Same three parts: invoke, process, result.</li>
+          </ol>
+        </details>
+      </div>
+
+      <div class="paper">
+        <p class="yr">Westerkamp SS2021 · Task 3 · 6 points · Process switch</p>
+        <p>Name at least three incidents that can cause a process switch.</p>
+        <details>
+          <summary>Answer and steps</summary>
+          <ol>
+            <li>The running process makes a <strong>blocking I/O</strong> call and goes Blocked. CPU is free.</li>
+            <li><strong>Timer</strong> / time slice ends. Preemptive scheduler. Forced switch.</li>
+            <li>A <strong>higher-priority</strong> process becomes Ready (I/O done, or new) and preempts.</li>
+            <li>Also accepted: the process <strong>exits</strong>, or <code>yield()</code> in cooperative multitasking.</li>
+            <li>Write what the story contains. Do not dump fork if the story is a disk wait.</li>
+          </ol>
+        </details>
+      </div>
+
+      <div class="paper">
+        <p class="yr">Westerkamp SS2021 · Task 6 · 18 points · Cache loop</p>
+        <p>One process, forever: <code>TBLOCK</code> is 64 bytes; <code>memory[20000]</code>; inner loop <code>i &lt; 0x4000</code>; <code>sum += memory[i][0]</code>. Cache 1 MiB, line 64 B. FIFO, LRU, Random: which highest average hit rate?</p>
+        <details>
+          <summary>Answer and steps</summary>
+          <ol>
+            <li>Lines in cache = 1 MiB / 64 B = <strong>16384</strong>.</li>
+            <li><code>0x4000</code> = <strong>16384</strong>. Each <code>TBLOCK</code> is exactly one line. The loop touches blocks 0…16383.</li>
+            <li><code>memory[20000]</code> is a distractor. The loop never walks past 16383.</li>
+            <li>First pass: cache empty. 16384 misses. Cache is now full with exactly the working set. No eviction yet.</li>
+            <li>Later passes: same 16384 lines again. No miss. No eviction. FIFO, LRU, Random do the same.</li>
+            <li><strong>Answer: three-way tie.</strong> Steady hit rate goes to ~100%. Naming “LRU” without the numbers is wrong.</li>
+            <li>If he changes the size so the working set is larger than the cache, then policy matters. Compute first.</li>
+          </ol>
+        </details>
+      </div>
+
+      <div class="paper">
+        <p class="yr">Westerkamp SS2021 · Task 13 · 5 points · Privileged instruction</p>
+        <p>Name one privileged instruction and explain by example why it must be privileged.</p>
+        <details>
+          <summary>Answer and steps</summary>
+          <ol>
+            <li>Pick an instruction that would break scheduling or memory protection if user code could run it.</li>
+            <li><strong>CLI</strong> (disable interrupts) on x86. If a user program could run CLI, it could kill the timer. Then the scheduler never comes back. One program keeps the CPU.</li>
+            <li>Or: load <strong>CR3</strong> (page-table base). If user code could rewrite CR3, it could map any physical page, including the kernel and other processes.</li>
+            <li>Other good names: halt, I/O port in/out, set processor mode. Always add the “if user could… then…” sentence.</li>
+          </ol>
+        </details>
+      </div>
+
+      <div class="paper">
+        <p class="yr">Later Gräßner Y/N · same family (also Floor 4 exam hall)</p>
         <p>DMA reduces CPU copy work? User program returns itself to user mode? Virtual memory bigger than RAM? Smallest cache block is best? Cache always slower? Timer is a trap? Blocking calls inside an ISR?</p>
         <details>
-          <summary>Solution steps</summary>
+          <summary>Answer and steps</summary>
           <ol>
-            <li>DMA yes. User cannot promote itself: false. Virtual memory yes.</li>
-            <li>Smallest block: false. Cache always slower: false. Timer = trap: false. Block in ISR: false.</li>
-          </ol>
-        </details>
-      </div>
-      <div class="paper">
-        <p class="yr">Gräßner T/F · what an OS is</p>
-        <p>Microkernel extra switches, can be slower? Concurrent means same instant? Process = running instance?</p>
-        <details>
-          <summary>Solution steps</summary>
-          <ol>
-            <li>Microkernel: often yes, extra IPC. Concurrent: false for “same instant.” Process: true.</li>
-          </ol>
-        </details>
-      </div>
-      <div class="paper">
-        <p class="yr">Westerkamp SS2021 · this family only</p>
-        <p>1 hardware resources · 2 interrupt example · 3 process switch · 6 cache loop · 13 privileged instruction. Other 2021 rooms (fork, pipes, deadlock, make) are other pages.</p>
-        <details>
-          <summary>Where on this page</summary>
-          <ol>
-            <li>Room 2 short. Room 6 short. Room 11 short. Room 9 paper. Room 5 short.</li>
-            <li>If a new 2021-style room appears, map it to a room: who copies, who has the key, does the working set fit, is it a trap or a doorbell.</li>
+            <li>DMA: <strong>Y</strong>. Direct copy. CPU free during the transfer.</li>
+            <li>User returns itself to user mode: <strong>N</strong>. Only kernel / hardware.</li>
+            <li>Virtual memory larger than RAM: <strong>Y</strong>.</li>
+            <li>Smallest block always best: <strong>N</strong>. Miss rate vs transfer cost.</li>
+            <li>Cache always slower: <strong>N</strong>. Average case is faster. Bad patterns are rare.</li>
+            <li>Timer = trap: <strong>N</strong>. Timer is an asynchronous interrupt. A trap is synchronous, from the running instruction (syscall, fault).</li>
+            <li>Block inside ISR: <strong>N</strong>. Handler must finish fast. Blocking waits belong in process context.</li>
           </ol>
         </details>
       </div>
 
       <div class="need">
         <span class="tag">You are ready on this family when</span>
-        <p>You can name the parts in a story you have not seen, say the order, say who is not allowed, and plug new numbers into the cache formula. Then the harvest is boring. Then go to <a href="os1.html">OS1</a> for fork, or back to <a href="os0.html">OS0</a>.</p>
+        <p>You can name the parts in a story you have not seen, write the order, write who is not allowed, and plug new numbers into the cache formula. Then these papers are boring. Then <a href="os11.html">OS11</a>, or <a href="os1.html">OS1</a> for fork, or back to <a href="os0.html">OS0</a>.</p>
       </div>
 
       <div class="pager">
