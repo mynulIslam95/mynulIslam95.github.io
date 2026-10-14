@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <script>
+  (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
+  </script>
+  <title>OS12 · Processes</title>
+  <meta name="description" content="Lecture 05 Processes: what a process is, PCB, five states, suspend, when to switch. Twist, True/False, written papers with answers. He may ask a new sentence."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/os.css?v=12"/>
+</head>
+<body class="os">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="os-bar">
+    <div class="wrap">
+      <a class="os-brand" href="../index.html">OS · Learn</a>
+      <nav class="os-nav" aria-label="OS">
+        <a href="../index.html">Map</a>
+        <a href="../c/c1.html">C stories</a>
+        <a class="is-on" href="os0.html">OS stories</a>
+        <a href="../exam/mcq.html">Exam</a>
+        <a href="../../index.html">Learn hub</a>
+      </nav>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode"><svg class="theme-sun" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="#F5C518"/><g stroke="#F5C518" stroke-width="1.8" stroke-linecap="round" fill="none"><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M5.6 18.4l1.7-1.7M16.7 7.3l1.7-1.7"/></g></svg><svg class="theme-moon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="#8EA0FF" d="M16.2 3.1A8.9 8.9 0 1 0 21.1 18 7.4 7.4 0 0 1 16.2 3.1z"/></svg></button>
+    </div>
+  </header>
+  <main id="main">
+    <div class="wrap">
+      <p class="kicker"><a href="../index.html">Map</a> · Processes · OS12</p>
+      <h1>Processes</h1>
+      <p class="lede">Lecture 05. A process is a program in execution: code, data, a current state, and resources. He is not required to repeat last year’s sentence. Each room: the machine, then a twist, then True/False. Written papers with full answers sit at the end. Linux <code>fork</code> / <code>exec</code> / <code>waitpid</code> as a short shop story is <a href="os1.html">OS1</a>. Threads are <a href="os2.html">OS2</a>.</p>
+      <p class="need">You need <a href="../c/c1.html">C1</a>–<a href="../c/c4.html">C4</a> before the Linux lines. The states and the PCB you can read now. C without stories: <a href="../../c-os/index.html">C for OS</a>.</p>
+      <nav class="room-jump" aria-label="Rooms">
+        <a href="#r1">What</a>
+        <a href="#r2">PCB</a>
+        <a href="#r3">Five states</a>
+        <a href="#r4">Transitions</a>
+        <a href="#r5">Create, kill</a>
+        <a href="#r6">Suspend</a>
+        <a href="#r7">Image</a>
+        <a href="#r8">Modes</a>
+        <a href="#r9">When to switch</a>
+        <a href="#r10">Switch steps</a>
+        <a href="#r11">Linux</a>
+        <a href="#written">Written exam</a>
+      </nav>
+
+      <h2 id="r1">1. What a process is</h2>
+      <div class="story">
+        <p>The lecture’s job for any modern OS: <strong>process management</strong> — allocate resources, exchange information, synchronise.</p>
+        <p>Books try several sentences. Keep two pieces: <strong>code</strong> and the <strong>data</strong> that belongs to that code. While it runs, you can point at: identifier, state, priority, program counter, memory pointers, register context, I/O status, accounting.</p>
+        <p>Fair exam sentences: “a program in execution,” “an instance of a program running on a computer.” File on disk = program. Running copy = process. Two Word windows: one program file, two processes.</p>
+        <p>On <strong>one</strong> processor, several processes take turns in time (multiprogramming). On several processors they can run at the same instant. Concurrent ≠ same instant. That split already sat on <a href="os11.html">OS11</a>.</p>
+        <p>In a multithreaded system the <strong>process</strong> still owns the resources. The concurrent execution streams are <strong>threads</strong> inside it. Full thread story: OS2.</p>
+      </div>
+      <div class="quiz" data-answer="yes">
+        <p><strong>True or false.</strong> A process is an instance of a running program.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. That is one of the lecture definitions, and a Gräßner Y/N that comes back.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> If two processes run on one core, they execute the same instruction in the same instant.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Uniprocessor multiprogramming interleaves them. Same instant needs more processors, or at least more cores.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="no">
+        <p><strong>True or false.</strong> In a multithreaded system the thread owns the files and the address space; the process is only a name.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. The process keeps resource ownership. Threads are the concurrent streams inside it.</p>
+        </div>
+      </div>
+
+      <h2 id="r2">2. The process block (PCB)</h2>
+      <div class="story">
+        <p>The OS keeps one record per process. Names: process block, process control block, PCB. Fields you must be able to name:</p>
+        <ul>
+          <li><strong>Identifier</strong> (handle) — unique. Linux: PID.</li>
+          <li><strong>State</strong> — running, ready, blocked, …</li>
+          <li><strong>Priority</strong> — relative to others.</li>
+          <li><strong>Program counter</strong> — address of the next instruction.</li>
+          <li><strong>Memory pointers</strong> — code, data, extra blocks.</li>
+          <li><strong>Context</strong> — register values while it ran.</li>
+          <li><strong>I/O status</strong> — open files, devices, outstanding requests.</li>
+          <li><strong>Accounting</strong> — CPU time used, limits.</li>
+        </ul>
+        <p>A new exam can ask “what must the OS store to restart this process later?” You list: PC, registers, state, memory map — not “Chrome.”</p>
+      </div>
+      <div class="quiz" data-kind="short" data-need="4" data-pool="pid/id/identif/handle|state|priority|pc/counter|memory/pointer|register/context|io/file/device|account" data-hints="Name fields of the process block.||PID, state, PC, registers, memory pointers, I/O, accounting.||Four is enough.">
+        <p><strong>Short.</strong> Name at least four things stored in a process control block.</p>
+        <input class="short-in" type="text" spellcheck="false" placeholder="Four fields"/>
+        <div class="actions">
+          <button type="button" data-act="hint">Hint</button>
+          <button type="button" data-act="submit">Submit</button>
+        </div>
+        <div class="quiz-hint" hidden></div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Identifier, state, priority, PC, memory pointers, register context, I/O status, accounting. Four of those is enough.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> The whole user stack lives inside the PCB.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. The stack is part of the process image (user memory). The PCB may hold a stack pointer. A Gräßner Y/N “the stack is part of the PCB” is false.</p>
+        </div>
+      </div>
+
+      <h2 id="r3">3. Why five states, not two</h2>
+      <div class="story">
+        <p>Simplest model: <strong>running</strong> or <strong>not running</strong>. A dispatcher picks the next “not running” job.</p>
+        <p>Trap: that next job might only be waiting for I/O. You would dispatch a blocked process. So split “not running” into <strong>ready</strong> (can run now) and <strong>blocked / waiting</strong> (needs an event).</p>
+        <p>Add <strong>New</strong> (created, not yet admitted — PCB exists, code may not be in RAM yet) and <strong>Exit</strong> (released). That is the five-state model.</p>
+        <p>On one processor, at most one process is Running.</p>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> Two-state “running / not running” is enough, because the dispatcher can always run whoever is first in the queue.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. The oldest in the queue might still be waiting for I/O. You must not treat “not running” as one bag.</p>
+        </div>
+      </div>
+      <div class="quiz" data-kind="short" data-need="5" data-pool="new|ready|run|block/wait|exit" data-hints="Five names.||New, Ready, Running, Blocked (Waiting), Exit.">
+        <p><strong>Short.</strong> Name the five process states.</p>
+        <input class="short-in" type="text" spellcheck="false" placeholder="Five states"/>
+        <div class="actions">
+          <button type="button" data-act="hint">Hint</button>
+          <button type="button" data-act="submit">Submit</button>
+        </div>
+        <div class="quiz-hint" hidden></div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>New. Ready. Running. Blocked (waiting). Exit. A paper may say “waiting” instead of blocked. Same state.</p>
+        </div>
+      </div>
+
+      <h2 id="r4">4. Transitions</h2>
+      <div class="story">
+        <ul>
+          <li>→ New: create the process.</li>
+          <li>New → Ready: OS can take more work (memory and process count allow it).</li>
+          <li>Ready → Running: dispatcher picks one. Which one is scheduling (later lecture).</li>
+          <li>Running → Exit: finished, or killed (see the termination table).</li>
+          <li>Running → Ready: time slice over, or it yields, or a higher-priority process became ready.</li>
+          <li>Running → Blocked: waits for I/O, memory, a system call that cannot finish now.</li>
+          <li>Blocked → Ready: the event happened. Ready is not Running. It waits for the dispatcher.</li>
+          <li>Ready → Exit and Blocked → Exit: some systems let a parent kill a child from any state. If the parent dies, children may die too.</li>
+        </ul>
+        <p>Westerkamp “wake-up” = Blocked → Ready, not Blocked → Running.</p>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> When the disk finishes, the waiting process goes straight to Running.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Wake-up = Blocked → Ready. Then it competes. The scheduler may run it now, or later.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="yes">
+        <p><strong>True or false.</strong> A timer tick can move Running → Ready so someone else can run.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. Maximum uninterrupted time. Alternative: the process yields. Or a higher-priority process becomes ready and preempts.</p>
+        </div>
+      </div>
+
+      <h2 id="r5">5. Create and kill</h2>
+      <div class="story">
+        <p>How a process is born (lecture table): new batch job; interactive logon; OS creates a helper (print); an existing process <strong>spawns</strong> a child (Linux: <code>fork</code>).</p>
+        <p>How it dies: normal completion; time limit; no memory; bounds violation; protection error; arithmetic error; time overrun waiting; I/O failure; invalid instruction; privileged instruction; data misuse; operator / OS; parent dies; parent requests kill.</p>
+        <p>You do not memorise every row. You group: the process finished; it broke a rule; it waited too long; someone with authority stopped it.</p>
+      </div>
+      <div class="quiz" data-answer="yes">
+        <p><strong>True or false.</strong> A parent process typically has the authority to terminate its children.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. “Parent request” on the termination table. Linux: <code>kill</code> to the child’s PID. “kill can only terminate” is still false — the signal is an argument.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> A process is only created when a human types at a terminal.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Batch job, OS helper (print), spawn from an existing process. Logon is one row, not the only row.</p>
+        </div>
+      </div>
+
+      <h2 id="r6">6. Suspend — swap to disk</h2>
+      <div class="story">
+        <p>RAM is full of blocked processes. Nobody Ready. Then swap one out. Two extra states:</p>
+        <ul>
+          <li><strong>Ready/Suspend</strong> — on disk, would run if it were in RAM.</li>
+          <li><strong>Blocked/Suspend</strong> — on disk, still waiting for an event.</li>
+        </ul>
+        <p>That is two-dimensional: Ready vs Blocked, and in-memory vs swapped. Exam guide: 7-state Stallings model. Under time pressure a single Suspend node can still score if you say “swapped out to free memory.”</p>
+        <p>A suspended process is not immediately available. An event that would unblock it does <em>not</em> make it Running. An agent (itself, parent, OS) put it there and must take it out.</p>
+        <p>Why suspend a process: need RAM for a ready job; OS suspects a problem; user debug; periodic job waiting for the next interval; parent wants to freeze a child.</p>
+        <p>Why suspending a <strong>thread</strong> usually makes little sense: suspend exists to free the process’s memory. Threads of one process share that memory. You cannot swap one thread and keep the others. Three thread states on the oral/written: running, ready, blocked — no suspend. WS2019 Task 1.</p>
+      </div>
+      <div class="quiz" data-answer="yes">
+        <p><strong>True or false.</strong> The point of suspend is to free main memory by sending a process to secondary storage.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. Swapping. That one idea answers “why suspend,” “why not a thread,” and “Ready/Suspend vs Blocked/Suspend.”</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> When the disk event arrives, a Blocked/Suspend process is immediately Running.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Blocked/Suspend → Ready/Suspend. It is still on disk. Then the OS may swap it in (Ready/Suspend → Ready) and later dispatch it.</p>
+        </div>
+      </div>
+
+      <h2 id="r7">7. Process image</h2>
+      <div class="story">
+        <p>The OS must know where things live. The <strong>process image</strong>:</p>
+        <ul>
+          <li><strong>User data</strong> — writable: program data, user stack, code that may be modified.</li>
+          <li><strong>User program</strong> — the code to execute.</li>
+          <li><strong>Stack</strong> — LIFO. Parameters and return addresses for calls. One or more stacks.</li>
+          <li><strong>Process control block</strong> — what the OS needs to control it.</li>
+        </ul>
+        <p>OS tables: memory, I/O, files, processes. They cross-reference. You do not draw every table in the exam. You say: the OS keeps tables for the things it manages.</p>
+      </div>
+      <div class="quiz" data-answer="yes">
+        <p><strong>True or false.</strong> The stack stores parameters and return addresses.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. Lecture sentence. That does not put the whole stack inside the PCB.</p>
+        </div>
+      </div>
+
+      <h2 id="r8">8. User mode and kernel mode</h2>
+      <div class="story">
+        <p>User programs tend to make nonsense. Two modes:</p>
+        <ul>
+          <li><strong>User mode</strong> — less privileged. Applications.</li>
+          <li><strong>Kernel mode</strong> (system, control) — unrestricted, for work that must keep the machine honest.</li>
+        </ul>
+        <p>The OS drops to user mode when it hands over to a process. Jump into kernel mode is triggered by <strong>interrupts</strong> (and traps, supervisor calls). User code cannot promote itself. That Y/N already lived on OS10.</p>
+      </div>
+      <div class="quiz" data-answer="no">
+        <p><strong>True or false.</strong> Switching from kernel mode to user mode is under control of the user program.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. The OS hands over. The user cannot promote itself back to kernel.</p>
+        </div>
+      </div>
+
+      <h2 id="r9">9. When to switch</h2>
+      <div class="story">
+        <p>Three mechanisms (same family as OS10, now attached to process states):</p>
+        <ul>
+          <li><strong>Interrupt</strong> — external to the current instruction. Clock: time slice over → Running → Ready, dispatch another. I/O: waiters Blocked → Ready, then decide. Memory fault: needed page not in RAM → this process Blocked, switch.</li>
+          <li><strong>Trap</strong> — from the current instruction (error / exception). Fatal → Exit. Else recover.</li>
+          <li><strong>Supervisor call</strong> — explicit ask for the OS, e.g. I/O. Often Running → Blocked.</li>
+        </ul>
+      </div>
+      <div class="quiz" data-kind="short" data-need="3" data-pool="timer/clock/slice/interrupt|io/device/disk|trap/fault/syscall/supervisor|block/wait|exit/yield" data-hints="Clock, I/O, trap, syscall, block, exit.||Name three incidents.||Do not write only fork.">
+        <p><strong>Short.</strong> Name at least three incidents that can cause a process switch.</p>
+        <input class="short-in" type="text" spellcheck="false" placeholder="Three causes"/>
+        <div class="actions">
+          <button type="button" data-act="hint">Hint</button>
+          <button type="button" data-act="submit">Submit</button>
+        </div>
+        <div class="quiz-hint" hidden></div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Timer / time slice. Blocking I/O. I/O completion that wakes a higher-priority process. Trap. Supervisor call. Exit. Yield. Three is enough. Westerkamp Task 3.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="yes">
+        <p><strong>True or false.</strong> A clock interrupt is a reason to ask “has this process used its slice?”</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. If yes: move it to Ready, dispatch another.</p>
+        </div>
+      </div>
+
+      <h2 id="r10">10. What a switch actually does</h2>
+      <div class="story">
+        <ol>
+          <li>Save processor context (PC and other registers).</li>
+          <li>Update the PCB of the process that was Running (including accounting).</li>
+          <li>Move that PCB to the right queue (Ready, Blocked, …).</li>
+          <li>Select another process (scheduling — huge topic later).</li>
+          <li>Update the chosen PCB: state = Running.</li>
+          <li>Update memory-management structures.</li>
+          <li>Restore the saved PC and registers of the chosen process.</li>
+        </ol>
+        <p>Mode switch ≠ process switch. A system call can enter the kernel and return to the <em>same</em> process. OS10 already used that trap.</p>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> Every jump into kernel mode means a different process will run next.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. A successful small syscall can return to the same process. Process switch is the seven-step list, not every interrupt.</p>
+        </div>
+      </div>
+
+      <h2 id="r11">11. Linux picture — fork, exec, wait</h2>
+      <div class="story">
+        <p>The lecture is Stallings. The written paper is often Linux C. Map:</p>
+        <ul>
+          <li>Spawn = <code>fork</code>. Child sees 0. Parent sees child PID. Fail: −1. Two address spaces. Heap is copied, not shared. Threads would share — OS2.</li>
+          <li><code>exec</code> replaces the image in the <strong>same</strong> PID. Process count does not go up.</li>
+          <li>Parent <code>wait</code> / <code>waitpid</code> reaps the exit status. Without that: zombie slot. The child cannot un-zombie itself. If the parent dies first: orphan, re-parented to init, which reaps.</li>
+          <li>A parent may have many children. Two <code>fork()</code> in a row: 4 processes, 3 new.</li>
+          <li>You tell parent from child with the <code>fork</code> return value, not with a global you set before the call. That global is copied the same into both.</li>
+        </ul>
+        <p>Trace a tiny program on <a href="os1.html">OS1</a>. Lab 2 (nice, printf buffer, usleep, lock file vs <code>fcntl</code>) lives there too.</p>
+      </div>
+      <div class="quiz" data-answer="no">
+        <p><strong>True or false.</strong> <code>exec()</code> generates an additional process.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Same PID, new program. Count unchanged.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="no">
+        <p><strong>True or false.</strong> After <code>fork</code>, parent and child can use each other’s heap.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Private copies. That is the point versus threads.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="yes">
+        <p><strong>True or false.</strong> <code>waitpid</code> is how a parent stops its child staying a zombie.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>Yes. Collect the exit status. The kernel can drop the slot. The child cannot wait for itself.</p>
+        </div>
+      </div>
+      <div class="quiz" data-answer="no">
+        <span class="twist">Twist</span>
+        <p><strong>True or false.</strong> Two immediate <code>fork</code>s can make a process its own grandfather.</p>
+        <div class="choices">
+          <button type="button" data-pick="yes">True</button>
+          <button type="button" data-pick="no">False</button>
+        </div>
+        <div class="why">
+          <span class="tag"></span>
+          <p>No. Fork only makes descendants. No cycle back to an ancestor.</p>
+        </div>
+      </div>
+
+      <h2 id="written">Written exam — this family</h2>
+      <p class="line-note">Try the question first. Then open the answer. A new paper can change the numbers. The states and the PCB stay.</p>
+
+      <div class="paper">
+        <p class="yr">WS2019/2020 resit · Task 1 · 10 points · States and suspend</p>
+        <p>a) Draw a process state machine including the suspend state. b) Explain each state. c) Conditions to enter suspend, and why the OS does it. d) Why suspending a thread usually makes no sense. e) Name the three thread states.</p>
+        <details>
+          <summary>Answer and steps</summary>
+          <ol>
+            <li>Draw five states: New, Ready, Running, Blocked, Exit, with the usual arrows. Add Ready/Suspend and Blocked/Suspend (swapped). Arrows: Blocked → Blocked/Suspend (need RAM); Blocked/Suspend → Ready/Suspend (event happened, still on disk); Ready/Suspend → Ready (swap in); also Ready → Ready/Suspend if you must make room. Under time pressure, one Suspend node plus “swapped to disk to free memory” still scores the idea.</li>
+            <li>New: created (e.g. <code>fork</code>), not yet admitted. Ready: in RAM, needs only the CPU. Running: on the core (at most one per core). Blocked: in RAM, waits for an event. Exit: finished or killed. Ready/Suspend: would run, but on disk. Blocked/Suspend: waits, and on disk.</li>
+            <li>Enter suspend when RAM is tight and you need space for a ready job (or a new one). The OS swaps a blocked (or even a ready) process out. Point: free main memory.</li>
+            <li>Suspend is about the process’s memory. Threads of one process share that memory. You cannot swap one thread and keep the others. So thread-suspend is the wrong tool.</li>
+            <li>Thread states: running, ready, blocked (waiting). No suspend.</li>
+          </ol>
+        </details>
+      </div>
+
+      <div class="paper">
+        <p class="yr">SS2018 and later · Y/N cluster · fork, exec, wait, kill</p>
+        <p>fork returns the child’s ID (unqualified)? After fork, they share the heap? exec creates an extra process? Parent has at most one child? Two forks can make a grandfather cycle? waitpid prevents zombies? A process can un-zombie itself? kill only terminates? kill never ends the parent? After fork, a global set before the call tells you who is parent?</p>
+        <details>
+          <summary>Answer and steps</summary>
+          <ol>
+            <li>fork “returns the child ID” unqualified: <strong>N</strong>. Parent sees PID, child sees 0, fail −1.</li>
+            <li>Share heap: <strong>N</strong>. Copies. Threads share.</li>
+            <li>exec extra process: <strong>N</strong>. Same PID.</li>
+            <li>At most one child: <strong>N</strong>. Many children are normal.</li>
+            <li>Grandfather cycle: <strong>N</strong>. Only descendants.</li>
+            <li>waitpid prevents zombies: <strong>Y</strong>. Parent reaps.</li>
+            <li>Child un-zombies itself: <strong>N</strong>. Parent (or init) waits.</li>
+            <li>kill only terminates: <strong>N</strong>. Signal is an argument. Default SIGTERM. Handler can catch SIGINT.</li>
+            <li>kill never ends the parent: <strong>N</strong>. You may signal the parent.</li>
+            <li>Global set before fork tells parent from child: <strong>N</strong> (the trap). Both copies start the same. Use the return value.</li>
+          </ol>
+        </details>
+      </div>
+
+      <div class="paper">
+        <p class="yr">Westerkamp SS2021 · Task 3 · 6 points · Process switch</p>
+        <p>Name at least three incidents that can cause a process switch.</p>
+        <details>
+          <summary>Answer and steps</summary>
+          <ol>
+            <li>Blocking I/O → Blocked, CPU free.</li>
+            <li>Time slice / timer interrupt → Running → Ready.</li>
+            <li>Higher-priority process becomes Ready and preempts.</li>
+            <li>Also: exit; <code>yield</code> in cooperative multitasking.</li>
+          </ol>
+        </details>
+      </div>
+
+      <div class="paper">
+        <p class="yr">Westerkamp SS2021 · Task 8 · 6 points · Wake-up</p>
+        <p>A process is Blocked waiting for network data. Data arrives. What does “wake-up” mean, and what happens next?</p>
+        <details>
+          <summary>Answer and steps</summary>
+          <ol>
+            <li>Wake-up = OS moves the PCB from Blocked to Ready. Not to Running.</li>
+            <li>The ISR marks the event done and queues it on Ready.</li>
+            <li>Next: it competes. Scheduler may dispatch it now or later. When it runs, it resumes after <code>recv()</code>, with data available.</li>
+          </ol>
+        </details>
+      </div>
+
+      <div class="paper">
+        <p class="yr">Westerkamp SS2021 · Task 20 · 6 points · Count the children</p>
+        <p><code>void main(){ fork(); fork(); }</code> How many child (incl. grandchild) processes are created? Explain.</p>
+        <details>
+          <summary>Answer and steps</summary>
+          <ol>
+            <li>Start with P0. First fork makes C1. Both continue to the second fork.</li>
+            <li>Second fork runs twice: P0 makes C2, C1 makes C3 (grandchild).</li>
+            <li>Four processes total, <strong>3 new</strong>. Pattern: n unconditional forks → 2ⁿ total, 2ⁿ − 1 new.</li>
+          </ol>
+        </details>
+      </div>
+
+      <div class="paper">
+        <p class="yr">Lecture 05 · switch steps (if he asks “what does the OS do”)</p>
+        <p>List the steps of a process switch.</p>
+        <details>
+          <summary>Answer and steps</summary>
+          <ol>
+            <li>Save PC and registers.</li>
+            <li>Update PCB of the old Running process (accounting too).</li>
+            <li>Move that PCB to the right queue.</li>
+            <li>Select another process.</li>
+            <li>Mark the chosen PCB Running.</li>
+            <li>Update memory-management data.</li>
+            <li>Restore that process’s PC and registers.</li>
+            <li>Do not confuse with a mode switch that returns to the same process.</li>
+          </ol>
+        </details>
+      </div>
+
+      <div class="need">
+        <span class="tag">You are ready on this family when</span>
+        <p>You can draw five states plus suspend, say why a thread is not swapped, write three switch causes, and answer the fork Y/N without hunting keywords. Then <a href="os1.html">OS1</a> for the shop and Lab 2, then <a href="os2.html">OS2</a> for threads.</p>
+      </div>
+
+      <div class="pager">
+        <a href="os11.html">← OS11 · How an OS grew</a>
+        <a href="os1.html">OS1 · Shop and Lab 2 →</a>
+      </div>
+    </div>
+  </main>
+  <footer class="os-foot">
+    <div class="wrap">OS12 · Processes · states, PCB, suspend, switch</div>
+  </footer>
+  <script src="../js/os.js?v=4"></script>
+  <script src="../../../assets/js/theme.js?v=3"></script>
+</body>
+</html>
