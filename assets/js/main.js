@@ -20,7 +20,6 @@
       "learn.sub": "Operating systems first. German A1 to B1 is already open.",
       "hero.title": "Mynul Islam. Hamburg. Open to full-time work and relocation inside Germany for DevOps, cloud, IT operations and system administration.",
       "hero.place": "Based in Hamburg.",
-      "term.ask": "Click the command",
       "hero.lede": "On the desk I run IT operations. A ticket comes in, I reproduce the fault, write a clear note for the next person, and close it only after retest. That daily work is Windows, user access and first-line support.",
       "hero.lede2": "In GitHub the same habit is DevOps and cloud: Azure networks and storage in Terraform, services in Docker, Kubernetes probes, and GitHub Actions that format, test and validate before anything is called done.",
       "hero.open": "Open to:",
@@ -99,7 +98,6 @@
       "learn.sub": "Zuerst Betriebssysteme. Deutsch A1 bis B1 ist schon offen.",
       "hero.title": "Mynul Islam. Hamburg. Offen für Vollzeit und Umzug innerhalb Deutschlands für DevOps, Cloud, IT-Betrieb und Systemadministration.",
       "hero.place": "In Hamburg.",
-      "term.ask": "Klick auf den Befehl",
       "hero.lede": "Am Schreibtisch mache ich IT-Betrieb. Ein Ticket kommt, ich stelle die Störung nach, schreibe eine klare Notiz für die nächste Person und schließe erst nach dem Retest. Der Alltag ist Windows, Zugriffsrechte und First-Level-Support.",
       "hero.lede2": "Auf GitHub ist dieselbe Arbeitsweise DevOps und Cloud: Azure-Netze und Storage in Terraform, Dienste in Docker, Kubernetes-Probes und GitHub Actions, die formatieren, testen und validieren, bevor etwas als fertig gilt.",
       "hero.open": "Offen für:",
@@ -179,7 +177,6 @@
       btn.classList.toggle("is-on", btn.getAttribute("data-lang") === lang);
     });
     try { localStorage.setItem("mynul-lang", lang); } catch (e) {}
-    if (window.__termLang) window.__termLang(lang);
   }
 
   document.querySelectorAll(".lang-switch button").forEach(function (btn) {
@@ -230,105 +227,4 @@
     }, 80);
   }
 
-  var termBtn = document.getElementById("term-run");
-  if (termBtn) {
-    var termLog = document.getElementById("term-log");
-    var termLive = document.getElementById("term-live-cmd");
-    var termOut = document.getElementById("term-out");
-    var termNext = document.getElementById("term-next");
-    var termCursor = document.querySelector(".term-cursor");
-    var termBusy = false;
-    var termTimer = null;
-    var termLang = start;
-    var termMode = "whoami";
-    var whoamiOut = function () {
-      var p = i18n[termLang] || i18n.en;
-      return p["hero.lede"] + "\n\n" + p["hero.lede2"];
-    };
-    var stopType = function () {
-      if (termTimer) { clearInterval(termTimer); termTimer = null; }
-    };
-    var typeOut = function (text, then) {
-      stopType();
-      if (!termOut) return;
-      if (reduce) {
-        termOut.textContent = text;
-        if (then) then();
-        return;
-      }
-      var i = 0;
-      var step = text.length > 80 ? 4 : 1;
-      var ms = text.length > 80 ? 10 : 16;
-      termOut.textContent = "";
-      termTimer = setInterval(function () {
-        i += step;
-        termOut.textContent = text.slice(0, i);
-        var screen = document.getElementById("term-screen");
-        if (screen) screen.scrollTop = screen.scrollHeight;
-        if (i >= text.length) {
-          termOut.textContent = text;
-          stopType();
-          if (then) then();
-        }
-      }, ms);
-    };
-    var setNext = function () {
-      if (termNext) termNext.textContent = termMode;
-      termBtn.classList.remove("is-lit");
-      void termBtn.offsetWidth;
-      termBtn.classList.add("is-lit");
-    };
-    var resetTerm = function () {
-      stopType();
-      if (termLog) termLog.innerHTML = "";
-      if (termLive) termLive.textContent = "";
-      if (termOut) termOut.textContent = "";
-      if (termCursor) termCursor.style.display = "";
-      var screen = document.getElementById("term-screen");
-      if (screen) screen.scrollTop = 0;
-      termMode = "whoami";
-      setNext();
-      termBusy = false;
-      termBtn.disabled = false;
-    };
-    var runTerm = function () {
-      if (termBusy) return;
-      if (termMode === "clear") {
-        resetTerm();
-        return;
-      }
-      termBusy = true;
-      termBtn.disabled = true;
-      termBtn.classList.remove("is-lit");
-      if (termLive) termLive.textContent = "whoami";
-      typeOut(whoamiOut(), function () {
-        if (termLog) {
-          var done = document.createElement("div");
-          done.className = "term-done";
-          var line = document.createElement("p");
-          line.className = "term-line";
-          line.innerHTML = '<span class="term-prompt">mynul@IT ~ %</span> ';
-          line.appendChild(document.createTextNode("whoami"));
-          var out = document.createElement("p");
-          out.className = "term-out";
-          out.textContent = whoamiOut();
-          done.appendChild(line);
-          done.appendChild(out);
-          termLog.appendChild(done);
-        }
-        if (termOut) termOut.textContent = "";
-        if (termLive) termLive.textContent = "";
-        termMode = "clear";
-        setNext();
-        termBusy = false;
-        termBtn.disabled = false;
-      });
-    };
-    window.__termLang = function (lang) {
-      termLang = lang;
-      setNext();
-    };
-    setNext();
-    termBtn.addEventListener("click", runTerm);
-  }
 })();
