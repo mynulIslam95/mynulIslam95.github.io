@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
+  </script><title>Operators and formatted output · Python + AI · Learn with Mynul</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<meta name="description" content="Python and AI from scratch. Read the lessons, trace examples and practice with hints, saved drafts and commented answers.">
+<link rel="stylesheet" href="course.css?v=1"></head>
+<body class="cos" data-chapter="4"><a class="skip" href="#main">Skip to content</a>
+<header class="cos-bar"><div class="wrap"><a class="cos-brand" href="index.html">Python · AI</a><nav class="cos-nav" aria-label="Python course"><a href="index.html">Map</a><a  href="ch01.html">1</a><a  href="ch02.html">2</a><a  href="ch03.html">3</a><a class="is-on" href="ch04.html">4</a><a  href="ch05.html">5</a><a  href="ch06.html">6</a><a  href="ch07.html">7</a><a  href="ch08.html">8</a><a  href="ch09.html">9</a><a  href="ch10.html">10</a><a  href="ch11.html">11</a><a  href="ch12.html">12</a><a  href="ch13.html">13</a><a  href="ch14.html">14</a><a href="index.html#projects">Projects</a><a href="../index.html">Learn hub</a></nav><button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode"><svg class="theme-sun" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="#F5C518"/><g stroke="#F5C518" stroke-width="1.8" stroke-linecap="round" fill="none"><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M5.6 18.4l1.7-1.7M16.7 7.3l1.7-1.7"/></g></svg><svg class="theme-moon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="#8EA0FF" d="M16.2 3.1A8.9 8.9 0 1 0 21.1 18 7.4 7.4 0 0 1 16.2 3.1z"/></svg></button></div></header>
+<main id="main"><div class="wrap"><p class="kicker"><a href="index.html">Python + AI</a> · Chapter 04</p><h1>Operators and formatted output</h1><p class="lede">Operators combine values, compare objects or update names. Before using a long expression, identify the operands and predict the result type. Parentheses make your intention easier to read.</p><div class="toc"><a href="#reading">Reading</a><a href="#practice">Practice session</a><a href="#end">Save reading progress</a></div><div class="rule"><span class="tag">The rule</span><p>== compares values. is compares object identity. Use is None when checking for None, but use == for ordinary numeric or string equality. and and or short-circuit and return an operand. An f-string inserts values into text using braces. Use :.2f to display two decimal places.</p></div><h2>Worked example</h2><pre><code>a = [1, 2]
+b = a.copy()  # A new list containing equal values.
+print(a == b)  # True: equal contents.
+print(a is b)  # False: different objects.
+price = 12.5
+print(f&quot;Total: {price:.2f} EUR&quot;)</code></pre><div class="trace"><span class="tag">Trace every line</span><p>copy creates a separate list. Equality is True because the values match. Identity is False because these are separate objects. The final line prints Total: 12.50 EUR. Formatting changes the displayed text, not the stored float.</p></div><div id="reading"><section class="reading" id="lesson-11"><h2>11. Operators Overview &amp; Arithmetic Operators</h2><p>The family of operators, and the seven arithmetic ones including floor division, modulus and power.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=8150s">Watch 2:15:50</a><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=8279s">Watch 2:17:59</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/11-arithmetic-operators">Original resources</a></div><details open><summary>Read the explanation · theory.ipynb</summary><h3>Operators in Python</h3>
+<p>Operators are special symbols that carry out different kinds of computations on values. They can manipulate the values of operands. Python supports various types of operators, including arithmetic, comparison (relational), logical, assignment, identity, membership, and binary operators.</p>
+<h4>Types of Operators in Python</h4>
+<ol>
+<li><strong>Arithmetic Operators</strong></li>
+<li><strong>Comparison (Relational) Operators</strong></li>
+<li><strong>Logical Operators</strong></li>
+<li><strong>Assignment Operators</strong></li>
+<li><strong>Identity Operators</strong></li>
+<li><strong>Membership Operators</strong></li>
+<li><strong>Binary Operators</strong></li>
+</ol>
+<h4>Arithmetic Operators</h4>
+<p>Arithmetic operators are used to perform common mathematical operations such as addition, subtraction, multiplication, division, modulus, exponentiation, and floor division.</p>
+<table>
+<thead>
+<tr>
+<th>Operator</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>+</code></td>
+<td>Addition</td>
+<td><code>2 + 3 = 5</code></td>
+</tr>
+<tr>
+<td><code>-</code></td>
+<td>Subtraction</td>
+<td><code>5 - 2 = 3</code></td>
+</tr>
+<tr>
+<td><code>*</code></td>
+<td>Multiplication</td>
+<td><code>2 * 3 = 6</code></td>
+</tr>
+<tr>
+<td><code>/</code></td>
+<td>Division</td>
+<td><code>6 / 3 = 2.0</code></td>
+</tr>
+<tr>
+<td><code>%</code></td>
+<td>Modulus (remainder)</td>
+<td><code>7 % 2 = 1</code></td>
+</tr>
+<tr>
+<td><code>**</code></td>
+<td>Exponentiation (power)</td>
+<td><code>2 ** 3 = 8</code></td>
+</tr>
+<tr>
+<td><code>//</code></td>
+<td>Floor Division (quotient)</td>
+<td><code>7 // 2 = 3</code></td>
+</tr>
+</tbody></table>
+<pre><code class="language-python">### Addition
+a = 2
+b = 3
+print(&#39;Addition: &#39;, a + b)  # Output: 5
+
+### Subtraction
+c = 5
+d = 2
+print(&#39;Subtraction: &#39;, c - d)  # Output: 3
+
+### Multiplication
+e = 2
+f = 3
+print(&#39;Multiplication: &#39;, e * f)  # Output: 6
+
+### Division
+g = 6
+h = 3
+print(&#39;Division: &#39;, g / h)  # Output: 2.0
+
+### Modulus
+i = 7
+j = 2
+print(&#39;Modulus: &#39;, i % j)  # Output: 1
+
+### Exponentiation
+k = 2
+l = 3
+print(&#39;Exponentiation: &#39;, k ** l)  # Output: 8
+
+### Floor Division
+m = 7
+n = 2
+print(&#39;Floor Division: &#39;, m // n)  # Output: 3
+</code></pre>
+<h5>Modulus Operator</h5>
+<p>The modulus operator (<code>%</code>) returns the remainder when one operand is divided by another. It can be useful for tasks such as checking for even or odd numbers, or performing divisibility tests.</p>
+<pre><code class="language-python">7 % 2  # Output: 1
+10 % 2  # Output: 0
+</code></pre>
+<p>Examples:</p>
+<ul>
+<li>Checking if a number is even or odd:</li>
+</ul>
+<pre><code class="language-python">num = 7
+if num % 2 == 0:
+    print(&#39;Even&#39;)
+else:
+    print(&#39;Odd&#39;)  # Output: Odd
+</code></pre>
+<ul>
+<li>Divisibility test:</li>
+</ul>
+<pre><code class="language-python">dividend = 10
+divisor = 2
+if dividend % divisor == 0:
+    print(f&#39;{dividend} is divisible by {divisor}&#39;)  # Output: 10 is divisible by 2
+else:
+    print(f&#39;{dividend} is not divisible by {divisor}&#39;)
+</code></pre>
+<pre><code class="language-python">### Example of modulus operator
+print(&#39;7 % 2 = &#39;, 7 % 2)  # Output: 1
+print(&#39;10 % 2 = &#39;, 10 % 2)  # Output: 0
+
+### Check if a number is even or odd
+num = 7
+if num % 2 == 0:
+    print(&#39;Even&#39;)
+else:
+    print(&#39;Odd&#39;)  # Output: Odd
+
+### Divisibility test
+dividend = 10
+divisor = 2
+if dividend % divisor == 0:
+    print(f&#39;{dividend} is divisible by {divisor}&#39;)  # Output: 10 is divisible by 2
+else:
+    print(f&#39;{dividend} is not divisible by {divisor}&#39;)
+</code></pre>
+<h5>Floor Division Operator</h5>
+<p>The floor division operator (<code>//</code>) returns the largest possible integer that is less than or equal to the result of the division (i.e., it performs integer division).</p>
+<p>Examples:</p>
+<pre><code class="language-python">7 // 2  # Output: 3
+11 // 4  # Output: 2
+</code></pre>
+<p>This operator is useful in scenarios where you need the quotient without the fractional part.</p>
+<pre><code class="language-python">### Example of floor division operator
+print(&#39;7 // 2 = &#39;, 7 // 2)  # Output: 3
+print(&#39;11 // 4 = &#39;, 11 // 4)  # Output: 2
+</code></pre>
+<h3>Industry Use Cases</h3>
+<ol>
+<li><strong>Finance</strong>: Calculating compound interest, mortgage payments, and loan amortization using arithmetic operators.</li>
+<li><strong>Game Development</strong>: Using modulus and floor division operators to manage game mechanics such as health points, levels, and score calculations.</li>
+<li><strong>Data Analysis</strong>: Performing statistical calculations, data aggregation, and summarization using arithmetic operators.</li>
+<li><strong>Cryptography</strong>: Implementing algorithms that require arithmetic operations on large numbers, such as RSA encryption and decryption.</li>
+<li><strong>Scientific Computing</strong>: Solving mathematical equations and simulations using arithmetic operators in fields like physics, engineering, and bioinformatics.</li>
+</ol>
+<h3>Questions</h3>
+<ol>
+<li>What are the different types of operators in Python?</li>
+<li>How does the modulus operator work? Provide an example.</li>
+<li>What is the difference between the division operator <code>/</code> and the floor division operator <code>//</code>?</li>
+<li>Write a code snippet to demonstrate the use of arithmetic operators in Python.</li>
+<li>Explain the use of arithmetic operators in real-life applications with examples.</li>
+<li>Write a code snippet to check if a number is divisible by another number using the modulus operator.</li>
+<li>How can you use the floor division operator in a game development scenario?</li>
+<li>Describe a scenario where using the modulus operator is beneficial.</li>
+</ol>
+<h3>Answers</h3>
+<ol>
+<li>The different types of operators in Python are: Arithmetic Operators, Comparison (Relational) Operators, Logical Operators, Assignment Operators, Identity Operators, Membership Operators, and Binary Operators.</li>
+<li>The modulus operator (<code>%</code>) returns the remainder when one operand is divided by another. Example: <code>7 % 2</code> results in <code>1</code>.</li>
+<li>The division operator (<code>/</code>) performs true division and returns a float, while the floor division operator (<code>//</code>) performs integer division and returns the largest possible integer that is less than or equal to the division result. Example: <code>7 / 2</code> results in <code>3.5</code>, while <code>7 // 2</code> results in <code>3</code>.</li>
+<li></li>
+</ol>
+<pre><code class="language-python">a = 5
+b = 3
+print(&#39;Addition:&#39;, a + b)  # Output: 8
+print(&#39;Subtraction:&#39;, a - b)  # Output: 2
+print(&#39;Multiplication:&#39;, a * b)  # Output: 15
+print(&#39;Division:&#39;, a / b)  # Output: 1.6666666666666667
+print(&#39;Modulus:&#39;, a % b)  # Output: 2
+print(&#39;Exponentiation:&#39;, a ** b)  # Output: 125
+print(&#39;Floor Division:&#39;, a // b)  # Output: 1
+</code></pre>
+<ol start="5">
+<li>Arithmetic operators are used in various real-life applications such as:<ul>
+<li>Calculating discounts and taxes in e-commerce.</li>
+<li>Determining scores and levels in games.</li>
+<li>Computing statistical measures in data analysis.</li>
+<li>Performing financial calculations like interest and loan payments.</li>
+</ul>
+</li>
+<li></li>
+</ol>
+<pre><code class="language-python">num1 = 10
+num2 = 3
+if num1 % num2 == 0:
+    print(f&#39;{num1} is divisible by {num2}&#39;)
+else:
+    print(f&#39;{num1} is not divisible by {num2}&#39;)  # Output: 10 is not divisible by 3
+</code></pre>
+<ol start="7">
+<li>In game development, the floor division operator can be used to calculate the number of complete levels or stages a player has passed. Example:</li>
+</ol>
+<pre><code class="language-python">total_points = 57
+points_per_level = 10
+levels_completed = total_points // points_per_level  # Output: 5
+print(f&#39;Levels completed: {levels_completed}&#39;)
+</code></pre>
+<ol start="8">
+<li>The modulus operator is beneficial in scenarios like checking if a number is even or odd, or determining if a number is divisible by another number. Example: Checking for even numbers.</li>
+</ol>
+<pre><code class="language-python">num = 4
+if num % 2 == 0:
+    print(f&#39;{num} is even&#39;)  # Output: 4 is even
+else:
+    print(f&#39;{num} is odd&#39;)
+</code></pre>
+</details><details ><summary>Read and trace the code examples · code.ipynb</summary><h3>Opearators in Python</h3>
+<pre><code class="language-python">### Addition
+a = 2
+b = 3
+print(&#39;Addition: &#39;, a + b)  # Output: 5
+
+### Subtraction
+c = 5
+d = 2
+print(&#39;Subtraction: &#39;, c - d)  # Output: 3
+
+### Multiplication
+e = 2
+f = 3
+print(&#39;Multiplication: &#39;, e * f)  # Output: 6
+
+### Division
+g = 6
+h = 3
+z =  g/h
+print(&#39;Division: &#39;, g / h)  # Output: 2.0
+</code></pre>
+<pre><code class="language-python">type(z)
+</code></pre>
+<pre><code class="language-python">### Exponential
+g = 6
+h = 3
+### 6^3
+print(&#39;Exponential: &#39;, g ** h)  # Output: 2.0
+</code></pre>
+<pre><code class="language-python">
+### Modulus
+i = 7
+j = 2
+print(&#39;Modulus: &#39;, i % j)  # Output: 1
+
+### Exponentiation
+k = 2
+l = 3
+print(&#39;Exponentiation: &#39;, k ** l)  # Output: 8
+
+### Floor Division
+m = 7
+n = 3
+print(&#39;Floor Division: &#39;, m // n)  # Output: 3
+</code></pre>
+<pre><code class="language-python">### Floor Division
+m = 7
+n = 3
+print(m/n)
+print(&#39;Floor Division: &#39;, m // n)  # Output: 3
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Use `divmod(17, 5)` and compare with `17 // 5` and `17 % 5`.</li><li>Compute the average of three numbers of your choice.</li><li>Evaluate `-7 // 2` and `-7 % 2` and explain why the results look odd.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section><section class="reading" id="lesson-12"><h2>12. Relational Operators</h2><p>Comparing numbers and strings with `==`, `!=`, `&lt;`, `&gt;`, `&lt;=` and `&gt;=`.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=8768s">Watch 2:26:08</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/12-relational-operators">Original resources</a></div><details open><summary>Read the explanation · theory.ipynb</summary><h3>Relational Operators in Python</h3>
+<p>Relational operators are used to compare values. They return either <code>True</code> or <code>False</code> based on the condition being evaluated. In Python, the primary relational operators are:</p>
+<ul>
+<li><code>==</code>: Equal to</li>
+<li><code>!=</code>: Not equal to</li>
+<li><code>&gt;</code>: Greater than</li>
+<li><code>=</code>: Greater than or equal to</li>
+<li><code>&lt;=</code>: Less than or equal to</li>
+</ul>
+<h4>Examples with Numbers</h4>
+<p>Let&#39;s see some examples of how relational operators work with numerical values.</p>
+<pre><code class="language-python">### Examples with numbers
+a = 10
+b = 5
+
+print(f&#39;{a} == {b}:&#39;, a == b)  # False
+print(f&#39;{a} != {b}:&#39;, a != b)  # True
+print(f&#39;{a} &gt; {b}:&#39;, a &gt; b)    # True
+print(f&#39;{a} &lt; {b}:&#39;, a &lt; b)    # False
+print(f&#39;{a} &gt;= {b}:&#39;, a &gt;= b)  # True
+print(f&#39;{a} &lt;= {b}:&#39;, a &lt;= b)  # False
+</code></pre>
+<h4>Relational Operators with Strings</h4>
+<p>Relational operators can also be applied to strings. They perform lexicographical comparison, which is based on the Unicode values of individual characters.</p>
+<h5>Lexicographical Comparison</h5>
+<ol>
+<li>Loop through individual characters of the string.</li>
+<li>Get the Unicode value and compare that.</li>
+<li>If the values are the same, continue to the next character. Otherwise, the string with the higher Unicode value character is considered greater.</li>
+</ol>
+<pre><code class="language-python">### Examples with strings
+str1 = &#39;apple&#39;
+str2 = &#39;banana&#39;
+
+print(f&#39;{str1} == {str2}:&#39;, str1 == str2)  # False
+print(f&#39;{str1} != {str2}:&#39;, str1 != str2)  # True
+print(f&#39;{str1} &gt; {str2}:&#39;, str1 &gt; str2)    # False
+print(f&#39;{str1} &lt; {str2}:&#39;, str1 &lt; str2)    # True
+</code></pre>
+<h4>Chaining Multiple Relational Operators</h4>
+<p>In Python, you can chain multiple relational operators in a single line. For example, <code>1 &lt; 2 &lt; 3</code> is valid and returns <code>True</code> if all individual conditions are <code>True</code>. Otherwise, it returns <code>False</code>.</p>
+<pre><code class="language-python">### Chaining relational operators
+print(1 &lt; 2 &lt; 3)  # True
+print(1 &lt; 2 &gt; 3)  # False
+</code></pre>
+<h4>Special Behavior of <code>and</code> with Relational Operators</h4>
+<p>When using <code>and</code> with relational operators, it checks if the operands are equal and of compatible types. If they are, it returns <code>True</code>. Otherwise, it checks for inequality and returns <code>True</code> if the types are incompatible and values are different. Otherwise, it returns <code>False</code>.</p>
+<pre><code class="language-python">### Special behavior of &#39;and&#39; with relational operators
+a = 5
+b = 5.0
+c = &#39;5&#39;
+
+print((a == b) and (b == c))  # False
+print((a != b) and (b != c))  # True
+</code></pre>
+<h4>Industry Use Cases</h4>
+<ul>
+<li><strong>Data Filtering</strong>: Relational operators are commonly used in data filtering to extract records that meet certain criteria.</li>
+<li><strong>Conditional Logic</strong>: Used in programming to create conditions and control the flow of programs.</li>
+<li><strong>Authentication Systems</strong>: Used to compare user credentials with stored data.</li>
+<li><strong>Sorting Algorithms</strong>: Used to compare elements during the sorting process.</li>
+<li><strong>User Input Validation</strong>: Used to check if the input meets specific criteria.</li>
+</ul>
+<h3>Questions</h3>
+<ol>
+<li><p>What are relational operators in Python? List them.</p>
+</li>
+<li><p>How does lexicographical comparison work with strings?</p>
+</li>
+<li><p>Write a code snippet to compare two strings lexicographically.</p>
+</li>
+<li><p>Can you chain multiple relational operators in Python? Provide an example.</p>
+</li>
+<li><p>Explain the special behavior of <code>and</code> when used with relational operators.</p>
+</li>
+<li><p>Write a code snippet to demonstrate the use of relational operators with numbers.</p>
+</li>
+<li><p>Provide a real-life example where relational operators might be used.</p>
+</li>
+<li><p>What would be the output of the following code snippet?</p>
+<pre><code class="language-python">x = 10
+y = 20
+z = 10
+print(x  z)
+print(x == z &gt;= y)
+</code></pre>
+</li>
+</ol>
+<pre><code class="language-python">### Answers
+
+### 1. Relational operators in Python are used to compare values and they return either True or False based on the condition.
+### The relational operators in Python are:
+### - `==`: Equal to
+### - `!=`: Not equal to
+### - `&gt;`: Greater than
+### - `&lt;`: Less than
+### - `&gt;=`: Greater than or equal to
+### - `&lt;=`: Less than or equal to
+
+### 2. Lexicographical comparison works by comparing the Unicode values of individual characters in the strings, one by one. If the values are the same, it continues to the next character. Otherwise, the string with the higher Unicode value character is considered greater.
+
+### 3. Lexicographical comparison example:
+str1 = &#39;apple&#39;
+str2 = &#39;banana&#39;
+print(f&#39;{str1} &lt; {str2}:&#39;, str1 &lt; str2)  # True
+
+### 4. Yes, you can chain multiple relational operators in Python. Example:
+print(1 &lt; 2 &lt; 3)  # True
+print(1 &lt; 2 &gt; 3)  # False
+
+### 5. The `and` operator with relational operators checks if the operands are equal and of compatible types. If they are, it returns True. Otherwise, it checks for inequality and returns True if the types are incompatible and values are different. Otherwise, it returns False.
+
+### 6. Relational operators with numbers example:
+a = 10
+b = 5
+print(f&#39;{a} &gt; {b}:&#39;, a &gt; b)  # True
+
+### 7. Real-life example: Relational operators can be used in a login system to compare user input (username and password) with stored credentials.
+
+### 8. Output of the code snippet:
+x = 10
+y = 20
+z = 10
+print(x &lt; y &gt; z)  # True
+print(x == z &gt;= y)  # False
+</code></pre>
+</details><details ><summary>Read and trace the code examples · code.ipynb</summary><h3>Relational operators</h3>
+<pre><code class="language-python">a = 10
+b = 5
+
+print(f&#39;{a} == {b}:&#39;, a == b)  # False
+print(f&#39;{a} != {b}:&#39;, a != b)  # True
+print(f&#39;{a} &gt; {b}:&#39;, a &gt; b)    # True
+print(f&#39;{a} &lt; {b}:&#39;, a &lt; b)    # False
+print(f&#39;{a} &gt;= {b}:&#39;, a &gt;= b)  # True
+print(f&#39;{a} &lt;= {b}:&#39;, a &lt;= b)  # False
+</code></pre>
+<pre><code class="language-python">10 &gt; 5
+</code></pre>
+<pre><code class="language-python">s1 = &quot;small&quot;
+s2 = &quot;big&quot;
+</code></pre>
+<pre><code class="language-python">s1[0], s2[0]
+</code></pre>
+<pre><code class="language-python">ord(&#39;s&#39;)
+</code></pre>
+<pre><code class="language-python">ord(&#39;b&#39;)
+</code></pre>
+<pre><code class="language-python">115 &gt; 98
+</code></pre>
+<pre><code class="language-python">s1 &gt; s2
+</code></pre>
+<pre><code class="language-python">s3 = &#39;sssa&#39;
+s4 = &#39;sssA&#39;
+</code></pre>
+<pre><code class="language-python">s3[3],s4[3]
+</code></pre>
+<pre><code class="language-python">ord(&#39;a&#39;),ord(&#39;A&#39;)
+</code></pre>
+<pre><code class="language-python">s3==s4
+</code></pre>
+<pre><code class="language-python">s3 &gt; s4
+</code></pre>
+<pre><code class="language-python">ord(&#39;z&#39;)
+</code></pre>
+<pre><code class="language-python">ord(&#39;!&#39;)
+</code></pre>
+<pre><code class="language-python">&#39;!zzzzzaaa&#39; &lt; &#39;a&#39;
+</code></pre>
+<pre><code class="language-python">&#39;aa&#39;&gt;  &#39;a&#39;
+</code></pre>
+<pre><code class="language-python">print(1 &lt; 2 &lt; 3)  # True
+print(1&lt;2)
+print(2&lt;3)
+</code></pre>
+<pre><code class="language-python">print(1 &lt; 2 &gt; 3)  # False
+print(1&lt;2)
+print(2&gt;3)
+</code></pre>
+<pre><code class="language-python">15 == 15.0
+</code></pre>
+<pre><code class="language-python">15 == &#39;15&#39;
+</code></pre>
+<pre><code class="language-python">True == 1
+</code></pre>
+<pre><code class="language-python">True == 0
+</code></pre>
+<pre><code class="language-python">0 == False
+</code></pre>
+<pre><code class="language-python">&#39;15&#39; != 15
+</code></pre>
+<pre><code class="language-python">1.0 == 1
+</code></pre>
+<pre><code class="language-python">1.1 == 1
+</code></pre>
+<pre><code class="language-python">&#39;True&#39; == str(True)
+</code></pre>
+<pre><code class="language-python">str(True)
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Compare `&quot;apple&quot; &lt; &quot;banana&quot;` and `&quot;Zebra&quot; &lt; &quot;apple&quot;`; explain using `ord()`.</li><li>Test whether `x` lies strictly between 1 and 10 using a chained comparison.</li><li>Spot and fix the bug in `if x = 5:`.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section><section class="reading" id="lesson-13"><h2>13. Logical, Assignment &amp; Identity Operators</h2><p>Combining conditions with `and`, `or`, `not`, updating variables with `+=` and friends, and `is` versus `==`.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=9826s">Watch 2:43:46</a><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=10383s">Watch 2:53:03</a><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=10691s">Watch 2:58:11</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/13-logical-assignment-identity">Original resources</a></div><details open><summary>Read the explanation · theory.ipynb</summary><h3>Logical Operators in Python</h3>
+<p>Logical operators are used to combine two or more conditions. The logical operators in Python are <code>and</code>, <code>or</code>, and <code>not</code>.</p>
+<h4>Examples</h4>
+<p>Let&#39;s see some examples of logical operators:</p>
+<pre><code class="language-python">a = 6
+b = 20
+c = 50
+
+### Using &#39;and&#39; operator
+print(a &lt; b and b &lt; c)  # True because both conditions are true
+
+### Using &#39;or&#39; operator
+print(a &gt; b or b &lt; c)   # True because one of the conditions is true
+
+### Using &#39;not&#39; operator
+print(not (a &gt; b))      # True because the condition is false and &#39;not&#39; negates it
+</code></pre>
+<h3>Assignment Operators</h3>
+<p>Python assignment operators are used to assign values to variables. The most commonly used assignment operator is <code>=</code>.</p>
+<h5>Example</h5>
+<pre><code class="language-python">a = 10
+</code></pre>
+<h3>Compound Assignment Operators</h3>
+<p>Python allows us to combine arithmetic and bitwise operators with the assignment operator. These are known as compound assignment operators.</p>
+<h5>Examples</h5>
+<pre><code class="language-python">x = 5
+x += 2  # Equivalent to x = x + 2
+print(x)  # Output: 7
+
+y = 10
+y &amp;= 3  # Equivalent to y = y &amp; 3
+print(y)  # Output: 2
+</code></pre>
+<p>Python does not have increment (<code>++</code>) or decrement (<code>--</code>) operators. Attempting to use these will result in an error.</p>
+<pre><code class="language-python">### Example of using compound assignment operators
+x = 10
+x -= 4  # Equivalent to x = x - 4
+print(x)  # Output: 6
+
+y = 5
+y *= 3  # Equivalent to y = y * 3
+print(y)  # Output: 15
+
+z = 8
+z //= 2  # Equivalent to z = z // 2
+print(z)  # Output: 4
+</code></pre>
+<h3>Identity Operators</h3>
+<p>Identity operators in Python are <code>is</code> and <code>is not</code>. They are used to check if two variables refer to the same object in memory.</p>
+<h5><code>is</code> Operator</h5>
+<p>The <code>is</code> operator returns <code>True</code> if the operands refer to the same object, otherwise it returns <code>False</code>.</p>
+<h5><code>is not</code> Operator</h5>
+<p>The <code>is not</code> operator returns <code>True</code> if the operands do not refer to the same object, otherwise it returns <code>False</code>.</p>
+<h5>Examples</h5>
+<pre><code class="language-python">a = 10
+b = 10
+c = a
+
+print(a is b)  # True, because a and b refer to the same object
+print(a is c)  # True, because c is assigned to a
+
+d = [1, 2, 3]
+e = [1, 2, 3]
+
+print(d is e)  # False, because d and e refer to different objects
+print(d == e)  # True, because d and e have the same contents
+</code></pre>
+<pre><code class="language-python">### Example of identity operators
+a = 20
+b = 20
+print(a is b)  # True, because a and b refer to the same object
+
+x = [1, 2, 3]
+y = [1, 2, 3]
+print(x is y)  # False, because x and y refer to different objects
+print(x == y)  # True, because x and y have the same contents
+
+### Using &#39;is not&#39; operator
+print(a is not b)  # False, because a and b refer to the same object
+print(x is not y)  # True, because x and y refer to different objects
+</code></pre>
+<h3>Questions</h3>
+<ol>
+<li>What are the logical operators in Python?</li>
+<li>How do assignment operators work in Python? Provide an example.</li>
+<li>Explain the use of compound assignment operators with examples.</li>
+<li>What are identity operators in Python? Provide examples of <code>is</code> and <code>is not</code>.</li>
+<li>Why does Python not have increment (<code>++</code>) and decrement (<code>--</code>) operators?</li>
+<li>Write a code snippet to demonstrate the use of <code>is</code> and <code>is not</code> operators with lists.</li>
+</ol>
+<h3>Answers</h3>
+<ol>
+<li>The logical operators in Python are <code>and</code>, <code>or</code>, and <code>not</code>.</li>
+<li>Assignment operators in Python are used to assign values to variables. The most common assignment operator is <code>=</code>. For example:<pre><code class="language-python">a = 10
+</code></pre>
+</li>
+<li>Compound assignment operators combine arithmetic or bitwise operations with assignment. For example:<pre><code class="language-python">x = 5
+x += 2  # Equivalent to x = x + 2
+print(x)  # Output: 7
+</code></pre>
+</li>
+<li>Identity operators in Python are <code>is</code> and <code>is not</code>. They check if two variables refer to the same object in memory. For example:<pre><code class="language-python">a = 10
+b = 10
+print(a is b)  # True, because a and b refer to the same object
+print(a is not b)  # False, because a and b refer to the same object
+</code></pre>
+</li>
+<li>Python does not have increment (<code>++</code>) and decrement (<code>--</code>) operators because they are not necessary. Python provides other ways to increment or decrement values, such as <code>+=</code> and <code>-=</code>.</li>
+<li>Here is a code snippet to demonstrate the use of <code>is</code> and <code>is not</code> operators with lists:<pre><code class="language-python">x = [1, 2, 3]
+y = [1, 2, 3]
+print(x is y)  # False, because x and y refer to different objects
+print(x == y)  # True, because x and y have the same contents
+print(x is not y)  # True, because x and y refer to different objects
+</code></pre>
+</li>
+</ol>
+<h3>Industry Use Cases</h3>
+<ol>
+<li><strong>Logical Operators</strong>: Used in decision-making processes, such as determining access controls in software applications.</li>
+<li><strong>Assignment Operators</strong>: Used in variable initialization and value assignments throughout codebases.</li>
+<li><strong>Compound Assignment Operators</strong>: Commonly used in loops and iterations for updating variable values.</li>
+<li><strong>Identity Operators</strong>: Utilized in memory management and optimization to check object references and avoid redundant data storage.</li>
+</ol>
+</details><details ><summary>Read and trace the code examples · code.ipynb</summary><h3>Logical Operators</h3>
+<pre><code class="language-python">a = 6
+b = 20
+c = 50
+</code></pre>
+<pre><code class="language-python">
+### Using &#39;and&#39; operator
+print(a &lt; b and b &lt; c)  # True because both conditions are true
+
+### True And True
+</code></pre>
+<pre><code class="language-python">### Using &#39;or&#39; operator
+print(a &gt; b or b &lt; c)   # True because one of the conditions is true
+
+### False or True
+</code></pre>
+<pre><code class="language-python">
+### Using &#39;not&#39; operator
+print(not (a &gt; b))      # True because the condition is false and &#39;not&#39; negates it
+</code></pre>
+<pre><code class="language-python">x,y,z = 10,20
+</code></pre>
+<pre><code class="language-python">x,y,z
+</code></pre>
+<pre><code class="language-python">x 
+</code></pre>
+<pre><code class="language-python">x = x+10
+x
+</code></pre>
+<pre><code class="language-python">x+=10
+</code></pre>
+<pre><code class="language-python">x
+</code></pre>
+<pre><code class="language-python">x
+</code></pre>
+<pre><code class="language-python">++x
+</code></pre>
+<pre><code class="language-python">--x
+</code></pre>
+<pre><code class="language-python">---x
+</code></pre>
+<pre><code class="language-python">x++
+</code></pre>
+<h3>Identity Opearator</h3>
+<pre><code class="language-python">a = 5
+</code></pre>
+<pre><code class="language-python">b = 5
+</code></pre>
+<pre><code class="language-python">id(a)
+</code></pre>
+<pre><code class="language-python">id(b)
+</code></pre>
+<pre><code class="language-python">c = 10
+id(c)
+</code></pre>
+<pre><code class="language-python">a is b
+</code></pre>
+<pre><code class="language-python">c is a
+</code></pre>
+<pre><code class="language-python">c is not a
+</code></pre>
+<pre><code class="language-python">type(c) is float
+</code></pre>
+<pre><code class="language-python">a is int
+</code></pre>
+<pre><code class="language-python">type(a) is int
+</code></pre>
+<pre><code class="language-python">l1 = [[1],[2],[3]]
+</code></pre>
+<pre><code class="language-python">l2 = [[1],[2],[3]]
+</code></pre>
+<pre><code class="language-python">l1 == l2
+</code></pre>
+<pre><code class="language-python">l1 is l2
+</code></pre>
+<pre><code class="language-python">id(l1)
+</code></pre>
+<pre><code class="language-python">id(l2)
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Write out the truth table for `and`, `or` and `not` using a loop or by hand.</li><li>Run `False and print(&quot;hi&quot;)`. Does it print? Explain short-circuiting.</li><li>Create two equal lists and show that `==` is `True` while `is` is `False`.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section><section class="reading" id="lesson-14"><h2>14. Membership &amp; Binary (Bitwise) Operators</h2><p>Checking membership with `in`, and working with bits using `&amp;`, `|`, `^`, `~`, `&lt;&lt;` and `&gt;&gt;`.</p><div class="lesson-links"><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/14-membership-binary">Original resources</a></div><details open><summary>Read the explanation · theory.ipynb</summary><h3>Membership Operators</h3>
+<p>Membership operators are used to test if a value or variable is found in a sequence (string, list, tuple, set, etc.).
+There are two membership operators in Python:</p>
+<ol>
+<li><code>in</code></li>
+<li><code>not in</code></li>
+</ol>
+<h4><code>in</code> Operator</h4>
+<p>The <code>in</code> operator is used to check if a value exists in a sequence. It returns <code>True</code> if the value is found, otherwise it returns <code>False</code>.</p>
+<pre><code class="language-python">### Example of &#39;in&#39; operator
+a = &#39;Mayank&#39;
+print(&#39;aya&#39; in a)  # True
+print(&#39;may&#39; in a)  # False (case-sensitive)
+
+numbers = [2, 3, 5, 7]
+print(2 in numbers)  # True
+print(11 in numbers)  # False
+</code></pre>
+<h4><code>not in</code> Operator</h4>
+<p>The <code>not in</code> operator is used to check if a value does not exist in a sequence. It returns <code>True</code> if the value is not found, otherwise it returns <code>False</code>.</p>
+<pre><code class="language-python">### Example of &#39;not in&#39; operator
+a = &#39;Mayank&#39;
+print(&#39;may&#39; not in a)  # True (case-sensitive)
+
+numbers = [1, 2, 3]
+print(11 not in numbers)  # True
+print(2 not in numbers)   # False
+</code></pre>
+<h3>Binary (Bitwise) Operators</h3>
+<p>Binary (bitwise) operators are used to perform operations on binary numbers. These operators work on bits and perform bit-by-bit operations. The binary representations of integers are used to perform these operations.</p>
+<p>Here are the common binary operators in Python:</p>
+<ol>
+<li>Bitwise AND (<code>&amp;</code>)</li>
+<li>Bitwise OR (<code>|</code>)</li>
+<li>Bitwise XOR (<code>^</code>)</li>
+<li>Bitwise NOT (<code>~</code>)</li>
+<li>Bitwise Left Shift (<code>&gt;</code>)</li>
+</ol>
+<h4>Bitwise AND (<code>&amp;</code>)</h4>
+<p>The bitwise AND operator compares each bit of the first operand to the corresponding bit of the second operand. If both bits are 1, the corresponding result bit is set to 1. Otherwise, it is set to 0.</p>
+<pre><code class="language-python">### Example of Bitwise AND
+a = 5  # binary: 0101
+b = 4  # binary: 0100
+
+print(a &amp; b)  # result: 0100 (4 in decimal)
+</code></pre>
+<h4>Bitwise OR (<code>|</code>)</h4>
+<p>The bitwise OR operator compares each bit of the first operand to the corresponding bit of the second operand. If either bit is 1, the corresponding result bit is set to 1. Otherwise, it is set to 0.</p>
+<pre><code class="language-python">### Example of Bitwise OR
+a = 5  # binary: 0101
+b = 4  # binary: 0100
+
+print(a | b)  # result: 0101 (5 in decimal)
+</code></pre>
+<h4>Bitwise XOR (<code>^</code>)</h4>
+<p>The bitwise XOR operator compares each bit of the first operand to the corresponding bit of the second operand. If the bits are different, the corresponding result bit is set to 1. Otherwise, it is set to 0.</p>
+<pre><code class="language-python">### Example of Bitwise XOR
+a = 5  # binary: 0101
+b = 4  # binary: 0100
+
+print(a ^ b)  # result: 0001 (1 in decimal)
+</code></pre>
+<h4>Bitwise NOT (<code>~</code>)</h4>
+<p>The bitwise NOT operator inverts all the bits of its operand. The result is the 1&#39;s complement of the number.</p>
+<pre><code class="language-python">### Example of Bitwise NOT
+a = 5  # binary: 0101
+
+print(~a)  # result: 1010 (in 2&#39;s complement form, -6 in decimal)
+</code></pre>
+<h4>Bitwise Left Shift (<code>&lt;&lt;</code>)</h4>
+<p>The bitwise left shift operator shifts the bits of the operand to the left by the number of positions specified. It is equivalent to multiplying the number by 2 raised to the power of the number of positions shifted.</p>
+<pre><code class="language-python">### Example of Bitwise Left Shift
+a = 5  # binary: 0101
+
+print(a &lt;&lt; 1)  # result: 1010 (10 in decimal)
+print(a &lt;&lt; 2)  # result: 10100 (20 in decimal)
+</code></pre>
+<h4>Bitwise Right Shift (<code>&gt;&gt;</code>)</h4>
+<p>The bitwise right shift operator shifts the bits of the operand to the right by the number of positions specified. It is equivalent to dividing the number by 2 raised to the power of the number of positions shifted, and discarding any remainder.</p>
+<pre><code class="language-python">### Example of Bitwise Right Shift
+a = 20  # binary: 10100
+
+print(a &gt;&gt; 1)  # result: 1010 (10 in decimal)
+print(a &gt;&gt; 2)  # result: 0101 (5 in decimal)
+</code></pre>
+<h4>Bitwise Complement (<code>~</code>)</h4>
+<p>The bitwise complement operator flips all the bits in the binary representation of the number. In Python, the result is computed as <code>-(x+1)</code>.</p>
+<pre><code class="language-python">### Example of Bitwise Complement
+a = 5  # binary: 0101
+
+print(~a)  # result: -6 (in 2&#39;s complement form, 1010 in binary)
+</code></pre>
+<h3>Industry Use Cases</h3>
+<ol>
+<li><strong>Data Security</strong>: Membership operators are used to verify user permissions and roles.</li>
+<li><strong>Network Programming</strong>: Bitwise operations are essential in network programming for manipulating IP addresses and subnet masks.</li>
+<li><strong>Graphics Programming</strong>: Bitwise operations are used in graphics programming for color manipulation and image processing.</li>
+<li><strong>Embedded Systems</strong>: Bitwise operations are heavily used in embedded systems for hardware control and register manipulation.</li>
+<li><strong>Cryptography</strong>: Bitwise operations are fundamental in cryptographic algorithms for encryption and decryption processes.</li>
+<li><strong>Compression Algorithms</strong>: Bitwise operations are used in data compression algorithms to manipulate individual bits and bytes efficiently.</li>
+<li><strong>Digital Signal Processing</strong>: Bitwise operations are used in DSP algorithms for filtering, encoding, and decoding signals.</li>
+</ol>
+<h5>Questions</h5>
+<p>1. What is the purpose of the <code>in</code> operator in Python?</p>
+<p>2. How does the <code>not in</code> operator work in Python?</p>
+<p>3. Write a code snippet to check if the letter &#39;a&#39; is in the string &#39;banana&#39;.</p>
+<p>4. What is the difference between <code>&amp;</code> and <code>|</code> operators in Python?</p>
+<p>5. Write a code snippet to demonstrate the use of the bitwise XOR operator.</p>
+<p>6. How does the bitwise NOT operator (<code>~</code>) function in Python?</p>
+<p>7. What is the result of the expression <code>5 &lt;&lt; 2</code>?</p>
+<p>8. Write a code snippet to perform a bitwise right shift on the number 32 by 3 positions.</p>
+<p>9. Explain a real-world scenario where bitwise operations are used.</p>
+<p>10. How can membership operators be used in data security?</p>
+<h3>Answers</h3>
+<h4>Answers</h4>
+<p>1. <strong>What is the purpose of the <code>in</code> operator in Python?</strong></p>
+<p>   - The <code>in</code> operator is used to check if a value exists in a sequence (such as a string, list, tuple, or set). It returns <code>True</code> if the value is found, otherwise it returns <code>False</code>.</p>
+<p>2. <strong>How does the <code>not in</code> operator work in Python?</strong></p>
+<p>   - The <code>not in</code> operator is used to check if a value does not exist in a sequence. It returns <code>True</code> if the value is not found, otherwise it returns <code>False</code>.</p>
+<p>3. <strong>Write a code snippet to check if the letter &#39;a&#39; is in the string &#39;banana&#39;.</strong></p>
+<p>   ```python</p>
+<p>   string = &#39;banana&#39;</p>
+<p>   print(&#39;a&#39; in string)  # True</p>
+<p>   ```</p>
+<p>4. <strong>What is the difference between <code>&amp;</code> and <code>|</code> operators in Python?</strong></p>
+<p>   - The <code>&amp;</code> operator (bitwise AND) compares each bit of two numbers and returns a new number whose bits are set to 1 only if both corresponding bits of the operands are 1. The <code>|</code> operator (bitwise OR) compares each bit of two numbers and returns a new number whose bits are set to 1 if at least one of the corresponding bits of the operands is 1.</p>
+<p>5. <strong>Write a code snippet to demonstrate the use of the bitwise XOR operator.</strong></p>
+<p>   ```python</p>
+<p>   a = 5  # binary: 0101</p>
+<p>   b = 3  # binary: 0011</p>
+<p>   print(a ^ b)  # result: 0110 (6 in decimal)</p>
+<p>   ```</p>
+<p>6. <strong>How does the bitwise NOT operator (<code>~</code>) function in Python?</strong></p>
+<p>   - The bitwise NOT operator inverts all the bits in the binary representation of the number. In Python, the result is computed as <code>-(x + 1)</code>, effectively flipping all the bits and adding 1 to the original number&#39;s negative form.</p>
+<p>7. **What is the result of the expression `5 &gt; 3)  # result: 000100 (4 in decimal)</p>
+<p>   ```</p>
+<p>9. <strong>Explain a real-world scenario where bitwise operations are used.</strong></p>
+<p>   - Bitwise operations are used in network programming for manipulating IP addresses and subnet masks. For example, applying a bitwise AND operation between an IP address and a subnet mask can determine the network portion of the address.</p>
+<p>10. <strong>How can membership operators be used in data security?</strong></p>
+<p>    - Membership operators can be used to verify user permissions and roles. For example, checking if a user&#39;s role is present in a list of authorized roles before granting access to a resource.</p>
+</details><details ><summary>Read and trace the code examples · code.ipynb</summary><h3>Membership Operator</h3>
+<pre><code class="language-python">s = &quot;Mayank&quot;
+</code></pre>
+<pre><code class="language-python">&#39;aya&#39; in s
+</code></pre>
+<pre><code class="language-python">&#39;may&#39; in s
+</code></pre>
+<pre><code class="language-python">l1 = [1,12,5]
+</code></pre>
+<pre><code class="language-python">11 not in l1
+</code></pre>
+<pre><code class="language-python">a = &quot;mayank 123 python&quot;
+</code></pre>
+<pre><code class="language-python">&#39;1&#39; in a
+</code></pre>
+<pre><code class="language-python">b = 1324
+</code></pre>
+<pre><code class="language-python">13 in b
+</code></pre>
+<h3>Binary</h3>
+<pre><code class="language-python">a = 5 
+b= 4
+</code></pre>
+<pre><code class="language-python">a &amp; b
+</code></pre>
+<pre><code class="language-python">a | b
+</code></pre>
+<pre><code class="language-python">a ^ b
+</code></pre>
+<pre><code class="language-python">5&lt;&lt; 1
+</code></pre>
+<pre><code class="language-python">5 &lt;&lt; 2
+</code></pre>
+<pre><code class="language-python">5 &gt;&gt; 1
+</code></pre>
+<pre><code class="language-python">5 &gt;&gt; 2
+</code></pre>
+<pre><code class="language-python">20 &gt;&gt; 2
+</code></pre>
+<pre><code class="language-python">c = 5
+</code></pre>
+<pre><code class="language-python">~c
+</code></pre>
+<pre><code class="language-python">4 = 100
+
+compliment(4) -&gt; 011
+Compliment (4) -&gt; 100
+
+adding + 1 to the result - 100
+                             1
+                           101
+</code></pre>
+<pre><code class="language-python">~4
+</code></pre>
+<pre><code class="language-python">7 = 111
+add + 1 = 0111
+</code></pre>
+<pre><code class="language-python">~7
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Use `in` and `not in` on a string, a list and a dictionary&#x27;s keys.</li><li>Compute `10 &amp; 6`, `10 | 6` and `10 ^ 6`, and confirm each with `bin()`.</li><li>Use a left shift to compute `1 &lt;&lt; 5` and explain it as multiplication.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section><section class="reading" id="lesson-15"><h2>15. Operator Precedence &amp; Associativity</h2><p>Which operator runs first, and how Python breaks ties when precedence is equal.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=11168s">Watch 3:06:08</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/15-precedence-associativity">Original resources</a></div><details open><summary>Read and trace the code examples · code.ipynb</summary><h3>Precedance and Associativity of Operators</h3>
+<p>10 + 20 * 30 is calculated as 10 + (20 * 30)
+and not as (10 + 20) * 30</p>
+<pre><code class="language-python">6/2 + 3**4
+</code></pre>
+<pre><code class="language-python">2 ** 3 ** 2
+</code></pre>
+<pre><code class="language-python">5*2//3
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Predict `2 + 3 * 4 ** 2 / 8 - 1` before running it, then add brackets to change the result.</li><li>Work out `2 ** 3 ** 2` by hand and explain right-to-left associativity.</li><li>Predict what `not True == False` evaluates to.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section><section class="reading" id="lesson-16"><h2>16. String Formatting &amp; f-Strings</h2><p>Building readable output with `%`, `.format()` and f-strings, including alignment and number formatting.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=11626s">Watch 3:13:46</a><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=12307s">Watch 3:25:07</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/16-string-formatting">Original resources</a></div><details open><summary>Read the explanation · theory.ipynb</summary><h3>Print Formatting in Python</h3>
+<p>Print formatting allows us to create dynamic strings by combining and plugging in values and variables into them. It is widely used in print statements where we pass strings.</p>
+<h4>1. Formatting with Operator <code>%</code></h4>
+<p>The <code>%</code> operator is one of the older ways to format strings in Python. Here, we use <code>%</code> followed by a format specifier and the values to be formatted.</p>
+<pre><code class="language-python">### Example
+name = &quot;Alice&quot;
+age = 30
+print(&quot;My name is %s and I am %d years old.&quot; % (name, age))
+</code></pre>
+<h4>2. Formatting with <code>format</code> Method</h4>
+<p>The <code>format</code> method was introduced in Python 3. It provides a more powerful way to format strings. We use curly braces <code>{}</code> as placeholders within the string and call the <code>format</code> method on it, passing the values to be formatted.</p>
+<pre><code class="language-python">### Example
+print(&quot;My name is {} and I am {} years old.&quot;.format(name, age))
+</code></pre>
+<h5>Using Index-Based and Keyword-Based Formatting</h5>
+<p>We can use positional arguments or named arguments in the <code>format</code> method.</p>
+<pre><code class="language-python">### Positional Arguments
+print(&quot;Hello {0}, you are {1} years old.&quot;.format(name, age))
+
+### Named Arguments
+print(&quot;Hello {name}, you are {age} years old.&quot;.format(name=name, age=age))
+</code></pre>
+<h4>3. f-Strings (Formatted String Literals)</h4>
+<p>Introduced in Python 3.6, f-strings provide a concise and convenient way to embed expressions inside string literals using curly braces <code>{}</code> prefixed with an <code>f</code> or <code>F</code>.</p>
+<pre><code class="language-python">### Example
+print(f&quot;My name is {name} and I am {age} years old.&quot;)
+</code></pre>
+<h4>Precision Handling</h4>
+<p>When formatting floating-point numbers, we often need to control the number of decimal places. We can specify the width and precision using the format specifier.</p>
+<pre><code class="language-python">### Example
+pi = 3.141592653589793
+print(&quot;The value of pi rounded to 2 decimal places is %.2f&quot; % pi)
+print(&quot;The value of pi rounded to 3 decimal places is {:.3f}&quot;.format(pi))
+print(f&quot;The value of pi rounded to 4 decimal places is {pi:.4f}&quot;)
+</code></pre>
+<h4>Width and Alignment</h4>
+<p>We can also control the width and alignment of the formatted output. This is useful for creating tables or aligned text.</p>
+<pre><code class="language-python">### Example
+print(&quot;|{:&lt;10}|{:^10}|{:&gt;10}|&quot;.format(&quot;Left&quot;, &quot;Center&quot;, &quot;Right&quot;))
+print(f&quot;|{&#39;Left&#39;:&lt;10}|{&#39;Center&#39;:^10}|{&#39;Right&#39;:&gt;10}|&quot;)
+</code></pre>
+<h4>String Formatting Expressions</h4>
+<p>We can include expressions inside the placeholders to perform calculations or call functions.</p>
+<pre><code class="language-python">### Example
+price = 49.99
+tax = 0.07
+print(f&quot;The total price with tax is: {price + price * tax:.2f}&quot;)
+</code></pre>
+<h4>Industry Use Cases</h4>
+<ol>
+<li><strong>Reporting</strong>: Creating formatted reports by embedding values and expressions in strings.</li>
+<li><strong>Logging</strong>: Formatting log messages with variable data.</li>
+<li><strong>Web Development</strong>: Displaying dynamic content on web pages.</li>
+<li><strong>Data Analysis</strong>: Presenting analysis results in a readable format.</li>
+<li><strong>Configuration Files</strong>: Generating configuration files with variable content.</li>
+</ol>
+<h3>Questions</h3>
+<ol>
+<li>What are the three ways to format strings in Python?</li>
+<li>Write a code snippet to format the string using the <code>%</code> operator.</li>
+<li>How can you specify the width and precision when formatting a floating-point number?</li>
+<li>Demonstrate index-based and keyword-based formatting using the <code>format</code> method.</li>
+<li>Explain the use of f-strings in Python with an example.</li>
+<li>Write a code snippet to format a number with 3 decimal places using the <code>format</code> method.</li>
+<li>How can you align text to the left, center, and right using string formatting?</li>
+<li>Provide an example of including expressions inside placeholders with f-strings.</li>
+<li>Describe a scenario in web development where string formatting can be used.</li>
+<li>Write a code snippet to generate a formatted log message including the current date and time.</li>
+</ol>
+<h3></h3>
+<pre><code class="language-python">##### Answers
+
+### 1. What are the three ways to format strings in Python?
+### - Using the `%` operator
+### - Using the `format` method
+### - Using f-strings (formatted string literals)
+
+### 2. Write a code snippet to format the string using the `%` operator.
+name = &quot;Alice&quot;
+age = 30
+print(&quot;My name is %s and I am %d years old.&quot; % (name, age))
+
+### 3. How can you specify the width and precision when formatting a floating-point number?
+pi = 3.141592653589793
+print(&quot;The value of pi rounded to 2 decimal places is %.2f&quot; % pi)
+print(&quot;The value of pi rounded to 3 decimal places is {:.3f}&quot;.format(pi))
+print(f&quot;The value of pi rounded to 4 decimal places is {pi:.4f}&quot;)
+
+### 4. Demonstrate index-based and keyword-based formatting using the `format` method.
+print(&quot;Hello {0}, you are {1} years old.&quot;.format(name, age))
+print(&quot;Hello {name}, you are {age} years old.&quot;.format(name=name, age=age))
+
+### 5. Explain the use of f-strings in Python with an example.
+print(f&quot;My name is {name} and I am {age} years old.&quot;)
+
+### 6. Write a code snippet to format a number with 3 decimal places using the `format` method.
+print(&quot;The value of pi rounded to 3 decimal places is {:.3f}&quot;.format(pi))
+
+### 7. How can you align text to the left, center, and right using string formatting?
+print(&quot;|{:&lt;10}|{:^10}|{:&gt;10}|&quot;.format(&quot;Left&quot;, &quot;Center&quot;, &quot;Right&quot;))
+print(f&quot;|{&#39;Left&#39;:&lt;10}|{&#39;Center&#39;:^10}|{&#39;Right&#39;:&gt;10}|&quot;)
+
+### 8. Provide an example of including expressions inside placeholders with f-strings.
+price = 49.99
+tax = 0.07
+print(f&quot;The total price with tax is: {price + price * tax:.2f}&quot;)
+
+### 9. Describe a scenario in web development where string formatting can be used.
+### - In web development, string formatting can be used to display dynamic content on web pages.
+###   For example, generating HTML content with user-specific information like names and preferences.
+
+### 10. Write a code snippet to generate a formatted log message including the current date and time.
+from datetime import datetime
+current_time = datetime.now()
+log_message = f&quot;[{current_time}] - User logged in.&quot;
+print(log_message)
+</code></pre>
+<h5>Answers</h5>
+<h3>1. What are the three ways to format strings in Python?</h3>
+<h3>- Using the <code>%</code> operator</h3>
+<h3>- Using the <code>format</code> method</h3>
+<h3>- Using f-strings (formatted string literals)</h3>
+<h3>2. Write a code snippet to format the string using the <code>%</code> operator.</h3>
+<p>name = &quot;Alice&quot;
+age = 30
+print(&quot;My name is %s and I am %d years old.&quot; % (name, age))</p>
+<h3>3. How can you specify the width and precision when formatting a floating-point number?</h3>
+<p>pi = 3.141592653589793
+print(&quot;The value of pi rounded to 2 decimal places is %.2f&quot; % pi)
+print(&quot;The value of pi rounded to 3 decimal places is {:.3f}&quot;.format(pi))
+print(f&quot;The value of pi rounded to 4 decimal places is {pi:.4f}&quot;)</p>
+<h3>4. Demonstrate index-based and keyword-based formatting using the <code>format</code> method.</h3>
+<p>print(&quot;Hello {0}, you are {1} years old.&quot;.format(name, age))
+print(&quot;Hello {name}, you are {age} years old.&quot;.format(name=name, age=age))</p>
+<h3>5. Explain the use of f-strings in Python with an example.</h3>
+<p>print(f&quot;My name is {name} and I am {age} years old.&quot;)</p>
+<h3>6. Write a code snippet to format a number with 3 decimal places using the <code>format</code> method.</h3>
+<p>print(&quot;The value of pi rounded to 3 decimal places is {:.3f}&quot;.format(pi))</p>
+<h3>7. How can you align text to the left, center, and right using string formatting?</h3>
+<p>print(&quot;|{:10}|&quot;.format(&quot;Left&quot;, &quot;Center&quot;, &quot;Right&quot;))
+print(f&quot;|{&#39;Left&#39;:10}|&quot;)</p>
+<h3>8. Provide an example of including expressions inside placeholders with f-strings.</h3>
+<p>price = 49.99
+tax = 0.07
+print(f&quot;The total price with tax is: {price + price * tax:.2f}&quot;)</p>
+<h3>9. Describe a scenario in web development where string formatting can be used.</h3>
+<h3>- In web development, string formatting can be used to display dynamic content on web pages.</h3>
+<h3>For example, generating HTML content with user-specific information like names and preferences.</h3>
+<h3>10. Write a code snippet to generate a formatted log message including the current date and time.</h3>
+<p>from datetime import datetime
+current_time = datetime.now()
+log_message = f&quot;[{current_time}] - User logged in.&quot;
+print(log_message)</p>
+</details><details ><summary>Read and trace the code examples · code.ipynb</summary><h3>String Formatting</h3>
+<pre><code class="language-python">a = &quot;Hello&quot;
+b = &quot;Python&quot;
+</code></pre>
+<pre><code class="language-python">msg = &quot;Hi Welcome to my Hello Python Series&quot;
+msg
+</code></pre>
+<pre><code class="language-python">print(&quot;Hi I am an awesome Python Series names %s %s &quot; %(a,&quot;Mayank&quot;))
+</code></pre>
+<pre><code class="language-python">res = 10/8
+</code></pre>
+<pre><code class="language-python">res
+</code></pre>
+<pre><code class="language-python">res = 3.1299999
+</code></pre>
+<pre><code class="language-python">print(&quot;The result is %2.1f&quot; %(res))
+</code></pre>
+<pre><code class="language-python">name = &quot;python&quot;
+age = 30
+### Example
+print(&quot;My name is {} and I am {} years old.&quot;.format(name, age))
+</code></pre>
+<pre><code class="language-python">### Positional Arguments
+print(&quot;Hello {0}, you are {1} years old.&quot;.format(name, age))
+</code></pre>
+<pre><code class="language-python">### Named Arguments
+print(&quot;Hello {firstName}, I am are {age} years old. The best way to learn me is Hello {firstName} Series&quot;.format(firstName=name, age=age))
+</code></pre>
+<pre><code class="language-python">name = &quot;python&quot;
+age = 30
+</code></pre>
+<pre><code class="language-python">str1 = f&quot;Hello my name is {name} and my age is {age}&quot;
+</code></pre>
+<pre><code class="language-python">str1
+</code></pre>
+<pre><code class="language-python">pi = 3.141592653589793
+print(&quot;The value of pi rounded to 2 decimal places is %.2f&quot; % pi)
+print(&quot;The value of pi rounded to 3 decimal places is {:.3f}&quot;.format(pi))
+print(f&quot;The value of pi rounded to 4 decimal places is {pi:.4f}&quot;)
+</code></pre>
+<pre><code class="language-python">income = 100
+tax = 30
+</code></pre>
+<pre><code class="language-python">
+str2 = f&quot;My final income is {income - tax}&quot;
+str2
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Print a two-line receipt where the item name is left-aligned in 10 characters and the price has 2 decimals.</li><li>Rewrite one `.format()` call as an f-string.</li><li>Format `1234567.891` as `1,234,567.89` using an f-string.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section></div><h2 id="practice">Practice session</h2><div class="scorebox"><span class="tag">This chapter</span><p data-score aria-live="polite"></p><p>Predict the output before running it. Output checks preserve case and line breaks. Written programs are saved for self-review and are not executed here. Drafts and progress stay in this browser.</p></div><article class="drill" id="ch04-q1"><p class="drill-id">Practice 01 · checked answer</p><h3>What prints?</h3><pre><code>print(17 % 7)</code></pre><label for="input-ch04-q1">Your answer</label><textarea id="input-ch04-q1" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch04-q1">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch04-q1">See answer</button></div>
+<div class="drill-hint" id="hint-ch04-q1" data-hint hidden><span class="tag">Step by step</span><p>Floor division and modulo give quotient and remainder.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch04-q1" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>3</code></pre><p>Floor division and modulo give quotient and remainder.</p></div></article><article class="drill" id="ch04-q2"><p class="drill-id">Practice 02 · checked answer</p><h3>What prints?</h3><pre><code>print(2 + 3 * 4)</code></pre><label for="input-ch04-q2">Your answer</label><textarea id="input-ch04-q2" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch04-q2">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch04-q2">See answer</button></div>
+<div class="drill-hint" id="hint-ch04-q2" data-hint hidden><span class="tag">Step by step</span><p>Multiplication has higher precedence than addition.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch04-q2" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>14</code></pre><p>Multiplication has higher precedence than addition.</p></div></article><article class="drill" id="ch04-q3"><p class="drill-id">Practice 03 · checked answer</p><h3>What prints?</h3><pre><code>a = [1]
+b = a.copy()
+print(a is b)</code></pre><label for="input-ch04-q3">Your answer</label><textarea id="input-ch04-q3" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch04-q3">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch04-q3">See answer</button></div>
+<div class="drill-hint" id="hint-ch04-q3" data-hint hidden><span class="tag">Step by step</span><p>Equal values may belong to different objects.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch04-q3" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>False</code></pre><p>Equal values may belong to different objects.</p></div></article><article class="drill" id="ch04-q4"><p class="drill-id">Practice 04 · checked answer</p><h3>What prints?</h3><pre><code>print(f&quot;{12.5:.2f}&quot;)</code></pre><label for="input-ch04-q4">Your answer</label><textarea id="input-ch04-q4" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch04-q4">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch04-q4">See answer</button></div>
+<div class="drill-hint" id="hint-ch04-q4" data-hint hidden><span class="tag">Step by step</span><p>The format specifier requests two decimal places.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch04-q4" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>12.50</code></pre><p>The format specifier requests two decimal places.</p></div></article><article class="drill" id="ch04-write"><p class="drill-id">Practice 05 · write and self-review</p><h3>Print 17 divided by 5 as quotient and remainder, then format 12.5 with two decimal places.</h3><label for="input-ch04-write">Your answer</label><textarea id="input-ch04-write" class="drill-in" rows="10" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch04-write">Hint</button><button type="button" data-submit>Submit draft</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch04-write">See answer</button></div>
+<div class="drill-hint" id="hint-ch04-write" data-hint hidden><span class="tag">Step by step</span><p>Use //, % and an f-string.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch04-write" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>print(17 // 5, 17 % 5)  # 3 2
+print(f&quot;{12.5:.2f}&quot;)  # 12.50</code></pre><p>Compare the result with your own answer. Explain what each line does before moving on.</p></div></article><div class="course-actions chapter-end" id="end"><button type="button" data-complete aria-pressed="false">Mark chapter as read</button><a href="#main">Back to reading</a></div><div class="pager"><a href="ch03.html">← Previous chapter</a><a href="ch05.html">Next chapter →</a></div>
+<p class="source-note">Reading notes and course sequence adapted from <a href="https://github.com/mayank953/python-ai-crash-course">Mayank Aggarwal’s Python AI Crash Course</a>, under the <a href="LICENSE-upstream.txt">MIT license</a>. Classroom adaptation, chapter guides and project exercises: Learn with Mynul. <a href="sources.html">Sources and study guide</a>.</p>
+</div></main><footer class="cos-foot"><div class="wrap">Learn with Mynul · Read. Trace. Practice. Build.</div></footer>
+<script>window.PYTHON_PRACTICE = [{"prompt": "What prints?", "accept": ["3"], "hint": "Floor division and modulo give quotient and remainder.", "code": "print(17 % 7)", "answer": "3", "why": "Floor division and modulo give quotient and remainder.", "id": "ch04-q1"}, {"prompt": "What prints?", "accept": ["14"], "hint": "Multiplication has higher precedence than addition.", "code": "print(2 + 3 * 4)", "answer": "14", "why": "Multiplication has higher precedence than addition.", "id": "ch04-q2"}, {"prompt": "What prints?", "accept": ["False"], "hint": "Equal values may belong to different objects.", "code": "a = [1]\nb = a.copy()\nprint(a is b)", "answer": "False", "why": "Equal values may belong to different objects.", "id": "ch04-q3"}, {"prompt": "What prints?", "accept": ["12.50"], "hint": "The format specifier requests two decimal places.", "code": "print(f\"{12.5:.2f}\")", "answer": "12.50", "why": "The format specifier requests two decimal places.", "id": "ch04-q4"}, {"id": "ch04-write", "prompt": "Print 17 divided by 5 as quotient and remainder, then format 12.5 with two decimal places.", "hint": "Use //, % and an f-string.", "answer": "print(17 // 5, 17 % 5)  # 3 2\nprint(f\"{12.5:.2f}\")  # 12.50"}];</script><script src="js/practice.js?v=1" defer></script><script src="../../assets/js/theme.js?v=3" defer></script></body></html>

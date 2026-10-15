@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
+  </script><title>Expense tracker · Python + AI · Learn with Mynul</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<meta name="description" content="Python and AI from scratch. Read the lessons, trace examples and practice with hints, saved drafts and commented answers.">
+<link rel="stylesheet" href="course.css?v=1"></head>
+<body class="cos" data-chapter=""><a class="skip" href="#main">Skip to content</a>
+<header class="cos-bar"><div class="wrap"><a class="cos-brand" href="index.html">Python · AI</a><nav class="cos-nav" aria-label="Python course"><a href="index.html">Map</a><a  href="ch01.html">1</a><a  href="ch02.html">2</a><a  href="ch03.html">3</a><a  href="ch04.html">4</a><a  href="ch05.html">5</a><a  href="ch06.html">6</a><a  href="ch07.html">7</a><a  href="ch08.html">8</a><a  href="ch09.html">9</a><a  href="ch10.html">10</a><a  href="ch11.html">11</a><a  href="ch12.html">12</a><a  href="ch13.html">13</a><a  href="ch14.html">14</a><a href="index.html#projects">Projects</a><a href="../index.html">Learn hub</a></nav><button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode"><svg class="theme-sun" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="#F5C518"/><g stroke="#F5C518" stroke-width="1.8" stroke-linecap="round" fill="none"><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M5.6 18.4l1.7-1.7M16.7 7.3l1.7-1.7"/></g></svg><svg class="theme-moon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="#8EA0FF" d="M16.2 3.1A8.9 8.9 0 1 0 21.1 18 7.4 7.4 0 0 1 16.2 3.1z"/></svg></button></div></header>
+<main id="main"><div class="wrap"><p class="kicker"><a href="index.html#projects">Python + AI projects</a> · P1 · easy</p><h1>Expense tracker</h1><p class="lede">A command-line app that saves expenses between runs. Practice functions, dictionaries, JSON, validation and file errors.</p><div class="need"><span class="tag">Build before reading the solution</span><p>Create your own .py file and implement each step. Submit your plan or code below. These project submissions are saved drafts for self-review.</p></div><h2>Build in steps</h2><ol><li>Create to_cents(text). Accept positive numbers with at most two decimal places. Reject invalid text, negative amounts, NaN and infinity.</li><li>Load a JSON list from expenses.json. Return [] only when the file is missing. Report malformed data.</li><li>Implement add and list commands. Add records, show each expense and print the total in EUR.</li><li>Run the app twice and verify persistence. Reject bad input without overwriting the existing file.</li></ol><h2>Run locally on Windows</h2><pre><code>py expense_tracker.py add 3.50 coffee
+py expense_tracker.py add 12.00 food
+py expense_tracker.py list</code></pre><p>On macOS or Linux, replace py with python3.</p><h2>Verify the behavior</h2><p>Expect Total: 15.50 EUR after those two additions to a new file. Try 1.005, -5, abc and NaN: each must fail. Try an empty category. Then run list again and confirm that valid records remain intact.</p><h2 id="practice">Practice session</h2><div class="scorebox"><span class="tag">This chapter</span><p data-score aria-live="polite"></p><p>Predict the output before running it. Output checks preserve case and line breaks. Written programs are saved for self-review and are not executed here. Drafts and progress stay in this browser.</p></div><article class="drill" id="p1-s1"><p class="drill-id">Practice 01 · write and self-review</p><h3>Create to_cents(text). Accept positive numbers with at most two decimal places. Reject invalid text, negative amounts, NaN and infinity.</h3><label for="input-p1-s1">Your answer</label><textarea id="input-p1-s1" class="drill-in" rows="10" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-p1-s1">Hint</button><button type="button" data-submit>Submit draft</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-p1-s1">See answer</button></div>
+<div class="drill-hint" id="hint-p1-s1" data-hint hidden><span class="tag">Step by step</span><p>Write the input and expected output on paper. Identify the data structure and the function responsible.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-p1-s1" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>Create to_cents(text). Accept positive numbers with at most two decimal places. Reject invalid text, negative amounts, NaN and infinity.
+
+Review checklist:
+- State the inputs and outputs.
+- Run the normal and edge cases described above.
+- Explain the relevant lines in the complete reference solution.</code></pre><p>This is a self-review task. Your code has not been executed or graded by the page.</p></div></article><article class="drill" id="p1-s2"><p class="drill-id">Practice 02 · write and self-review</p><h3>Load a JSON list from expenses.json. Return [] only when the file is missing. Report malformed data.</h3><label for="input-p1-s2">Your answer</label><textarea id="input-p1-s2" class="drill-in" rows="10" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-p1-s2">Hint</button><button type="button" data-submit>Submit draft</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-p1-s2">See answer</button></div>
+<div class="drill-hint" id="hint-p1-s2" data-hint hidden><span class="tag">Step by step</span><p>Use the previous chapters to write the smallest working version. Test one normal case and one invalid case.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-p1-s2" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>Load a JSON list from expenses.json. Return [] only when the file is missing. Report malformed data.
+
+Review checklist:
+- State the inputs and outputs.
+- Run the normal and edge cases described above.
+- Explain the relevant lines in the complete reference solution.</code></pre><p>This is a self-review task. Your code has not been executed or graded by the page.</p></div></article><article class="drill" id="p1-s3"><p class="drill-id">Practice 03 · write and self-review</p><h3>Implement add and list commands. Add records, show each expense and print the total in EUR.</h3><label for="input-p1-s3">Your answer</label><textarea id="input-p1-s3" class="drill-in" rows="10" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-p1-s3">Hint</button><button type="button" data-submit>Submit draft</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-p1-s3">See answer</button></div>
+<div class="drill-hint" id="hint-p1-s3" data-hint hidden><span class="tag">Step by step</span><p>Trace each function in the reference implementation and compare its behavior with yours.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-p1-s3" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>&quot;&quot;&quot;Learning project: python expense_tracker.py add 3.50 coffee
+
+python expense_tracker.py list
+Stores expenses.json alongside this script. Uses integer cents for money.
+&quot;&quot;&quot;
+import argparse
+import json
+from decimal import Decimal, InvalidOperation
+from pathlib import Path
+
+DATA = Path(__file__).with_name(&#x27;expenses.json&#x27;)
+
+
+def to_cents(text):
+    &quot;&quot;&quot;Reject invalid, negative or sub-cent amounts instead of silently rounding.&quot;&quot;&quot;
+    try:
+        value = Decimal(text)
+    except InvalidOperation as error:
+        raise ValueError(&#x27;Enter a number such as 3.50.&#x27;) from error
+    if not value.is_finite() or value &lt;= 0:
+        raise ValueError(&#x27;Amount must be finite and positive.&#x27;)
+    cents = value * 100
+    if cents != cents.to_integral_value():
+        raise ValueError(&#x27;Use no more than two decimal places.&#x27;)
+    return int(cents)
+
+
+def load(path=DATA):
+    if not path.exists():
+        return []
+    # Malformed data is reported, never silently replaced with an empty file.
+    rows = json.loads(path.read_text(encoding=&#x27;utf-8&#x27;))
+    if not isinstance(rows, list) or any(
+        not isinstance(row, dict)
+        or type(row.get(&#x27;cents&#x27;)) is not int
+        or row[&#x27;cents&#x27;] &lt;= 0
+        or not isinstance(row.get(&#x27;category&#x27;), str)
+        for row in rows
+    ):
+        raise ValueError(&#x27;Unexpected expense file structure.&#x27;)
+    return rows
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    sub = parser.add_subparsers(dest=&#x27;command&#x27;, required=True)
+    add = sub.add_parser(&#x27;add&#x27;)
+    add.add_argument(&#x27;amount&#x27;)
+    add.add_argument(&#x27;category&#x27;)
+    sub.add_parser(&#x27;list&#x27;)
+    args = parser.parse_args()
+    try:
+        rows = load()
+        if args.command == &#x27;add&#x27;:
+            category = args.category.strip()
+            if not category:
+                raise ValueError(&#x27;Category cannot be empty.&#x27;)
+            rows.append({&#x27;cents&#x27;: to_cents(args.amount), &#x27;category&#x27;: category})
+            DATA.write_text(json.dumps(rows, indent=2), encoding=&#x27;utf-8&#x27;)
+            print(&#x27;Expense saved.&#x27;)
+        else:
+            for row in rows:
+                print(f&quot;{row[&#x27;category&#x27;]}: {Decimal(row[&#x27;cents&#x27;]) / 100:.2f} EUR&quot;)
+            total = sum(row[&#x27;cents&#x27;] for row in rows)
+            print(f&#x27;Total: {Decimal(total) / 100:.2f} EUR&#x27;)
+    except (ValueError, OSError) as error:
+        parser.exit(1, f&#x27;Error: {error}\n&#x27;)
+
+
+if __name__ == &#x27;__main__&#x27;:
+    main()
+</code></pre><p>This is a self-review task. Your code has not been executed or graded by the page.</p></div></article><article class="drill" id="p1-s4"><p class="drill-id">Practice 04 · write and self-review</p><h3>Run the app twice and verify persistence. Reject bad input without overwriting the existing file.</h3><label for="input-p1-s4">Your answer</label><textarea id="input-p1-s4" class="drill-in" rows="10" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-p1-s4">Hint</button><button type="button" data-submit>Submit draft</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-p1-s4">See answer</button></div>
+<div class="drill-hint" id="hint-p1-s4" data-hint hidden><span class="tag">Step by step</span><p>Record the observed output, not just whether the program ran.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-p1-s4" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>Run the app twice and verify persistence. Reject bad input without overwriting the existing file.
+
+Review checklist:
+- State the inputs and outputs.
+- Run the normal and edge cases described above.
+- Explain the relevant lines in the complete reference solution.</code></pre><p>This is a self-review task. Your code has not been executed or graded by the page.</p></div></article><h2>Complete commented reference</h2><p><a href="downloads/expense_tracker.py" download>Download expense_tracker.py</a> · No external Python packages required.</p><details class="reading"><summary>Open the full reference implementation</summary><pre><code>&quot;&quot;&quot;Learning project: python expense_tracker.py add 3.50 coffee
+
+python expense_tracker.py list
+Stores expenses.json alongside this script. Uses integer cents for money.
+&quot;&quot;&quot;
+import argparse
+import json
+from decimal import Decimal, InvalidOperation
+from pathlib import Path
+
+DATA = Path(__file__).with_name(&#x27;expenses.json&#x27;)
+
+
+def to_cents(text):
+    &quot;&quot;&quot;Reject invalid, negative or sub-cent amounts instead of silently rounding.&quot;&quot;&quot;
+    try:
+        value = Decimal(text)
+    except InvalidOperation as error:
+        raise ValueError(&#x27;Enter a number such as 3.50.&#x27;) from error
+    if not value.is_finite() or value &lt;= 0:
+        raise ValueError(&#x27;Amount must be finite and positive.&#x27;)
+    cents = value * 100
+    if cents != cents.to_integral_value():
+        raise ValueError(&#x27;Use no more than two decimal places.&#x27;)
+    return int(cents)
+
+
+def load(path=DATA):
+    if not path.exists():
+        return []
+    # Malformed data is reported, never silently replaced with an empty file.
+    rows = json.loads(path.read_text(encoding=&#x27;utf-8&#x27;))
+    if not isinstance(rows, list) or any(
+        not isinstance(row, dict)
+        or type(row.get(&#x27;cents&#x27;)) is not int
+        or row[&#x27;cents&#x27;] &lt;= 0
+        or not isinstance(row.get(&#x27;category&#x27;), str)
+        for row in rows
+    ):
+        raise ValueError(&#x27;Unexpected expense file structure.&#x27;)
+    return rows
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    sub = parser.add_subparsers(dest=&#x27;command&#x27;, required=True)
+    add = sub.add_parser(&#x27;add&#x27;)
+    add.add_argument(&#x27;amount&#x27;)
+    add.add_argument(&#x27;category&#x27;)
+    sub.add_parser(&#x27;list&#x27;)
+    args = parser.parse_args()
+    try:
+        rows = load()
+        if args.command == &#x27;add&#x27;:
+            category = args.category.strip()
+            if not category:
+                raise ValueError(&#x27;Category cannot be empty.&#x27;)
+            rows.append({&#x27;cents&#x27;: to_cents(args.amount), &#x27;category&#x27;: category})
+            DATA.write_text(json.dumps(rows, indent=2), encoding=&#x27;utf-8&#x27;)
+            print(&#x27;Expense saved.&#x27;)
+        else:
+            for row in rows:
+                print(f&quot;{row[&#x27;category&#x27;]}: {Decimal(row[&#x27;cents&#x27;]) / 100:.2f} EUR&quot;)
+            total = sum(row[&#x27;cents&#x27;] for row in rows)
+            print(f&#x27;Total: {Decimal(total) / 100:.2f} EUR&#x27;)
+    except (ValueError, OSError) as error:
+        parser.exit(1, f&#x27;Error: {error}\n&#x27;)
+
+
+if __name__ == &#x27;__main__&#x27;:
+    main()
+</code></pre></details><h2>Publish your own project</h2><ol><li>Create a GitHub repository for your implementation.</li><li>Add the .py file and a README with setup instructions, sample input, actual output and limitations.</li><li>Explain one change you made beyond the reference. Exclude personal expense files and other private data.</li><li>Link the repository from your portfolio only after you can explain and reproduce its behavior.</li></ol><div class="pager"><a href="index.html#projects">← Project map</a><a href="p2.html">Next project →</a></div>
+<p class="source-note">Reading notes and course sequence adapted from <a href="https://github.com/mayank953/python-ai-crash-course">Mayank Aggarwal’s Python AI Crash Course</a>, under the <a href="LICENSE-upstream.txt">MIT license</a>. Classroom adaptation, chapter guides and project exercises: Learn with Mynul. <a href="sources.html">Sources and study guide</a>.</p>
+</div></main><footer class="cos-foot"><div class="wrap">Learn with Mynul · Read. Trace. Practice. Build.</div></footer>
+<script>window.PYTHON_PRACTICE = [{"id": "p1-s1", "prompt": "Create to_cents(text). Accept positive numbers with at most two decimal places. Reject invalid text, negative amounts, NaN and infinity.", "hint": "Write the input and expected output on paper. Identify the data structure and the function responsible.", "answer": "Create to_cents(text). Accept positive numbers with at most two decimal places. Reject invalid text, negative amounts, NaN and infinity.\n\nReview checklist:\n- State the inputs and outputs.\n- Run the normal and edge cases described above.\n- Explain the relevant lines in the complete reference solution.", "why": "This is a self-review task. Your code has not been executed or graded by the page."}, {"id": "p1-s2", "prompt": "Load a JSON list from expenses.json. Return [] only when the file is missing. Report malformed data.", "hint": "Use the previous chapters to write the smallest working version. Test one normal case and one invalid case.", "answer": "Load a JSON list from expenses.json. Return [] only when the file is missing. Report malformed data.\n\nReview checklist:\n- State the inputs and outputs.\n- Run the normal and edge cases described above.\n- Explain the relevant lines in the complete reference solution.", "why": "This is a self-review task. Your code has not been executed or graded by the page."}, {"id": "p1-s3", "prompt": "Implement add and list commands. Add records, show each expense and print the total in EUR.", "hint": "Trace each function in the reference implementation and compare its behavior with yours.", "answer": "\"\"\"Learning project: python expense_tracker.py add 3.50 coffee\n\npython expense_tracker.py list\nStores expenses.json alongside this script. Uses integer cents for money.\n\"\"\"\nimport argparse\nimport json\nfrom decimal import Decimal, InvalidOperation\nfrom pathlib import Path\n\nDATA = Path(__file__).with_name('expenses.json')\n\n\ndef to_cents(text):\n    \"\"\"Reject invalid, negative or sub-cent amounts instead of silently rounding.\"\"\"\n    try:\n        value = Decimal(text)\n    except InvalidOperation as error:\n        raise ValueError('Enter a number such as 3.50.') from error\n    if not value.is_finite() or value \u003c= 0:\n        raise ValueError('Amount must be finite and positive.')\n    cents = value * 100\n    if cents != cents.to_integral_value():\n        raise ValueError('Use no more than two decimal places.')\n    return int(cents)\n\n\ndef load(path=DATA):\n    if not path.exists():\n        return []\n    # Malformed data is reported, never silently replaced with an empty file.\n    rows = json.loads(path.read_text(encoding='utf-8'))\n    if not isinstance(rows, list) or any(\n        not isinstance(row, dict)\n        or type(row.get('cents')) is not int\n        or row['cents'] \u003c= 0\n        or not isinstance(row.get('category'), str)\n        for row in rows\n    ):\n        raise ValueError('Unexpected expense file structure.')\n    return rows\n\n\ndef main():\n    parser = argparse.ArgumentParser(description=__doc__)\n    sub = parser.add_subparsers(dest='command', required=True)\n    add = sub.add_parser('add')\n    add.add_argument('amount')\n    add.add_argument('category')\n    sub.add_parser('list')\n    args = parser.parse_args()\n    try:\n        rows = load()\n        if args.command == 'add':\n            category = args.category.strip()\n            if not category:\n                raise ValueError('Category cannot be empty.')\n            rows.append({'cents': to_cents(args.amount), 'category': category})\n            DATA.write_text(json.dumps(rows, indent=2), encoding='utf-8')\n            print('Expense saved.')\n        else:\n            for row in rows:\n                print(f\"{row['category']}: {Decimal(row['cents']) / 100:.2f} EUR\")\n            total = sum(row['cents'] for row in rows)\n            print(f'Total: {Decimal(total) / 100:.2f} EUR')\n    except (ValueError, OSError) as error:\n        parser.exit(1, f'Error: {error}\\n')\n\n\nif __name__ == '__main__':\n    main()\n", "why": "This is a self-review task. Your code has not been executed or graded by the page."}, {"id": "p1-s4", "prompt": "Run the app twice and verify persistence. Reject bad input without overwriting the existing file.", "hint": "Record the observed output, not just whether the program ran.", "answer": "Run the app twice and verify persistence. Reject bad input without overwriting the existing file.\n\nReview checklist:\n- State the inputs and outputs.\n- Run the normal and edge cases described above.\n- Explain the relevant lines in the complete reference solution.", "why": "This is a self-review task. Your code has not been executed or graded by the page."}];</script><script src="js/practice.js?v=1" defer></script><script src="../../assets/js/theme.js?v=3" defer></script></body></html>

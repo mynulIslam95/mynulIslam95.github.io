@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
+  </script><title>Lists, copying and comprehensions · Python + AI · Learn with Mynul</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<meta name="description" content="Python and AI from scratch. Read the lessons, trace examples and practice with hints, saved drafts and commented answers.">
+<link rel="stylesheet" href="course.css?v=1"></head>
+<body class="cos" data-chapter="7"><a class="skip" href="#main">Skip to content</a>
+<header class="cos-bar"><div class="wrap"><a class="cos-brand" href="index.html">Python · AI</a><nav class="cos-nav" aria-label="Python course"><a href="index.html">Map</a><a  href="ch01.html">1</a><a  href="ch02.html">2</a><a  href="ch03.html">3</a><a  href="ch04.html">4</a><a  href="ch05.html">5</a><a  href="ch06.html">6</a><a class="is-on" href="ch07.html">7</a><a  href="ch08.html">8</a><a  href="ch09.html">9</a><a  href="ch10.html">10</a><a  href="ch11.html">11</a><a  href="ch12.html">12</a><a  href="ch13.html">13</a><a  href="ch14.html">14</a><a href="index.html#projects">Projects</a><a href="../index.html">Learn hub</a></nav><button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode"><svg class="theme-sun" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="#F5C518"/><g stroke="#F5C518" stroke-width="1.8" stroke-linecap="round" fill="none"><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M5.6 18.4l1.7-1.7M16.7 7.3l1.7-1.7"/></g></svg><svg class="theme-moon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="#8EA0FF" d="M16.2 3.1A8.9 8.9 0 1 0 21.1 18 7.4 7.4 0 0 1 16.2 3.1z"/></svg></button></div></header>
+<main id="main"><div class="wrap"><p class="kicker"><a href="index.html">Python + AI</a> · Chapter 07</p><h1>Lists, copying and comprehensions</h1><p class="lede">A list is an ordered mutable collection. It is useful for storing rows, predictions or a sequence of tasks. A list can contain different types, but a consistent structure makes real programs easier to maintain.</p><div class="toc"><a href="#reading">Reading</a><a href="#practice">Practice session</a><a href="#end">Save reading progress</a></div><div class="rule"><span class="tag">The rule</span><p>append changes a list in place and returns None. Assignment such as b = a gives another name to the same list. a.copy() makes a shallow copy: nested objects are still shared. A list comprehension builds a new list by transforming and optionally filtering items.</p></div><h2>Worked example</h2><pre><code>values = [1, 2, 3]
+alias = values  # Both names refer to the same list.
+alias.append(4)
+squares = [x * x for x in values if x % 2 == 0]
+print(values)
+print(squares)</code></pre><div class="trace"><span class="tag">Trace every line</span><p>append changes the shared list to [1, 2, 3, 4]. The comprehension keeps 2 and 4 because their remainders modulo 2 are zero. Squaring them produces [4, 16]. values stays as [1, 2, 3, 4].</p></div><div id="reading"><section class="reading" id="lesson-26"><h2>26. Introduction to Data Structures</h2><p>Why we need containers, and a map of the four built-in ones: list, tuple, set and dictionary.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=20036s">Watch 5:33:56</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/26-intro-data-structures">Original resources</a></div><details open><summary>Read the explanation · theory.ipynb</summary><h3>Data Structure</h3>
+</details><h3>Try it yourself</h3><ol><li>Pick the best structure for: days of the week, unique visitor IDs, name-to-marks lookup, a GPS point.</li><li>Write one sentence each on when order matters and when uniqueness matters.</li><li>Which of the four can be changed after creation?</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section><section class="reading" id="lesson-27"><h2>27. Lists: Basics &amp; Operations</h2><p>Creating lists, indexing, slicing, joining, repeating and editing them.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=20617s">Watch 5:43:37</a><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=21264s">Watch 5:54:24</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/27-lists">Original resources</a></div><details open><summary>Read and trace the code examples · code.ipynb</summary><pre><code class="language-python">l1 = [1,2,3]
+</code></pre>
+<pre><code class="language-python">l1
+</code></pre>
+<pre><code class="language-python">type(l1)
+</code></pre>
+<pre><code class="language-python">l1[0]
+</code></pre>
+<pre><code class="language-python">l1[0] = 5353
+</code></pre>
+<pre><code class="language-python">l1
+</code></pre>
+<pre><code class="language-python">l2 = [1,1,1]
+</code></pre>
+<pre><code class="language-python">l2
+</code></pre>
+<pre><code class="language-python">l3 = [&quot;mayank&quot;,12,3.14,l2]
+</code></pre>
+<pre><code class="language-python">l3
+</code></pre>
+<pre><code class="language-python">l4 = list((1,2,3))
+</code></pre>
+<pre><code class="language-python">l4
+</code></pre>
+<pre><code class="language-python">l5 = list()
+</code></pre>
+<pre><code class="language-python">l5
+</code></pre>
+<pre><code class="language-python">l6 = []
+l6
+</code></pre>
+<pre><code class="language-python">len(l6)
+</code></pre>
+<h3>SLicing AND Indexing</h3>
+<pre><code class="language-python">l3
+</code></pre>
+<pre><code class="language-python">l3[-1]
+</code></pre>
+<pre><code class="language-python">l3[2:0:-1]
+</code></pre>
+<h3>List operations</h3>
+<pre><code class="language-python">l1,l2
+</code></pre>
+<pre><code class="language-python">l1 + l2
+</code></pre>
+<pre><code class="language-python">&quot;may&quot; + &quot;ank&quot;
+</code></pre>
+<pre><code class="language-python">l1+l1+l1
+</code></pre>
+<pre><code class="language-python">l1 * 3
+</code></pre>
+<pre><code class="language-python">l1 - l2
+</code></pre>
+<pre><code class="language-python">l2/2
+</code></pre>
+<pre><code class="language-python">l1
+</code></pre>
+<pre><code class="language-python">3 in l1
+</code></pre>
+<pre><code class="language-python">l3
+</code></pre>
+<pre><code class="language-python">1 in l3
+</code></pre>
+<pre><code class="language-python">[1,1,1] in l3
+</code></pre>
+<pre><code class="language-python">for ele in l3:
+    print(ele)
+</code></pre>
+<pre><code class="language-python">&#39;12&#39; in l3
+</code></pre>
+<pre><code class="language-python">fruits = [&#39;orange&#39;,&#39;banana&#39;,&#39;apple&#39;]
+</code></pre>
+<pre><code class="language-python">fruits[0] = &#39;pineapple&#39;
+</code></pre>
+<pre><code class="language-python">fruits
+</code></pre>
+<pre><code class="language-python">fruits [3] = &#39;gain&#39;
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Make a list of five numbers; practise indexing, slicing, concatenation and repetition.</li><li>Change one element and delete another with `del`.</li><li>Find the max, min and sum without writing a loop.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section><section class="reading" id="lesson-28"><h2>28. List Functions, Methods &amp; Copying</h2><p>The built-in functions and list methods you will use daily, and why `b = a` is not a copy.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=21709s">Watch 6:01:49</a><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=22475s">Watch 6:14:35</a><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=23300s">Watch 6:28:20</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/28-list-functions-methods">Original resources</a></div><details open><summary>Read the explanation · theory.ipynb</summary><h3>Methods &amp; Functions in List</h3>
+<h4>Functions on List</h4>
+<h5>1. <code>len()</code></h5>
+<p>The <code>len()</code> function returns the number of items in a list.</p>
+<pre><code class="language-python">my_list = [1, 2, 3, 4]
+print(len(my_list))  # Output: 4
+</code></pre>
+<h5>2. <code>max()</code></h5>
+<p>The <code>max()</code> function returns the largest item in a list.</p>
+<pre><code class="language-python">my_list = [1, 2, 3, 4]
+print(max(my_list))  # Output: 4
+</code></pre>
+<h5>3. <code>min()</code></h5>
+<p>The <code>min()</code> function returns the smallest item in a list.</p>
+<pre><code class="language-python">my_list = [1, 2, 3, 4]
+print(min(my_list))  # Output: 1
+</code></pre>
+<h5>4. <code>sum()</code></h5>
+<p>The <code>sum()</code> function returns the sum of all items in a list.</p>
+<pre><code class="language-python">my_list = [1, 2, 3, 4]
+print(sum(my_list))  # Output: 10
+</code></pre>
+<h5>5. <code>sorted()</code></h5>
+<p>The <code>sorted()</code> function returns a new list containing all items in ascending order.</p>
+<pre><code class="language-python">my_list = [4, 1, 3, 2]
+print(sorted(my_list))  # Output: [1, 2, 3, 4]
+</code></pre>
+<h5>6. <code>any()</code></h5>
+<p>The <code>any()</code> function returns <code>True</code> if any item in the list is true. If the list is empty, it returns <code>False</code>.</p>
+<pre><code class="language-python">my_list = [0, 1, 0, 0]
+print(any(my_list))  # Output: True
+</code></pre>
+<h5>7. <code>all()</code></h5>
+<p>The <code>all()</code> function returns <code>True</code> if all items in the list are true. If the list is empty, it returns <code>True</code>.</p>
+<pre><code class="language-python">my_list = [1, 1, 1, 1]
+print(all(my_list))  # Output: True
+</code></pre>
+<h4>Function vs Method</h4>
+<p>A function is called on an object, and it requires an object or variable to be called.</p>
+<h5>Example of Function</h5>
+<pre><code class="language-python">len([1, 2, 3])  # Function
+</code></pre>
+<h5>Example of Method</h5>
+<pre><code class="language-python">my_list = [1, 2, 3]
+my_list.append(4)  # Method
+</code></pre>
+<p>Further discussion on functions and methods will be covered in the OOP section.</p>
+<h4>Methods in List</h4>
+<h5>1. <code>append()</code></h5>
+<p>The <code>append()</code> method adds an item to the end of the list.</p>
+<pre><code class="language-python">my_list = [1, 2, 3]
+my_list.append(4)
+print(my_list)  # Output: [1, 2, 3, 4]
+</code></pre>
+<h5>2. <code>extend()</code></h5>
+<p>The <code>extend()</code> method adds all items of an iterable (list, tuple, string) to the end of the list.</p>
+<pre><code class="language-python">my_list = [1, 2, 3]
+my_list.extend([4, 5])
+print(my_list)  # Output: [1, 2, 3, 4, 5]
+</code></pre>
+<h5>3. <code>insert()</code></h5>
+<p>The <code>insert()</code> method inserts an item at a specified position in the list.</p>
+<pre><code class="language-python">my_list = [1, 2, 3]
+my_list.insert(1, &#39;a&#39;)
+print(my_list)  # Output: [1, &#39;a&#39;, 2, 3]
+</code></pre>
+<h5>4. <code>index()</code></h5>
+<p>The <code>index()</code> method returns the index of the first occurrence of a specified value in the list.</p>
+<pre><code class="language-python">my_list = [1, 2, 3, 2]
+print(my_list.index(2))  # Output: 1
+</code></pre>
+<h5>5. <code>count()</code></h5>
+<p>The <code>count()</code> method returns the number of occurrences of a specified value in the list.</p>
+<pre><code class="language-python">my_list = [1, 2, 2, 3, 2]
+print(my_list.count(2))  # Output: 3
+</code></pre>
+<h5>6. <code>remove()</code></h5>
+<p>The <code>remove()</code> method removes the first occurrence of a specified value from the list.</p>
+<pre><code class="language-python">my_list = [1, 2, 3, 2]
+my_list.remove(2)
+print(my_list)  # Output: [1, 3, 2]
+</code></pre>
+<h5>7. <code>pop()</code></h5>
+<p>The <code>pop()</code> method removes and returns the item at the specified position in the list. If no index is specified, it removes and returns the last item.</p>
+<pre><code class="language-python">my_list = [1, 2, 3]
+print(my_list.pop())  # Output: 3
+print(my_list)  # Output: [1, 2]
+</code></pre>
+<h5>8. <code>clear()</code></h5>
+<p>The <code>clear()</code> method removes all items from the list.</p>
+<pre><code class="language-python">my_list = [1, 2, 3]
+my_list.clear()
+print(my_list)  # Output: []
+</code></pre>
+<h5>9. <code>reverse()</code></h5>
+<p>The <code>reverse()</code> method reverses the order of items in the list.</p>
+<pre><code class="language-python">my_list = [1, 2, 3]
+my_list.reverse()
+print(my_list)  # Output: [3, 2, 1]
+</code></pre>
+<h5>10. <code>sort()</code></h5>
+<p>The <code>sort()</code> method sorts the items of the list in ascending order by default. You can specify the sorting criteria.</p>
+<pre><code class="language-python">my_list = [3, 1, 2]
+my_list.sort()
+print(my_list)  # Output: [1, 2, 3]
+</code></pre>
+<h5>11. <code>copy()</code></h5>
+<p>The <code>copy()</code> method returns a shallow copy of the list.</p>
+<pre><code class="language-python">my_list = [1, 2, 3]
+new_list = my_list.copy()
+print(new_list)  # Output: [1, 2, 3]
+</code></pre>
+<h3>Questions</h3>
+<ol>
+<li>What is the difference between a function and a method in Python?</li>
+<li>Write a code snippet to demonstrate the use of <code>sum()</code> and <code>any()</code> functions on a list.</li>
+<li>How does the <code>insert()</code> method work in a list? Provide an example.</li>
+<li>Write a code snippet to remove all occurrences of a specific item from a list.</li>
+<li>How can you create a copy of a list? Provide a code example.</li>
+<li>Explain the use of the <code>pop()</code> method with an example.</li>
+<li>How does the <code>sorted()</code> function differ from the <code>sort()</code> method?</li>
+<li>Write a code snippet to find the second largest number in a list.</li>
+<li>How can you reverse the order of items in a list? Provide an example.</li>
+<li>Write a code snippet to check if all items in a list are positive numbers.</li>
+</ol>
+<h3>Answers</h3>
+<ol>
+<li><p>A function is called on an object, and it requires an object or variable to be called. A method is a function that is called on an object and is specific to the object&#39;s type.</p>
+</li>
+<li></li>
+</ol>
+<pre><code class="language-python">my_list = [1, 2, 3, 4]
+print(sum(my_list))  # Output: 10
+print(any(my_list))  # Output: True
+</code></pre>
+<ol start="3">
+<li>The <code>insert()</code> method inserts an item at a specified position in the list.</li>
+</ol>
+<pre><code class="language-python">my_list = [1, 2, 3]
+my_list.insert(1, &#39;a&#39;)
+print(my_list)  # Output: [1, &#39;a&#39;, 2, 3]
+</code></pre>
+<p>4. </p>
+<pre><code class="language-python">my_list = [1, 2, 3, 2, 4]
+item_to_remove = 2
+my_list = [item for item in my_list if item != item_to_remove]
+print(my_list)  # Output: [1, 3, 4]
+</code></pre>
+<p>5. </p>
+<pre><code class="language-python">my_list = [1, 2, 3]
+new_list = my_list.copy()
+print(new_list)  # Output: [1, 2, 3]
+</code></pre>
+<ol start="6">
+<li>The <code>pop()</code> method removes and returns the item at the specified position in the list. If no index is specified, it removes and returns the last item.</li>
+</ol>
+<pre><code class="language-python">my_list = [1, 2, 3]
+print(my_list.pop())  # Output: 3
+print(my_list)  # Output: [1, 2]
+</code></pre>
+<ol start="7">
+<li><p>The <code>sorted()</code> function returns a new list containing all items in ascending order, whereas the <code>sort()</code> method sorts the items of the list in place.</p>
+</li>
+<li></li>
+</ol>
+<pre><code class="language-python">my_list = [1, 2, 3, 4]
+my_list.remove(max(my_list))
+print(max(my_list))  # Output: 3
+</code></pre>
+<p>9. </p>
+<pre><code class="language-python">my_list = [1, 2, 3]
+my_list.reverse()
+print(my_list)  # Output: [3, 2, 1]
+</code></pre>
+<p>10. </p>
+<pre><code class="language-python">my_list = [1, 2, 3]
+print(all(x &gt; 0 for x in my_list))  # Output: True
+</code></pre>
+</details><details ><summary>Read and trace the code examples · code.ipynb</summary><pre><code class="language-python">l1 = [1,2,3,4,5]
+</code></pre>
+<pre><code class="language-python">listLen = 0
+for i in l1:
+    listLen= listLen+1
+</code></pre>
+<pre><code class="language-python">listLen
+</code></pre>
+<h3>Functions</h3>
+<ol>
+<li>len ()</li>
+<li>max ()</li>
+<li>min()</li>
+<li>Sum()</li>
+<li>Sorted()</li>
+<li>any ()</li>
+<li>all ()</li>
+</ol>
+<pre><code class="language-python">len(l1)
+</code></pre>
+<pre><code class="language-python">len([])
+</code></pre>
+<pre><code class="language-python">l2 = [53,5316,21,5632,632153,61361]
+max(l2)
+</code></pre>
+<pre><code class="language-python">l3 = [ &quot;abc&quot;,5]
+max(l3)
+</code></pre>
+<pre><code class="language-python">max([&#39;abc&#39;,&#39;zbc&#39;])
+</code></pre>
+<pre><code class="language-python">min(l1)
+</code></pre>
+<pre><code class="language-python">min(l2)
+</code></pre>
+<pre><code class="language-python">min([&#39;abc&#39;,&#39;zbc&#39;])
+</code></pre>
+<pre><code class="language-python">sum(l1),sum(l2)
+</code></pre>
+<pre><code class="language-python">sum(l3)
+</code></pre>
+<pre><code class="language-python">l4 = [&#39;abc&#39;,&#39;def&#39;]
+sum(l4)
+</code></pre>
+<pre><code class="language-python">ans = 0
+
+for i in l4:
+    ans = ans + i
+</code></pre>
+<pre><code class="language-python">sorted(l2)
+</code></pre>
+<pre><code class="language-python">sorted(l3)
+</code></pre>
+<pre><code class="language-python">sorted(l4)
+</code></pre>
+<p>False - &gt; [] , 0,0.0, None</p>
+<pre><code class="language-python">l5 = [None,0,0.0,[],(),0j,&#39;&#39;]
+</code></pre>
+<pre><code class="language-python">any(l5)
+</code></pre>
+<pre><code class="language-python">l6 = [1,1.5,&quot;abc&quot;,[1],False]
+all(l6)
+</code></pre>
+<pre><code class="language-python">l1
+</code></pre>
+<h3>Methods</h3>
+<ol>
+<li>append ()</li>
+<li>extend ()</li>
+<li>insert()</li>
+<li>index ()</li>
+<li>Count())</li>
+<li>remove()</li>
+<li>pop ()</li>
+<li>Clear())</li>
+<li>reverse ()</li>
+<li>sort()</li>
+<li>copy ()</li>
+</ol>
+<pre><code class="language-python">l1
+</code></pre>
+<pre><code class="language-python">l1.append(6)
+l1
+</code></pre>
+<pre><code class="language-python">l2
+</code></pre>
+<pre><code class="language-python">l3
+</code></pre>
+<pre><code class="language-python">l2.extend(l3)
+</code></pre>
+<pre><code class="language-python">l2
+</code></pre>
+<pre><code class="language-python">l3
+</code></pre>
+<pre><code class="language-python">### Insert
+</code></pre>
+<pre><code class="language-python">l1
+</code></pre>
+<pre><code class="language-python">l1.insert(0,0)
+</code></pre>
+<pre><code class="language-python">l1
+</code></pre>
+<pre><code class="language-python">l1.insert(5,100)
+l1
+</code></pre>
+<pre><code class="language-python">l1.insert(2,&quot;mayank&quot;)
+l1
+</code></pre>
+<pre><code class="language-python">l1.index(&#39;mayank&#39;)
+</code></pre>
+<pre><code class="language-python">l1.index(6)
+</code></pre>
+<pre><code class="language-python">l1.count(1)
+</code></pre>
+<pre><code class="language-python">l1.count(6)
+</code></pre>
+<pre><code class="language-python">l1.count(10)
+</code></pre>
+<pre><code class="language-python">l1
+</code></pre>
+<pre><code class="language-python">l1.remove(1)
+l1
+</code></pre>
+<pre><code class="language-python">l1.remove(6)
+l1
+</code></pre>
+<pre><code class="language-python">if 10 in l1:
+    l1.remove(10)
+</code></pre>
+<pre><code class="language-python">l1
+</code></pre>
+<pre><code class="language-python">l1.pop()
+</code></pre>
+<pre><code class="language-python">l1.remove(4)
+</code></pre>
+<pre><code class="language-python">l6 = []
+l6.pop()
+</code></pre>
+<pre><code class="language-python">if (len(l6)!= 0):
+    l6.pop()
+</code></pre>
+<pre><code class="language-python">l3
+</code></pre>
+<pre><code class="language-python">l3.clear()
+</code></pre>
+<pre><code class="language-python">l3
+</code></pre>
+<pre><code class="language-python">l2
+</code></pre>
+<pre><code class="language-python">l2.reverse()
+</code></pre>
+<pre><code class="language-python">l2
+</code></pre>
+<pre><code class="language-python">l2 = l2[::-1]
+</code></pre>
+<pre><code class="language-python">l2
+</code></pre>
+<pre><code class="language-python">l2.sort()
+</code></pre>
+<pre><code class="language-python">l2.remove(&#39;abc&#39;)
+</code></pre>
+<pre><code class="language-python">l2
+</code></pre>
+<pre><code class="language-python">l2.sort()
+</code></pre>
+<pre><code class="language-python">l2
+</code></pre>
+<pre><code class="language-python">l2.sort(reverse=True)
+l2
+</code></pre>
+<pre><code class="language-python">l1
+</code></pre>
+<h3>Copy Method In List</h3>
+<pre><code class="language-python">l1
+</code></pre>
+<pre><code class="language-python">l1Copy = l1
+</code></pre>
+<pre><code class="language-python">l1
+</code></pre>
+<pre><code class="language-python">l1Copy
+</code></pre>
+<pre><code class="language-python">l1[0] = 123
+l1
+</code></pre>
+<pre><code class="language-python">l1Copy
+</code></pre>
+<pre><code class="language-python">l1Copy2 = l1.copy()
+</code></pre>
+<pre><code class="language-python">l1Copy2
+</code></pre>
+<pre><code class="language-python">l1
+</code></pre>
+<pre><code class="language-python">l1[0] = 456
+l1
+</code></pre>
+<pre><code class="language-python">l1Copy2
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Use `append`, `extend`, `insert`, `remove`, `pop`, `sort` and `reverse`; note which return `None`.</li><li>Show what goes wrong with `b = a`, then fix it with `a.copy()`.</li><li>Sort a list of words ignoring case with `key=str.lower`.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section><section class="reading" id="lesson-29"><h2>29. List Comprehension</h2><p>Building a list in one readable line with comprehensions, including conditions.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=23618s">Watch 6:33:38</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/29-list-comprehension">Original resources</a></div><details open><summary>Read the explanation · theory.ipynb</summary><h3>List Comprehension</h3>
+<p>List comprehension offers a shorter syntax when you want to create a new list based on the values of an existing list. Using list comprehensions, you can make your code more concise and readable.</p>
+<p>The syntax for list comprehension is:</p>
+<pre><code>[expression for item in iterable if condition]
+</code></pre>
+<p>Let&#39;s break this down:</p>
+<ul>
+<li><code>expression</code> is the current item in the iteration, but it is also the value that will be added to the new list.</li>
+<li><code>item</code> is the current item in the iterable.</li>
+<li><code>iterable</code> is the collection you are iterating over.</li>
+<li><code>condition</code> is optional; if provided, it filters the items to include in the new list.</li>
+</ul>
+<h4>Examples of List Comprehensions</h4>
+<h5>Basic Example</h5>
+<p>Let&#39;s create a list of numbers from 0 to 9:</p>
+<pre><code class="language-python">### Basic example of list comprehension
+numbers = [x for x in range(10)]
+print(numbers)  # Output: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+</code></pre>
+<h5>Conditional List Comprehension</h5>
+<p>Now let&#39;s create a list of even numbers from 0 to 9:</p>
+<pre><code class="language-python">### Conditional list comprehension
+even_numbers = [x for x in range(10) if x % 2 == 0]
+print(even_numbers)  # Output: [0, 2, 4, 6, 8]
+</code></pre>
+<h5>Nested List Comprehensions</h5>
+<p>You can also use nested list comprehensions to create a list of lists. For example, let&#39;s create a 3x3 matrix:</p>
+<pre><code class="language-python">### Nested list comprehension to create a 3x3 matrix
+matrix = [[x for x in range(3)] for y in range(3)]
+print(matrix)  # Output: [[0, 1, 2], [0, 1, 2], [0, 1, 2]]
+</code></pre>
+<h5>Applying Functions in List Comprehension</h5>
+<p>You can also apply functions to the elements in a list comprehension. For example, let&#39;s create a list of the squares of numbers from 0 to 9:</p>
+<pre><code class="language-python">### Applying functions in list comprehension
+squares = [x**2 for x in range(10)]
+print(squares)  # Output: [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+</code></pre>
+<h5>List Comprehension with Strings</h5>
+<p>List comprehensions can also be used with strings. For example, let&#39;s create a list of characters from a string:</p>
+<pre><code class="language-python">### List comprehension with strings
+chars = [char for char in &#39;hello&#39;]
+print(chars)  # Output: [&#39;h&#39;, &#39;e&#39;, &#39;l&#39;, &#39;l&#39;, &#39;o&#39;]
+</code></pre>
+<h5>Combining Elements from Two Lists</h5>
+<p>List comprehensions can also combine elements from two lists. For example, let&#39;s create a list of tuples with elements from two lists:</p>
+<pre><code class="language-python">### Combining elements from two lists
+list1 = [1, 2, 3]
+list2 = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]
+combined = [(x, y) for x in list1 for y in list2]
+print(combined)  # Output: [(1, &#39;a&#39;), (1, &#39;b&#39;), (1, &#39;c&#39;), (2, &#39;a&#39;), (2, &#39;b&#39;), (2, &#39;c&#39;), (3, &#39;a&#39;), (3, &#39;b&#39;), (3, &#39;c&#39;)]
+</code></pre>
+<h5>Industry Use Cases</h5>
+<ol>
+<li><strong>Data Analysis</strong>: List comprehensions are widely used in data analysis for filtering and transforming data.</li>
+<li><strong>Web Scraping</strong>: When extracting data from web pages, list comprehensions can be used to clean and process the data efficiently.</li>
+<li><strong>Machine Learning</strong>: In machine learning, list comprehensions are used for data preprocessing, such as normalizing and encoding data.</li>
+<li><strong>Game Development</strong>: List comprehensions can be used to create and manage game boards, maps, and other elements.</li>
+<li><strong>File I/O</strong>: When working with files, list comprehensions can be used to read and process lines of text.</li>
+</ol>
+<h3>Questions</h3>
+<ol>
+<li>What is the basic syntax of a list comprehension?</li>
+<li>How can you create a list of squares of numbers from 0 to 9 using list comprehension?</li>
+<li>Write a list comprehension to create a list of even numbers from 0 to 20.</li>
+<li>How can you create a 5x5 matrix using nested list comprehensions?</li>
+<li>Write a list comprehension to create a list of characters from the string &#39;python&#39;.</li>
+<li>How can you combine elements from two lists into a list of tuples using list comprehension?</li>
+<li>Write a list comprehension to filter out vowels from a given string.</li>
+<li>How can you apply a function to each element in a list using list comprehension?</li>
+<li>Write a list comprehension to create a list of the first letters of each word in a given sentence.</li>
+<li>How can you use list comprehension to flatten a list of lists?</li>
+</ol>
+<h3>Answers</h3>
+<ol>
+<li>The basic syntax of a list comprehension is <code>[expression for item in iterable if condition]</code>.</li>
+<li><code>squares = [x**2 for x in range(10)]</code></li>
+<li><code>even_numbers = [x for x in range(21) if x % 2 == 0]</code></li>
+<li><code>matrix = [[x for x in range(5)] for y in range(5)]</code></li>
+<li><code>chars = [char for char in &#39;python&#39;]</code></li>
+<li><code>combined = [(x, y) for x in list1 for y in list2]</code></li>
+<li><code>no_vowels = [char for char in &#39;your_string&#39; if char not in &#39;aeiou&#39;]</code></li>
+<li><code>results = [function(x) for x in list]</code></li>
+<li><code>first_letters = [word[0] for word in sentence.split()]</code></li>
+<li><code>flattened = [item for sublist in list_of_lists for item in sublist]</code></li>
+</ol>
+</details><details ><summary>Read and trace the code examples · code.ipynb</summary><pre><code class="language-python">l1 = [1,2,3,4,5,6,7,8,9,10]
+</code></pre>
+<pre><code class="language-python">l2 = []
+
+for num in range(1,51):
+    l2.append(num)
+</code></pre>
+<pre><code class="language-python">l2
+</code></pre>
+<pre><code class="language-python">l3 = [ element for element in range(1,51)]
+l3
+</code></pre>
+<pre><code class="language-python">l4 = [ ch for ch in &quot;mayank&quot;]
+</code></pre>
+<pre><code class="language-python">l4
+</code></pre>
+<pre><code class="language-python">l5 = [ ch for ch in &quot;mayank&quot; if ch not in &quot;aeiou&quot;]
+l5
+</code></pre>
+<pre><code class="language-python">l6 = [ num for num in range(0,50) if num%2 ==0 ]
+l6
+</code></pre>
+<pre><code class="language-python">l7 = [ num if num% 2 == 0 else num +100 for num in range(1,10) ]
+</code></pre>
+<pre><code class="language-python">l7
+</code></pre>
+<pre><code class="language-python">l8 = [ ch if ch not in &quot;aeiou&quot; else &quot;vowel&quot; for ch in &quot;mayank&quot;]
+l8
+</code></pre>
+<pre><code class="language-python">nl1 = [[1,2], [3,4] ]
+</code></pre>
+<pre><code class="language-python">nl1
+</code></pre>
+<pre><code class="language-python">[ [ i*2 for i in range(num)  ]  for num in range(1,5)]
+</code></pre>
+<pre><code class="language-python">[ [ &quot;Element&quot;] for ch in &quot;mayank&quot;]
+</code></pre>
+<pre><code class="language-python">[ ch2 for ch2 in &quot;12&quot;  ] &quot;m&quot;
+&quot;a&quot;
+&quot;y&quot;
+</code></pre>
+<pre><code class="language-python">[ num2 for num2 in range(10,12)]
+</code></pre>
+<pre><code class="language-python">[   [ &quot;Constant&quot;] for num in range(1,3)]
+</code></pre>
+<pre><code class="language-python">[  &quot;Constant&quot; for num in range(1,3)]
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Create the squares of 1 to 10 with a comprehension.</li><li>Keep only the even numbers from a list with a comprehension.</li><li>Build a 3 by 3 grid using a nested comprehension.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section></div><h2 id="practice">Practice session</h2><div class="scorebox"><span class="tag">This chapter</span><p data-score aria-live="polite"></p><p>Predict the output before running it. Output checks preserve case and line breaks. Written programs are saved for self-review and are not executed here. Drafts and progress stay in this browser.</p></div><article class="drill" id="ch07-q1"><p class="drill-id">Practice 01 · checked answer</p><h3>What prints?</h3><pre><code>a = [1, 2]
+b = a
+b.append(3)
+print(len(a))</code></pre><label for="input-ch07-q1">Your answer</label><textarea id="input-ch07-q1" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch07-q1">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch07-q1">See answer</button></div>
+<div class="drill-hint" id="hint-ch07-q1" data-hint hidden><span class="tag">Step by step</span><p>The two names refer to one list.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch07-q1" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>3</code></pre><p>The two names refer to one list.</p></div></article><article class="drill" id="ch07-q2"><p class="drill-id">Practice 02 · checked answer</p><h3>What prints?</h3><pre><code>a = []
+print(a.append(5))</code></pre><label for="input-ch07-q2">Your answer</label><textarea id="input-ch07-q2" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch07-q2">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch07-q2">See answer</button></div>
+<div class="drill-hint" id="hint-ch07-q2" data-hint hidden><span class="tag">Step by step</span><p>append modifies the list and returns None.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch07-q2" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>None</code></pre><p>append modifies the list and returns None.</p></div></article><article class="drill" id="ch07-q3"><p class="drill-id">Practice 03 · checked answer</p><h3>What prints?</h3><pre><code>print([x*x for x in range(5) if x % 2 == 0 and x &gt; 0])</code></pre><label for="input-ch07-q3">Your answer</label><textarea id="input-ch07-q3" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch07-q3">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch07-q3">See answer</button></div>
+<div class="drill-hint" id="hint-ch07-q3" data-hint hidden><span class="tag">Step by step</span><p>Keep even values, then square them.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch07-q3" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>[4, 16]</code></pre><p>Keep even values, then square them.</p></div></article><article class="drill" id="ch07-q4"><p class="drill-id">Practice 04 · checked answer</p><h3>What prints?</h3><pre><code>a = [1]
+b = a.copy()
+b.append(2)
+print(len(a))</code></pre><label for="input-ch07-q4">Your answer</label><textarea id="input-ch07-q4" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch07-q4">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch07-q4">See answer</button></div>
+<div class="drill-hint" id="hint-ch07-q4" data-hint hidden><span class="tag">Step by step</span><p>The copied outer lists are separate.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch07-q4" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>1</code></pre><p>The copied outer lists are separate.</p></div></article><article class="drill" id="ch07-write"><p class="drill-id">Practice 05 · write and self-review</p><h3>Build a new list containing the squares of positive values in [-2, 0, 3, 4].</h3><label for="input-ch07-write">Your answer</label><textarea id="input-ch07-write" class="drill-in" rows="10" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch07-write">Hint</button><button type="button" data-submit>Submit draft</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch07-write">See answer</button></div>
+<div class="drill-hint" id="hint-ch07-write" data-hint hidden><span class="tag">Step by step</span><p>Filter with x &gt; 0 before keeping x*x.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch07-write" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>values = [-2, 0, 3, 4]
+squares = [x*x for x in values if x &gt; 0]
+print(squares)  # [9, 16]</code></pre><p>Compare the result with your own answer. Explain what each line does before moving on.</p></div></article><div class="course-actions chapter-end" id="end"><button type="button" data-complete aria-pressed="false">Mark chapter as read</button><a href="#main">Back to reading</a></div><div class="pager"><a href="ch06.html">← Previous chapter</a><a href="ch08.html">Next chapter →</a></div>
+<p class="source-note">Reading notes and course sequence adapted from <a href="https://github.com/mayank953/python-ai-crash-course">Mayank Aggarwal’s Python AI Crash Course</a>, under the <a href="LICENSE-upstream.txt">MIT license</a>. Classroom adaptation, chapter guides and project exercises: Learn with Mynul. <a href="sources.html">Sources and study guide</a>.</p>
+</div></main><footer class="cos-foot"><div class="wrap">Learn with Mynul · Read. Trace. Practice. Build.</div></footer>
+<script>window.PYTHON_PRACTICE = [{"prompt": "What prints?", "accept": ["3"], "hint": "The two names refer to one list.", "code": "a = [1, 2]\nb = a\nb.append(3)\nprint(len(a))", "answer": "3", "why": "The two names refer to one list.", "id": "ch07-q1"}, {"prompt": "What prints?", "accept": ["None"], "hint": "append modifies the list and returns None.", "code": "a = []\nprint(a.append(5))", "answer": "None", "why": "append modifies the list and returns None.", "id": "ch07-q2"}, {"prompt": "What prints?", "accept": ["[4, 16]"], "hint": "Keep even values, then square them.", "code": "print([x*x for x in range(5) if x % 2 == 0 and x > 0])", "answer": "[4, 16]", "why": "Keep even values, then square them.", "id": "ch07-q3"}, {"prompt": "What prints?", "accept": ["1"], "hint": "The copied outer lists are separate.", "code": "a = [1]\nb = a.copy()\nb.append(2)\nprint(len(a))", "answer": "1", "why": "The copied outer lists are separate.", "id": "ch07-q4"}, {"id": "ch07-write", "prompt": "Build a new list containing the squares of positive values in [-2, 0, 3, 4].", "hint": "Filter with x > 0 before keeping x*x.", "answer": "values = [-2, 0, 3, 4]\nsquares = [x*x for x in values if x > 0]\nprint(squares)  # [9, 16]"}];</script><script src="js/practice.js?v=1" defer></script><script src="../../assets/js/theme.js?v=3" defer></script></body></html>

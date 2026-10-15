@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
+  </script><title>Tuples and sets · Python + AI · Learn with Mynul</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<meta name="description" content="Python and AI from scratch. Read the lessons, trace examples and practice with hints, saved drafts and commented answers.">
+<link rel="stylesheet" href="course.css?v=1"></head>
+<body class="cos" data-chapter="8"><a class="skip" href="#main">Skip to content</a>
+<header class="cos-bar"><div class="wrap"><a class="cos-brand" href="index.html">Python · AI</a><nav class="cos-nav" aria-label="Python course"><a href="index.html">Map</a><a  href="ch01.html">1</a><a  href="ch02.html">2</a><a  href="ch03.html">3</a><a  href="ch04.html">4</a><a  href="ch05.html">5</a><a  href="ch06.html">6</a><a  href="ch07.html">7</a><a class="is-on" href="ch08.html">8</a><a  href="ch09.html">9</a><a  href="ch10.html">10</a><a  href="ch11.html">11</a><a  href="ch12.html">12</a><a  href="ch13.html">13</a><a  href="ch14.html">14</a><a href="index.html#projects">Projects</a><a href="../index.html">Learn hub</a></nav><button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode"><svg class="theme-sun" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="#F5C518"/><g stroke="#F5C518" stroke-width="1.8" stroke-linecap="round" fill="none"><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M5.6 18.4l1.7-1.7M16.7 7.3l1.7-1.7"/></g></svg><svg class="theme-moon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="#8EA0FF" d="M16.2 3.1A8.9 8.9 0 1 0 21.1 18 7.4 7.4 0 0 1 16.2 3.1z"/></svg></button></div></header>
+<main id="main"><div class="wrap"><p class="kicker"><a href="index.html">Python + AI</a> · Chapter 08</p><h1>Tuples and sets</h1><p class="lede">Choose a collection based on what you need to do. A tuple is an ordered immutable sequence, often used for a fixed record. A set stores unique hashable elements and is useful for deduplicating data and checking membership.</p><div class="toc"><a href="#reading">Reading</a><a href="#practice">Practice session</a><a href="#end">Save reading progress</a></div><div class="rule"><span class="tag">The rule</span><p>A one-item tuple needs a trailing comma: (5,). {} creates an empty dictionary; set() creates an empty set. Set order is not a contract, so sort a set before displaying predictable output. Intersection keeps shared elements; union keeps elements from either set.</p></div><h2>Worked example</h2><pre><code>point = (3, 4)
+x, y = point  # Unpack two values into two names.
+a = {&quot;python&quot;, &quot;sql&quot;}
+b = {&quot;python&quot;, &quot;linux&quot;}
+print(sorted(a &amp; b))
+print(len(a | b))</code></pre><div class="trace"><span class="tag">Trace every line</span><p>Unpacking binds x to 3 and y to 4. Only python appears in both sets, so the first output is [&#x27;python&#x27;]. The union has python, sql and linux, so its length is 3. Sorting is only for stable display.</p></div><div id="reading"><section class="reading" id="lesson-30"><h2>30. Tuples</h2><p>Tuples: ordered, fixed collections, and how unpacking works.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=24522s">Watch 6:48:42</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/30-tuples">Original resources</a></div><details open><summary>Read and trace the code examples · code.ipynb</summary><h3>Tuple</h3>
+<pre><code class="language-python">t1 = (1,2,3)
+</code></pre>
+<pre><code class="language-python">t1
+</code></pre>
+<pre><code class="language-python">type(t1)
+</code></pre>
+<pre><code class="language-python">t2 = tuple((1,.5,3))
+</code></pre>
+<pre><code class="language-python">t2
+</code></pre>
+<pre><code class="language-python">type(t2)
+</code></pre>
+<pre><code class="language-python">t3 = (3)
+</code></pre>
+<pre><code class="language-python">t3
+</code></pre>
+<pre><code class="language-python">type(t3)
+</code></pre>
+<pre><code class="language-python">t4 = (3,)
+t4
+</code></pre>
+<pre><code class="language-python">type(t4)
+</code></pre>
+<pre><code class="language-python">len(t4)
+</code></pre>
+<pre><code class="language-python">t5 = tuple((3,))
+</code></pre>
+<pre><code class="language-python">t5
+</code></pre>
+<pre><code class="language-python">outputTuple = len(t5),type(t5)
+</code></pre>
+<pre><code class="language-python">outputTuple
+</code></pre>
+<pre><code class="language-python">print(outputTuple)
+</code></pre>
+<pre><code class="language-python">1,2,3
+</code></pre>
+<pre><code class="language-python">t1 = (1,2,3,4,5,6,7,8,9,10)
+</code></pre>
+<pre><code class="language-python">t1[0:4]
+</code></pre>
+<pre><code class="language-python">t2 + t2
+</code></pre>
+<pre><code class="language-python">t2
+</code></pre>
+<pre><code class="language-python">t2 = t2+t2
+</code></pre>
+<pre><code class="language-python">t2
+</code></pre>
+<pre><code class="language-python">t2
+</code></pre>
+<pre><code class="language-python">t2[0] = 4
+</code></pre>
+<pre><code class="language-python">a = 1
+id(a)
+</code></pre>
+<pre><code class="language-python">id(t2[0])
+</code></pre>
+<pre><code class="language-python">a,b,c = (1,2,3)
+</code></pre>
+<pre><code class="language-python">a
+</code></pre>
+<pre><code class="language-python">b
+</code></pre>
+<pre><code class="language-python">c
+</code></pre>
+<pre><code class="language-python">t4 = (4,5,6)
+</code></pre>
+<pre><code class="language-python">t4 = a,b,c
+</code></pre>
+<pre><code class="language-python">t4
+</code></pre>
+<pre><code class="language-python">first,second = (&#39;mayank&#39;,25)
+</code></pre>
+<pre><code class="language-python">first
+</code></pre>
+<pre><code class="language-python">second
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Compare `(5)` and `(5,)` and explain the difference.</li><li>Unpack a three-item tuple into three variables.</li><li>Try to change a tuple, read the error, and work around it using a list.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section><section class="reading" id="lesson-31"><h2>31. Tuple Functions &amp; Methods</h2><p>The few tuple methods, and handy tricks such as swapping values.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=24522s">Watch 6:48:42</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/31-tuple-functions-methods">Original resources</a></div><details open><summary>Read and trace the code examples · code.ipynb</summary><h3>Function and Methods In Tuple</h3>
+<ol>
+<li>len()</li>
+<li>max()</li>
+<li>min()</li>
+<li>sum()</li>
+<li>sorted()</li>
+<li>any()</li>
+<li>all()</li>
+<li>tuple()</li>
+</ol>
+<pre><code class="language-python">t1 = (1,2,3,4,5)
+t2 = (1,&quot;Hello&quot;,&quot;python&quot;,5.0,True)
+t3 = (&#39;a&#39;,&#39;b&#39;,&#39;c&#39;)
+t4 = (0,None,[],(),False)
+t5 = (1,True,[1],(4,))
+</code></pre>
+<pre><code class="language-python">all(t5)
+</code></pre>
+<pre><code class="language-python">any(t4)
+</code></pre>
+<pre><code class="language-python">tuple(sorted(t1,reverse=True))
+</code></pre>
+<pre><code class="language-python">ord(&#39;c&#39;)
+</code></pre>
+<pre><code class="language-python">max(t3)
+</code></pre>
+<pre><code class="language-python">max(t2)
+</code></pre>
+<pre><code class="language-python">max(t1)
+</code></pre>
+<pre><code class="language-python">min(t3)
+</code></pre>
+<pre><code class="language-python">min(t2)
+</code></pre>
+<pre><code class="language-python">min(t1)
+</code></pre>
+<pre><code class="language-python">len(t3)
+</code></pre>
+<pre><code class="language-python">sum(t1)
+</code></pre>
+<pre><code class="language-python">sum(t2)
+</code></pre>
+<pre><code class="language-python">&#39;a&#39; + &#39;b&#39; + &#39;c&#39;
+</code></pre>
+<pre><code class="language-python">sum(t3)
+</code></pre>
+<h3>Methods</h3>
+<pre><code class="language-python">t1.index(10)
+</code></pre>
+<pre><code class="language-python">t1.count(20)
+</code></pre>
+<pre><code class="language-python">t1.copy()
+</code></pre>
+<pre><code class="language-python">### Write Protected
+</code></pre>
+<pre><code class="language-python">t1
+</code></pre>
+<pre><code class="language-python">id(t1)
+</code></pre>
+<pre><code class="language-python">t11 = t1 + t1 
+</code></pre>
+<pre><code class="language-python">id(t11)
+</code></pre>
+<pre><code class="language-python">t3 = t1
+</code></pre>
+<pre><code class="language-python">id(t3)
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Use `count()` and `index()` on a tuple.</li><li>Join two tuples into one.</li><li>Swap two variables in one line using tuple unpacking.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section><section class="reading" id="lesson-32"><h2>32. Sets</h2><p>Sets: unordered collections of unique items, and why they are fast for membership checks.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=26281s">Watch 7:18:01</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/32-sets">Original resources</a></div><details open><summary>Read and trace the code examples · code.ipynb</summary><h3>Set</h3>
+<pre><code class="language-python">s1 = {1,2,3,4}
+</code></pre>
+<pre><code class="language-python">s1
+</code></pre>
+<pre><code class="language-python">type(s1)
+</code></pre>
+<pre><code class="language-python">s2 = set([5,1,1,2,2,4,4])
+</code></pre>
+<pre><code class="language-python">s2
+</code></pre>
+<pre><code class="language-python">s3 = {1,&quot;python&quot;,&quot;hello&quot;}
+s3
+</code></pre>
+<pre><code class="language-python">s4 = {1,2,(3,4)}
+</code></pre>
+<pre><code class="language-python">s4
+</code></pre>
+<pre><code class="language-python">s4[1]
+</code></pre>
+<pre><code class="language-python">s4[0:2]
+</code></pre>
+<pre><code class="language-python">s2
+</code></pre>
+<pre><code class="language-python">s2
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Remove duplicates from a list using a set.</li><li>Show that a set has no order and cannot be indexed.</li><li>Create an empty set and explain why `{}` does not work.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section><section class="reading" id="lesson-33"><h2>33. Set Operations, Functions &amp; Methods</h2><p>Set algebra: union, intersection, difference, subset checks, and safe ways to add or remove.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=26897s">Watch 7:28:17</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/33-set-operations">Original resources</a></div><details open><summary>Read and trace the code examples · code.ipynb</summary><h3>Function On Sets</h3>
+<ol>
+<li>len()</li>
+<li>max()</li>
+<li>min()</li>
+<li>sum()</li>
+<li>any()</li>
+<li>all()</li>
+</ol>
+<pre><code class="language-python">s1 = {1,2,3,4,5}
+s2 = {0}
+even = {2,4,6,8,10}
+odd = {1,3,5,7,9}
+primes = {2,3,5,7,11,13}
+
+s3 = {1,2.5,&quot;Hello&quot;,&quot;Python&quot;,0}
+s5 = {1,True,(1,2,3),&quot;helloPython&quot;,0,False}
+</code></pre>
+<pre><code class="language-python">all(s3)
+</code></pre>
+<pre><code class="language-python">any({0,(),False,0j,1})
+</code></pre>
+<pre><code class="language-python">min(s3)
+</code></pre>
+<pre><code class="language-python">len({1,1,1,1,1})
+</code></pre>
+<pre><code class="language-python">len({0,False,1,True})
+</code></pre>
+<h3>Methods in Sets</h3>
+<pre><code class="language-python">s1 = {1,2,3,4,5}
+s11 = {2,4}
+s2 = {0}
+even = {2,4,6,8,10}
+odd = {1,3,5,7,9}
+primes = {2,3,5,7,11,13}
+
+s3 = {1,2.5,&quot;Hello&quot;,&quot;Python&quot;,0}
+s5 = {1,True,(1,2,3),&quot;helloPython&quot;,0,False}
+</code></pre>
+<pre><code class="language-python">s1 -s11
+</code></pre>
+<h3>Update</h3>
+<pre><code class="language-python">s1.update(s2)
+</code></pre>
+<pre><code class="language-python">s1
+</code></pre>
+<pre><code class="language-python">### Difference
+</code></pre>
+<pre><code class="language-python">s1.difference(s11)
+</code></pre>
+<pre><code class="language-python">s11.difference(s1)
+</code></pre>
+<pre><code class="language-python">s1.clear()
+s1
+</code></pre>
+<pre><code class="language-python">s2
+</code></pre>
+<pre><code class="language-python">s10 = s2
+</code></pre>
+<pre><code class="language-python">s2.add(1)
+</code></pre>
+<pre><code class="language-python">s10,s2
+</code></pre>
+<pre><code class="language-python">s2Copy = s2.copy()
+s2.add(2)
+</code></pre>
+<pre><code class="language-python">s2,s2Copy
+</code></pre>
+<pre><code class="language-python">s1
+</code></pre>
+<pre><code class="language-python">s1.pop()
+</code></pre>
+<pre><code class="language-python">s1.add(6)
+s1
+</code></pre>
+<pre><code class="language-python">s1.remove(4)
+</code></pre>
+<pre><code class="language-python">s1
+</code></pre>
+<pre><code class="language-python">s1.remove(2)
+</code></pre>
+<pre><code class="language-python">s1
+</code></pre>
+<pre><code class="language-python">&#39;&#39;&#39;Remove an element from a set if it is a member.
+
+Unlike set.remove(), the discard() method does not raise
+an exception when an element is missing from the set.&#39;&#39;&#39;
+
+s1.discard(12324)
+</code></pre>
+<pre><code class="language-python">s1
+</code></pre>
+<pre><code class="language-python">s1.discard(1)
+</code></pre>
+<pre><code class="language-python">s1
+</code></pre>
+<pre><code class="language-python">s1
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Given two sets of students, find who is in both, in either, and in only one.</li><li>Test whether one set is a subset of another.</li><li>Compare `remove()` and `discard()` on a missing item.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section></div><h2 id="practice">Practice session</h2><div class="scorebox"><span class="tag">This chapter</span><p data-score aria-live="polite"></p><p>Predict the output before running it. Output checks preserve case and line breaks. Written programs are saved for self-review and are not executed here. Drafts and progress stay in this browser.</p></div><article class="drill" id="ch08-q1"><p class="drill-id">Practice 01 · checked answer</p><h3>What prints?</h3><pre><code>print(type((5,)).__name__)</code></pre><label for="input-ch08-q1">Your answer</label><textarea id="input-ch08-q1" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch08-q1">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch08-q1">See answer</button></div>
+<div class="drill-hint" id="hint-ch08-q1" data-hint hidden><span class="tag">Step by step</span><p>The comma creates a one-item tuple.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch08-q1" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>tuple</code></pre><p>The comma creates a one-item tuple.</p></div></article><article class="drill" id="ch08-q2"><p class="drill-id">Practice 02 · checked answer</p><h3>What prints?</h3><pre><code>print(type({}).__name__)</code></pre><label for="input-ch08-q2">Your answer</label><textarea id="input-ch08-q2" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch08-q2">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch08-q2">See answer</button></div>
+<div class="drill-hint" id="hint-ch08-q2" data-hint hidden><span class="tag">Step by step</span><p>Empty braces create a dictionary.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch08-q2" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>dict</code></pre><p>Empty braces create a dictionary.</p></div></article><article class="drill" id="ch08-q3"><p class="drill-id">Practice 03 · checked answer</p><h3>What prints?</h3><pre><code>print(sorted({1, 2} &amp; {2, 3}))</code></pre><label for="input-ch08-q3">Your answer</label><textarea id="input-ch08-q3" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch08-q3">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch08-q3">See answer</button></div>
+<div class="drill-hint" id="hint-ch08-q3" data-hint hidden><span class="tag">Step by step</span><p>Intersection keeps shared elements.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch08-q3" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>[2]</code></pre><p>Intersection keeps shared elements.</p></div></article><article class="drill" id="ch08-q4"><p class="drill-id">Practice 04 · checked answer</p><h3>What prints?</h3><pre><code>print(len({1, 1, 2, 3}))</code></pre><label for="input-ch08-q4">Your answer</label><textarea id="input-ch08-q4" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch08-q4">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch08-q4">See answer</button></div>
+<div class="drill-hint" id="hint-ch08-q4" data-hint hidden><span class="tag">Step by step</span><p>Sets remove duplicate values.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch08-q4" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>3</code></pre><p>Sets remove duplicate values.</p></div></article><article class="drill" id="ch08-write"><p class="drill-id">Practice 05 · write and self-review</p><h3>Print a sorted list of unique words from [&quot;sql&quot;, &quot;python&quot;, &quot;sql&quot;].</h3><label for="input-ch08-write">Your answer</label><textarea id="input-ch08-write" class="drill-in" rows="10" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch08-write">Hint</button><button type="button" data-submit>Submit draft</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch08-write">See answer</button></div>
+<div class="drill-hint" id="hint-ch08-write" data-hint hidden><span class="tag">Step by step</span><p>Convert to set, then sort.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch08-write" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>words = [&quot;sql&quot;, &quot;python&quot;, &quot;sql&quot;]
+print(sorted(set(words)))  # [&#x27;python&#x27;, &#x27;sql&#x27;]</code></pre><p>Compare the result with your own answer. Explain what each line does before moving on.</p></div></article><div class="course-actions chapter-end" id="end"><button type="button" data-complete aria-pressed="false">Mark chapter as read</button><a href="#main">Back to reading</a></div><div class="pager"><a href="ch07.html">← Previous chapter</a><a href="ch09.html">Next chapter →</a></div>
+<p class="source-note">Reading notes and course sequence adapted from <a href="https://github.com/mayank953/python-ai-crash-course">Mayank Aggarwal’s Python AI Crash Course</a>, under the <a href="LICENSE-upstream.txt">MIT license</a>. Classroom adaptation, chapter guides and project exercises: Learn with Mynul. <a href="sources.html">Sources and study guide</a>.</p>
+</div></main><footer class="cos-foot"><div class="wrap">Learn with Mynul · Read. Trace. Practice. Build.</div></footer>
+<script>window.PYTHON_PRACTICE = [{"prompt": "What prints?", "accept": ["tuple"], "hint": "The comma creates a one-item tuple.", "code": "print(type((5,)).__name__)", "answer": "tuple", "why": "The comma creates a one-item tuple.", "id": "ch08-q1"}, {"prompt": "What prints?", "accept": ["dict"], "hint": "Empty braces create a dictionary.", "code": "print(type({}).__name__)", "answer": "dict", "why": "Empty braces create a dictionary.", "id": "ch08-q2"}, {"prompt": "What prints?", "accept": ["[2]"], "hint": "Intersection keeps shared elements.", "code": "print(sorted({1, 2} & {2, 3}))", "answer": "[2]", "why": "Intersection keeps shared elements.", "id": "ch08-q3"}, {"prompt": "What prints?", "accept": ["3"], "hint": "Sets remove duplicate values.", "code": "print(len({1, 1, 2, 3}))", "answer": "3", "why": "Sets remove duplicate values.", "id": "ch08-q4"}, {"id": "ch08-write", "prompt": "Print a sorted list of unique words from [\"sql\", \"python\", \"sql\"].", "hint": "Convert to set, then sort.", "answer": "words = [\"sql\", \"python\", \"sql\"]\nprint(sorted(set(words)))  # ['python', 'sql']"}];</script><script src="js/practice.js?v=1" defer></script><script src="../../assets/js/theme.js?v=3" defer></script></body></html>

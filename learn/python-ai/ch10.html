@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
+  </script><title>Functions, arguments and scope · Python + AI · Learn with Mynul</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<meta name="description" content="Python and AI from scratch. Read the lessons, trace examples and practice with hints, saved drafts and commented answers.">
+<link rel="stylesheet" href="course.css?v=1"></head>
+<body class="cos" data-chapter="10"><a class="skip" href="#main">Skip to content</a>
+<header class="cos-bar"><div class="wrap"><a class="cos-brand" href="index.html">Python · AI</a><nav class="cos-nav" aria-label="Python course"><a href="index.html">Map</a><a  href="ch01.html">1</a><a  href="ch02.html">2</a><a  href="ch03.html">3</a><a  href="ch04.html">4</a><a  href="ch05.html">5</a><a  href="ch06.html">6</a><a  href="ch07.html">7</a><a  href="ch08.html">8</a><a  href="ch09.html">9</a><a class="is-on" href="ch10.html">10</a><a  href="ch11.html">11</a><a  href="ch12.html">12</a><a  href="ch13.html">13</a><a  href="ch14.html">14</a><a href="index.html#projects">Projects</a><a href="../index.html">Learn hub</a></nav><button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode"><svg class="theme-sun" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="#F5C518"/><g stroke="#F5C518" stroke-width="1.8" stroke-linecap="round" fill="none"><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M5.6 18.4l1.7-1.7M16.7 7.3l1.7-1.7"/></g></svg><svg class="theme-moon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="#8EA0FF" d="M16.2 3.1A8.9 8.9 0 1 0 21.1 18 7.4 7.4 0 0 1 16.2 3.1z"/></svg></button></div></header>
+<main id="main"><div class="wrap"><p class="kicker"><a href="index.html">Python + AI</a> · Chapter 10</p><h1>Functions, arguments and scope</h1><p class="lede">A function packages reusable work behind a name. Parameters are local names that receive arguments. Calling a function starts its body; defining a function does not run that body.</p><div class="toc"><a href="#reading">Reading</a><a href="#practice">Practice session</a><a href="#end">Save reading progress</a></div><div class="rule"><span class="tag">The rule</span><p>return sends a result to the caller and ends the function. print displays text and returns None. A function that reaches its end without return also returns None. Defaults are evaluated once when the function is defined; use None instead of a mutable default such as []. *args collects extra positional arguments and **kwargs collects extra keyword arguments.</p></div><h2>Worked example</h2><pre><code>def average(values):
+    if not values:
+        return None  # Avoid division by zero.
+    return sum(values) / len(values)
+
+result = average([2, 4, 6])
+print(result)
+print(average([]))</code></pre><div class="trace"><span class="tag">Trace every line</span><p>The definition creates the function. The call binds values to [2, 4, 6]. sum is 12 and len is 3, so return sends back 4.0. The empty list takes the early return and produces None. values is local to each function call.</p></div><div id="reading"><section class="reading" id="lesson-37"><h2>37. Introduction to Functions</h2><p>What a function is, why we write them, and how to call one.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=31296s">Watch 8:41:36</a><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=31681s">Watch 8:48:01</a><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=32372s">Watch 8:59:32</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/37-intro-to-functions">Original resources</a></div><details open><summary>Read and trace the code examples · code.ipynb</summary><h3>Intro To Function</h3>
+<pre><code class="language-python">print(&quot;Hello Python&quot;)
+</code></pre>
+<pre><code class="language-python">len(&quot;mayank&quot;)
+</code></pre>
+<pre><code class="language-python">len(&quot;hello Python&quot;)
+</code></pre>
+<pre><code class="language-python">s1 = &quot;Mayank&quot;
+s2 = &quot;Hello Python&quot;
+s3 = &quot;bfabfasobnoan&quot;
+</code></pre>
+<pre><code class="language-python">l1 = 0
+for i in s1:
+    l1+=1
+print(l1)
+</code></pre>
+<pre><code class="language-python">l2 = 0
+for i in s2:
+    l2+=1
+print(l2)
+</code></pre>
+<pre><code class="language-python">l3 = 0
+for i in s3:
+    l3+=1
+print(l3)
+</code></pre>
+<pre><code class="language-python">l3 = 0
+i=0
+while i 
+</code></pre>
+<pre><code class="language-python">### Food
+
+gasOn()
+puttingThingsInPan()
+IncreasingTheFlame()
+</code></pre>
+<pre><code class="language-python">login()
+
+</code></pre>
+<pre><code class="language-python">import math
+</code></pre>
+<pre><code class="language-python">math.sqrt(5)
+</code></pre>
+<pre><code class="language-python">math.ceil(5.6)
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Write `greet(name)` that prints a greeting and call it twice.</li><li>Call a function that has no `return` and print its result. What do you get?</li><li>Write a function that returns the area of a rectangle.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section><section class="reading" id="lesson-38"><h2>38. Defining Your Own Functions</h2><p>Defining functions properly: parameters, return values, void functions and docstrings.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=31296s">Watch 8:41:36</a><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=31681s">Watch 8:48:01</a><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=32372s">Watch 8:59:32</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/38-defining-functions">Original resources</a></div><details open><summary>Read and trace the code examples · code.ipynb</summary><h3>Define our Own Function</h3>
+<pre><code class="language-python">ret = Hello()
+</code></pre>
+<pre><code class="language-python">print(ret)
+</code></pre>
+<pre><code class="language-python">Hello2()
+</code></pre>
+<pre><code class="language-python">def Hello_return():
+    return &quot;Hello Python&quot;
+</code></pre>
+<pre><code class="language-python">ret = Hello_return()
+</code></pre>
+<pre><code class="language-python">print(ret)
+</code></pre>
+<pre><code class="language-python">ret = print(&quot;hello&quot;)
+</code></pre>
+<pre><code class="language-python">print(ret)
+</code></pre>
+<pre><code class="language-python">ret = len(&quot;Hello&quot;)
+</code></pre>
+<pre><code class="language-python">ret
+</code></pre>
+<pre><code class="language-python">Hello_return()
+</code></pre>
+<pre><code class="language-python">len()
+</code></pre>
+<h5>Length</h5>
+<pre><code class="language-python">def length(input):
+    ans =0
+    for i in input:
+        ans+=1
+    return ans
+</code></pre>
+<pre><code class="language-python">
+s1 = &quot;Python&quot;
+length(s1)
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Compare a function that prints a value with one that returns it; use both inside an expression.</li><li>Return two values from one function and unpack them.</li><li>Add a docstring and read it with `help()`.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section><section class="reading" id="lesson-39"><h2>39. Types of Arguments: Positional &amp; Default</h2><p>Passing values by position and giving parameters default values.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=33011s">Watch 9:10:11</a><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=33212s">Watch 9:13:32</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/39-argument-types">Original resources</a></div><details open><summary>Read the explanation · theory.ipynb</summary><h3>Types of Arguments in Python</h3>
+<h4>1. Positional Arguments</h4>
+<p>Positional arguments are the most common type of arguments in Python functions. The values passed into the function are assigned to the parameters in the order they are passed.</p>
+<h5>Example:</h5>
+<pre><code class="language-python">def sum(a, b):
+    return a + b
+
+result = sum(3, 5)
+print(result)  # Output: 8
+</code></pre>
+<p>In this example, <code>a</code> will get the value <code>3</code> and <code>b</code> will get the value <code>5</code>.</p>
+<pre><code class="language-python">### Example of positional arguments
+def sum(a, b):
+    return a + b
+
+result = sum(3, 5)
+print(result)  # Output: 8
+</code></pre>
+<h4>2. Default Arguments</h4>
+<p>Default arguments are used when you want to provide a default value to a parameter if no argument is passed for that parameter.</p>
+<h5>Example:</h5>
+<pre><code class="language-python">def prod(a, b, c=1):
+    return a * b * c
+
+result1 = prod(3, 5)
+result2 = prod(3, 5, 2)
+print(result1)  # Output: 15
+print(result2)  # Output: 30
+</code></pre>
+<p>In this example, the default value for <code>c</code> is <code>1</code>. If <code>c</code> is not provided, it will use the default value.</p>
+<pre><code class="language-python">### Example of default arguments
+def prod(a, b, c=1):
+    return a * b * c
+
+result1 = prod(3, 5)
+result2 = prod(3, 5, 2)
+print(result1)  # Output: 15
+print(result2)  # Output: 30
+</code></pre>
+<h4>3. Keyword Arguments</h4>
+<p>Keyword arguments are passed to the function by explicitly specifying the parameter name with its corresponding value. This allows you to pass arguments in a different order.</p>
+<h5>Example:</h5>
+<pre><code class="language-python">def greet(first, last):
+    print(f&quot;Hello {first} {last}&quot;)
+
+greet(last=&#39;Aggarwal&#39;, first=&#39;Mayank&#39;)  # Output: Hello Mayank Aggarwal
+</code></pre>
+<p>In this example, the arguments are passed using the parameter names, so the order does not matter.</p>
+<pre><code class="language-python">### Example of keyword arguments
+def greet(first, last):
+    print(f&quot;Hello {first} {last}&quot;)
+
+greet(last=&#39;Aggarwal&#39;, first=&#39;Mayank&#39;)  # Output: Hello Mayank Aggarwal
+</code></pre>
+<h4>4. Variable-Length Arguments</h4>
+<p>Python allows you to handle a variable number of arguments in a function using <code>*args</code> for non-keyword arguments and <code>**kwargs</code> for keyword arguments.</p>
+<h5>Example:</h5>
+<pre><code class="language-python">def var_args(*args):
+    for arg in args:
+        print(arg)
+
+var_args(1, 2, 3, 4)  # Output: 1 2 3 4
+
+def var_kwargs(**kwargs):
+    for key, value in kwargs.items():
+        print(f&quot;{key}: {value}&quot;)
+
+var_kwargs(name=&#39;Alice&#39;, age=25)  # Output: name: Alice, age: 25
+</code></pre>
+<p>In this example, <code>*args</code> collects all the positional arguments into a tuple, and <code>**kwargs</code> collects all the keyword arguments into a dictionary.</p>
+<pre><code class="language-python">### Example of variable-length arguments
+def var_args(*args):
+    for arg in args:
+        print(arg)
+
+var_args(1, 2, 3, 4)  # Output: 1 2 3 4
+
+def var_kwargs(**kwargs):
+    for key, value in kwargs.items():
+        print(f&quot;{key}: {value}&quot;)
+
+var_kwargs(name=&#39;Alice&#39;, age=25)  # Output: name: Alice, age: 25
+</code></pre>
+<h4>Industry Use Cases</h4>
+<ol>
+<li><strong>Web Development</strong>: Default arguments are commonly used in web frameworks like Django and Flask to handle optional parameters in views and routes.</li>
+<li><strong>Data Analysis</strong>: In libraries like Pandas and Numpy, keyword arguments are used extensively to configure the behavior of functions and methods.</li>
+<li><strong>Machine Learning</strong>: In machine learning libraries like Scikit-learn, functions often use keyword arguments to specify model parameters and configurations.</li>
+<li><strong>API Design</strong>: When designing APIs, keyword and default arguments help in making the API more flexible and easier to use.</li>
+<li><strong>Automated Testing</strong>: In testing frameworks like pytest, variable-length arguments are used to parametrize tests and handle different test cases efficiently.</li>
+</ol>
+<h3>Questions</h3>
+<ol>
+<li>What is a positional argument? Provide an example.</li>
+<li>How do default arguments work in Python? Provide an example.</li>
+<li>Explain keyword arguments with an example.</li>
+<li>What are variable-length arguments in Python? How are they useful?</li>
+<li>Write a function that uses both <code>*args</code> and <code>**kwargs</code>. Provide an example call to this function.</li>
+<li>How can default arguments be useful in API design?</li>
+<li>Write a function that takes a variable number of positional arguments and prints each one.</li>
+<li>Write a function that takes a variable number of keyword arguments and prints each key-value pair.</li>
+<li>How are keyword arguments used in data analysis libraries?</li>
+<li>Explain how variable-length arguments can be useful in automated testing.</li>
+</ol>
+<h3>Answers</h3>
+<ol>
+<li>A positional argument is an argument that is passed to a function in a specific position. For example:<pre><code class="language-python">def add(a, b):
+    return a + b
+result = add(2, 3)  # 2 and 3 are positional arguments
+</code></pre>
+</li>
+<li>Default arguments are used when you want to provide a default value to a parameter if no argument is passed for that parameter. For example:<pre><code class="language-python">def multiply(a, b=1):
+    return a * b
+result = multiply(4)  # 4 * 1 = 4
+</code></pre>
+</li>
+<li>Keyword arguments are arguments that are passed to a function by explicitly specifying the parameter name with its corresponding value. For example:<pre><code class="language-python">def greet(first, last):
+    print(f&quot;Hello, {first} {last}&quot;)
+greet(first=&#39;John&#39;, last=&#39;Doe&#39;)  # Output: Hello, John Doe
+</code></pre>
+</li>
+<li>Variable-length arguments allow a function to accept an arbitrary number of positional or keyword arguments. They are useful when you do not know in advance how many arguments will be passed. For example:<pre><code class="language-python">def print_args(*args):
+    for arg in args:
+        print(arg)
+print_args(1, 2, 3, 4)
+</code></pre>
+</li>
+<li>Example function using both <code>*args</code> and <code>**kwargs</code>:<pre><code class="language-python">def example_function(*args, **kwargs):
+    print(&quot;Positional arguments:&quot;, args)
+    print(&quot;Keyword arguments:&quot;, kwargs)
+example_function(1, 2, 3, a=&#39;apple&#39;, b=&#39;banana&#39;)
+</code></pre>
+</li>
+<li>Default arguments can be useful in API design by allowing functions to have optional parameters, making the API more flexible and user-friendly.</li>
+<li>Function that takes a variable number of positional arguments:<pre><code class="language-python">def print_positional_args(*args):
+    for arg in args:
+        print(arg)
+print_positional_args(10, 20, 30)
+</code></pre>
+</li>
+<li>Function that takes a variable number of keyword arguments:<pre><code class="language-python">def print_keyword_args(**kwargs):
+    for key, value in kwargs.items():
+        print(f&quot;{key}: {value}&quot;)
+print_keyword_args(name=&#39;Alice&#39;, age=30)
+</code></pre>
+</li>
+<li>In data analysis libraries like Pandas, keyword arguments are used to specify configurations for functions and methods. For example, the <code>read_csv</code> function in Pandas uses keyword arguments to specify parameters like <code>delimiter</code>, <code>header</code>, and <code>dtype</code>.</li>
+<li>Variable-length arguments can be useful in automated testing to handle different test cases efficiently. For example, a test function can accept multiple test inputs and expected outputs as <code>*args</code> and <code>**kwargs</code> to run multiple test scenarios.</li>
+</ol>
+</details><details ><summary>Read and trace the code examples · code.ipynb</summary><h3>Arguments Types</h3>
+<pre><code class="language-python">def greet (inp):
+    print(&quot;Hello &quot; + str(inp))
+    
+</code></pre>
+<pre><code class="language-python">greet(&quot;Python&quot;)
+</code></pre>
+<pre><code class="language-python">greet(&quot;Mayank&quot;)
+</code></pre>
+<pre><code class="language-python">greet(&quot;DSA &quot;)
+</code></pre>
+<h3>Positional Argument</h3>
+<pre><code class="language-python">def sum(firstNumber,secondNumber):
+    print(&quot;first Number&quot;,firstNumber)
+    print(&quot;secondNumber&quot; , secondNumber)
+    return firstNumber + secondNumber
+</code></pre>
+<pre><code class="language-python">sum(5,3)
+</code></pre>
+<h3>Default Arguments</h3>
+<pre><code class="language-python">def sum(a,b,c=0):
+    print(a,b,c)
+    return a+b+c
+</code></pre>
+<pre><code class="language-python">sum(1,2,3)
+</code></pre>
+<pre><code class="language-python">sum(4,5,6)
+</code></pre>
+<pre><code class="language-python">sum(4,5)
+</code></pre>
+<pre><code class="language-python">def getMobileNumber(mobileNumber,countryCode=&quot;+91&quot;):
+    return countryCode + mobileNumber
+</code></pre>
+<pre><code class="language-python">getMobileNumber(&quot;99999999&quot;,&quot;+01-&quot;)
+</code></pre>
+<pre><code class="language-python">getMobileNumber(&quot;99999999&quot;)
+</code></pre>
+<pre><code class="language-python">def getMobileNumber(mobileNumber,countryCode=&quot;+91&quot;,country):
+    return countryCode + mobileNumber
+</code></pre>
+<pre><code class="language-python">getMobileNumber(&quot;9999&quot;,&quot;India&quot;,&quot;Bharat&quot;)
+</code></pre>
+<h3>Keyword Argument</h3>
+<pre><code class="language-python">def greet(First,Last,Country,Mobile):
+    print(f&quot;First name {First} and last name is {Last} {Country} {Mobile} &quot;)
+</code></pre>
+<pre><code class="language-python">greet(&quot;Mayank&quot;,&quot;aggarwal&quot;,&quot;India&quot;,&quot;99999&quot;)
+</code></pre>
+<pre><code class="language-python">greet(&quot;john&quot;,&quot;999&quot;,&quot;USA&quot;,&quot;DOe&quot;,)
+</code></pre>
+<pre><code class="language-python">greet(First = &quot;Mayank&quot;,Mobile=&quot;9999&quot;,Last = &quot;Aggarwal&quot;,Country=&quot;India&quot;)
+</code></pre>
+<pre><code class="language-python">print(&quot;My name&quot; , &quot;is &quot;, &quot;mayank&quot; , sep = &#39;   &#39;)
+</code></pre>
+<pre><code class="language-python">greet(&quot;Mayank&quot;,&quot;aggarwal&quot;, &#39;voab&#39;,First= &#39;9358&#39;)
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Swap the order of two positional arguments and watch the result change.</li><li>Write `power(base, exp=2)` and call it with one and two arguments.</li><li>Challenge: find out why `def f(x, items=[])` is risky.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section><section class="reading" id="lesson-40"><h2>40. *args and **kwargs</h2><p>Accepting any number of arguments with `*args` and any number of named ones with `**kwargs`.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=34131s">Watch 9:28:51</a><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=34385s">Watch 9:33:05</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/40-args-kwargs">Original resources</a></div><details open><summary>Read and trace the code examples · code.ipynb</summary><h3>*args and **Kwargs</h3>
+<pre><code class="language-python">def sum(a,b):
+    return a+ b
+</code></pre>
+<pre><code class="language-python">def sum(a,b,c=0,d=0):
+    return a+b+c
+</code></pre>
+<pre><code class="language-python">sum(1,2)
+</code></pre>
+<pre><code class="language-python">sum(2,3,4)
+</code></pre>
+<pre><code class="language-python">sum(4,5,6,7)
+</code></pre>
+<pre><code class="language-python">sum(4,5,6,7,8)
+</code></pre>
+<pre><code class="language-python">print(&quot;Hello&quot;)
+</code></pre>
+<pre><code class="language-python">print(&quot;Hello&quot;,&quot;python&quot;)
+</code></pre>
+<pre><code class="language-python">print(&quot;Hello &quot;,&quot;Python &quot;, &quot;Taught by mayank&quot;)
+</code></pre>
+<p>*args - Variable Length Positional Arguments</p>
+<pre><code class="language-python">def sum_Better(*args, operation = &#39;add&#39;):
+    sum = 0
+    for i in args:
+        sum+=i
+    print(sum)
+</code></pre>
+<pre><code class="language-python">sum_Better(1,2,3,4,5,6,7,8,9,10)
+</code></pre>
+<pre><code class="language-python">###  print(*args, sep=&#39; &#39;, end=&#39;\n&#39;, file=None, flush=False)
+
+print
+</code></pre>
+<h4>*Kwargs</h4>
+<pre><code class="language-python">def greet(**kwargs):
+    print(kwargs)
+    
+    for k,v in kwargs.values():
+        print(k ,&quot;  -----&gt; &quot;, v)
+</code></pre>
+<pre><code class="language-python">greet(first= &quot;Mayank&quot;, second = &quot;Aggarwal&quot;)
+</code></pre>
+<pre><code class="language-python">def fun1(*args, **kwargs):
+    print(args,kwargs)
+</code></pre>
+<pre><code class="language-python">fun1(first = 1)
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Write a function that sums any number of numbers.</li><li>Write a function that prints every `key=value` it receives.</li><li>Call a function by unpacking a list with `*` and a dictionary with `**`.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section><section class="reading" id="lesson-41"><h2>41. Variable Scope: Local vs Global</h2><p>Where a variable lives: local, global, and what happens when the names clash.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=34820s">Watch 9:40:20</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/41-variable-scope">Original resources</a></div><details open><summary>Read and trace the code examples · code.ipynb</summary><h3>Scope Of Variable</h3>
+<pre><code class="language-python">a = 10
+
+def greet(name):
+    print (&quot;Hello&quot;,name)
+
+def fun():
+    a = 5
+    print(a)
+
+fun()
+print(a)
+</code></pre>
+<pre><code class="language-python">a=5
+def g():
+    c = 10
+    print(a)
+    print(c)
+
+
+g()
+print(c)
+</code></pre>
+<pre><code class="language-python">name = &quot;Hello DSA&quot;
+
+
+def outputCourseName():
+    global name2 
+    name2 = &quot;Hello Python&quot;
+    print(name2)
+
+outputCourseName()
+print(name2)
+</code></pre>
+<pre><code class="language-python">name = &quot;Hello DSA&quot;
+
+
+def outputCourseName():
+    global name 
+    name = &quot;Hello Python&quot;
+    print(name)
+
+outputCourseName()
+print(name)
+</code></pre>
+<pre><code class="language-python">s1 = &quot;I Love Python&quot;
+
+def h():
+    global s1
+    s1 += &quot;I Love JS&quot;
+    print(s1)
+
+h()
+print(s1)
+</code></pre>
+<pre><code class="language-python">s1 = &quot;I Love Python&quot;
+
+def h():
+    global s1 
+    s1=&quot;ABC&quot;
+    print(s1)
+
+h()
+print(s1)
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Trigger an `UnboundLocalError` and fix it with `global`; then fix it again using `return`.</li><li>Create a local variable that has the same name as a global one and observe both.</li><li>Explain the order Python searches names (local, enclosing, global, built-in).</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section></div><h2 id="practice">Practice session</h2><div class="scorebox"><span class="tag">This chapter</span><p data-score aria-live="polite"></p><p>Predict the output before running it. Output checks preserve case and line breaks. Written programs are saved for self-review and are not executed here. Drafts and progress stay in this browser.</p></div><article class="drill" id="ch10-q1"><p class="drill-id">Practice 01 · checked answer</p><h3>What prints?</h3><pre><code>def f():
+    x = 2
+print(f())</code></pre><label for="input-ch10-q1">Your answer</label><textarea id="input-ch10-q1" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch10-q1">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch10-q1">See answer</button></div>
+<div class="drill-hint" id="hint-ch10-q1" data-hint hidden><span class="tag">Step by step</span><p>The function reaches its end without a return.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch10-q1" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>None</code></pre><p>The function reaches its end without a return.</p></div></article><article class="drill" id="ch10-q2"><p class="drill-id">Practice 02 · checked answer</p><h3>What prints?</h3><pre><code>def add(x, y=2):
+    return x + y
+print(add(3))</code></pre><label for="input-ch10-q2">Your answer</label><textarea id="input-ch10-q2" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch10-q2">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch10-q2">See answer</button></div>
+<div class="drill-hint" id="hint-ch10-q2" data-hint hidden><span class="tag">Step by step</span><p>The default y is used when omitted.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch10-q2" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>5</code></pre><p>The default y is used when omitted.</p></div></article><article class="drill" id="ch10-q3"><p class="drill-id">Practice 03 · checked answer</p><h3>What prints?</h3><pre><code>def count(*args):
+    return len(args)
+print(count(1, 2, 3))</code></pre><label for="input-ch10-q3">Your answer</label><textarea id="input-ch10-q3" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch10-q3">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch10-q3">See answer</button></div>
+<div class="drill-hint" id="hint-ch10-q3" data-hint hidden><span class="tag">Step by step</span><p>*args collects positional arguments in a tuple.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch10-q3" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>3</code></pre><p>*args collects positional arguments in a tuple.</p></div></article><article class="drill" id="ch10-q4"><p class="drill-id">Practice 04 · checked answer</p><h3>What prints?</h3><pre><code>x = 10
+def f():
+    x = 99
+f()
+print(x)</code></pre><label for="input-ch10-q4">Your answer</label><textarea id="input-ch10-q4" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch10-q4">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch10-q4">See answer</button></div>
+<div class="drill-hint" id="hint-ch10-q4" data-hint hidden><span class="tag">Step by step</span><p>The assignment inside f is local.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch10-q4" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>10</code></pre><p>The assignment inside f is local.</p></div></article><article class="drill" id="ch10-write"><p class="drill-id">Practice 05 · write and self-review</p><h3>Write safe_average(values) that returns None for an empty list, otherwise its average.</h3><label for="input-ch10-write">Your answer</label><textarea id="input-ch10-write" class="drill-in" rows="10" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch10-write">Hint</button><button type="button" data-submit>Submit draft</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch10-write">See answer</button></div>
+<div class="drill-hint" id="hint-ch10-write" data-hint hidden><span class="tag">Step by step</span><p>Use an early return before dividing.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch10-write" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>def safe_average(values):
+    if not values:
+        return None  # No values to average.
+    return sum(values) / len(values)
+
+print(safe_average([2, 4]))  # 3.0
+print(safe_average([]))  # None</code></pre><p>Compare the result with your own answer. Explain what each line does before moving on.</p></div></article><div class="course-actions chapter-end" id="end"><button type="button" data-complete aria-pressed="false">Mark chapter as read</button><a href="#main">Back to reading</a></div><div class="pager"><a href="ch09.html">← Previous chapter</a><a href="ch11.html">Next chapter →</a></div>
+<p class="source-note">Reading notes and course sequence adapted from <a href="https://github.com/mayank953/python-ai-crash-course">Mayank Aggarwal’s Python AI Crash Course</a>, under the <a href="LICENSE-upstream.txt">MIT license</a>. Classroom adaptation, chapter guides and project exercises: Learn with Mynul. <a href="sources.html">Sources and study guide</a>.</p>
+</div></main><footer class="cos-foot"><div class="wrap">Learn with Mynul · Read. Trace. Practice. Build.</div></footer>
+<script>window.PYTHON_PRACTICE = [{"prompt": "What prints?", "accept": ["None"], "hint": "The function reaches its end without a return.", "code": "def f():\n    x = 2\nprint(f())", "answer": "None", "why": "The function reaches its end without a return.", "id": "ch10-q1"}, {"prompt": "What prints?", "accept": ["5"], "hint": "The default y is used when omitted.", "code": "def add(x, y=2):\n    return x + y\nprint(add(3))", "answer": "5", "why": "The default y is used when omitted.", "id": "ch10-q2"}, {"prompt": "What prints?", "accept": ["3"], "hint": "*args collects positional arguments in a tuple.", "code": "def count(*args):\n    return len(args)\nprint(count(1, 2, 3))", "answer": "3", "why": "*args collects positional arguments in a tuple.", "id": "ch10-q3"}, {"prompt": "What prints?", "accept": ["10"], "hint": "The assignment inside f is local.", "code": "x = 10\ndef f():\n    x = 99\nf()\nprint(x)", "answer": "10", "why": "The assignment inside f is local.", "id": "ch10-q4"}, {"id": "ch10-write", "prompt": "Write safe_average(values) that returns None for an empty list, otherwise its average.", "hint": "Use an early return before dividing.", "answer": "def safe_average(values):\n    if not values:\n        return None  # No values to average.\n    return sum(values) / len(values)\n\nprint(safe_average([2, 4]))  # 3.0\nprint(safe_average([]))  # None"}];</script><script src="js/practice.js?v=1" defer></script><script src="../../assets/js/theme.js?v=3" defer></script></body></html>

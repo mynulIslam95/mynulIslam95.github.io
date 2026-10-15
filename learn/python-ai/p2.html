@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
+  </script><title>Search your study notes · Python + AI · Learn with Mynul</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<meta name="description" content="Python and AI from scratch. Read the lessons, trace examples and practice with hints, saved drafts and commented answers.">
+<link rel="stylesheet" href="course.css?v=1"></head>
+<body class="cos" data-chapter=""><a class="skip" href="#main">Skip to content</a>
+<header class="cos-bar"><div class="wrap"><a class="cos-brand" href="index.html">Python · AI</a><nav class="cos-nav" aria-label="Python course"><a href="index.html">Map</a><a  href="ch01.html">1</a><a  href="ch02.html">2</a><a  href="ch03.html">3</a><a  href="ch04.html">4</a><a  href="ch05.html">5</a><a  href="ch06.html">6</a><a  href="ch07.html">7</a><a  href="ch08.html">8</a><a  href="ch09.html">9</a><a  href="ch10.html">10</a><a  href="ch11.html">11</a><a  href="ch12.html">12</a><a  href="ch13.html">13</a><a  href="ch14.html">14</a><a href="index.html#projects">Projects</a><a href="../index.html">Learn hub</a></nav><button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode"><svg class="theme-sun" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="#F5C518"/><g stroke="#F5C518" stroke-width="1.8" stroke-linecap="round" fill="none"><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M5.6 18.4l1.7-1.7M16.7 7.3l1.7-1.7"/></g></svg><svg class="theme-moon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="#8EA0FF" d="M16.2 3.1A8.9 8.9 0 1 0 21.1 18 7.4 7.4 0 0 1 16.2 3.1z"/></svg></button></div></header>
+<main id="main"><div class="wrap"><p class="kicker"><a href="index.html#projects">Python + AI projects</a> · P2 · medium</p><h1>Search your study notes</h1><p class="lede">Build a lexical document retriever using TF-IDF weighted word overlap. This is a retrieval building block for a future RAG app, without an LLM or embedding model.</p><div class="need"><span class="tag">Build before reading the solution</span><p>Create your own .py file and implement each step. Submit your plan or code below. These project submissions are saved drafts for self-review.</p></div><h2>Build in steps</h2><ol><li>Create notes/python.txt with Python functions return values. Create notes/sql.txt with SQL joins combine tables.</li><li>Write tokenize(text) using lowercase text and a regular expression. Count document words with Counter.</li><li>Implement TF-IDF scoring for overlapping query terms. Return the top matches with a stable tie-break by filename.</li><li>Print the source name, score and evidence. If nothing matches, say so rather than inventing an answer.</li></ol><h2>Run locally on Windows</h2><pre><code>py document_search.py notes &quot;python functions&quot;
+py document_search.py notes &quot;ocean animals&quot;</code></pre><p>On macOS or Linux, replace py with python3.</p><h2>Verify the behavior</h2><p>The first query should rank python.txt first. The second should print No matching evidence found. Test empty files, punctuation, repeated words and mixed case. Explain why lexical overlap cannot match every pair of synonyms.</p><h2 id="practice">Practice session</h2><div class="scorebox"><span class="tag">This chapter</span><p data-score aria-live="polite"></p><p>Predict the output before running it. Output checks preserve case and line breaks. Written programs are saved for self-review and are not executed here. Drafts and progress stay in this browser.</p></div><article class="drill" id="p2-s1"><p class="drill-id">Practice 01 · write and self-review</p><h3>Create notes/python.txt with Python functions return values. Create notes/sql.txt with SQL joins combine tables.</h3><label for="input-p2-s1">Your answer</label><textarea id="input-p2-s1" class="drill-in" rows="10" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-p2-s1">Hint</button><button type="button" data-submit>Submit draft</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-p2-s1">See answer</button></div>
+<div class="drill-hint" id="hint-p2-s1" data-hint hidden><span class="tag">Step by step</span><p>Write the input and expected output on paper. Identify the data structure and the function responsible.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-p2-s1" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>Create notes/python.txt with Python functions return values. Create notes/sql.txt with SQL joins combine tables.
+
+Review checklist:
+- State the inputs and outputs.
+- Run the normal and edge cases described above.
+- Explain the relevant lines in the complete reference solution.</code></pre><p>This is a self-review task. Your code has not been executed or graded by the page.</p></div></article><article class="drill" id="p2-s2"><p class="drill-id">Practice 02 · write and self-review</p><h3>Write tokenize(text) using lowercase text and a regular expression. Count document words with Counter.</h3><label for="input-p2-s2">Your answer</label><textarea id="input-p2-s2" class="drill-in" rows="10" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-p2-s2">Hint</button><button type="button" data-submit>Submit draft</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-p2-s2">See answer</button></div>
+<div class="drill-hint" id="hint-p2-s2" data-hint hidden><span class="tag">Step by step</span><p>Use the previous chapters to write the smallest working version. Test one normal case and one invalid case.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-p2-s2" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>Write tokenize(text) using lowercase text and a regular expression. Count document words with Counter.
+
+Review checklist:
+- State the inputs and outputs.
+- Run the normal and edge cases described above.
+- Explain the relevant lines in the complete reference solution.</code></pre><p>This is a self-review task. Your code has not been executed or graded by the page.</p></div></article><article class="drill" id="p2-s3"><p class="drill-id">Practice 03 · write and self-review</p><h3>Implement TF-IDF scoring for overlapping query terms. Return the top matches with a stable tie-break by filename.</h3><label for="input-p2-s3">Your answer</label><textarea id="input-p2-s3" class="drill-in" rows="10" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-p2-s3">Hint</button><button type="button" data-submit>Submit draft</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-p2-s3">See answer</button></div>
+<div class="drill-hint" id="hint-p2-s3" data-hint hidden><span class="tag">Step by step</span><p>Trace each function in the reference implementation and compare its behavior with yours.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-p2-s3" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>&quot;&quot;&quot;A lexical retrieval project, not an LLM or semantic embedding model.
+
+Run: python document_search.py notes &quot;python functions&quot;
+Create a notes directory containing at least two .txt files first.
+&quot;&quot;&quot;
+import argparse
+import math
+import re
+from collections import Counter
+from pathlib import Path
+
+
+def tokenize(text):
+    return re.findall(r&#x27;\w+&#x27;, text.lower())
+
+
+def search(documents, query, limit=3):
+    &quot;&quot;&quot;Rank documents by TF-IDF weighted overlap with query terms.&quot;&quot;&quot;
+    query_words = set(tokenize(query))
+    if not query_words or not documents:
+        return []
+    counts = {name: Counter(tokenize(text)) for name, text in documents.items()}
+    results = []
+    for name, words in counts.items():
+        size = sum(words.values())
+        score = 0.0
+        for word in query_words:
+            frequency = sum(word in other for other in counts.values())
+            # Smoothed IDF is always positive, including common words.
+            idf = math.log((1 + len(counts)) / (1 + frequency)) + 1
+            score += (words[word] / size if size else 0) * idf
+        if score &gt; 0:
+            results.append((score, name, documents[name]))
+    return sorted(results, key=lambda row: (-row[0], row[1]))[:limit]
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(&#x27;directory&#x27;, type=Path)
+    parser.add_argument(&#x27;query&#x27;)
+    args = parser.parse_args()
+    if not args.directory.is_dir():
+        parser.error(&#x27;Create a directory containing .txt files first.&#x27;)
+    try:
+        documents = {p.name: p.read_text(encoding=&#x27;utf-8&#x27;) for p in sorted(args.directory.glob(&#x27;*.txt&#x27;))}
+    except (OSError, UnicodeError) as error:
+        parser.exit(1, f&#x27;Could not read documents: {error}\n&#x27;)
+    results = search(documents, args.query)
+    if not results:
+        print(&#x27;No matching evidence found. Try different words.&#x27;)
+    for score, name, text in results:
+        print(f&#x27;\nSource: {name} | score: {score:.3f}&#x27;)
+        print(text[:500])
+
+
+if __name__ == &#x27;__main__&#x27;:
+    main()
+</code></pre><p>This is a self-review task. Your code has not been executed or graded by the page.</p></div></article><article class="drill" id="p2-s4"><p class="drill-id">Practice 04 · write and self-review</p><h3>Print the source name, score and evidence. If nothing matches, say so rather than inventing an answer.</h3><label for="input-p2-s4">Your answer</label><textarea id="input-p2-s4" class="drill-in" rows="10" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-p2-s4">Hint</button><button type="button" data-submit>Submit draft</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-p2-s4">See answer</button></div>
+<div class="drill-hint" id="hint-p2-s4" data-hint hidden><span class="tag">Step by step</span><p>Record the observed output, not just whether the program ran.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-p2-s4" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>Print the source name, score and evidence. If nothing matches, say so rather than inventing an answer.
+
+Review checklist:
+- State the inputs and outputs.
+- Run the normal and edge cases described above.
+- Explain the relevant lines in the complete reference solution.</code></pre><p>This is a self-review task. Your code has not been executed or graded by the page.</p></div></article><h2>Complete commented reference</h2><p><a href="downloads/document_search.py" download>Download document_search.py</a> · No external Python packages required.</p><details class="reading"><summary>Open the full reference implementation</summary><pre><code>&quot;&quot;&quot;A lexical retrieval project, not an LLM or semantic embedding model.
+
+Run: python document_search.py notes &quot;python functions&quot;
+Create a notes directory containing at least two .txt files first.
+&quot;&quot;&quot;
+import argparse
+import math
+import re
+from collections import Counter
+from pathlib import Path
+
+
+def tokenize(text):
+    return re.findall(r&#x27;\w+&#x27;, text.lower())
+
+
+def search(documents, query, limit=3):
+    &quot;&quot;&quot;Rank documents by TF-IDF weighted overlap with query terms.&quot;&quot;&quot;
+    query_words = set(tokenize(query))
+    if not query_words or not documents:
+        return []
+    counts = {name: Counter(tokenize(text)) for name, text in documents.items()}
+    results = []
+    for name, words in counts.items():
+        size = sum(words.values())
+        score = 0.0
+        for word in query_words:
+            frequency = sum(word in other for other in counts.values())
+            # Smoothed IDF is always positive, including common words.
+            idf = math.log((1 + len(counts)) / (1 + frequency)) + 1
+            score += (words[word] / size if size else 0) * idf
+        if score &gt; 0:
+            results.append((score, name, documents[name]))
+    return sorted(results, key=lambda row: (-row[0], row[1]))[:limit]
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(&#x27;directory&#x27;, type=Path)
+    parser.add_argument(&#x27;query&#x27;)
+    args = parser.parse_args()
+    if not args.directory.is_dir():
+        parser.error(&#x27;Create a directory containing .txt files first.&#x27;)
+    try:
+        documents = {p.name: p.read_text(encoding=&#x27;utf-8&#x27;) for p in sorted(args.directory.glob(&#x27;*.txt&#x27;))}
+    except (OSError, UnicodeError) as error:
+        parser.exit(1, f&#x27;Could not read documents: {error}\n&#x27;)
+    results = search(documents, args.query)
+    if not results:
+        print(&#x27;No matching evidence found. Try different words.&#x27;)
+    for score, name, text in results:
+        print(f&#x27;\nSource: {name} | score: {score:.3f}&#x27;)
+        print(text[:500])
+
+
+if __name__ == &#x27;__main__&#x27;:
+    main()
+</code></pre></details><h2>Publish your own project</h2><ol><li>Create a GitHub repository for your implementation.</li><li>Add the .py file and a README with setup instructions, sample input, actual output and limitations.</li><li>Explain one change you made beyond the reference. Exclude personal expense files and other private data.</li><li>Link the repository from your portfolio only after you can explain and reproduce its behavior.</li></ol><div class="pager"><a href="index.html#projects">← Project map</a><a href="p3.html">Next project →</a></div>
+<p class="source-note">Reading notes and course sequence adapted from <a href="https://github.com/mayank953/python-ai-crash-course">Mayank Aggarwal’s Python AI Crash Course</a>, under the <a href="LICENSE-upstream.txt">MIT license</a>. Classroom adaptation, chapter guides and project exercises: Learn with Mynul. <a href="sources.html">Sources and study guide</a>.</p>
+</div></main><footer class="cos-foot"><div class="wrap">Learn with Mynul · Read. Trace. Practice. Build.</div></footer>
+<script>window.PYTHON_PRACTICE = [{"id": "p2-s1", "prompt": "Create notes/python.txt with Python functions return values. Create notes/sql.txt with SQL joins combine tables.", "hint": "Write the input and expected output on paper. Identify the data structure and the function responsible.", "answer": "Create notes/python.txt with Python functions return values. Create notes/sql.txt with SQL joins combine tables.\n\nReview checklist:\n- State the inputs and outputs.\n- Run the normal and edge cases described above.\n- Explain the relevant lines in the complete reference solution.", "why": "This is a self-review task. Your code has not been executed or graded by the page."}, {"id": "p2-s2", "prompt": "Write tokenize(text) using lowercase text and a regular expression. Count document words with Counter.", "hint": "Use the previous chapters to write the smallest working version. Test one normal case and one invalid case.", "answer": "Write tokenize(text) using lowercase text and a regular expression. Count document words with Counter.\n\nReview checklist:\n- State the inputs and outputs.\n- Run the normal and edge cases described above.\n- Explain the relevant lines in the complete reference solution.", "why": "This is a self-review task. Your code has not been executed or graded by the page."}, {"id": "p2-s3", "prompt": "Implement TF-IDF scoring for overlapping query terms. Return the top matches with a stable tie-break by filename.", "hint": "Trace each function in the reference implementation and compare its behavior with yours.", "answer": "\"\"\"A lexical retrieval project, not an LLM or semantic embedding model.\n\nRun: python document_search.py notes \"python functions\"\nCreate a notes directory containing at least two .txt files first.\n\"\"\"\nimport argparse\nimport math\nimport re\nfrom collections import Counter\nfrom pathlib import Path\n\n\ndef tokenize(text):\n    return re.findall(r'\\w+', text.lower())\n\n\ndef search(documents, query, limit=3):\n    \"\"\"Rank documents by TF-IDF weighted overlap with query terms.\"\"\"\n    query_words = set(tokenize(query))\n    if not query_words or not documents:\n        return []\n    counts = {name: Counter(tokenize(text)) for name, text in documents.items()}\n    results = []\n    for name, words in counts.items():\n        size = sum(words.values())\n        score = 0.0\n        for word in query_words:\n            frequency = sum(word in other for other in counts.values())\n            # Smoothed IDF is always positive, including common words.\n            idf = math.log((1 + len(counts)) / (1 + frequency)) + 1\n            score += (words[word] / size if size else 0) * idf\n        if score > 0:\n            results.append((score, name, documents[name]))\n    return sorted(results, key=lambda row: (-row[0], row[1]))[:limit]\n\n\ndef main():\n    parser = argparse.ArgumentParser(description=__doc__)\n    parser.add_argument('directory', type=Path)\n    parser.add_argument('query')\n    args = parser.parse_args()\n    if not args.directory.is_dir():\n        parser.error('Create a directory containing .txt files first.')\n    try:\n        documents = {p.name: p.read_text(encoding='utf-8') for p in sorted(args.directory.glob('*.txt'))}\n    except (OSError, UnicodeError) as error:\n        parser.exit(1, f'Could not read documents: {error}\\n')\n    results = search(documents, args.query)\n    if not results:\n        print('No matching evidence found. Try different words.')\n    for score, name, text in results:\n        print(f'\\nSource: {name} | score: {score:.3f}')\n        print(text[:500])\n\n\nif __name__ == '__main__':\n    main()\n", "why": "This is a self-review task. Your code has not been executed or graded by the page."}, {"id": "p2-s4", "prompt": "Print the source name, score and evidence. If nothing matches, say so rather than inventing an answer.", "hint": "Record the observed output, not just whether the program ran.", "answer": "Print the source name, score and evidence. If nothing matches, say so rather than inventing an answer.\n\nReview checklist:\n- State the inputs and outputs.\n- Run the normal and edge cases described above.\n- Explain the relevant lines in the complete reference solution.", "why": "This is a self-review task. Your code has not been executed or graded by the page."}];</script><script src="js/practice.js?v=1" defer></script><script src="../../assets/js/theme.js?v=3" defer></script></body></html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
+  </script><title>Train a text classifier · Python + AI · Learn with Mynul</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<meta name="description" content="Python and AI from scratch. Read the lessons, trace examples and practice with hints, saved drafts and commented answers.">
+<link rel="stylesheet" href="course.css?v=1"></head>
+<body class="cos" data-chapter=""><a class="skip" href="#main">Skip to content</a>
+<header class="cos-bar"><div class="wrap"><a class="cos-brand" href="index.html">Python · AI</a><nav class="cos-nav" aria-label="Python course"><a href="index.html">Map</a><a  href="ch01.html">1</a><a  href="ch02.html">2</a><a  href="ch03.html">3</a><a  href="ch04.html">4</a><a  href="ch05.html">5</a><a  href="ch06.html">6</a><a  href="ch07.html">7</a><a  href="ch08.html">8</a><a  href="ch09.html">9</a><a  href="ch10.html">10</a><a  href="ch11.html">11</a><a  href="ch12.html">12</a><a  href="ch13.html">13</a><a  href="ch14.html">14</a><a href="index.html#projects">Projects</a><a href="../index.html">Learn hub</a></nav><button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode"><svg class="theme-sun" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="#F5C518"/><g stroke="#F5C518" stroke-width="1.8" stroke-linecap="round" fill="none"><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M5.6 18.4l1.7-1.7M16.7 7.3l1.7-1.7"/></g></svg><svg class="theme-moon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="#8EA0FF" d="M16.2 3.1A8.9 8.9 0 1 0 21.1 18 7.4 7.4 0 0 1 16.2 3.1z"/></svg></button></div></header>
+<main id="main"><div class="wrap"><p class="kicker"><a href="index.html#projects">Python + AI projects</a> · P3 · hard</p><h1>Train a text classifier</h1><p class="lede">Train an actual small machine learning model from labeled text using multinomial naive Bayes. Implement training and inference with the standard library. The included dataset is deliberately tiny.</p><div class="need"><span class="tag">Build before reading the solution</span><p>Create your own .py file and implement each step. Submit your plan or code below. These project submissions are saved drafts for self-review.</p></div><h2>Build in steps</h2><ol><li>Separate labeled training data from held-out test data. Tokenize lowercase words without looking at test labels during training.</li><li>Count documents per label and words per label. Build the training vocabulary.</li><li>Predict with log priors and add-one-smoothed word likelihoods. Return unknown if no query words are known.</li><li>Evaluate on the held-out examples, then write your own test set. Include negation and unfamiliar vocabulary and explain the failures.</li></ol><h2>Run locally on Windows</h2><pre><code>py text_classifier.py &quot;great helpful course&quot;
+py text_classifier.py &quot;terrible confusing tutorial&quot;
+py text_classifier.py &quot;astronaut telescope&quot;</code></pre><p>On macOS or Linux, replace py with python3.</p><h2>Verify the behavior</h2><p>Expect positive, negative and unknown respectively. Evaluate your own unseen sentences. Try not good: a bag-of-words model may miss negation. The four supplied test examples are a toy check, not evidence of real-world accuracy.</p><h2 id="practice">Practice session</h2><div class="scorebox"><span class="tag">This chapter</span><p data-score aria-live="polite"></p><p>Predict the output before running it. Output checks preserve case and line breaks. Written programs are saved for self-review and are not executed here. Drafts and progress stay in this browser.</p></div><article class="drill" id="p3-s1"><p class="drill-id">Practice 01 · write and self-review</p><h3>Separate labeled training data from held-out test data. Tokenize lowercase words without looking at test labels during training.</h3><label for="input-p3-s1">Your answer</label><textarea id="input-p3-s1" class="drill-in" rows="10" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-p3-s1">Hint</button><button type="button" data-submit>Submit draft</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-p3-s1">See answer</button></div>
+<div class="drill-hint" id="hint-p3-s1" data-hint hidden><span class="tag">Step by step</span><p>Write the input and expected output on paper. Identify the data structure and the function responsible.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-p3-s1" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>Separate labeled training data from held-out test data. Tokenize lowercase words without looking at test labels during training.
+
+Review checklist:
+- State the inputs and outputs.
+- Run the normal and edge cases described above.
+- Explain the relevant lines in the complete reference solution.</code></pre><p>This is a self-review task. Your code has not been executed or graded by the page.</p></div></article><article class="drill" id="p3-s2"><p class="drill-id">Practice 02 · write and self-review</p><h3>Count documents per label and words per label. Build the training vocabulary.</h3><label for="input-p3-s2">Your answer</label><textarea id="input-p3-s2" class="drill-in" rows="10" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-p3-s2">Hint</button><button type="button" data-submit>Submit draft</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-p3-s2">See answer</button></div>
+<div class="drill-hint" id="hint-p3-s2" data-hint hidden><span class="tag">Step by step</span><p>Use the previous chapters to write the smallest working version. Test one normal case and one invalid case.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-p3-s2" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>Count documents per label and words per label. Build the training vocabulary.
+
+Review checklist:
+- State the inputs and outputs.
+- Run the normal and edge cases described above.
+- Explain the relevant lines in the complete reference solution.</code></pre><p>This is a self-review task. Your code has not been executed or graded by the page.</p></div></article><article class="drill" id="p3-s3"><p class="drill-id">Practice 03 · write and self-review</p><h3>Predict with log priors and add-one-smoothed word likelihoods. Return unknown if no query words are known.</h3><label for="input-p3-s3">Your answer</label><textarea id="input-p3-s3" class="drill-in" rows="10" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-p3-s3">Hint</button><button type="button" data-submit>Submit draft</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-p3-s3">See answer</button></div>
+<div class="drill-hint" id="hint-p3-s3" data-hint hidden><span class="tag">Step by step</span><p>Trace each function in the reference implementation and compare its behavior with yours.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-p3-s3" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>&quot;&quot;&quot;Educational multinomial naive Bayes classifier using only the standard library.
+
+python text_classifier.py &quot;great helpful course&quot;
+Tiny example data demonstrates training and inference, not production accuracy.
+&quot;&quot;&quot;
+import argparse
+import math
+import re
+from collections import Counter, defaultdict
+
+TRAIN = [
+    (&#x27;positive&#x27;, &#x27;great helpful course&#x27;),
+    (&#x27;positive&#x27;, &#x27;excellent clear explanation&#x27;),
+    (&#x27;positive&#x27;, &#x27;good useful examples&#x27;),
+    (&#x27;positive&#x27;, &#x27;love this fantastic tutorial&#x27;),
+    (&#x27;positive&#x27;, &#x27;helpful clear and enjoyable&#x27;),
+    (&#x27;positive&#x27;, &#x27;great teacher good lessons&#x27;),
+    (&#x27;negative&#x27;, &#x27;bad confusing course&#x27;),
+    (&#x27;negative&#x27;, &#x27;terrible unclear explanation&#x27;),
+    (&#x27;negative&#x27;, &#x27;poor useless examples&#x27;),
+    (&#x27;negative&#x27;, &#x27;hate this boring tutorial&#x27;),
+    (&#x27;negative&#x27;, &#x27;confusing unclear and frustrating&#x27;),
+    (&#x27;negative&#x27;, &#x27;bad teacher poor lessons&#x27;),
+]
+TEST = [
+    (&#x27;positive&#x27;, &#x27;helpful useful tutorial&#x27;),
+    (&#x27;positive&#x27;, &#x27;excellent great examples&#x27;),
+    (&#x27;negative&#x27;, &#x27;terrible confusing lessons&#x27;),
+    (&#x27;negative&#x27;, &#x27;bad useless tutorial&#x27;),
+]
+
+
+def tokenize(text):
+    return re.findall(r&#x27;\w+&#x27;, text.lower())
+
+
+class TextClassifier:
+    def __init__(self):
+        self.documents = Counter()
+        self.words = defaultdict(Counter)
+        self.vocabulary = set()
+
+    def fit(self, rows):
+        # Reset state so repeated fit calls do not duplicate the training data.
+        self.__init__()
+        for label, text in rows:
+            tokens = tokenize(text)
+            self.documents[label] += 1
+            self.words[label].update(tokens)
+            self.vocabulary.update(tokens)
+        if not self.documents or not self.vocabulary:
+            raise ValueError(&#x27;Training requires labeled text with at least one word.&#x27;)
+        return self
+
+    def predict(self, text):
+        if not self.documents:
+            raise ValueError(&#x27;Call fit before predict.&#x27;)
+        # Ignore unknown words: this small model has no evidence about them.
+        tokens = [word for word in tokenize(text) if word in self.vocabulary]
+        if not tokens:
+            return &#x27;unknown&#x27;
+        scores = {}
+        for label, count in self.documents.items():
+            log_probability = math.log(count / sum(self.documents.values()))
+            denominator = sum(self.words[label].values()) + len(self.vocabulary)
+            for word in tokens:
+                # Add-one smoothing avoids log(0) for unseen label-word pairs.
+                log_probability += math.log((self.words[label][word] + 1) / denominator)
+            scores[label] = log_probability
+        return max(scores, key=scores.get)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(&#x27;text&#x27;)
+    args = parser.parse_args()
+    model = TextClassifier().fit(TRAIN)
+    correct = sum(model.predict(text) == label for label, text in TEST)
+    print(f&#x27;Toy held-out check: {correct}/{len(TEST)} correct. Not a real-world benchmark.&#x27;)
+    print(&#x27;Prediction:&#x27;, model.predict(args.text))
+    print(&#x27;Limitation: bag-of-words counts ignore word order, context and negation.&#x27;)
+
+
+if __name__ == &#x27;__main__&#x27;:
+    main()
+</code></pre><p>This is a self-review task. Your code has not been executed or graded by the page.</p></div></article><article class="drill" id="p3-s4"><p class="drill-id">Practice 04 · write and self-review</p><h3>Evaluate on the held-out examples, then write your own test set. Include negation and unfamiliar vocabulary and explain the failures.</h3><label for="input-p3-s4">Your answer</label><textarea id="input-p3-s4" class="drill-in" rows="10" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-p3-s4">Hint</button><button type="button" data-submit>Submit draft</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-p3-s4">See answer</button></div>
+<div class="drill-hint" id="hint-p3-s4" data-hint hidden><span class="tag">Step by step</span><p>Record the observed output, not just whether the program ran.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-p3-s4" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>Evaluate on the held-out examples, then write your own test set. Include negation and unfamiliar vocabulary and explain the failures.
+
+Review checklist:
+- State the inputs and outputs.
+- Run the normal and edge cases described above.
+- Explain the relevant lines in the complete reference solution.</code></pre><p>This is a self-review task. Your code has not been executed or graded by the page.</p></div></article><h2>Complete commented reference</h2><p><a href="downloads/text_classifier.py" download>Download text_classifier.py</a> · No external Python packages required.</p><details class="reading"><summary>Open the full reference implementation</summary><pre><code>&quot;&quot;&quot;Educational multinomial naive Bayes classifier using only the standard library.
+
+python text_classifier.py &quot;great helpful course&quot;
+Tiny example data demonstrates training and inference, not production accuracy.
+&quot;&quot;&quot;
+import argparse
+import math
+import re
+from collections import Counter, defaultdict
+
+TRAIN = [
+    (&#x27;positive&#x27;, &#x27;great helpful course&#x27;),
+    (&#x27;positive&#x27;, &#x27;excellent clear explanation&#x27;),
+    (&#x27;positive&#x27;, &#x27;good useful examples&#x27;),
+    (&#x27;positive&#x27;, &#x27;love this fantastic tutorial&#x27;),
+    (&#x27;positive&#x27;, &#x27;helpful clear and enjoyable&#x27;),
+    (&#x27;positive&#x27;, &#x27;great teacher good lessons&#x27;),
+    (&#x27;negative&#x27;, &#x27;bad confusing course&#x27;),
+    (&#x27;negative&#x27;, &#x27;terrible unclear explanation&#x27;),
+    (&#x27;negative&#x27;, &#x27;poor useless examples&#x27;),
+    (&#x27;negative&#x27;, &#x27;hate this boring tutorial&#x27;),
+    (&#x27;negative&#x27;, &#x27;confusing unclear and frustrating&#x27;),
+    (&#x27;negative&#x27;, &#x27;bad teacher poor lessons&#x27;),
+]
+TEST = [
+    (&#x27;positive&#x27;, &#x27;helpful useful tutorial&#x27;),
+    (&#x27;positive&#x27;, &#x27;excellent great examples&#x27;),
+    (&#x27;negative&#x27;, &#x27;terrible confusing lessons&#x27;),
+    (&#x27;negative&#x27;, &#x27;bad useless tutorial&#x27;),
+]
+
+
+def tokenize(text):
+    return re.findall(r&#x27;\w+&#x27;, text.lower())
+
+
+class TextClassifier:
+    def __init__(self):
+        self.documents = Counter()
+        self.words = defaultdict(Counter)
+        self.vocabulary = set()
+
+    def fit(self, rows):
+        # Reset state so repeated fit calls do not duplicate the training data.
+        self.__init__()
+        for label, text in rows:
+            tokens = tokenize(text)
+            self.documents[label] += 1
+            self.words[label].update(tokens)
+            self.vocabulary.update(tokens)
+        if not self.documents or not self.vocabulary:
+            raise ValueError(&#x27;Training requires labeled text with at least one word.&#x27;)
+        return self
+
+    def predict(self, text):
+        if not self.documents:
+            raise ValueError(&#x27;Call fit before predict.&#x27;)
+        # Ignore unknown words: this small model has no evidence about them.
+        tokens = [word for word in tokenize(text) if word in self.vocabulary]
+        if not tokens:
+            return &#x27;unknown&#x27;
+        scores = {}
+        for label, count in self.documents.items():
+            log_probability = math.log(count / sum(self.documents.values()))
+            denominator = sum(self.words[label].values()) + len(self.vocabulary)
+            for word in tokens:
+                # Add-one smoothing avoids log(0) for unseen label-word pairs.
+                log_probability += math.log((self.words[label][word] + 1) / denominator)
+            scores[label] = log_probability
+        return max(scores, key=scores.get)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(&#x27;text&#x27;)
+    args = parser.parse_args()
+    model = TextClassifier().fit(TRAIN)
+    correct = sum(model.predict(text) == label for label, text in TEST)
+    print(f&#x27;Toy held-out check: {correct}/{len(TEST)} correct. Not a real-world benchmark.&#x27;)
+    print(&#x27;Prediction:&#x27;, model.predict(args.text))
+    print(&#x27;Limitation: bag-of-words counts ignore word order, context and negation.&#x27;)
+
+
+if __name__ == &#x27;__main__&#x27;:
+    main()
+</code></pre></details><h2>Publish your own project</h2><ol><li>Create a GitHub repository for your implementation.</li><li>Add the .py file and a README with setup instructions, sample input, actual output and limitations.</li><li>Explain one change you made beyond the reference. Exclude personal expense files and other private data.</li><li>Link the repository from your portfolio only after you can explain and reproduce its behavior.</li></ol><div class="pager"><a href="index.html#projects">← Project map</a><a href="../index.html">Learn hub →</a></div>
+<p class="source-note">Reading notes and course sequence adapted from <a href="https://github.com/mayank953/python-ai-crash-course">Mayank Aggarwal’s Python AI Crash Course</a>, under the <a href="LICENSE-upstream.txt">MIT license</a>. Classroom adaptation, chapter guides and project exercises: Learn with Mynul. <a href="sources.html">Sources and study guide</a>.</p>
+</div></main><footer class="cos-foot"><div class="wrap">Learn with Mynul · Read. Trace. Practice. Build.</div></footer>
+<script>window.PYTHON_PRACTICE = [{"id": "p3-s1", "prompt": "Separate labeled training data from held-out test data. Tokenize lowercase words without looking at test labels during training.", "hint": "Write the input and expected output on paper. Identify the data structure and the function responsible.", "answer": "Separate labeled training data from held-out test data. Tokenize lowercase words without looking at test labels during training.\n\nReview checklist:\n- State the inputs and outputs.\n- Run the normal and edge cases described above.\n- Explain the relevant lines in the complete reference solution.", "why": "This is a self-review task. Your code has not been executed or graded by the page."}, {"id": "p3-s2", "prompt": "Count documents per label and words per label. Build the training vocabulary.", "hint": "Use the previous chapters to write the smallest working version. Test one normal case and one invalid case.", "answer": "Count documents per label and words per label. Build the training vocabulary.\n\nReview checklist:\n- State the inputs and outputs.\n- Run the normal and edge cases described above.\n- Explain the relevant lines in the complete reference solution.", "why": "This is a self-review task. Your code has not been executed or graded by the page."}, {"id": "p3-s3", "prompt": "Predict with log priors and add-one-smoothed word likelihoods. Return unknown if no query words are known.", "hint": "Trace each function in the reference implementation and compare its behavior with yours.", "answer": "\"\"\"Educational multinomial naive Bayes classifier using only the standard library.\n\npython text_classifier.py \"great helpful course\"\nTiny example data demonstrates training and inference, not production accuracy.\n\"\"\"\nimport argparse\nimport math\nimport re\nfrom collections import Counter, defaultdict\n\nTRAIN = [\n    ('positive', 'great helpful course'),\n    ('positive', 'excellent clear explanation'),\n    ('positive', 'good useful examples'),\n    ('positive', 'love this fantastic tutorial'),\n    ('positive', 'helpful clear and enjoyable'),\n    ('positive', 'great teacher good lessons'),\n    ('negative', 'bad confusing course'),\n    ('negative', 'terrible unclear explanation'),\n    ('negative', 'poor useless examples'),\n    ('negative', 'hate this boring tutorial'),\n    ('negative', 'confusing unclear and frustrating'),\n    ('negative', 'bad teacher poor lessons'),\n]\nTEST = [\n    ('positive', 'helpful useful tutorial'),\n    ('positive', 'excellent great examples'),\n    ('negative', 'terrible confusing lessons'),\n    ('negative', 'bad useless tutorial'),\n]\n\n\ndef tokenize(text):\n    return re.findall(r'\\w+', text.lower())\n\n\nclass TextClassifier:\n    def __init__(self):\n        self.documents = Counter()\n        self.words = defaultdict(Counter)\n        self.vocabulary = set()\n\n    def fit(self, rows):\n        # Reset state so repeated fit calls do not duplicate the training data.\n        self.__init__()\n        for label, text in rows:\n            tokens = tokenize(text)\n            self.documents[label] += 1\n            self.words[label].update(tokens)\n            self.vocabulary.update(tokens)\n        if not self.documents or not self.vocabulary:\n            raise ValueError('Training requires labeled text with at least one word.')\n        return self\n\n    def predict(self, text):\n        if not self.documents:\n            raise ValueError('Call fit before predict.')\n        # Ignore unknown words: this small model has no evidence about them.\n        tokens = [word for word in tokenize(text) if word in self.vocabulary]\n        if not tokens:\n            return 'unknown'\n        scores = {}\n        for label, count in self.documents.items():\n            log_probability = math.log(count / sum(self.documents.values()))\n            denominator = sum(self.words[label].values()) + len(self.vocabulary)\n            for word in tokens:\n                # Add-one smoothing avoids log(0) for unseen label-word pairs.\n                log_probability += math.log((self.words[label][word] + 1) / denominator)\n            scores[label] = log_probability\n        return max(scores, key=scores.get)\n\n\ndef main():\n    parser = argparse.ArgumentParser(description=__doc__)\n    parser.add_argument('text')\n    args = parser.parse_args()\n    model = TextClassifier().fit(TRAIN)\n    correct = sum(model.predict(text) == label for label, text in TEST)\n    print(f'Toy held-out check: {correct}/{len(TEST)} correct. Not a real-world benchmark.')\n    print('Prediction:', model.predict(args.text))\n    print('Limitation: bag-of-words counts ignore word order, context and negation.')\n\n\nif __name__ == '__main__':\n    main()\n", "why": "This is a self-review task. Your code has not been executed or graded by the page."}, {"id": "p3-s4", "prompt": "Evaluate on the held-out examples, then write your own test set. Include negation and unfamiliar vocabulary and explain the failures.", "hint": "Record the observed output, not just whether the program ran.", "answer": "Evaluate on the held-out examples, then write your own test set. Include negation and unfamiliar vocabulary and explain the failures.\n\nReview checklist:\n- State the inputs and outputs.\n- Run the normal and edge cases described above.\n- Explain the relevant lines in the complete reference solution.", "why": "This is a self-review task. Your code has not been executed or graded by the page."}];</script><script src="js/practice.js?v=1" defer></script><script src="../../assets/js/theme.js?v=3" defer></script></body></html>

@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
+  </script><title>Exceptions and reliable input · Python + AI · Learn with Mynul</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<meta name="description" content="Python and AI from scratch. Read the lessons, trace examples and practice with hints, saved drafts and commented answers.">
+<link rel="stylesheet" href="course.css?v=1"></head>
+<body class="cos" data-chapter="12"><a class="skip" href="#main">Skip to content</a>
+<header class="cos-bar"><div class="wrap"><a class="cos-brand" href="index.html">Python · AI</a><nav class="cos-nav" aria-label="Python course"><a href="index.html">Map</a><a  href="ch01.html">1</a><a  href="ch02.html">2</a><a  href="ch03.html">3</a><a  href="ch04.html">4</a><a  href="ch05.html">5</a><a  href="ch06.html">6</a><a  href="ch07.html">7</a><a  href="ch08.html">8</a><a  href="ch09.html">9</a><a  href="ch10.html">10</a><a  href="ch11.html">11</a><a class="is-on" href="ch12.html">12</a><a  href="ch13.html">13</a><a  href="ch14.html">14</a><a href="index.html#projects">Projects</a><a href="../index.html">Learn hub</a></nav><button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode"><svg class="theme-sun" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="#F5C518"/><g stroke="#F5C518" stroke-width="1.8" stroke-linecap="round" fill="none"><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M5.6 18.4l1.7-1.7M16.7 7.3l1.7-1.7"/></g></svg><svg class="theme-moon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="#8EA0FF" d="M16.2 3.1A8.9 8.9 0 1 0 21.1 18 7.4 7.4 0 0 1 16.2 3.1z"/></svg></button></div></header>
+<main id="main"><div class="wrap"><p class="kicker"><a href="index.html">Python + AI</a> · Chapter 12</p><h1>Exceptions and reliable input</h1><p class="lede">An exception signals that a normal operation could not finish. Handling an expected error lets a program provide a useful response. Unexpected errors should remain visible so you can fix the cause.</p><div class="toc"><a href="#reading">Reading</a><a href="#practice">Practice session</a><a href="#end">Save reading progress</a></div><div class="rule"><span class="tag">The rule</span><p>Put the risky operation in try. Catch a specific exception such as ValueError. else runs if try completed without an exception. finally runs when leaving the statement, including during most exception propagation. Avoid except: pass because it hides useful information.</p></div><h2>Worked example</h2><pre><code>text = &quot;twelve&quot;
+try:
+    age = int(text)
+except ValueError:
+    print(&quot;Please enter a whole number.&quot;)
+else:
+    print(age + 1)
+finally:
+    print(&quot;Finished checking.&quot;)</code></pre><div class="trace"><span class="tag">Trace every line</span><p>int(&quot;twelve&quot;) raises ValueError. Assignment to age does not finish. The matching handler prints the request for a whole number. else is skipped. finally prints Finished checking. The program continues after the try statement.</p></div><div id="reading"><section class="reading" id="lesson-45"><h2>45. Exception Handling</h2><p>Catching and handling errors with `try`, `except`, `else` and `finally`, and a tour of the built-in exception types.</p><div class="lesson-links"><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/45-exception-handling">Original resources</a></div><details open><summary>Read the explanation · theory.ipynb</summary><h3>Exception Handling in Python</h3>
+<p>In this notebook, we will cover the following topics:</p>
+<ul>
+<li>Types of Errors<ul>
+<li>Syntax Errors</li>
+<li>Exceptions</li>
+</ul>
+</li>
+<li>Ways to Handle Exceptions in Python<ul>
+<li>try</li>
+<li>except</li>
+<li>else</li>
+<li>finally</li>
+</ul>
+</li>
+<li>Raising an Error</li>
+<li>Defining a Custom Error</li>
+</ul>
+<h4>1. Types of Errors</h4>
+<p>Errors in Python can be categorized into two major types:</p>
+<ol>
+<li><strong>Syntax Errors</strong></li>
+<li><strong>Exceptions</strong></li>
+</ol>
+<h5>a) Syntax Errors</h5>
+<ul>
+<li>Syntax errors, also known as parsing errors, occur when the parser detects a syntactic error.</li>
+<li>These errors are caused when the Python interpreter fails to understand a line of code due to incorrect syntax.</li>
+<li>These are detected before the program is executed.</li>
+<li>Common causes include missing colons, incorrect indentation, etc.</li>
+</ul>
+<pre><code class="language-python">### Example of a Syntax Error
+if True
+    print(&quot;Hello World&quot;)  # This will raise a SyntaxError because a colon (:) is missing after &#39;if True&#39;
+</code></pre>
+<h5>b) Exceptions</h5>
+<ul>
+<li>Exceptions occur when a syntactically correct code results in an error during execution.</li>
+<li>Unlike syntax errors, exceptions are detected while the program is running.</li>
+<li>Common examples include division by zero, accessing a file that does not exist, etc.</li>
+</ul>
+<pre><code class="language-python">### Example of an Exception
+num = 10
+denom = 0
+result = num / denom  # This will raise a ZeroDivisionError because division by zero is not allowed
+</code></pre>
+<h4>2. Ways to Handle Exceptions in Python</h4>
+<p>Python provides a way to handle exceptions using <code>try</code>, <code>except</code>, <code>else</code>, and <code>finally</code> blocks.</p>
+<h5>a) Try</h5>
+<ul>
+<li>The <code>try</code> block contains the code that might throw an exception.</li>
+<li>If an exception occurs in this block, it is passed to the <code>except</code> block for handling.</li>
+</ul>
+<pre><code class="language-python">### Example of try block
+try:
+    print(5 / 0)  # This code might throw an exception
+except ZeroDivisionError:
+    print(&quot;Cannot divide by zero!&quot;)
+</code></pre>
+<h5>b) Except</h5>
+<ul>
+<li>The <code>except</code> block is used to catch and handle exceptions that occur in the <code>try</code> block.</li>
+<li>You can have multiple <code>except</code> blocks for different types of exceptions.</li>
+<li>If an exception occurs, the <code>except</code> block executes.</li>
+</ul>
+<pre><code class="language-python">### Example of multiple except blocks
+try:
+    number = int(&quot;xyz&quot;)  # This will raise a ValueError
+except ValueError:
+    print(&quot;Invalid value. Please enter a valid number.&quot;)
+except TypeError:
+    print(&quot;Type error occurred&quot;)
+</code></pre>
+<h5>c) Else</h5>
+<ul>
+<li>The <code>else</code> block is executed if the <code>try</code> block does not raise an exception.</li>
+<li>It is a good place to put code that should only run if no exceptions were raised.</li>
+</ul>
+<pre><code class="language-python">### Example of else block
+try:
+    result = 10 / 2
+except ZeroDivisionError:
+    print(&quot;Cannot divide by zero!&quot;)
+else:
+    print(f&quot;The result is {result}&quot;)
+</code></pre>
+<h5>d) Finally</h5>
+<ul>
+<li>The <code>finally</code> block is always executed, whether an exception is raised or not.</li>
+<li>It is often used for cleanup actions, like closing files or releasing resources.</li>
+</ul>
+<pre><code class="language-python">### Example of finally block
+try:
+    file = open(&#39;nonexistent_file.txt&#39;, &#39;r&#39;)
+except FileNotFoundError:
+    print(&quot;File not found.&quot;)
+finally:
+    print(&quot;Executing the cleanup process.&quot;)
+</code></pre>
+<h4>3. Raising an Error</h4>
+<ul>
+<li>Python allows you to manually raise exceptions using the <code>raise</code> keyword.</li>
+<li>This is useful when you want to enforce certain conditions in your program.</li>
+</ul>
+<pre><code class="language-python">### Example of raising an error
+def check_age(age):
+    if age &lt; 18:
+        raise ValueError(&quot;Age must be 18 or above.&quot;)
+    return &quot;Access granted&quot;
+
+### This will raise a ValueError
+check_age(16)
+</code></pre>
+<h4>4. Defining a Custom Error</h4>
+<ul>
+<li>You can define your own custom exceptions by creating a new class that inherits from <code>Exception</code>.</li>
+<li>This allows you to create meaningful error messages specific to your application&#39;s needs.</li>
+</ul>
+<pre><code class="language-python">### Example of defining a custom error
+class InsufficientBalanceError(Exception):
+    pass
+
+def withdraw(balance, amount):
+    if amount &gt; balance:
+        raise InsufficientBalanceError(&quot;You don&#39;t have enough funds!&quot;)
+    return balance - amount
+
+### This will raise an InsufficientBalanceError
+withdraw(500, 600)
+</code></pre>
+<h4>Summary</h4>
+<p>In this notebook, we explored different types of errors in Python and how to handle them using <code>try</code>, <code>except</code>, <code>else</code>, and <code>finally</code> blocks. We also learned how to raise exceptions manually and create custom error classes.</p>
+</details><details ><summary>Read and trace the code examples · code-types-of-exception.ipynb</summary><h3>Python Exceptions Overview</h3>
+<p>This notebook explains common Python exceptions with examples. You can refer to the examples to quickly understand how each exception works.</p>
+<h4>ArithmeticError</h4>
+<p>This exception is raised when an error occurs in numeric calculations.</p>
+<pre><code class="language-python">try:
+    x = 1 / 0  # Division by zero
+except ArithmeticError as e:
+    print(f&quot;ArithmeticError: {e}&quot;)
+</code></pre>
+<h4>AssertionError</h4>
+<p>Raised when an <code>assert</code> statement fails.</p>
+<pre><code class="language-python">try:
+    assert 5 &gt; 10, &#39;The value is not greater than 10&#39;
+except AssertionError as e:
+    print(f&quot;AssertionError: {e}&quot;)
+</code></pre>
+<h4>AttributeError</h4>
+<p>Raised when an attribute reference or assignment fails.</p>
+<pre><code class="language-python">try:
+    None.lower()
+except AttributeError as e:
+    print(f&quot;AttributeError: {e}&quot;)
+</code></pre>
+<h4>Exception</h4>
+<p>Base class for all exceptions.</p>
+<pre><code class="language-python">try:
+    raise Exception(&#39;An unexpected error occurred.&#39;)
+except Exception as e:
+    print(e)
+</code></pre>
+<h4>EOFError</h4>
+<p>Raised when the <code>input()</code> method hits an &#39;end of file&#39; condition (EOF).</p>
+<pre><code class="language-python">try:
+    input()
+except EOFError as e:
+    print(f&quot;EOFError: {e}&quot;)
+</code></pre>
+<h4>FloatingPointError</h4>
+<p>Raised when a floating point calculation fails.</p>
+<pre><code class="language-python">import math
+try:
+    math.exp(1000)
+except FloatingPointError as e:
+    print(f&quot;FloatingPointError: {e}&quot;)
+</code></pre>
+<h4>GeneratorExit</h4>
+<p>Raised when a generator is closed (with the <code>close()</code> method).</p>
+<pre><code class="language-python">def my_gen():
+    yield 1
+    yield 2
+    yield 3
+
+gen = my_gen()
+next(gen)
+next(gen)
+gen.close()
+try:
+    next(gen)
+except GeneratorExit as e:
+    print(f&quot;GeneratorExit: {e}&quot;)
+</code></pre>
+<h4>ImportError</h4>
+<p>Raised when an imported module does not exist.</p>
+<pre><code class="language-python">try:
+    import non_existent_module
+except ImportError as e:
+    print(f&quot;ImportError: {e}&quot;)
+</code></pre>
+<h4>IndentationError</h4>
+<p>Raised when indentation is not correct.</p>
+<pre><code class="language-python">try:
+    if True:
+    print(&quot;Indented correctly&quot;)  # This line should be indented
+except IndentationError as e:
+    print(f&quot;IndentationError: {e}&quot;)
+</code></pre>
+<h4>IndexError</h4>
+<p>Raised when an index of a sequence does not exist.</p>
+<pre><code class="language-python">try:
+    my_list = [1, 2, 3]
+    print(my_list[5])
+except IndexError as e:
+    print(f&quot;IndexError: {e}&quot;)
+</code></pre>
+<h4>KeyError</h4>
+<p>Raised when a key does not exist in a dictionary.</p>
+<pre><code class="language-python">try:
+    my_dict = {&#39;a&#39;: 1, &#39;b&#39;: 2}
+    print(my_dict[&#39;non_existent_key&#39;])
+except KeyError as e:
+    print(f&quot;KeyError: {e}&quot;)
+</code></pre>
+<h4>KeyboardInterrupt</h4>
+<p>Raised when the user presses Ctrl+c, Ctrl+z, or Delete.</p>
+<pre><code class="language-python">try:
+    while True:
+        pass  # Press Ctrl+C to raise the KeyboardInterrupt
+except KeyboardInterrupt:
+    print(&quot;KeyboardInterrupt: Process was interrupted.&quot;)
+</code></pre>
+<h4>LookupError</h4>
+<p>Raised when errors raised can&#39;t be found.</p>
+<pre><code class="language-python">try:
+    raise LookupError(&#39;Unresolved lookup error.&#39;)
+except LookupError as e:
+    print(f&quot;LookupError: {e}&quot;)
+</code></pre>
+<h4>MemoryError</h4>
+<p>Raised when a program runs out of memory.</p>
+<pre><code class="language-python">try:
+    a = [1] * (10**10)  # Trying to allocate too much memory
+except MemoryError as e:
+    print(f&quot;MemoryError: {e}&quot;)
+</code></pre>
+<h4>NameError</h4>
+<p>Raised when a variable does not exist.</p>
+<pre><code class="language-python">try:
+    print(undefined_variable)
+except NameError as e:
+    print(f&quot;NameError: {e}&quot;)
+</code></pre>
+<h4>NotImplementedError</h4>
+<p>Raised when an abstract method requires an inherited class to override the method.</p>
+<pre><code class="language-python">class BaseClass:
+    def method(self):
+        raise NotImplementedError(&#39;Subclass must implement this method.&#39;)
+
+class SubClass(BaseClass):
+    pass
+
+try:
+    obj = SubClass()
+    obj.method()
+except NotImplementedError as e:
+    print(f&quot;NotImplementedError: {e}&quot;)
+</code></pre>
+<h4>OSError</h4>
+<p>Raised when a system-related operation causes an error.</p>
+<pre><code class="language-python">try:
+    open(&#39;non_existent_file.txt&#39;, &#39;r&#39;)
+except OSError as e:
+    print(f&quot;OSError: {e}&quot;)
+</code></pre>
+</details><details ><summary>Read and trace the code examples · code.ipynb</summary><h3>Exception Handling In Python</h3>
+<pre><code class="language-python">num = 10
+den = 0
+</code></pre>
+<pre><code class="language-python">ans = num/den
+
+print(&quot;Some most important code&quot;)
+
+print(&quot;important Code snippet 1&quot;)
+</code></pre>
+<pre><code class="language-python">print(num)
+</code></pre>
+<pre><code class="language-python">print num
+</code></pre>
+<pre><code class="language-python">print(number)
+</code></pre>
+<pre><code class="language-python">if 
+    num == 5
+</code></pre>
+<pre><code class="language-python">1 + &#39;a&#39;
+</code></pre>
+<pre><code class="language-python">### Key Error
+
+d = {&quot;key1&quot;:&quot;value1&quot;}
+
+d[&quot;key2&quot;]
+</code></pre>
+<pre><code class="language-python">### Index Error
+
+l1 = [1,2,3,4]
+
+l1[100]
+</code></pre>
+<pre><code class="language-python">import mat
+</code></pre>
+<h3>Runtime Error</h3>
+<pre><code class="language-python">numerator = 100
+</code></pre>
+<pre><code class="language-python">denominator = int(input(&quot;enter the denominator&quot;))
+</code></pre>
+<pre><code class="language-python">ans = numerator/denominator
+print(ans)
+</code></pre>
+<pre><code class="language-python">username = &quot;testUser&quot;
+password = &quot;abcd&quot; # 1234
+
+if(int(password)==1234):
+    print(&quot;welcome to the System&quot;)
+
+
+</code></pre>
+<h3>Try and Except Block</h3>
+<pre><code class="language-python">
+num = 10
+try :
+    den = int(input(&quot;Enter the denominator&quot;))
+    print(num/den)
+except:
+    print(&quot;An Error Occured&quot;)
+
+print(&quot;OUTSIDE&quot;)
+</code></pre>
+<pre><code class="language-python">a = 10
+b =int(input(&quot;enter a number&quot;))
+c= a/b
+print(&quot;div is &quot; + str(c))
+d = a+b
+print(&quot;sum is &quot; + str(d))
+</code></pre>
+<pre><code class="language-python">a = 10
+b =int(input(&quot;enter a number&quot;))
+c= a/b
+print(&quot;div is &quot; + str(c))
+d = a+b
+print(&quot;sum is &quot; + str(d))
+</code></pre>
+<pre><code class="language-python">
+num = 10
+try :
+    den = int(input(&quot;Enter the denominator&quot;))
+    print(num/den)
+except Exception as e:
+    print(e) 
+    # print(&quot;An Error Occured&quot;)
+</code></pre>
+<pre><code class="language-python">
+num = 10
+try :
+    den = int(input(&quot;Enter the denominator&quot;))
+    print(num/den)
+except ZeroDivisionError as e:
+    print(&quot;Please don&#39;t set denominator to 0&quot;) 
+    # print(&quot;An Error Occured&quot;)
+</code></pre>
+<pre><code class="language-python">
+num = 10
+try :
+    den = int(input(&quot;Enter the denominator&quot;))
+    print(num/den)
+except ValueError as e:
+    print(&quot;Please provide an integer&quot;) 
+    # print(&quot;An Error Occured&quot;)
+</code></pre>
+<pre><code class="language-python">
+num = 10
+try :
+    import mat
+    den = int(input(&quot;Enter the denominator&quot;))
+    print(num/den)
+except ModuleNotFoundError as e:
+    print(&quot;Please use a valid Module&quot;) 
+    # print(&quot;An Error Occured&quot;)
+</code></pre>
+<pre><code class="language-python">### list exception and your Warning
+
+print(dir(locals()[&#39;__builtins__&#39;]))
+</code></pre>
+<pre><code class="language-python">### https://www.programiz.com/python-programming/exceptions
+</code></pre>
+<pre><code class="language-python">
+num = 10
+try :
+    import mat
+    den = int(input(&quot;Enter the denominator&quot;))
+    print(num/den)
+except ValueError as e:
+    print(&quot;Please provide an integer&quot;)
+except ZeroDivisionError as e:
+    print(&quot;Please don&#39;t set denominator to 0&quot;) 
+    # print(&quot;An Error Occured&quot;)
+</code></pre>
+<pre><code class="language-python">### Parent class: Polygon
+class Polygon:
+    def __init__(self, sides):
+        self.sides = sides
+
+    def show_sides(self):
+        print(f&quot;This polygon has {self.sides} sides.&quot;)
+
+### Child class: Triangle
+class Triangle(Polygon):
+    def __init__(self):
+        super().__init__(3)  # A triangle has 3 sides
+
+### Child class: Square
+class Square(Polygon):
+    def __init__(self):
+        super().__init__(4)  # A square has 4 sides
+</code></pre>
+<pre><code class="language-python">
+### Function to demonstrate casting
+def check_polygon_type(polygon):
+    if isinstance(polygon, Polygon):  # Checking if it&#39;s a parent class (Polygon)
+        print(&quot;True&quot;)
+        # polygon.show_sides()
+    else:
+        print(&quot;Not a valid polygon.&quot;)
+</code></pre>
+<pre><code class="language-python">tri = Triangle()
+sq = Square()
+
+### Casting child to parent (allowed)
+check_polygon_type(tri)  # Triangle is cast to Polygon
+check_polygon_type(sq)   # Square is cast to Polygon
+</code></pre>
+<pre><code class="language-python">### Function to demonstrate casting
+def check_square_type(square):
+    if isinstance(square, Square):  # Checking if it&#39;s a parent class (Polygon)
+        square.show_sides()
+    else:
+        print(&quot;Not a valid Square.&quot;)
+</code></pre>
+<pre><code class="language-python">pol = Polygon(5)
+check_square_type(pol)
+</code></pre>
+<pre><code class="language-python">
+num = 10
+try :
+    import mat
+    den = int(input(&quot;Enter the denominator&quot;))
+    print(num/den)
+except ValueError as e:
+    print(&quot;Please provide an integer&quot;)
+except ZeroDivisionError as e:
+    print(&quot;Please don&#39;t set denominator to 0&quot;) 
+except Exception as e:
+    print(&quot;Got an Error&quot;)
+</code></pre>
+<pre><code class="language-python">if square:
+    pass
+elif rectangle:
+    pass
+elif quadrilateral:
+    pass
+</code></pre>
+<pre><code class="language-python">try: 
+    a = 10
+    b = int(input(&quot;enter a number&quot;))
+    d = a+b
+    c= a/b
+    print(&quot;div is &quot; + str(c))
+    print(&quot;sum is &quot; + str(d))
+except ArithmeticError:
+    print(&quot;ARTH&quot;)
+except ZeroDivisionError:
+    print(&quot;NOT-0&quot;)
+    
+print(&quot;HERE&quot;)
+</code></pre>
+<pre><code class="language-python">1 + &#39;0&#39;
+</code></pre>
+<pre><code class="language-python">1/0
+</code></pre>
+<pre><code class="language-python">int(&#39;abc&#39;)
+</code></pre>
+<pre><code class="language-python">try: 
+    a = 10
+    b =int(input(&quot;enter a number&quot;))
+    d = a+b
+    c= a/b
+    print(&quot;div is &quot; + str(c))
+    print(&quot;sum is &quot; + str(d))
+except TypeError:
+    print(&quot;NOT-TYPE&quot;)
+except ValueError:
+    print(&quot;give right Value&quot;)
+except Exception:
+    print(&quot;NOT-0&quot;)
+</code></pre>
+<pre><code class="language-python">try: 
+    a = 10
+    b =int(input(&quot;enter a number&quot;))
+    d = a+b
+    c= a/b
+    print(&quot;div is &quot; + str(c))
+    print(&quot;sum is &quot; + str(d))
+except TypeError:
+    print(&quot;NOT-TYPE&quot;)
+except ValueError:
+    print(&quot;give right Value&quot;)
+except Exception:
+    print(&quot;NOT-0&quot;)
+else:
+    try:
+        print(1/0)
+    except:
+        print(&quot;Some error Occured&quot;)
+    print(&quot;Great, you have given a good number&quot;)
+
+</code></pre>
+<h3>Finally</h3>
+<pre><code class="language-python">try: 
+    a = 10
+    b =int(input(&quot;enter a number&quot;))
+    c= a/b
+    print(&quot;ANS&quot; + str(c))
+except Exception as e:
+    print (f&quot;The error is  {e}&quot;)
+finally :
+    print(&quot;FINAL&quot;)
+</code></pre>
+<pre><code class="language-python">try: 
+    a = 10
+    b =int(input(&quot;enter a number&quot;))
+    d = a+b
+    c= a/b
+    print(&quot;ANS&quot; + str(c))
+except Exception as e:
+    print (f&quot;The error is  {e}&quot;)
+
+
+print(&quot;FINAL&quot;)
+</code></pre>
+<h3>Why is then finally required.</h3>
+<ol>
+<li>It runs even when error is not cached</li>
+<li>It runs even when flow is returned</li>
+</ol>
+<pre><code class="language-python">try: 
+    a = 10
+    b =int(input(&quot;enter a number&quot;))
+    d = a+b
+    c= a/b
+    print(&quot;ANS&quot; + str(c))
+except ZeroDivisionError as e:
+    print (f&quot;The error is  {e}&quot;)
+finally:
+    print(&quot;FINAL&quot;)
+</code></pre>
+<pre><code class="language-python">class DB:
+    def conn(self):
+        print (&quot;connected&quot;)
+    def close(self):
+        print (&quot;connection closed&quot;)
+    def get(self):
+        print (&quot;here are your 500 records&quot;)
+</code></pre>
+<pre><code class="language-python">try:
+    db = DB()
+    db.conn()
+    db.get()
+    print(1/0)
+except ValueError as e:
+    print(&quot;Error Occured&quot;)
+finally:
+    db.close()
+        
+</code></pre>
+<pre><code class="language-python">def ErrHandle():
+    try:
+        print(&quot;I am here, opening all the files&quot;)
+        return &quot;Success, got all files&quot;
+    except ZeroDivisionError as e:
+        print(e)
+    finally:
+        print(&quot;Closing all the files&quot;)
+</code></pre>
+<pre><code class="language-python">ErrHandle()
+</code></pre>
+<pre><code class="language-python">int(&quot;abc&quot;)
+</code></pre>
+<h3>Raise</h3>
+<pre><code class="language-python">try:
+    age = int(input(&quot;please enter age&quot;))
+    if(age&lt;18):
+        raise Exception(&quot;Please enter a age which is greater than 18&quot;)
+except TypeError as e:
+    print(e)
+except ValueError as e:
+    print(e)
+except Exception as e:
+    print(e)
+</code></pre>
+<pre><code class="language-python">num = 10
+try:
+    den = int(input(&quot;Enter den&quot;))
+    if(den==0):
+        raise ZeroDivisionError(&quot;Please enter a number which is not 0&quot;)
+    print(num/den)
+except ZeroDivisionError as e:
+    print(e)
+</code></pre>
+<h3>Create Custom Error</h3>
+<pre><code class="language-python">class WrongEmailError(Exception):
+    pass
+</code></pre>
+<pre><code class="language-python">class Person:
+    def __init__(self,salary,email):
+        if(salary&gt;10000000000):
+            raise ValueError(&quot;Please enter a valid Salary&quot;)
+        self.salary = salary
+        if(&#39;@gmail&#39; not in email):
+            raise WrongEmailError(&quot;Please enter a valid email&quot;)
+        self.email = email
+    def show_salary(self):
+        print(self.salary)
+    def show_email(self):
+        print(self.email)
+</code></pre>
+<pre><code class="language-python">p1 = Person(100000,&quot;abc@test.com&quot;)
+</code></pre>
+<pre><code class="language-python">try:
+    p2 = Person(100000,&quot;def@test.com&quot;)
+except WrongEmailError as e:
+    print(&quot;Email is not valid&quot;)
+    print(e)
+else:
+    print(&quot;Welcome&quot;)
+</code></pre>
+<pre><code class="language-python">p1.show_salary()
+</code></pre>
+<pre><code class="language-python">p2.show_salary()
+</code></pre>
+<pre><code class="language-python">class InvalidEmailError(Exception):
+    pass
+</code></pre>
+<pre><code class="language-python">raise InvalidEmailError(&quot;abc@text.com&quot;)
+</code></pre>
+<pre><code class="language-python">### Define custom exceptions
+class InvalidAgeError(Exception):
+    &quot;&quot;&quot;Exception raised for invalid age.&quot;&quot;&quot;
+    def __init__(self, age):
+        self.age = age
+        super().__init__(f&quot;Invalid age: {age}. Age must be a positive integer.&quot;)
+
+
+class InvalidEmailError(Exception):
+    &quot;&quot;&quot;Exception raised for invalid email format.&quot;&quot;&quot;
+    def __init__(self, email):
+        self.email = email
+        super().__init__(f&quot;Invalid email format: {email}. Email must be in the format &#39;username@example.com&#39;.&quot;)
+</code></pre>
+<pre><code class="language-python">
+
+### Define the Person class
+class Person:
+    def __init__(self, name, age, email):
+        self.name = name
+        # Validate age
+
+        
+        if age &lt;= 0:
+            raise InvalidAgeError(age)
+        self.age = age
+        # Validate email format
+        if &quot;@&quot; not in email or &quot;.&quot; not in email:
+            raise InvalidEmailError(email)
+        self.email = email
+
+
+### Example usage
+try:
+    # Trying to create a person with invalid age
+    person1 = Person(&quot;Alice&quot;, -25, &quot;alice@example.com&quot;)
+except InvalidAgeError as e:
+    print(e)
+</code></pre>
+<pre><code class="language-python">
+try:
+    # Trying to create a person with invalid email format
+    person2 = Person(&quot;Bob&quot;, 30, &quot;bobexample.com&quot;)
+except InvalidEmailError as e:
+    print(e)
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Catch a `ZeroDivisionError` and print a friendly message instead of crashing.</li><li>Ask for a number with `input()` and keep asking until `int()` stops raising `ValueError`.</li><li>Raise your own `ValueError` when an age is negative, and catch it elsewhere.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section></div><h2 id="practice">Practice session</h2><div class="scorebox"><span class="tag">This chapter</span><p data-score aria-live="polite"></p><p>Predict the output before running it. Output checks preserve case and line breaks. Written programs are saved for self-review and are not executed here. Drafts and progress stay in this browser.</p></div><article class="drill" id="ch12-q1"><p class="drill-id">Practice 01 · checked answer</p><h3>Which exception does int(&quot;hello&quot;) raise?</h3><label for="input-ch12-q1">Your answer</label><textarea id="input-ch12-q1" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch12-q1">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch12-q1">See answer</button></div>
+<div class="drill-hint" id="hint-ch12-q1" data-hint hidden><span class="tag">Step by step</span><p>The type is acceptable but the text is not a valid integer.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch12-q1" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>ValueError</code></pre><p>The type is acceptable but the text is not a valid integer.</p></div></article><article class="drill" id="ch12-q2"><p class="drill-id">Practice 02 · checked answer</p><h3>What prints?</h3><pre><code>try:
+    int(&quot;x&quot;)
+except ValueError:
+    print(&quot;bad&quot;)</code></pre><label for="input-ch12-q2">Your answer</label><textarea id="input-ch12-q2" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch12-q2">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch12-q2">See answer</button></div>
+<div class="drill-hint" id="hint-ch12-q2" data-hint hidden><span class="tag">Step by step</span><p>ValueError is handled by except.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch12-q2" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>bad</code></pre><p>ValueError is handled by except.</p></div></article><article class="drill" id="ch12-q3"><p class="drill-id">Practice 03 · checked answer</p><h3>What prints?</h3><pre><code>try:
+    x = 1
+finally:
+    print(&quot;done&quot;)</code></pre><label for="input-ch12-q3">Your answer</label><textarea id="input-ch12-q3" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch12-q3">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch12-q3">See answer</button></div>
+<div class="drill-hint" id="hint-ch12-q3" data-hint hidden><span class="tag">Step by step</span><p>finally runs when leaving the try statement.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch12-q3" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>done</code></pre><p>finally runs when leaving the try statement.</p></div></article><article class="drill" id="ch12-q4"><p class="drill-id">Practice 04 · checked answer</p><h3>Which exception does {}[&quot;x&quot;] raise?</h3><label for="input-ch12-q4">Your answer</label><textarea id="input-ch12-q4" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch12-q4">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch12-q4">See answer</button></div>
+<div class="drill-hint" id="hint-ch12-q4" data-hint hidden><span class="tag">Step by step</span><p>The requested dictionary key is missing.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch12-q4" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>KeyError</code></pre><p>The requested dictionary key is missing.</p></div></article><article class="drill" id="ch12-write"><p class="drill-id">Practice 05 · write and self-review</p><h3>Convert &quot;3.5&quot; to an integer with int. Catch the expected exception and print Invalid integer.</h3><label for="input-ch12-write">Your answer</label><textarea id="input-ch12-write" class="drill-in" rows="10" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch12-write">Hint</button><button type="button" data-submit>Submit draft</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch12-write">See answer</button></div>
+<div class="drill-hint" id="hint-ch12-write" data-hint hidden><span class="tag">Step by step</span><p>Use except ValueError.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch12-write" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>try:
+    value = int(&quot;3.5&quot;)
+except ValueError:
+    print(&quot;Invalid integer&quot;)  # int expects integer text.</code></pre><p>Compare the result with your own answer. Explain what each line does before moving on.</p></div></article><div class="course-actions chapter-end" id="end"><button type="button" data-complete aria-pressed="false">Mark chapter as read</button><a href="#main">Back to reading</a></div><div class="pager"><a href="ch11.html">← Previous chapter</a><a href="ch13.html">Next chapter →</a></div>
+<p class="source-note">Reading notes and course sequence adapted from <a href="https://github.com/mayank953/python-ai-crash-course">Mayank Aggarwal’s Python AI Crash Course</a>, under the <a href="LICENSE-upstream.txt">MIT license</a>. Classroom adaptation, chapter guides and project exercises: Learn with Mynul. <a href="sources.html">Sources and study guide</a>.</p>
+</div></main><footer class="cos-foot"><div class="wrap">Learn with Mynul · Read. Trace. Practice. Build.</div></footer>
+<script>window.PYTHON_PRACTICE = [{"prompt": "Which exception does int(\"hello\") raise?", "accept": ["ValueError"], "hint": "The type is acceptable but the text is not a valid integer.", "code": "", "answer": "ValueError", "why": "The type is acceptable but the text is not a valid integer.", "id": "ch12-q1"}, {"prompt": "What prints?", "accept": ["bad"], "hint": "ValueError is handled by except.", "code": "try:\n    int(\"x\")\nexcept ValueError:\n    print(\"bad\")", "answer": "bad", "why": "ValueError is handled by except.", "id": "ch12-q2"}, {"prompt": "What prints?", "accept": ["done"], "hint": "finally runs when leaving the try statement.", "code": "try:\n    x = 1\nfinally:\n    print(\"done\")", "answer": "done", "why": "finally runs when leaving the try statement.", "id": "ch12-q3"}, {"prompt": "Which exception does {}[\"x\"] raise?", "accept": ["KeyError"], "hint": "The requested dictionary key is missing.", "code": "", "answer": "KeyError", "why": "The requested dictionary key is missing.", "id": "ch12-q4"}, {"id": "ch12-write", "prompt": "Convert \"3.5\" to an integer with int. Catch the expected exception and print Invalid integer.", "hint": "Use except ValueError.", "answer": "try:\n    value = int(\"3.5\")\nexcept ValueError:\n    print(\"Invalid integer\")  # int expects integer text."}];</script><script src="js/practice.js?v=1" defer></script><script src="../../assets/js/theme.js?v=3" defer></script></body></html>

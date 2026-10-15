@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
+  </script><title>Classes and objects · Python + AI · Learn with Mynul</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<meta name="description" content="Python and AI from scratch. Read the lessons, trace examples and practice with hints, saved drafts and commented answers.">
+<link rel="stylesheet" href="course.css?v=1"></head>
+<body class="cos" data-chapter="13"><a class="skip" href="#main">Skip to content</a>
+<header class="cos-bar"><div class="wrap"><a class="cos-brand" href="index.html">Python · AI</a><nav class="cos-nav" aria-label="Python course"><a href="index.html">Map</a><a  href="ch01.html">1</a><a  href="ch02.html">2</a><a  href="ch03.html">3</a><a  href="ch04.html">4</a><a  href="ch05.html">5</a><a  href="ch06.html">6</a><a  href="ch07.html">7</a><a  href="ch08.html">8</a><a  href="ch09.html">9</a><a  href="ch10.html">10</a><a  href="ch11.html">11</a><a  href="ch12.html">12</a><a class="is-on" href="ch13.html">13</a><a  href="ch14.html">14</a><a href="index.html#projects">Projects</a><a href="../index.html">Learn hub</a></nav><button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode"><svg class="theme-sun" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="#F5C518"/><g stroke="#F5C518" stroke-width="1.8" stroke-linecap="round" fill="none"><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M5.6 18.4l1.7-1.7M16.7 7.3l1.7-1.7"/></g></svg><svg class="theme-moon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="#8EA0FF" d="M16.2 3.1A8.9 8.9 0 1 0 21.1 18 7.4 7.4 0 0 1 16.2 3.1z"/></svg></button></div></header>
+<main id="main"><div class="wrap"><p class="kicker"><a href="index.html">Python + AI</a> · Chapter 13</p><h1>Classes and objects</h1><p class="lede">A class defines the behavior and structure of a kind of object. An instance is one particular object created from that class. Use classes when data and the operations on it belong together.</p><div class="toc"><a href="#reading">Reading</a><a href="#practice">Practice session</a><a href="#end">Save reading progress</a></div><div class="rule"><span class="tag">The rule</span><p>self refers to the instance receiving a method call. __init__ initializes instance state. Attributes such as self.balance belong to that instance. Class attributes are shared through the class, so do not use a mutable class attribute for data that should be separate for every instance. Inheritance reuses behavior; composition stores another object as part of an object.</p></div><h2>Worked example</h2><pre><code>class Counter:
+    def __init__(self, start=0):
+        self.value = start
+
+    def increment(self):
+        self.value += 1
+        return self.value
+
+a = Counter()
+b = Counter(10)
+print(a.increment())
+print(b.value)</code></pre><div class="trace"><span class="tag">Trace every line</span><p>Creating a calls __init__ with start=0. Creating b uses start=10. increment changes only a.value and returns 1. b.value is still 10 because the two instances have separate state.</p></div><div id="reading"><section class="reading" id="lesson-46"><h2>46. Object-Oriented Programming</h2><p>Classes and objects, encapsulation, abstraction, inheritance, polymorphism and operator overloading, with practice programs.</p><div class="lesson-links"><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/46-object-oriented-programming">Original resources</a></div><details open><summary>Read and trace the code examples · 01-classes-and-objects.ipynb</summary><pre><code class="language-python">Sellers
+</code></pre>
+<pre><code class="language-python">seller1Name = &quot;A&quot;
+seller1Address = &quot;ABC&quot;
+seller1Money = 123
+</code></pre>
+<pre><code class="language-python">seller2Name = &quot;B&quot;
+seller2Address = &quot;DEF&quot;
+seller2Money = 456
+</code></pre>
+<pre><code class="language-python">seller3Name = &quot;C&quot;
+seller3Address = &quot;GFH&quot;
+seller3Money = 
+</code></pre>
+<pre><code class="language-python">sellerName = [&quot;A&quot;,&quot;B&quot;, &quot;D&quot;]
+</code></pre>
+<pre><code class="language-python">sellerName[2]
+</code></pre>
+<pre><code class="language-python">seller1.Name
+seller1.Address
+</code></pre>
+<pre><code class="language-python">a = 5
+</code></pre>
+<pre><code class="language-python">print(type(a))
+</code></pre>
+<pre><code class="language-python">b = 5.5 
+print(type(b))
+</code></pre>
+<pre><code class="language-python">s1 = &quot;Mayank&quot;
+print(type(s1))
+</code></pre>
+<pre><code class="language-python">s1.upper()
+</code></pre>
+<pre><code class="language-python">l1 = [1,2,3,4]
+</code></pre>
+<pre><code class="language-python">l1.append(4)
+</code></pre>
+<pre><code class="language-python">c = 4+5j
+</code></pre>
+<pre><code class="language-python">c.real
+</code></pre>
+<pre><code class="language-python">c.imag
+</code></pre>
+<h3>Creating our Own Class</h3>
+<pre><code class="language-python">class Car:
+    pass
+</code></pre>
+<pre><code class="language-python">Car
+</code></pre>
+<pre><code class="language-python">int
+</code></pre>
+<h3>Object</h3>
+<h5>Everything in Python is an object</h5>
+<pre><code class="language-python">c1 = 3+6j
+c2 = 7+5j
+</code></pre>
+<pre><code class="language-python">print(type(c1), type(c2))
+</code></pre>
+<pre><code class="language-python">s1.append(&#39;abc&#39;)
+</code></pre>
+<pre><code class="language-python">def sum(a,b):
+    pass
+</code></pre>
+<pre><code class="language-python">print(type(sum))
+</code></pre>
+<pre><code class="language-python">print(type(a))
+</code></pre>
+<pre><code class="language-python">class Car:
+    pass
+</code></pre>
+<pre><code class="language-python">swift = Car()
+</code></pre>
+<pre><code class="language-python">print(type(swift))
+</code></pre>
+<pre><code class="language-python">a = 5
+print(type(a))
+</code></pre>
+<pre><code class="language-python">l1 = [] 
+t1 = ()
+</code></pre>
+<pre><code class="language-python">a1 = int()
+a1
+</code></pre>
+<pre><code class="language-python">print(type(a1))
+</code></pre>
+<pre><code class="language-python">class Car:
+    pass
+</code></pre>
+</details><details ><summary>Read and trace the code examples · 02-encapsulation.ipynb</summary><pre><code class="language-python">class Student:
+    __numberOfStudents = 0 # Class variable or Static Property
+    __schoolName = &quot;MAPS&quot;
+    
+    isPlusMember = True
+    
+    def __init__(self,name,rollNumber,marks):
+        # print(id(self))
+        self.rollNumber = rollNumber
+        self.name = name
+        self.__marks = marks
+        self.numberOfStudents  = Student.__numberOfStudents + 1
+        Student.__numberOfStudents = Student.__numberOfStudents + 1
+    
+    #getter
+    def getMarks(self):
+        return self.__marks
+    #setter
+    def setMarks(self,newMarks,passCode):
+        if(passCode == self.__auth()):       # Security
+            self.__marks = newMarks
+        else:
+            return &quot;Bhag yaha se&quot;
+    
+    @staticmethod       
+    def getSchoolName():
+        return Student.__schoolName
+        
+    @staticmethod
+    def setSchoolName(newSchoolName,passCode):
+        Student.__SendMail()
+        Student.__schoolName = newSchoolName
+
+    @staticmethod
+    def __SendMail():
+        print(&quot;Sending the mail to all the comitee members&quot;)
+
+    def getStudentSchoolName(self):
+        return Student.__schoolName 
+    
+    def __auth(self):
+        return &quot;0000&quot;
+
+    def study(self):
+        print(&quot;I am &quot;+ str(self.rollNumber) +&quot; and I am  studying&quot;)
+        
+    def play(self):
+        print(&quot;Pdh liya, now going to play&quot;)
+</code></pre>
+<pre><code class="language-python">s1 = Student(&quot;Mayank&quot;,1,90)
+</code></pre>
+<pre><code class="language-python">Student.setSchoolName(&quot;NSIT&quot;,&quot;000&quot;)
+</code></pre>
+<pre><code class="language-python">Student.
+</code></pre>
+<pre><code class="language-python">Student.getSchoolName()
+</code></pre>
+<pre><code class="language-python">s1.getStudentSchoolName()
+</code></pre>
+<pre><code class="language-python">s1 = Student(&quot;Mayank&quot;,1,90)
+s2 = Student(&quot;Goku&quot;,2,90)
+</code></pre>
+<pre><code class="language-python">s1.numberOfStudents
+</code></pre>
+<pre><code class="language-python">s1.getMarks()
+</code></pre>
+<pre><code class="language-python">s1.setMarks(95,&quot;0001&quot;)
+</code></pre>
+<pre><code class="language-python">s1.getMarks()
+</code></pre>
+<pre><code class="language-python">s2.marks
+</code></pre>
+<pre><code class="language-python">s1.marks=45
+</code></pre>
+<pre><code class="language-python">s1.marks
+</code></pre>
+<pre><code class="language-python">s1.getMarks()
+</code></pre>
+<pre><code class="language-python">s1.name = &quot;knayam&quot;
+s1.name
+</code></pre>
+<pre><code class="language-python">s1.setMarks(70)
+s1.getMarks()
+</code></pre>
+</details><details ><summary>Read and trace the code examples · 03-abstraction.ipynb</summary><h3>Abstraction</h3>
+<pre><code class="language-python">from abc import ABC,abstractmethod
+</code></pre>
+<pre><code class="language-python">class User(ABC):
+    # def __init__
+    
+    @abstractmethod
+    def login(self):
+        pass
+
+    def logout(self):
+        print(&quot;logout&quot;)
+
+    @abstractmethod
+    def auth(self):
+        pass
+</code></pre>
+<pre><code class="language-python">class Buyer(User):
+
+    def login(self):
+        if(self.auth):
+            print(&quot;Logging in User&quot;)
+            
+    def checkObject(self,link):
+        print(link)
+
+    def auth(self):
+        return True
+</code></pre>
+<pre><code class="language-python">class Seller(User):
+
+    def login(self):
+        if(self.auth):
+            print(&quot;Logging in Seller&quot;)
+    def checkObject(self,link):
+        print(link)
+
+    def auth(self):
+        print(&quot;OTP&quot;)
+        return True
+</code></pre>
+<pre><code class="language-python">b1 = Buyer()
+</code></pre>
+<pre><code class="language-python">b1.auth()
+</code></pre>
+<pre><code class="language-python">from abc import ABC,abstractmethod
+
+class Animal(ABC):
+    @abstractmethod
+    def speak(self):
+        pass
+</code></pre>
+<pre><code class="language-python">class Dog(Animal):
+    def speak2(self):
+        print (&quot;bark&quot;)
+</code></pre>
+<pre><code class="language-python">d1 = Dog()
+</code></pre>
+<pre><code class="language-python">d1.speak()
+</code></pre>
+</details><details ><summary>Read and trace the code examples · 04-inheritance.ipynb</summary><h3>Inheritance</h3>
+<pre><code class="language-python">class User:
+    def __init__(self,name,id,age,passCode):
+        self.name = name
+        self.id = id
+        self.age = age
+        self.passCode = passCode
+
+    
+    def login(self):
+        print(&quot;P logged in&quot;)
+    def logout(self):
+        print(&quot;P logged out&quot;)
+        
+</code></pre>
+<pre><code class="language-python">class Student(User):
+    def __init__(self,marks,rollNumber,name,id,age,passCode):
+
+        super().__init__(name,id,age,passCode)
+        print(super().login())
+        self.marks = marks
+        self.rollNumber = rollNumber
+
+    
+    def login(self):
+        print(&quot;OTP sent&quot;)
+        super().login()
+</code></pre>
+<pre><code class="language-python">s1 = Student(90,123,&quot;mayank&quot;,1,25,&quot;0000&quot;)
+</code></pre>
+<pre><code class="language-python">s1.login()
+</code></pre>
+<pre><code class="language-python">s1.name
+</code></pre>
+<pre><code class="language-python">s1.login()
+s1.logout()
+
+u1 = User()
+u1.login()
+</code></pre>
+<pre><code class="language-python">s1.
+</code></pre>
+<pre><code class="language-python">b1= Buyer()
+</code></pre>
+<pre><code class="language-python">b1.login()
+</code></pre>
+<pre><code class="language-python">class User:
+    def __init__(self):
+        print(&quot;User Constructor&quot;)
+        self.website = &quot;www.flipkart.com&quot;
+        self._field = &quot;ecommerce&quot; # protected Member
+        self.__duration = &quot;12 months&quot; #Private
+        self.__name = &quot;flipkart User&quot;
+    def login(self):
+        print(&quot;logged in&quot;)
+        
+    def logout(self):
+        print(&quot;logged out&quot;) 
+</code></pre>
+<pre><code class="language-python">class Buyer(User):
+    def __init__(self):
+        print(&quot;Buyer Constructor&quot;)
+        super().__init__()
+        self.website =&quot;www.amazon.in&quot;
+        self.__name = &quot;Buyer&quot;
+    
+    def login(self):
+        super().logout()
+        
+        print(&quot;mentor logged in&quot;)
+        print(self._field) # accessible
+        print(self.__name) # Not Accessible
+</code></pre>
+</details><details ><summary>Read the explanation · 05-types-of-inheritance-theory.ipynb</summary><h3>Understanding Inheritance in Python</h3>
+<p>Inheritance is a fundamental concept in object-oriented programming where one class (child or derived class) inherits attributes and methods from another class (parent or base class). This allows for code reuse and establishes a relationship between classes.</p>
+<h4>1. Single Inheritance</h4>
+<p>In single inheritance, a child class inherits from a single parent class. This is the simplest form of inheritance.</p>
+<pre><code class="language-python">### Single Inheritance Example
+
+class Grandfather:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+        
+    def show_details(self):
+        return f&#39;Name: {self.name}, Age: {self.age}&#39;
+        
+    def speak(self):
+        return &#39;Grandfather speaks wisely.&#39;
+
+class Father(Grandfather):
+    def __init__(self, name, age, occupation):
+        super().__init__(name, age)
+        self.occupation = occupation
+        
+    def show_occupation(self):
+        return f&#39;Occupation: {self.occupation}&#39;
+    
+    def speak(self):
+        return &#39;Father speaks carefully.&#39;
+
+### Creating an object of the Father class
+father_obj = Father(&#39;John&#39;, 50, &#39;Engineer&#39;)
+father_obj.show_details()
+father_obj.show_occupation()
+father_obj.speak()
+</code></pre>
+<h4>2. Hierarchical Inheritance</h4>
+<p>In hierarchical inheritance, multiple child classes inherit from a single parent class.</p>
+<pre><code class="language-python">### Hierarchical Inheritance Example
+
+class Grandfather:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+        
+    def show_details(self):
+        return f&#39;Name: {self.name}, Age: {self.age}&#39;
+        
+    def speak(self):
+        return &#39;Grandfather speaks wisely.&#39;
+
+class Child1(Grandfather):
+    def __init__(self, name, age, hobby):
+        super().__init__(name, age)
+        self.hobby = hobby
+        
+    def show_hobby(self):
+        return f&#39;Hobby: {self.hobby}&#39;
+    
+    def speak(self):
+        return &#39;Child1 speaks enthusiastically.&#39;
+
+class Child2(Grandfather):
+    def __init__(self, name, age, favorite_subject):
+        super().__init__(name, age)
+        self.favorite_subject = favorite_subject
+        
+    def show_favorite_subject(self):
+        return f&#39;Favorite Subject: {self.favorite_subject}&#39;
+    
+    def speak(self):
+        return &#39;Child2 speaks thoughtfully.&#39;
+
+### Creating objects of Child1 and Child2 classes
+child1_obj = Child1(&#39;Alice&#39;, 20, &#39;Painting&#39;)
+child2_obj = Child2(&#39;Bob&#39;, 22, &#39;Mathematics&#39;)
+child1_obj.show_details()
+child1_obj.show_hobby()
+child1_obj.speak()
+
+child2_obj.show_details()
+child2_obj.show_favorite_subject()
+child2_obj.speak()
+</code></pre>
+<h4>3. Multilevel Inheritance</h4>
+<p>In multilevel inheritance, a child class inherits from a parent class, which in turn inherits from another parent class.</p>
+<pre><code class="language-python">### Multilevel Inheritance Example
+
+class Grandfather:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+        
+    def show_details(self):
+        return f&#39;Name: {self.name}, Age: {self.age}&#39;
+        
+    def speak(self):
+        return &#39;Grandfather speaks wisely.&#39;
+
+class Father(Grandfather):
+    def __init__(self, name, age, occupation):
+        super().__init__(name, age)
+        self.occupation = occupation
+        
+    def show_occupation(self):
+        return f&#39;Occupation: {self.occupation}&#39;
+    
+    def speak(self):
+        return &#39;Father speaks carefully.&#39;
+
+class Child(Father):
+    def __init__(self, name, age, hobby):
+        super().__init__(name, age, &#39;Engineer&#39;)
+        self.hobby = hobby
+        
+    def show_hobby(self):
+        return f&#39;Hobby: {self.hobby}&#39;
+    
+    def speak(self):
+        return &#39;Child speaks excitedly.&#39;
+
+### Creating an object of the Child class
+child_obj = Child(&#39;Charlie&#39;, 18, &#39;Cycling&#39;)
+child_obj.show_details()
+child_obj.show_occupation()
+child_obj.show_hobby()
+child_obj.speak()
+</code></pre>
+<h4>4. Multiple Inheritance</h4>
+<p>In multiple inheritance, a child class inherits from more than one parent class.</p>
+<pre><code class="language-python">### Multiple Inheritance Example
+
+class Father:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+        
+    def show_details(self):
+        return f&#39;Name: {self.name}, Age: {self.age}&#39;
+        
+    def speak(self):
+        return &#39;Father speaks carefully.&#39;
+
+class Mother:
+    def __init__(self, name, favorite_food):
+        self.name = name
+        self.favorite_food = favorite_food
+        
+    def show_favorite_food(self):
+        return f&#39;Favorite Food: {self.favorite_food}&#39;
+        
+    def speak(self):
+        return &#39;Mother speaks lovingly.&#39;
+
+class Child(Father, Mother):
+    def __init__(self, name, age, favorite_food, hobby):
+        Father.__init__(self, name, age)
+        Mother.__init__(self, name, favorite_food)
+        self.hobby = hobby
+        
+    def show_hobby(self):
+        return f&#39;Hobby: {self.hobby}&#39;
+    
+    def speak(self):
+        return &#39;Child speaks excitedly.&#39;
+
+### Creating an object of the Child class
+child_obj = Child(&#39;Daisy&#39;, 16, &#39;Pizza&#39;, &#39;Dancing&#39;)
+child_obj.show_details()
+child_obj.show_favorite_food()
+child_obj.show_hobby()
+child_obj.speak()
+</code></pre>
+<h4>5. Hybrid Inheritance</h4>
+<p>Hybrid inheritance is a combination of two or more types of inheritance. It allows for complex relationships between classes.</p>
+<pre><code class="language-python">### Hybrid Inheritance Example
+
+class Grandfather:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+        
+    def show_details(self):
+        return f&#39;Name: {self.name}, Age: {self.age}&#39;
+        
+    def speak(self):
+        return &#39;Grandfather speaks wisely.&#39;
+
+class Father(Grandfather):
+    def __init__(self, name, age, occupation):
+        super().__init__(name, age)
+        self.occupation = occupation
+        
+    def show_occupation(self):
+        return f&#39;Occupation: {self.occupation}&#39;
+    
+    def speak(self):
+        return &#39;Father speaks carefully.&#39;
+
+class Mother:
+    def __init__(self, name, favorite_food):
+        self.name = name
+        self.favorite_food = favorite_food
+        
+    def show_favorite_food(self):
+        return f&#39;Favorite Food: {self.favorite_food}&#39;
+        
+    def speak(self):
+        return &#39;Mother speaks lovingly.&#39;
+
+class Child(Father, Mother):
+    def __init__(self, name, age, favorite_food, hobby):
+        Father.__init__(self, name, age, &#39;Engineer&#39;)
+        Mother.__init__(self, name, favorite_food)
+        self.hobby = hobby
+        
+    def show_hobby(self):
+        return f&#39;Hobby: {self.hobby}&#39;
+    
+    def speak(self):
+        return &#39;Child speaks excitedly.&#39;
+
+### Creating an object of the Child class
+child_obj = Child(&#39;Eve&#39;, 15, &#39;Pasta&#39;, &#39;Reading&#39;)
+child_obj.show_details()
+child_obj.show_favorite_food()
+child_obj.show_occupation()
+child_obj.show_hobby()
+child_obj.speak()
+</code></pre>
+</details><details ><summary>Read and trace the code examples · 05-types-of-inheritance.ipynb</summary><h3>Simple</h3>
+<pre><code class="language-python">class Grandfather:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+        
+    def show_details(self):
+        return f&#39;Name: {self.name}, Age: {self.age}&#39;
+        
+    def speak(self):
+        return &#39;Grandfather speaks wisely.&#39;
+
+class Father(Grandfather):
+    def __init__(self, name, age, occupation):
+        super().__init__(name, age)
+        self.occupation = occupation
+        
+    def show_occupation(self):
+        return f&#39;Occupation: {self.occupation}&#39;
+    
+    def speak(self):
+        return &#39;Father speaks carefully.&#39;
+
+</code></pre>
+<pre><code class="language-python">### Creating an object of the Father class
+father_obj = Father(&#39;John&#39;, 50, &#39;Engineer&#39;)
+print(father_obj.show_details())
+print(father_obj.show_occupation())
+print(father_obj.speak())
+</code></pre>
+<pre><code class="language-python">### Heirarchial
+</code></pre>
+<pre><code class="language-python">class Grandfather:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+        
+    def show_details(self):
+        return f&#39;Name: {self.name}, Age: {self.age}&#39;
+        
+    def speak(self):
+        return &#39;Grandfather speaks wisely.&#39;
+
+class Child1(Grandfather):
+    def __init__(self, name, age, hobby):
+        super().__init__(name, age)
+        self.hobby = hobby
+        
+    def show_hobby(self):
+        return f&#39;Hobby: {self.hobby}&#39;
+    
+    def speak(self):
+        return &#39;Child1 speaks enthusiastically.&#39;
+
+class Child2(Grandfather):
+    def __init__(self, name, age, favorite_subject):
+        super().__init__(name, age)
+        self.favorite_subject = favorite_subject
+        
+    def show_favorite_subject(self):
+        return f&#39;Favorite Subject: {self.favorite_subject}&#39;
+    
+    def speak(self):
+        return &#39;Child2 speaks thoughtfully.&#39;
+
+### Creating objects of Child1 and Child2 classes
+child1_obj = Child1(&#39;Alice&#39;, 20, &#39;Painting&#39;)
+child2_obj = Child2(&#39;Bob&#39;, 22, &#39;Mathematics&#39;)
+print(child1_obj.show_details())
+print(child1_obj.show_hobby())
+print(child1_obj.speak())
+
+print(child2_obj.show_details())
+print(child2_obj.show_favorite_subject())
+print(child2_obj.speak())
+</code></pre>
+<pre><code class="language-python">### Multilevel Inheritance Example
+
+class Grandfather:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+        
+    def show_details(self):
+        return f&#39;Name: {self.name}, Age: {self.age}&#39;
+        
+    def speak(self):
+        return &#39;Grandfather speaks wisely.&#39;
+
+class Father(Grandfather):
+    def __init__(self, name, age, occupation):
+        super().__init__(name, age)
+        self.occupation = occupation
+        
+    def show_occupation(self):
+        return f&#39;Occupation: {self.occupation}&#39;
+    
+    def speak(self):
+        return super().speak()
+
+class Child(Father):
+    def __init__(self, name, age, hobby):
+        super().__init__(name, age, &#39;Engineer&#39;)
+        self.hobby = hobby
+        
+    def show_hobby(self):
+        return f&#39;Hobby: {self.hobby}&#39;
+    
+    def speak(self):
+        return super().speak()
+
+### Creating an object of the Child class
+child_obj = Child(&#39;Charlie&#39;, 18, &#39;Cycling&#39;)
+print(child_obj.show_details())
+print(child_obj.show_occupation())
+print(child_obj.show_hobby())
+print(child_obj.speak())
+</code></pre>
+<h3>Multiple</h3>
+<pre><code class="language-python">### Multiple Inheritance Example
+
+class Father:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+        
+    def show_details(self):
+        return f&#39;Name: {self.name}, Age: {self.age}&#39;
+
+
+    # def show_favorite_food(self):
+    #     return &quot;Here&quot;
+        
+    def speak(self):
+        return &#39;Father speaks carefully.&#39;
+
+class Mother:
+    def __init__(self, name, favorite_food):
+        self.name = name
+        self.favorite_food = favorite_food
+        
+    def show_favorite_food(self):
+        return f&#39;Favorite Food: {self.favorite_food}&#39;
+        
+    def speak(self):
+        return &#39;Mother speaks lovingly.&#39;
+
+class Child(Mother,Father):
+    def __init__(self, name, age, favorite_food, hobby):
+        Father.__init__(self, name, age)
+        Mother.__init__(self, name, favorite_food)
+        self.hobby = hobby
+        
+    def show_hobby(self):
+        return f&#39;Hobby: {self.hobby}&#39;
+    
+    # def speak(self):
+    #     return &#39;Child speaks excitedly.&#39;
+
+### Creating an object of the Child class
+child_obj = Child(&#39;Daisy&#39;, 16, &#39;Pizza&#39;, &#39;Dancing&#39;)
+print(child_obj.show_details())
+print(child_obj.show_favorite_food())
+print(child_obj.show_hobby())
+print(child_obj.speak())
+</code></pre>
+<pre><code class="language-python">Child.mro()
+</code></pre>
+</details><details ><summary>Read and trace the code examples · 06-polymorphism-operator-overloading.ipynb</summary><h3>Operator Overloading</h3>
+<pre><code class="language-python">1+1
+</code></pre>
+<pre><code class="language-python">&#39;1&#39; + &#39;1&#39;
+</code></pre>
+<pre><code class="language-python">[1,2] + [3,4]
+</code></pre>
+<h3>Polymorphism</h3>
+<h3>Method Overloading</h3>
+<pre><code class="language-python">def sum2(a,b):
+    print(a+b)
+</code></pre>
+<pre><code class="language-python">def sum3(a,b,c):
+    print(a+b+c)
+</code></pre>
+<pre><code class="language-python">def sumBetter(a,b,c=0):
+    if(c==0):
+        sum2(a,b)
+    else:
+        sum3(a,b,c)
+</code></pre>
+<pre><code class="language-python">sumBetter(2,3,4)
+</code></pre>
+<pre><code class="language-python">sumBetter(2,4)
+</code></pre>
+<pre><code class="language-python">class User:
+
+    def __init__(self,name,mobileNumber,address=&quot;&quot;):
+        if(address==&quot;&quot;):
+            self.C1(name,mobileNumber)
+        else:
+            self.C2(name,mobileNumber,address)
+    
+    def C1(self,name,mobileNumber):
+        self.name = name
+        self.mobileNumber = mobileNumber
+
+    def C2(self,name,mobileNumber,address):
+        self.name = name
+        self.mobileNumber = mobileNumber
+        self.address = address
+</code></pre>
+<pre><code class="language-python">u1 = User(&quot;Mayank&quot;,&quot;9999999&quot;,&quot;Delhi&quot;)
+</code></pre>
+<h3>Method Overriding</h3>
+<pre><code class="language-python">class Animal:
+    def sound(self):
+        return &#39;Some sound&#39;
+
+class Dog(Animal):
+    def sound(self):
+        return &#39;Bark&#39;
+
+obj = Dog()
+print(obj.sound())
+
+obj = Animal()
+obj.sound()
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Write a `Student` class with `__init__` and a method that prints a summary.</li><li>Make one attribute private and give it a getter and a setter.</li><li>Create `Animal` and `Dog`, override `speak()` in `Dog`, and call it on both.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section></div><h2 id="practice">Practice session</h2><div class="scorebox"><span class="tag">This chapter</span><p data-score aria-live="polite"></p><p>Predict the output before running it. Output checks preserve case and line breaks. Written programs are saved for self-review and are not executed here. Drafts and progress stay in this browser.</p></div><article class="drill" id="ch13-q1"><p class="drill-id">Practice 01 · checked answer</p><h3>Which method initializes a new instance?</h3><label for="input-ch13-q1">Your answer</label><textarea id="input-ch13-q1" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch13-q1">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch13-q1">See answer</button></div>
+<div class="drill-hint" id="hint-ch13-q1" data-hint hidden><span class="tag">Step by step</span><p>The special initializer has two underscores on each side.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch13-q1" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>__init__</code></pre><p>The special initializer has two underscores on each side.</p></div></article><article class="drill" id="ch13-q2"><p class="drill-id">Practice 02 · checked answer</p><h3>What prints?</h3><pre><code>class Box:
+    def __init__(self):
+        self.value = 1
+a = Box()
+b = Box()
+a.value = 8
+print(b.value)</code></pre><label for="input-ch13-q2">Your answer</label><textarea id="input-ch13-q2" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch13-q2">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch13-q2">See answer</button></div>
+<div class="drill-hint" id="hint-ch13-q2" data-hint hidden><span class="tag">Step by step</span><p>a and b have separate instance attributes.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch13-q2" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>1</code></pre><p>a and b have separate instance attributes.</p></div></article><article class="drill" id="ch13-q3"><p class="drill-id">Practice 03 · checked answer</p><h3>What prints?</h3><pre><code>class Box:
+    def get(self):
+        return 7
+print(Box().get())</code></pre><label for="input-ch13-q3">Your answer</label><textarea id="input-ch13-q3" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch13-q3">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch13-q3">See answer</button></div>
+<div class="drill-hint" id="hint-ch13-q3" data-hint hidden><span class="tag">Step by step</span><p>The method receives the instance as self.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch13-q3" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>7</code></pre><p>The method receives the instance as self.</p></div></article><article class="drill" id="ch13-q4"><p class="drill-id">Practice 04 · checked answer</p><h3>Does self have to be passed explicitly in box.get()? Answer yes or no.</h3><label for="input-ch13-q4">Your answer</label><textarea id="input-ch13-q4" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch13-q4">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch13-q4">See answer</button></div>
+<div class="drill-hint" id="hint-ch13-q4" data-hint hidden><span class="tag">Step by step</span><p>Python supplies the instance when a bound method is called.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch13-q4" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>no</code></pre><p>Python supplies the instance when a bound method is called.</p></div></article><article class="drill" id="ch13-write"><p class="drill-id">Practice 05 · write and self-review</p><h3>Write a Counter with separate state for each instance and an increment method.</h3><label for="input-ch13-write">Your answer</label><textarea id="input-ch13-write" class="drill-in" rows="10" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch13-write">Hint</button><button type="button" data-submit>Submit draft</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch13-write">See answer</button></div>
+<div class="drill-hint" id="hint-ch13-write" data-hint hidden><span class="tag">Step by step</span><p>Initialize self.value inside __init__.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch13-write" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>class Counter:
+    def __init__(self):
+        self.value = 0  # Instance state.
+
+    def increment(self):
+        self.value += 1
+        return self.value
+
+a, b = Counter(), Counter()
+print(a.increment())  # 1
+print(b.value)  # 0</code></pre><p>Compare the result with your own answer. Explain what each line does before moving on.</p></div></article><div class="course-actions chapter-end" id="end"><button type="button" data-complete aria-pressed="false">Mark chapter as read</button><a href="#main">Back to reading</a></div><div class="pager"><a href="ch12.html">← Previous chapter</a><a href="ch14.html">Next chapter →</a></div>
+<p class="source-note">Reading notes and course sequence adapted from <a href="https://github.com/mayank953/python-ai-crash-course">Mayank Aggarwal’s Python AI Crash Course</a>, under the <a href="LICENSE-upstream.txt">MIT license</a>. Classroom adaptation, chapter guides and project exercises: Learn with Mynul. <a href="sources.html">Sources and study guide</a>.</p>
+</div></main><footer class="cos-foot"><div class="wrap">Learn with Mynul · Read. Trace. Practice. Build.</div></footer>
+<script>window.PYTHON_PRACTICE = [{"prompt": "Which method initializes a new instance?", "accept": ["__init__"], "hint": "The special initializer has two underscores on each side.", "code": "", "answer": "__init__", "why": "The special initializer has two underscores on each side.", "id": "ch13-q1"}, {"prompt": "What prints?", "accept": ["1"], "hint": "a and b have separate instance attributes.", "code": "class Box:\n    def __init__(self):\n        self.value = 1\na = Box()\nb = Box()\na.value = 8\nprint(b.value)", "answer": "1", "why": "a and b have separate instance attributes.", "id": "ch13-q2"}, {"prompt": "What prints?", "accept": ["7"], "hint": "The method receives the instance as self.", "code": "class Box:\n    def get(self):\n        return 7\nprint(Box().get())", "answer": "7", "why": "The method receives the instance as self.", "id": "ch13-q3"}, {"prompt": "Does self have to be passed explicitly in box.get()? Answer yes or no.", "accept": ["no"], "hint": "Python supplies the instance when a bound method is called.", "code": "", "answer": "no", "why": "Python supplies the instance when a bound method is called.", "id": "ch13-q4"}, {"id": "ch13-write", "prompt": "Write a Counter with separate state for each instance and an increment method.", "hint": "Initialize self.value inside __init__.", "answer": "class Counter:\n    def __init__(self):\n        self.value = 0  # Instance state.\n\n    def increment(self):\n        self.value += 1\n        return self.value\n\na, b = Counter(), Counter()\nprint(a.increment())  # 1\nprint(b.value)  # 0"}];</script><script src="js/practice.js?v=1" defer></script><script src="../../assets/js/theme.js?v=3" defer></script></body></html>

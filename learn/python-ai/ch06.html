@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
+  </script><title>Loops and control flow · Python + AI · Learn with Mynul</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<meta name="description" content="Python and AI from scratch. Read the lessons, trace examples and practice with hints, saved drafts and commented answers.">
+<link rel="stylesheet" href="course.css?v=1"></head>
+<body class="cos" data-chapter="6"><a class="skip" href="#main">Skip to content</a>
+<header class="cos-bar"><div class="wrap"><a class="cos-brand" href="index.html">Python · AI</a><nav class="cos-nav" aria-label="Python course"><a href="index.html">Map</a><a  href="ch01.html">1</a><a  href="ch02.html">2</a><a  href="ch03.html">3</a><a  href="ch04.html">4</a><a  href="ch05.html">5</a><a class="is-on" href="ch06.html">6</a><a  href="ch07.html">7</a><a  href="ch08.html">8</a><a  href="ch09.html">9</a><a  href="ch10.html">10</a><a  href="ch11.html">11</a><a  href="ch12.html">12</a><a  href="ch13.html">13</a><a  href="ch14.html">14</a><a href="index.html#projects">Projects</a><a href="../index.html">Learn hub</a></nav><button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode"><svg class="theme-sun" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="#F5C518"/><g stroke="#F5C518" stroke-width="1.8" stroke-linecap="round" fill="none"><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M5.6 18.4l1.7-1.7M16.7 7.3l1.7-1.7"/></g></svg><svg class="theme-moon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="#8EA0FF" d="M16.2 3.1A8.9 8.9 0 1 0 21.1 18 7.4 7.4 0 0 1 16.2 3.1z"/></svg></button></div></header>
+<main id="main"><div class="wrap"><p class="kicker"><a href="index.html">Python + AI</a> · Chapter 06</p><h1>Loops and control flow</h1><p class="lede">A loop repeats a block. A for loop takes values from an iterable. A while loop repeats while a condition remains truthy. You need both when processing files, records or batches of training data.</p><div class="toc"><a href="#reading">Reading</a><a href="#practice">Practice session</a><a href="#end">Save reading progress</a></div><div class="rule"><span class="tag">The rule</span><p>range(start, stop, step) excludes stop. break exits the nearest loop. continue skips the rest of the current iteration. pass is a placeholder that does nothing. In a while loop, ensure the condition can eventually become false. A nested loop finishes its inner iterations for each outer value.</p></div><h2>Worked example</h2><pre><code>total = 0
+for number in range(1, 5):  # 1, 2, 3, 4
+    if number == 3:
+        continue  # Skip adding 3.
+    total += number
+print(total)</code></pre><div class="trace"><span class="tag">Trace every line</span><p>Start at 0. Add 1 to get 1, then add 2 to get 3. At 3, continue jumps to the next iteration. Add 4 to get 7. The output is 7. range never yields 5.</p></div><div id="reading"><section class="reading" id="lesson-21"><h2>21. Introduction to Loops &amp; the while Loop</h2><p>Repeating work with `while`, and avoiding the classic infinite loop.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=15590s">Watch 4:19:50</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/21-while-loop">Original resources</a></div><details open><summary>Read the explanation · theory.ipynb</summary><h3>Introduction to Iteration &amp; While Loop</h3>
+<p>Iteration is the concept of looping through a block of code multiple times. Python provides two popular loops for iteration:</p>
+<ol>
+<li>The <code>while</code> loop</li>
+<li>The <code>for</code> loop</li>
+</ol>
+<p>Note: Python does not provide a <code>do while</code> loop.</p>
+<h4>The <code>while</code> Loop</h4>
+<p>A <code>while</code> loop in Python repeatedly executes a target statement as long as a given condition is true. The syntax of a <code>while</code> loop is:</p>
+<pre><code class="language-python">while condition:
+    statement(s)
+</code></pre>
+<h5>Example</h5>
+<p>Let&#39;s see a basic example of a <code>while</code> loop that prints numbers from 1 to 5.</p>
+<pre><code class="language-python">### Example of a while loop
+count = 1
+while count &lt;= 5:
+    print(count)
+    count += 1
+</code></pre>
+<p>In this example, the loop starts with <code>count</code> equal to 1 and increments <code>count</code> by 1 in each iteration. The loop stops when <code>count</code> is greater than 5.</p>
+<h5>Infinite Loop</h5>
+<p>If the condition in a <code>while</code> loop never becomes false, the loop will run indefinitely. This is known as an infinite loop.</p>
+<h6>Example of an Infinite Loop</h6>
+<p>Be cautious with loops like this as they can cause your program to freeze or crash.</p>
+<pre><code class="language-python">### Infinite loop example (uncomment to run with caution)
+### while True:
+###     print(&quot;This is an infinite loop!&quot;)
+</code></pre>
+<h5>Using <code>break</code> to Exit a Loop</h5>
+<p>The <code>break</code> statement in Python is used to exit a loop prematurely. When <code>break</code> is executed, the loop stops immediately, and the control moves to the next statement after the loop.</p>
+<h6>Example</h6>
+<pre><code class="language-python">### Using break to exit a loop
+count = 1
+while count &lt;= 10:
+    if count == 6:
+        break
+    print(count)
+    count += 1
+</code></pre>
+<p>In this example, the loop will stop when <code>count</code> equals 6.</p>
+<h5>Using <code>continue</code> to Skip an Iteration</h5>
+<p>The <code>continue</code> statement in Python is used to skip the rest of the code inside the loop for the current iteration only. The loop does not terminate but continues with the next iteration.</p>
+<h6>Example</h6>
+<pre><code class="language-python">### Using continue to skip an iteration
+count = 0
+while count &lt; 10:
+    count += 1
+    if count % 2 == 0:
+        continue
+    print(count)
+</code></pre>
+<p>In this example, the <code>continue</code> statement skips the even numbers and prints only the odd numbers.</p>
+<h4>Nested <code>while</code> Loops</h4>
+<p>You can use one <code>while</code> loop inside another <code>while</code> loop. These are called nested <code>while</code> loops.</p>
+<h5>Example</h5>
+<pre><code class="language-python">### Nested while loop example
+i = 1
+while i &lt;= 3:
+    j = 1
+    while j &lt;= 3:
+        print(f&quot;i = {i}, j = {j}&quot;)
+        j += 1
+    i += 1
+</code></pre>
+<p>In this example, the outer loop runs 3 times, and for each iteration of the outer loop, the inner loop runs 3 times.</p>
+<h4>Industry Use Cases of <code>while</code> Loops</h4>
+<ol>
+<li><strong>Automation</strong>: Repeatedly performing tasks like monitoring file changes or checking the status of a process.</li>
+<li><strong>Game Development</strong>: Handling game loops to continuously update game states and render graphics until the game is closed.</li>
+<li><strong>Data Processing</strong>: Continuously processing incoming data until a certain condition is met, such as reading data from a stream.</li>
+<li><strong>User Input</strong>: Repeatedly prompting users for input until valid input is received.</li>
+<li><strong>Web Scraping</strong>: Continuously scraping web data until all required information is gathered.</li>
+<li><strong>Polling</strong>: Periodically checking the status of a resource or condition (e.g., checking if a server is up).</li>
+<li><strong>Simulations</strong>: Running simulations where certain conditions must be met before the simulation stops.</li>
+<li><strong>Machine Learning</strong>: Training a model until a specific performance metric is achieved.</li>
+</ol>
+<h3>Questions</h3>
+<ol>
+<li>What is the purpose of a <code>while</code> loop in Python?</li>
+<li>How can you create an infinite loop using a <code>while</code> statement?</li>
+<li>What happens when the <code>break</code> statement is executed inside a loop?</li>
+<li>What is the purpose of the <code>continue</code> statement in a loop?</li>
+<li>How can you use nested <code>while</code> loops? Provide an example.</li>
+<li>Write a <code>while</code> loop that prints the numbers from 10 to 1.</li>
+<li>Write a <code>while</code> loop that prints all the even numbers between 1 and 20.</li>
+<li>How can <code>while</code> loops be used in game development?</li>
+<li>Explain how <code>while</code> loops can be used for data processing.</li>
+<li>Write a <code>while</code> loop that continuously asks the user for a number until they enter a negative number.</li>
+</ol>
+<h4>Answers</h4>
+<ol>
+<li>A <code>while</code> loop repeatedly executes a block of code as long as the given condition is true.</li>
+<li>An infinite loop can be created using <code>while True:</code>.</li>
+<li>When the <code>break</code> statement is executed, the loop stops immediately, and control moves to the next statement after the loop.</li>
+<li>The <code>continue</code> statement skips the rest of the code inside the loop for the current iteration only and continues with the next iteration.</li>
+<li>Nested <code>while</code> loops are used by placing one <code>while</code> loop inside another <code>while</code> loop. Example:<pre><code class="language-python">i = 1
+while i  0:
+    print(count)
+    count -= 1
+</code></pre>
+</li>
+<li><pre><code class="language-python">count = 1
+while count &lt;= 20:
+    if count % 2 == 0:
+        print(count)
+    count += 1
+</code></pre>
+</li>
+<li>In game development, <code>while</code> loops can handle game loops to continuously update game states and render graphics until the game is closed.</li>
+<li>For data processing, <code>while</code> loops can continuously process incoming data until a certain condition is met, such as reading data from a stream.</li>
+<li><pre><code class="language-python">while True:
+    number = int(input(&quot;Enter a number: &quot;))
+    if number &lt; 0:
+        break
+    print(f&quot;You entered: {number}&quot;)
+</code></pre>
+</li>
+</ol>
+</details><details ><summary>Read and trace the code examples · code.ipynb</summary><pre><code class="language-python">print(1)
+print(2)
+print(3)
+print(4)
+print(5)
+print(6)
+print(7)
+print(8)
+print(9)
+print(10)
+</code></pre>
+<pre><code class="language-python">start = 1
+end = 5
+</code></pre>
+<pre><code class="language-python">while(start&lt;=end):
+    print(&quot;Hello Python&quot;)
+</code></pre>
+<pre><code class="language-python">start =1
+end = 5
+</code></pre>
+<pre><code class="language-python">while(start &lt;= end):
+    print(&quot;hello Python&quot;)
+    start = start +1
+
+print(&quot;Done&quot;)
+</code></pre>
+<pre><code class="language-python">sum = 0
+num = 1
+
+</code></pre>
+<pre><code class="language-python">num
+</code></pre>
+<pre><code class="language-python">while(num&lt;=10):
+    sum = sum+num
+    # print(num)
+    num = num+1
+
+print(sum)
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Print the numbers 1 to 10 using a `while` loop.</li><li>Add up the numbers from 1 to 100.</li><li>Take a loop that never ends because the counter is never updated, and fix it.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section><section class="reading" id="lesson-22"><h2>22. break, continue &amp; pass</h2><p>Controlling a loop from the inside: stop it with `break`, skip a round with `continue`, leave a placeholder with `pass`.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=16249s">Watch 4:30:49</a><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=16672s">Watch 4:37:52</a><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=17136s">Watch 4:45:36</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/22-break-continue-pass">Original resources</a></div><details open><summary>Read the explanation · theory.ipynb</summary><h3>Break, Continue, and Pass Statements</h3>
+<p>In Python, <code>break</code>, <code>continue</code>, and <code>pass</code> statements are used to control the flow of loops. These statements provide a way to alter the normal flow of execution within loops.</p>
+<h4>The <code>break</code> Statement</h4>
+<p>The <code>break</code> statement is used to exit a loop prematurely. When <code>break</code> is executed, the loop stops immediately, and control moves to the next statement after the loop.</p>
+<h5>Example</h5>
+<p>Let&#39;s see an example where we use the <code>break</code> statement to exit a loop when a certain condition is met.</p>
+<pre><code class="language-python">### Example of using break statement
+for num in range(1, 11):
+    if num == 5:
+        break
+    print(num)
+
+### Output:
+### 1
+### 2
+### 3
+### 4
+</code></pre>
+<p>In this example, the loop prints numbers from 1 to 4. When <code>num</code> equals 5, the <code>break</code> statement is executed, and the loop terminates.</p>
+<h4>The <code>continue</code> Statement</h4>
+<p>The <code>continue</code> statement is used to skip the rest of the code inside the loop for the current iteration only. The loop does not terminate but continues with the next iteration.</p>
+<h5>Example</h5>
+<p>Let&#39;s see an example where we use the <code>continue</code> statement to skip even numbers in a loop.</p>
+<pre><code class="language-python">### Example of using continue statement
+for num in range(1, 11):
+    if num % 2 == 0:
+        continue
+    print(num)
+
+### Output:
+### 1
+### 3
+### 5
+### 7
+### 9
+</code></pre>
+<p>In this example, the <code>continue</code> statement skips the even numbers, and the loop prints only the odd numbers from 1 to 10.</p>
+<h4>The <code>pass</code> Statement</h4>
+<p>The <code>pass</code> statement is a null operation; it does nothing when executed. It is used as a placeholder in situations where a statement is syntactically required, but you have nothing specific to write at that time.</p>
+<h5>Example</h5>
+<p>Let&#39;s see an example where we use the <code>pass</code> statement as a placeholder in a loop.</p>
+<pre><code class="language-python">### Example of using pass statement
+for num in range(1, 6):
+    if num == 3:
+        pass  # Placeholder for future code
+    print(num)
+
+### Output:
+### 1
+### 2
+### 3
+### 4
+### 5
+</code></pre>
+<p>In this example, the <code>pass</code> statement does nothing and allows the loop to continue executing normally. It is commonly used when the developer plans to add code at a later time.</p>
+<h4>Questions</h4>
+<ol>
+<li>What does the <code>break</code> statement do in a loop?</li>
+<li>How does the <code>continue</code> statement affect the flow of a loop?</li>
+<li>What is the purpose of the <code>pass</code> statement in Python?</li>
+<li>Write a loop that uses the <code>break</code> statement to exit when a certain condition is met.</li>
+<li>Write a loop that uses the <code>continue</code> statement to skip over certain iterations.</li>
+<li>Provide an example where the <code>pass</code> statement is useful as a placeholder.</li>
+<li>Explain the difference between <code>break</code> and <code>continue</code> statements with examples.</li>
+<li>How can <code>break</code> and <code>continue</code> statements be useful in nested loops?</li>
+<li>Write a loop that uses both <code>break</code> and <code>continue</code> statements.</li>
+<li>Discuss scenarios where the <code>pass</code> statement might be useful in real-world applications.</li>
+</ol>
+<h4>Answers</h4>
+<ol>
+<li>The <code>break</code> statement exits the loop prematurely, stopping the loop immediately.</li>
+<li>The <code>continue</code> statement skips the rest of the code inside the loop for the current iteration and proceeds with the next iteration.</li>
+<li>The <code>pass</code> statement is a null operation used as a placeholder where a statement is syntactically required but no code is needed at that time.</li>
+<li><pre><code class="language-python">for num in range(1, 11):
+    if num == 5:
+        break
+    print(num)
+</code></pre>
+</li>
+<li><pre><code class="language-python">for num in range(1, 11):
+    if num % 2 == 0:
+        continue
+    print(num)
+</code></pre>
+</li>
+<li><pre><code class="language-python">for num in range(1, 6):
+    if num == 3:
+        pass  # Placeholder for future code
+    print(num)
+</code></pre>
+</li>
+<li>The <code>break</code> statement exits the loop immediately, while the <code>continue</code> statement skips the current iteration and continues with the next one. Examples:<ul>
+<li><code>break</code> example:</li>
+</ul>
+<pre><code class="language-python">for num in range(1, 11):
+    if num == 5:
+        break
+    print(num)
+</code></pre>
+<ul>
+<li><code>continue</code> example:</li>
+</ul>
+<pre><code class="language-python">for num in range(1, 11):
+    if num % 2 == 0:
+        continue
+    print(num)
+</code></pre>
+</li>
+<li>In nested loops, <code>break</code> and <code>continue</code> can control the flow of the inner loops without affecting the outer loop. Example:<pre><code class="language-python">for i in range(1, 4):
+    for j in range(1, 4):
+        if j == 2:
+            continue
+        if i == 3:
+            break
+        print(f&quot;i = {i}, j = {j}&quot;)
+</code></pre>
+</li>
+<li><pre><code class="language-python">for num in range(1, 11):
+    if num % 3 == 0:
+        continue
+    if num == 8:
+        break
+    print(num)
+</code></pre>
+</li>
+<li>The <code>pass</code> statement is useful in real-world applications when defining classes or functions where the implementation is not yet complete, allowing the developer to outline the structure without causing syntax errors. Example:<pre><code class="language-python">class MyClass:
+    def my_method(self):
+        pass  # Implementation will be added later
+</code></pre>
+</li>
+</ol>
+</details><details ><summary>Read and trace the code examples · code.ipynb</summary><h3>Break Statement</h3>
+<pre><code class="language-python">start = -2
+end = 2
+num = 10
+</code></pre>
+<pre><code class="language-python">while (start &lt;= end):
+    if(start == 0):
+        break
+    print(num/start)
+    start = start + 1
+    print(&quot; ans printed &quot;)
+
+print(&quot;Done&quot;)
+
+</code></pre>
+<h3>Continue</h3>
+<pre><code class="language-python">start = -2
+end = 2
+num = 10
+</code></pre>
+<pre><code class="language-python">while (start &lt;= end):
+    if(start == 0):
+        start = start + 1
+        continue
+    print(num/start)
+    start = start + 1
+    print(&quot; ans printed &quot;)
+
+print(&quot;Done&quot;)
+
+</code></pre>
+<pre><code class="language-python">hungry = False
+
+
+if(hungry):
+    pass
+else:
+    print(&quot; I am not hungry&quot;)
+</code></pre>
+<pre><code class="language-python">start = -2
+end = 2
+num = 10
+
+while(start&lt;=end):
+    start = start + 1
+    pass
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Stop a loop as soon as you meet a number divisible by 7.</li><li>Print 1 to 15 but skip multiples of 3.</li><li>Write an empty `if` body using `pass` and then replace it with real code.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section><section class="reading" id="lesson-23"><h2>23. The for Loop</h2><p>Looping over the items of a string or list with `for`.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=17316s">Watch 4:48:36</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/23-for-loop">Original resources</a></div><details open><summary>Read and trace the code examples · code.ipynb</summary><h3>For Loop</h3>
+<pre><code class="language-python">name = &quot;Mayank&quot;
+</code></pre>
+<pre><code class="language-python">for ch in name:
+    print(ch)
+</code></pre>
+<pre><code class="language-python">l1 = [1,2,3,4,5]
+
+for i in l1:
+    if(i ==3):
+        i = i+1
+        continue
+    print(i)
+    
+</code></pre>
+<pre><code class="language-python">start = 0
+while(start &lt; len(l1)):
+    print(l1[start])
+    start = start + 1
+</code></pre>
+<pre><code class="language-python">st = input()
+</code></pre>
+<pre><code class="language-python">for ch in st:
+    if(ch in &quot;aeiou&quot;):
+        continue
+    print(ch)
+
+print(&quot;DONE&quot;)
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Count the vowels in a word by looping over its characters.</li><li>Print every item of a list on its own line.</li><li>Add up a list of numbers with a `for` loop instead of `sum()`.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section><section class="reading" id="lesson-24"><h2>24. The range() Function</h2><p>Generating number sequences with `range(stop)`, `range(start, stop)` and `range(start, stop, step)`.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=18029s">Watch 5:00:29</a><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=18908s">Watch 5:15:08</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/24-range-function">Original resources</a></div><details open><summary>Read and trace the code examples · code.ipynb</summary><h3>Range Function</h3>
+<pre><code class="language-python">r1 = range(5)
+</code></pre>
+<pre><code class="language-python">r1
+</code></pre>
+<pre><code class="language-python">type(r1)
+</code></pre>
+<pre><code class="language-python">list(r1)
+</code></pre>
+<pre><code class="language-python">list(range(10))
+</code></pre>
+<pre><code class="language-python">list(range(-3))
+</code></pre>
+<pre><code class="language-python">list(range(0,5))
+</code></pre>
+<pre><code class="language-python">list(range(2,4))
+</code></pre>
+<pre><code class="language-python">list(range(10,1))
+</code></pre>
+<pre><code class="language-python">list(range(-10,-5))
+</code></pre>
+<pre><code class="language-python">list(range(-3,-10))
+</code></pre>
+<pre><code class="language-python">list(range(-3,-3))
+</code></pre>
+<pre><code class="language-python">list(range(0,10,2))
+</code></pre>
+<pre><code class="language-python">list(range(3,9,-1))
+</code></pre>
+<pre><code class="language-python">list(range(7,1,-1))
+</code></pre>
+<pre><code class="language-python">list(range(5,10,15))
+</code></pre>
+<pre><code class="language-python">list(range(0,10,1.5))
+</code></pre>
+<pre><code class="language-python">list(range(0,10.5,1))
+</code></pre>
+<pre><code class="language-python">list(range(1.5,10,1))
+</code></pre>
+<pre><code class="language-python">list(range(0,5,0))
+</code></pre>
+<pre><code class="language-python">l1 = [1,2,3,4,5
+     ]
+</code></pre>
+<pre><code class="language-python">l1 = [2,4,6,8,10]
+</code></pre>
+<pre><code class="language-python">for i in l1:
+    print(i)
+</code></pre>
+<pre><code class="language-python">for num in range(0,10,2):
+    print(num)
+</code></pre>
+<pre><code class="language-python">for num in list(range(0,10,2)):
+    print(num)
+</code></pre>
+<pre><code class="language-python">r1 = range(0,10,2)
+</code></pre>
+<pre><code class="language-python">r1
+</code></pre>
+<pre><code class="language-python">for i in r1:
+    print(i)
+</code></pre>
+<pre><code class="language-python">list(r1)
+</code></pre>
+<pre><code class="language-python">inNum = input(&quot;enter a number&quot;)
+</code></pre>
+<pre><code class="language-python">inNum =int(inNum)
+sum = 0
+for num in range(0,inNum+1):
+    sum = sum + num
+
+print(sum)
+</code></pre>
+<pre><code class="language-python">fact = 1
+
+for num in range(1,inNum+1):
+    fact = fact*num
+
+print(fact)
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Predict the output of `range(5)`, `range(2, 10)` and `range(10, 0, -2)`, then print them as lists.</li><li>Print the multiplication table of 7.</li><li>Sum all even numbers up to 50 using a stepped range.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section><section class="reading" id="lesson-25"><h2>25. Nested Loops</h2><p>Putting one loop inside another to work with rows and columns.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=19255s">Watch 5:20:55</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/25-nested-loops">Original resources</a></div><details open><summary>Read and trace the code examples · code.ipynb</summary><h3>Nested Loops</h3>
+<pre><code class="language-python">for var1 in range(1,11):
+
+    if(var1 == 5):
+        break
+    print(&quot;Outer Loop Number &quot;,var1)
+    for var2 in range(3,5):
+        print(&quot;Inner Loop :- &quot; , var1 * var2)
+
+    print(&quot;outside of Inner Loop for &quot;,var1)
+
+
+print(&quot;I am here&quot;)
+</code></pre>
+<pre><code class="language-python">1
+22
+333
+4444
+55555
+</code></pre>
+<pre><code class="language-python">n = 9
+</code></pre>
+<pre><code class="language-python">for outer in range(1,n+1):
+    # print(outer)
+    for inner in range(outer):
+        print(outer,end=&quot;&quot;)
+    print()
+</code></pre>
+<pre><code class="language-python">start = 1
+end = 5
+
+while(start &lt;=end):
+    outer = start
+    while(outer &lt;=end):
+        print(start * outer)
+        outer = outer + 1
+    start = start+1
+    
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Print a 5 by 5 square of stars, then a right-angled triangle.</li><li>Print the multiplication tables 1 to 5 as a grid.</li><li>List every pair `(i, j)` where `i &lt; j` for numbers 0 to 3.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section></div><h2 id="practice">Practice session</h2><div class="scorebox"><span class="tag">This chapter</span><p data-score aria-live="polite"></p><p>Predict the output before running it. Output checks preserve case and line breaks. Written programs are saved for self-review and are not executed here. Drafts and progress stay in this browser.</p></div><article class="drill" id="ch06-q1"><p class="drill-id">Practice 01 · checked answer</p><h3>What prints?</h3><pre><code>print(sum(range(1, 4)))</code></pre><label for="input-ch06-q1">Your answer</label><textarea id="input-ch06-q1" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch06-q1">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch06-q1">See answer</button></div>
+<div class="drill-hint" id="hint-ch06-q1" data-hint hidden><span class="tag">Step by step</span><p>range stops before 4.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch06-q1" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>6</code></pre><p>range stops before 4.</p></div></article><article class="drill" id="ch06-q2"><p class="drill-id">Practice 02 · checked answer</p><h3>What prints?</h3><pre><code>for n in range(4):
+    if n == 2:
+        break
+    print(n)</code></pre><label for="input-ch06-q2">Your answer</label><textarea id="input-ch06-q2" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch06-q2">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch06-q2">See answer</button></div>
+<div class="drill-hint" id="hint-ch06-q2" data-hint hidden><span class="tag">Step by step</span><p>break exits before printing 2.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch06-q2" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>0
+1</code></pre><p>break exits before printing 2.</p></div></article><article class="drill" id="ch06-q3"><p class="drill-id">Practice 03 · checked answer</p><h3>What prints?</h3><pre><code>count = 0
+for a in range(2):
+    for b in range(2):
+        count += 1
+print(count)</code></pre><label for="input-ch06-q3">Your answer</label><textarea id="input-ch06-q3" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch06-q3">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch06-q3">See answer</button></div>
+<div class="drill-hint" id="hint-ch06-q3" data-hint hidden><span class="tag">Step by step</span><p>The inner loop runs twice for each of two outer iterations.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch06-q3" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>4</code></pre><p>The inner loop runs twice for each of two outer iterations.</p></div></article><article class="drill" id="ch06-q4"><p class="drill-id">Practice 04 · checked answer</p><h3>What prints?</h3><pre><code>for n in range(3):
+    if n == 1:
+        continue
+    print(n)</code></pre><label for="input-ch06-q4">Your answer</label><textarea id="input-ch06-q4" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch06-q4">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch06-q4">See answer</button></div>
+<div class="drill-hint" id="hint-ch06-q4" data-hint hidden><span class="tag">Step by step</span><p>continue skips the print for 1.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch06-q4" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>0
+2</code></pre><p>continue skips the print for 1.</p></div></article><article class="drill" id="ch06-write"><p class="drill-id">Practice 05 · write and self-review</p><h3>Use a loop to sum the even integers from 1 through 10.</h3><label for="input-ch06-write">Your answer</label><textarea id="input-ch06-write" class="drill-in" rows="10" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch06-write">Hint</button><button type="button" data-submit>Submit draft</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch06-write">See answer</button></div>
+<div class="drill-hint" id="hint-ch06-write" data-hint hidden><span class="tag">Step by step</span><p>range must include 10; test remainder modulo 2.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch06-write" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>total = 0
+for n in range(1, 11):
+    if n % 2 == 0:
+        total += n
+print(total)  # 30</code></pre><p>Compare the result with your own answer. Explain what each line does before moving on.</p></div></article><div class="course-actions chapter-end" id="end"><button type="button" data-complete aria-pressed="false">Mark chapter as read</button><a href="#main">Back to reading</a></div><div class="pager"><a href="ch05.html">← Previous chapter</a><a href="ch07.html">Next chapter →</a></div>
+<p class="source-note">Reading notes and course sequence adapted from <a href="https://github.com/mayank953/python-ai-crash-course">Mayank Aggarwal’s Python AI Crash Course</a>, under the <a href="LICENSE-upstream.txt">MIT license</a>. Classroom adaptation, chapter guides and project exercises: Learn with Mynul. <a href="sources.html">Sources and study guide</a>.</p>
+</div></main><footer class="cos-foot"><div class="wrap">Learn with Mynul · Read. Trace. Practice. Build.</div></footer>
+<script>window.PYTHON_PRACTICE = [{"prompt": "What prints?", "accept": ["6"], "hint": "range stops before 4.", "code": "print(sum(range(1, 4)))", "answer": "6", "why": "range stops before 4.", "id": "ch06-q1"}, {"prompt": "What prints?", "accept": ["0\n1"], "hint": "break exits before printing 2.", "code": "for n in range(4):\n    if n == 2:\n        break\n    print(n)", "answer": "0\n1", "why": "break exits before printing 2.", "id": "ch06-q2"}, {"prompt": "What prints?", "accept": ["4"], "hint": "The inner loop runs twice for each of two outer iterations.", "code": "count = 0\nfor a in range(2):\n    for b in range(2):\n        count += 1\nprint(count)", "answer": "4", "why": "The inner loop runs twice for each of two outer iterations.", "id": "ch06-q3"}, {"prompt": "What prints?", "accept": ["0\n2"], "hint": "continue skips the print for 1.", "code": "for n in range(3):\n    if n == 1:\n        continue\n    print(n)", "answer": "0\n2", "why": "continue skips the print for 1.", "id": "ch06-q4"}, {"id": "ch06-write", "prompt": "Use a loop to sum the even integers from 1 through 10.", "hint": "range must include 10; test remainder modulo 2.", "answer": "total = 0\nfor n in range(1, 11):\n    if n % 2 == 0:\n        total += n\nprint(total)  # 30"}];</script><script src="js/practice.js?v=1" defer></script><script src="../../assets/js/theme.js?v=3" defer></script></body></html>

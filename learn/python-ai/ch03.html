@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
+  </script><title>Strings, slicing and casting · Python + AI · Learn with Mynul</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<meta name="description" content="Python and AI from scratch. Read the lessons, trace examples and practice with hints, saved drafts and commented answers.">
+<link rel="stylesheet" href="course.css?v=1"></head>
+<body class="cos" data-chapter="3"><a class="skip" href="#main">Skip to content</a>
+<header class="cos-bar"><div class="wrap"><a class="cos-brand" href="index.html">Python · AI</a><nav class="cos-nav" aria-label="Python course"><a href="index.html">Map</a><a  href="ch01.html">1</a><a  href="ch02.html">2</a><a class="is-on" href="ch03.html">3</a><a  href="ch04.html">4</a><a  href="ch05.html">5</a><a  href="ch06.html">6</a><a  href="ch07.html">7</a><a  href="ch08.html">8</a><a  href="ch09.html">9</a><a  href="ch10.html">10</a><a  href="ch11.html">11</a><a  href="ch12.html">12</a><a  href="ch13.html">13</a><a  href="ch14.html">14</a><a href="index.html#projects">Projects</a><a href="../index.html">Learn hub</a></nav><button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode"><svg class="theme-sun" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="#F5C518"/><g stroke="#F5C518" stroke-width="1.8" stroke-linecap="round" fill="none"><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M5.6 18.4l1.7-1.7M16.7 7.3l1.7-1.7"/></g></svg><svg class="theme-moon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="#8EA0FF" d="M16.2 3.1A8.9 8.9 0 1 0 21.1 18 7.4 7.4 0 0 1 16.2 3.1z"/></svg></button></div></header>
+<main id="main"><div class="wrap"><p class="kicker"><a href="index.html">Python + AI</a> · Chapter 03</p><h1>Strings, slicing and casting</h1><p class="lede">A string is an immutable sequence of Unicode characters. Indexing retrieves one character. Slicing builds a new string. This is useful for cleaning user input, extracting a filename or preparing text for an AI model.</p><div class="toc"><a href="#reading">Reading</a><a href="#practice">Practice session</a><a href="#end">Save reading progress</a></div><div class="rule"><span class="tag">The rule</span><p>Indexes start at 0. -1 means the last character. In text[start:stop:step], stop is excluded. A slice may run past the end safely, but a single invalid index raises IndexError. input() returns a string, so convert it before doing numeric arithmetic.</p></div><h2>Worked example</h2><pre><code>text = &quot;PYTHON&quot;
+print(text[0])  # P
+print(text[-1])  # N
+print(text[1:4])  # YTH, excluding index 4
+print(text[::-1])  # Reverse into a new string.
+age = int(&quot;31&quot;)  # Convert numeric text to an integer.
+print(age + 1)</code></pre><div class="trace"><span class="tag">Trace every line</span><p>The positive indexes are 0 through 5. The slice starts at index 1 and stops before index 4. A step of -1 walks backward. int(&quot;31&quot;) produces 31 so addition produces 32. int(&quot;3.5&quot;) raises ValueError because that text is not an integer literal.</p></div><div id="reading"><section class="reading" id="lesson-07"><h2>07. Strings Basics</h2><p>Creating strings with different quotes, escape sequences, and why strings cannot be edited in place.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=4348s">Watch 1:12:28</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/07-strings">Original resources</a></div><details open><summary>Read the explanation · theory.ipynb</summary><h3>String Data Type in Python</h3>
+<p>A string (<code>str</code>) in Python is a sequence of characters. Unlike C/C++ or Java, Python does not have a <code>char</code> data type. Strings can be defined using single or double quotes.</p>
+<pre><code class="language-python">### Defining strings with single and double quotes
+single_quote_str = &#39;Hello, World!&#39;
+double_quote_str = &quot;Hello, World!&quot;
+print(single_quote_str)
+print(double_quote_str)
+</code></pre>
+<p>For multi-line strings, triple quotes are used.</p>
+<pre><code class="language-python">### Defining a multi-line string
+multi_line_str = &#39;&#39;&#39;
+This is a multi-line string.
+It spans across multiple lines.
+&#39;&#39;&#39;
+print(multi_line_str)
+</code></pre>
+<h3>How Python Stores Strings</h3>
+<p>Python uses the UNICODE number system to store strings, unlike C which uses ASCII. UNICODE supports a much wider range of characters compared to ASCII and also supports multiple languages.</p>
+<h3>Questions</h3>
+<ol>
+<li>What is a string in Python?</li>
+<li>How do you define a multi-line string in Python?</li>
+<li>What is the difference between ASCII and UNICODE?</li>
+<li>Write a code snippet to define a string using single quotes and double quotes.</li>
+<li>Why does Python use UNICODE instead of ASCII?</li>
+</ol>
+<h3>Answers</h3>
+<h3></h3>
+<ol>
+<li>A string (<code>str</code>) in Python is a sequence of characters.</li>
+<li>You can define a multi-line string in Python using triple quotes (<code>&#39;&#39;&#39;</code> or <code>&quot;&quot;&quot;</code>).</li>
+<li>ASCII is a character encoding standard for English characters, while UNICODE is a character encoding standard that supports a wider range of characters and multiple languages.</li>
+<li><pre><code class="language-python">single_quote_str = &#39;Hello, World!&#39;
+double_quote_str = &quot;Hello, World!&quot;
+print(single_quote_str)
+print(double_quote_str)
+</code></pre>
+</li>
+<li>Python uses UNICODE because it supports a much wider range of characters and multiple languages compared to ASCII.</li>
+</ol>
+</details><details ><summary>Read and trace the code examples · code.ipynb</summary><h3>String</h3>
+<pre><code class="language-python">ch = &#39;c&#39;
+</code></pre>
+<pre><code class="language-python">type(ch)
+</code></pre>
+<pre><code class="language-python">single_quote_string = &quot;python&quot;
+</code></pre>
+<pre><code class="language-python">double_quote_string = &quot;mayank&quot;
+</code></pre>
+<pre><code class="language-python">print(single_quote_string)
+</code></pre>
+<pre><code class="language-python">print(double_quote_string)
+</code></pre>
+<pre><code class="language-python">print(ch)
+</code></pre>
+<pre><code class="language-python">multi_line_string= &quot; this 
+isa  
+a &quot;
+</code></pre>
+<pre><code class="language-python">### \n -&gt; new line
+### \b -&gt; backspace
+### \t -&gt; tab
+</code></pre>
+<pre><code class="language-python">multi_line_string = &quot; this is \n a \n multi line \n string&quot;
+</code></pre>
+<pre><code class="language-python">print(multi_line_string)
+</code></pre>
+<pre><code class="language-python">multi_line_string2 = &#39;&#39;&#39; This is
+a 
+multi 
+line string
+&#39;&#39;&#39;
+</code></pre>
+<pre><code class="language-python">print(multi_line_string2)
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Create one multi-line string with triple quotes and print it.</li><li>Try `s = &quot;cat&quot;; s[0] = &quot;b&quot;` and read the error message carefully.</li><li>Print a Windows-style path containing backslashes and a tab character.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section><section class="reading" id="lesson-08"><h2>08. String Indexing (Positive &amp; Negative)</h2><p>Picking single characters from a string with positive and negative positions.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=4744s">Watch 1:19:04</a><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=5015s">Watch 1:23:35</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/08-indexing">Original resources</a></div><details open><summary>Read the explanation · theory.ipynb</summary><h3>Indexing in Python</h3>
+<p>In Python, sequences like strings are stored in continuous memory locations. We can access individual elements (characters of a string) using indexing. Each character in the memory location is assigned an index which starts from 0. Programmers count from 0 and the last element has the index <code>len(sequence) - 1</code>.</p>
+<pre><code class="language-python">### Example of indexing in Python
+text = &#39;python&#39;
+print(text[0])  # Output: &#39;p&#39;
+print(text[3])  # Output: &#39;h&#39;
+print(text[5])  # Output: &#39;n&#39;
+#print(text[6])  # This will raise an IndexError as there is no index 6
+</code></pre>
+<p>Python also allows negative indexing, which begins from the end of the string. The index <code>-1</code> is the last character, <code>-2</code> is the second last, and so on.</p>
+<pre><code class="language-python">### Example of negative indexing
+print(text[-1])  # Output: &#39;n&#39;
+print(text[-2])  # Output: &#39;o&#39;
+print(text[-6])  # Output: &#39;p&#39;
+#print(text[-7])  # This will raise an IndexError as there is no index -7
+</code></pre>
+<h3>Important Points about Indexing</h3>
+<ul>
+<li>Indexing starts from 0.</li>
+<li>Negative indexing starts from -1 (the last character).</li>
+<li>Trying to access an index that does not exist will raise an <code>IndexError</code>.</li>
+</ul>
+<pre><code class="language-python">### Additional examples
+word = &#39;hello&#39;
+
+### Accessing with positive indexes
+print(word[1])  # Output: &#39;e&#39;
+print(word[4])  # Output: &#39;o&#39;
+
+### Accessing with negative indexes
+print(word[-1])  # Output: &#39;o&#39;
+print(word[-5])  # Output: &#39;h&#39;
+</code></pre>
+<h4>Industry Use Cases</h4>
+<ul>
+<li><strong>String Manipulation:</strong> Indexing is fundamental in tasks like parsing data, searching, and modifying strings.</li>
+<li><strong>Data Processing:</strong> In data analysis, indexing is used to access specific elements of datasets.</li>
+<li><strong>Web Development:</strong> Indexing is used to manipulate and display text content dynamically.</li>
+</ul>
+<h3>Questions</h3>
+<ol>
+<li>What is the index of the first character in a string?</li>
+<li>How can you access the last character of a string using indexing?</li>
+<li>What error is raised if you try to access an index that is out of range?</li>
+<li>Write a code snippet to print the second character of a string.</li>
+<li>Write a code snippet to print the second last character of a string.</li>
+<li>Explain the difference between positive and negative indexing.</li>
+<li>Write a code snippet to demonstrate accessing elements in a string using both positive and negative indexing.</li>
+</ol>
+<pre><code class="language-python">### Answers
+
+### 1. What is the index of the first character in a string?
+first_index = 0
+
+### 2. How can you access the last character of a string using indexing?
+last_character = text[-1]
+print(last_character)  # Output: &#39;n&#39;
+
+### 3. What error is raised if you try to access an index that is out of range?
+### IndexError is raised.
+
+### 4. Write a code snippet to print the second character of a string.
+print(text[1])  # Output: &#39;y&#39;
+
+### 5. Write a code snippet to print the second last character of a string.
+print(text[-2])  # Output: &#39;o&#39;
+
+### 6. Explain the difference between positive and negative indexing.
+### Positive indexing starts from the beginning (index 0) and goes to the end (index len-1).
+### Negative indexing starts from the end (index -1) and goes to the beginning (index -len).
+
+### 7. Write a code snippet to demonstrate accessing elements in a string using both positive and negative indexing.
+word = &#39;example&#39;
+print(word[2])   # Output: &#39;a&#39;
+print(word[-2])  # Output: &#39;l&#39;
+</code></pre>
+</details><details ><summary>Read and trace the code examples · code.ipynb</summary><h3>Indexing in Python</h3>
+<p>In Python, sequences like strings are stored in continuous memory locations. We can access individual elements (characters of a string) using indexing. Each character in the memory location is assigned an index which starts from 0. Programmers count from 0 and the last element has the index <code>len(sequence) - 1</code>.</p>
+<pre><code class="language-python">s = &quot;python&quot;
+</code></pre>
+<pre><code class="language-python">print(s[0])
+print(s[1])
+print(s[2])
+print(s[3])
+print(s[4])
+print(s[5])
+</code></pre>
+<pre><code class="language-python">print(s[6])
+</code></pre>
+<pre><code class="language-python">len(s)
+</code></pre>
+<pre><code class="language-python">s1 = &quot;mayank aggarwal&quot;
+</code></pre>
+<pre><code class="language-python">len(s1)
+</code></pre>
+<pre><code class="language-python">s1[6]
+</code></pre>
+<pre><code class="language-python">s1 [ len(s1)-1]
+</code></pre>
+<pre><code class="language-python">s
+</code></pre>
+<pre><code class="language-python">print(s[-1])
+print(s[-2])
+print(s[-3])
+print(s[-4])
+print(s[-5])
+print(s[-6])
+</code></pre>
+<pre><code class="language-python">print(s[-7])
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>For `&quot;PYTHON&quot;` print the first, last and middle characters using both index styles.</li><li>Trigger an `IndexError` on purpose and explain the message.</li><li>Which negative index points at the same character as index `2`?</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section><section class="reading" id="lesson-09"><h2>09. Concatenation, Repetition &amp; Slicing</h2><p>Joining and repeating strings, slicing with `start:stop`, and using a step to skip or reverse.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=5255s">Watch 1:27:35</a><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=5620s">Watch 1:33:40</a><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=6614s">Watch 1:50:14</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/09-concatenation-slicing">Original resources</a></div><details open><summary>Read and trace the code examples · code-step-in-slicing.ipynb</summary><pre><code class="language-python">s = &#39;python&#39;
+</code></pre>
+<pre><code class="language-python">s [ -4:-1]
+</code></pre>
+<pre><code class="language-python">s[-3:-1]
+</code></pre>
+<pre><code class="language-python">s[:1000000000]
+</code></pre>
+<pre><code class="language-python">s[100:10000]
+</code></pre>
+<pre><code class="language-python">s[-2:-6]
+</code></pre>
+<pre><code class="language-python">s
+</code></pre>
+<pre><code class="language-python">s[0:len(s):2]
+</code></pre>
+<pre><code class="language-python">s
+</code></pre>
+<pre><code class="language-python">s[0:5]
+</code></pre>
+<pre><code class="language-python">s[0:5:1]
+</code></pre>
+<pre><code class="language-python">s[0:5:2]
+</code></pre>
+<pre><code class="language-python">s[5:0]
+</code></pre>
+<pre><code class="language-python">s[5:0:3]
+</code></pre>
+<pre><code class="language-python">s[5:0:-1]
+</code></pre>
+<pre><code class="language-python">s[5:0:-2]
+</code></pre>
+<pre><code class="language-python">s[-6:3]
+</code></pre>
+<pre><code class="language-python">s[-6],s[3]
+</code></pre>
+<pre><code class="language-python">s[-6:3:2]
+</code></pre>
+</details><details ><summary>Read and trace the code examples · code.ipynb</summary><h3>Concatenation</h3>
+<pre><code class="language-python">a = &#39;1&#39;
+b = &#39;2&#39;
+c = a+b
+</code></pre>
+<pre><code class="language-python">print(c)
+</code></pre>
+<pre><code class="language-python">s1 = &quot;hello&quot;
+s2 = &quot;python&quot;
+</code></pre>
+<pre><code class="language-python">s1+s2
+</code></pre>
+<pre><code class="language-python">s1 + &quot; &quot; + s2
+</code></pre>
+<pre><code class="language-python">s1*3  # s1 + s1 +s1
+</code></pre>
+<pre><code class="language-python">print(&#39;#&#39; * 10)
+</code></pre>
+<pre><code class="language-python">s1 -s2
+</code></pre>
+<pre><code class="language-python">s1/s2
+</code></pre>
+<pre><code class="language-python">num1 = input(&#39;enter a number&#39;)
+</code></pre>
+<pre><code class="language-python">num2 = input(&#39;enter a number&#39;)
+</code></pre>
+<pre><code class="language-python">num1 + num2
+</code></pre>
+<pre><code class="language-python">type(num1)
+</code></pre>
+<h3>slicing</h3>
+<pre><code class="language-python">s = &#39;python&#39;
+</code></pre>
+<pre><code class="language-python">s[0:4]
+</code></pre>
+<pre><code class="language-python">s[0:len(s)]
+</code></pre>
+<pre><code class="language-python">s[0:6]
+</code></pre>
+<pre><code class="language-python">s[3:10]
+</code></pre>
+<pre><code class="language-python">s[3:6]
+</code></pre>
+<pre><code class="language-python">s[0:]
+</code></pre>
+<pre><code class="language-python">s[:]
+</code></pre>
+<pre><code class="language-python">s[2:2]
+</code></pre>
+<pre><code class="language-python">s[4:0]
+</code></pre>
+<pre><code class="language-python">s
+</code></pre>
+<pre><code class="language-python">&#39; p   y  t  h  o  n&#39;
+&#39; -6 -5 -4 -3 -2 -1&#39;
+&#39; 0   1  2  3  4  5&#39;
+</code></pre>
+<pre><code class="language-python">s[-5:-2]
+</code></pre>
+<pre><code class="language-python">s[-6 : 4]
+</code></pre>
+<pre><code class="language-python">s[-6:-4]
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Slice `&quot;programming&quot;` to obtain `&quot;gram&quot;`, then print it reversed.</li><li>Draw a divider of 20 `=` characters without typing them all.</li><li>Check whether `&quot;madam&quot;` is a palindrome using a reversed slice.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section><section class="reading" id="lesson-10"><h2>10. Type Conversion &amp; Type Casting</h2><p>Automatic (implicit) conversion versus explicit casting with `int()`, `float()`, `str()` and `bool()`.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=7273s">Watch 2:01:13</a><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=7632s">Watch 2:07:12</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/10-type-casting">Original resources</a></div><details open><summary>Read the explanation · theory.ipynb</summary><h3>Type Casting in Python</h3>
+<p>Type casting refers to the process of converting a value of one data type to another. Python supports two types of type conversion:</p>
+<ul>
+<li>Implicit Type Conversion</li>
+<li>Explicit Type Conversion</li>
+</ul>
+<h4>Implicit Type Conversion</h4>
+<p>In implicit type conversion, Python automatically converts one data type to another without any user intervention. This is usually done to prevent data loss and to ensure that operations are performed correctly.</p>
+<h5>Example</h5>
+<pre><code class="language-python">a = 3
+b = 4.5
+c = a + b  # &#39;a&#39; is implicitly converted to float
+print(c)  # Output: 7.5
+print(type(c))  # Output: 
+</code></pre>
+<pre><code class="language-python">### Implicit Type Conversion Example
+a = 3
+b = 4.5
+c = a + b  # &#39;a&#39; is implicitly converted to float
+print(c)  # Output: 7.5
+print(type(c))  # Output: &lt;class &#39;float&#39;&gt;
+</code></pre>
+<h4>Explicit Type Conversion</h4>
+<p>In explicit type conversion, also known as type casting, the programmer manually converts one data type to another using predefined functions.</p>
+<h5>Functions for Explicit Type Conversion</h5>
+<ul>
+<li><code>int()</code>: Converts a value to an integer.</li>
+<li><code>float()</code>: Converts a value to a float.</li>
+<li><code>str()</code>: Converts a value to a string.</li>
+<li><code>bool()</code>: Converts a value to a boolean.</li>
+</ul>
+<h5><code>int()</code> Function</h5>
+<p>The <code>int()</code> function converts a given value to an integer. It can convert floats and boolean values, but not strings that contain non-numeric characters.</p>
+<h6>Syntax</h6>
+<pre><code class="language-python">int(value)
+</code></pre>
+<h6>Example</h6>
+<pre><code class="language-python">print(int(2.5))  # Output: 2
+print(int(True))  # Output: 1
+print(int(&#39;10&#39;))  # Output: 10
+</code></pre>
+<pre><code class="language-python">### Example of int() Function
+print(int(2.5))  # Output: 2
+print(int(True))  # Output: 1
+print(int(&#39;10&#39;))  # Output: 10
+### print(int(&#39;Python&#39;))  # This will raise a ValueError
+</code></pre>
+<h5><code>float()</code> Function</h5>
+<p>The <code>float()</code> function converts a given value to a float. It can convert integers, boolean values, and strings that represent numbers.</p>
+<h6>Syntax</h6>
+<pre><code class="language-python">float(value)
+</code></pre>
+<h6>Example</h6>
+<pre><code class="language-python">print(float(2))  # Output: 2.0
+print(float(True))  # Output: 1.0
+print(float(&#39;3.14&#39;))  # Output: 3.14
+</code></pre>
+<pre><code class="language-python">### Example of float() Function
+print(float(2))  # Output: 2.0
+print(float(True))  # Output: 1.0
+print(float(&#39;3.14&#39;))  # Output: 3.14
+### print(float(&#39;Python&#39;))  # This will raise a ValueError
+</code></pre>
+<pre><code class="language-python">print(float(&#39;Python&#39;))
+</code></pre>
+<pre><code class="language-python">float(4)
+</code></pre>
+<h5><code>str()</code> Function</h5>
+<p>The <code>str()</code> function converts a given value to a string. It can convert integers, floats, boolean values, and other data types to their string representation.</p>
+<h6>Syntax</h6>
+<pre><code class="language-python">str(value)
+</code></pre>
+<h6>Example</h6>
+<pre><code class="language-python">print(str(10))  # Output: &#39;10&#39;
+print(str(3.14))  # Output: &#39;3.14&#39;
+print(str(True))  # Output: &#39;True&#39;
+</code></pre>
+<pre><code class="language-python">### Example of str() Function
+print(str(10))  # Output: &#39;10&#39;
+print(str(3.14))  # Output: &#39;3.14&#39;
+print(str(True))  # Output: &#39;True&#39;
+</code></pre>
+<h5><code>bool()</code> Function</h5>
+<p>The <code>bool()</code> function converts a given value to a boolean. It can convert numbers, strings, and other data types to their boolean representation.</p>
+<h6>Syntax</h6>
+<pre><code class="language-python">bool(value)
+</code></pre>
+<h6>Example</h6>
+<pre><code class="language-python">print(bool(1))  # Output: True
+print(bool(0))  # Output: False
+print(bool(&#39;Python&#39;))  # Output: True
+print(bool(&#39;&#39;))  # Output: False
+</code></pre>
+<pre><code class="language-python">### Example of bool() Function
+print(bool(1))  # Output: True
+print(bool(0))  # Output: False
+print(bool(&#39;Python&#39;))  # Output: True
+print(bool(&#39;&#39;))  # Output: False
+</code></pre>
+<h4>Important Points about Type Conversion</h4>
+<ul>
+<li>Implicit type conversion is done automatically by Python.</li>
+<li>Explicit type conversion is done manually by the programmer.</li>
+<li>Some data types cannot be converted explicitly and will raise errors.</li>
+<li>Explicit type conversion can lead to data loss in some cases.</li>
+</ul>
+<h4>Industry Use Cases</h4>
+<ul>
+<li><strong>Data Analysis:</strong> Converting data types for analysis and manipulation.</li>
+<li><strong>Web Development:</strong> Handling user input and converting it to the appropriate data type.</li>
+<li><strong>Machine Learning:</strong> Preprocessing data by converting it to the required format.</li>
+<li><strong>Database Management:</strong> Converting data types when reading from or writing to a database.</li>
+</ul>
+<h3>Questions</h3>
+<ol>
+<li>What are the two types of type conversion in Python?</li>
+<li>How does implicit type conversion work? Provide an example.</li>
+<li>What is explicit type conversion? List some functions used for explicit type conversion.</li>
+<li>Write a code snippet to convert a float to an integer using explicit type conversion.</li>
+<li>Write a code snippet to convert a string to a boolean using explicit type conversion.</li>
+<li>What will be the output of <code>bool(0)</code> and <code>bool(&#39;&#39;)</code>? Explain why.</li>
+<li>Explain with an example how explicit type conversion can lead to data loss.</li>
+<li>Write a code snippet to demonstrate implicit type conversion in an arithmetic operation.</li>
+</ol>
+<h3>Answers</h3>
+<pre><code class="language-python">
+### 1. What are the two types of type conversion in Python?
+### Answer: Implicit Type Conversion and Explicit Type Conversion.
+
+### 2. How does implicit type conversion work? Provide an example.
+### Answer:
+a = 5
+b = 2.5
+c = a + b  # &#39;a&#39; is implicitly converted to float
+print(c)  # Output: 7.5
+
+### 3. What is explicit type conversion? List some functions used for explicit type conversion.
+### Answer: Explicit type conversion is when the programmer manually converts one data type to another.
+### Functions used: int(), float(), str(), bool()
+
+### 4. Write a code snippet to convert a float to an integer using explicit type conversion.
+float_value = 3.99
+int_value = int(float_value)
+print(int_value)  # Output: 3
+
+### 5. Write a code snippet to convert a string to a boolean using explicit type conversion.
+str_value = &#39;True&#39;
+bool_value = bool(str_value)
+print(bool_value)  # Output: True
+
+### 6. What will be the output of `bool(0)` and `bool(&#39;&#39;)`? Explain why.
+### Answer: bool(0) will output False, and bool(&#39;&#39;) will output False because 0 and an empty string are considered False in Python.
+
+### 7. Explain with an example how explicit type conversion can lead to data loss.
+### Answer:
+float_value = 9.99
+int_value = int(float_value)  # Conversion leads to loss of decimal part
+print(int_value)  # Output: 9
+
+### 8. Write a code snippet to demonstrate implicit type conversion in an arithmetic operation.
+x = 10
+y = 2.5
+result = x * y  # &#39;x&#39; is implicitly converted to float
+print(result)  # Output: 25.0
+</code></pre>
+</details><details ><summary>Read and trace the code examples · code.ipynb</summary><h3>Type Conversion</h3>
+<pre><code class="language-python">f1 = 4.5
+s1= &#39;5&#39;
+</code></pre>
+<pre><code class="language-python">s1
+</code></pre>
+<pre><code class="language-python">s1+f1
+</code></pre>
+<pre><code class="language-python">integralValueOfS1 = int(s1)
+integralValueOfS1
+</code></pre>
+<pre><code class="language-python">int(3.6),int(True)
+</code></pre>
+<pre><code class="language-python">int(&#39;python&#39;)
+</code></pre>
+<pre><code class="language-python">int(3+4j)
+</code></pre>
+<pre><code class="language-python">int(3.8), int(3.1)
+</code></pre>
+<pre><code class="language-python">bool(&quot;python&quot;)
+</code></pre>
+<pre><code class="language-python">bool(&#39;&#39;)
+</code></pre>
+<pre><code class="language-python">bool(0)
+</code></pre>
+<pre><code class="language-python">bool(1)
+</code></pre>
+<pre><code class="language-python">&#39;eafa&#39;
+</code></pre>
+<pre><code class="language-python">str(False)
+</code></pre>
+<pre><code class="language-python">s1 = str([1,2])
+</code></pre>
+<pre><code class="language-python">s1[5]
+</code></pre>
+<h3>Implicit</h3>
+<pre><code class="language-python">a = 3
+b = 4.5
+</code></pre>
+<pre><code class="language-python">c = a+b
+print(c)
+print(type(c))
+</code></pre>
+<pre><code class="language-python">d = True
+e = a+d
+
+print(e)
+print(type(e))
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Predict the type of `3 + 4.0` and `True + 1`, then verify.</li><li>Convert `&quot;42&quot;` to an int and add 8; convert `3.99` to an int and note what happens to the decimals.</li><li>Run `int(&quot;3.5&quot;)`, read the error, and fix it.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section></div><h2 id="practice">Practice session</h2><div class="scorebox"><span class="tag">This chapter</span><p data-score aria-live="polite"></p><p>Predict the output before running it. Output checks preserve case and line breaks. Written programs are saved for self-review and are not executed here. Drafts and progress stay in this browser.</p></div><article class="drill" id="ch03-q1"><p class="drill-id">Practice 01 · checked answer</p><h3>What prints?</h3><pre><code>print(&quot;PYTHON&quot;[-1])</code></pre><label for="input-ch03-q1">Your answer</label><textarea id="input-ch03-q1" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch03-q1">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch03-q1">See answer</button></div>
+<div class="drill-hint" id="hint-ch03-q1" data-hint hidden><span class="tag">Step by step</span><p>-1 is the final index.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch03-q1" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>N</code></pre><p>-1 is the final index.</p></div></article><article class="drill" id="ch03-q2"><p class="drill-id">Practice 02 · checked answer</p><h3>What prints?</h3><pre><code>print(&quot;PYTHON&quot;[1:4])</code></pre><label for="input-ch03-q2">Your answer</label><textarea id="input-ch03-q2" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch03-q2">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch03-q2">See answer</button></div>
+<div class="drill-hint" id="hint-ch03-q2" data-hint hidden><span class="tag">Step by step</span><p>Start at 1. Exclude 4.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch03-q2" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>YTH</code></pre><p>Start at 1. Exclude 4.</p></div></article><article class="drill" id="ch03-q3"><p class="drill-id">Practice 03 · checked answer</p><h3>What prints?</h3><pre><code>print(&quot;Python&quot;[::-1])</code></pre><label for="input-ch03-q3">Your answer</label><textarea id="input-ch03-q3" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch03-q3">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch03-q3">See answer</button></div>
+<div class="drill-hint" id="hint-ch03-q3" data-hint hidden><span class="tag">Step by step</span><p>A step of -1 reverses the string.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch03-q3" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>nohtyP</code></pre><p>A step of -1 reverses the string.</p></div></article><article class="drill" id="ch03-q4"><p class="drill-id">Practice 04 · checked answer</p><h3>What prints?</h3><pre><code>print(int(&quot;42&quot;) + 8)</code></pre><label for="input-ch03-q4">Your answer</label><textarea id="input-ch03-q4" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch03-q4">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch03-q4">See answer</button></div>
+<div class="drill-hint" id="hint-ch03-q4" data-hint hidden><span class="tag">Step by step</span><p>Convert to an integer before adding.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch03-q4" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>50</code></pre><p>Convert to an integer before adding.</p></div></article><article class="drill" id="ch03-write"><p class="drill-id">Practice 05 · write and self-review</p><h3>Clean &quot;  Mynul  &quot; and print it backward.</h3><label for="input-ch03-write">Your answer</label><textarea id="input-ch03-write" class="drill-in" rows="10" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch03-write">Hint</button><button type="button" data-submit>Submit draft</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch03-write">See answer</button></div>
+<div class="drill-hint" id="hint-ch03-write" data-hint hidden><span class="tag">Step by step</span><p>Keep the value returned by strip, then slice.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch03-write" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>name = &quot;  Mynul  &quot;.strip()  # Remove spaces at the ends.
+print(name[::-1])  # lunyM</code></pre><p>Compare the result with your own answer. Explain what each line does before moving on.</p></div></article><div class="course-actions chapter-end" id="end"><button type="button" data-complete aria-pressed="false">Mark chapter as read</button><a href="#main">Back to reading</a></div><div class="pager"><a href="ch02.html">← Previous chapter</a><a href="ch04.html">Next chapter →</a></div>
+<p class="source-note">Reading notes and course sequence adapted from <a href="https://github.com/mayank953/python-ai-crash-course">Mayank Aggarwal’s Python AI Crash Course</a>, under the <a href="LICENSE-upstream.txt">MIT license</a>. Classroom adaptation, chapter guides and project exercises: Learn with Mynul. <a href="sources.html">Sources and study guide</a>.</p>
+</div></main><footer class="cos-foot"><div class="wrap">Learn with Mynul · Read. Trace. Practice. Build.</div></footer>
+<script>window.PYTHON_PRACTICE = [{"prompt": "What prints?", "accept": ["N"], "hint": "-1 is the final index.", "code": "print(\"PYTHON\"[-1])", "answer": "N", "why": "-1 is the final index.", "id": "ch03-q1"}, {"prompt": "What prints?", "accept": ["YTH"], "hint": "Start at 1. Exclude 4.", "code": "print(\"PYTHON\"[1:4])", "answer": "YTH", "why": "Start at 1. Exclude 4.", "id": "ch03-q2"}, {"prompt": "What prints?", "accept": ["nohtyP"], "hint": "A step of -1 reverses the string.", "code": "print(\"Python\"[::-1])", "answer": "nohtyP", "why": "A step of -1 reverses the string.", "id": "ch03-q3"}, {"prompt": "What prints?", "accept": ["50"], "hint": "Convert to an integer before adding.", "code": "print(int(\"42\") + 8)", "answer": "50", "why": "Convert to an integer before adding.", "id": "ch03-q4"}, {"id": "ch03-write", "prompt": "Clean \"  Mynul  \" and print it backward.", "hint": "Keep the value returned by strip, then slice.", "answer": "name = \"  Mynul  \".strip()  # Remove spaces at the ends.\nprint(name[::-1])  # lunyM"}];</script><script src="js/practice.js?v=1" defer></script><script src="../../assets/js/theme.js?v=3" defer></script></body></html>

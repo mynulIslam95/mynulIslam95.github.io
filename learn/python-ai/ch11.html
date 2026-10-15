@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
+  </script><title>Functions as values, lambda and map · Python + AI · Learn with Mynul</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<meta name="description" content="Python and AI from scratch. Read the lessons, trace examples and practice with hints, saved drafts and commented answers.">
+<link rel="stylesheet" href="course.css?v=1"></head>
+<body class="cos" data-chapter="11"><a class="skip" href="#main">Skip to content</a>
+<header class="cos-bar"><div class="wrap"><a class="cos-brand" href="index.html">Python · AI</a><nav class="cos-nav" aria-label="Python course"><a href="index.html">Map</a><a  href="ch01.html">1</a><a  href="ch02.html">2</a><a  href="ch03.html">3</a><a  href="ch04.html">4</a><a  href="ch05.html">5</a><a  href="ch06.html">6</a><a  href="ch07.html">7</a><a  href="ch08.html">8</a><a  href="ch09.html">9</a><a  href="ch10.html">10</a><a class="is-on" href="ch11.html">11</a><a  href="ch12.html">12</a><a  href="ch13.html">13</a><a  href="ch14.html">14</a><a href="index.html#projects">Projects</a><a href="../index.html">Learn hub</a></nav><button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode"><svg class="theme-sun" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="#F5C518"/><g stroke="#F5C518" stroke-width="1.8" stroke-linecap="round" fill="none"><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M5.6 18.4l1.7-1.7M16.7 7.3l1.7-1.7"/></g></svg><svg class="theme-moon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="#8EA0FF" d="M16.2 3.1A8.9 8.9 0 1 0 21.1 18 7.4 7.4 0 0 1 16.2 3.1z"/></svg></button></div></header>
+<main id="main"><div class="wrap"><p class="kicker"><a href="index.html">Python + AI</a> · Chapter 11</p><h1>Functions as values, lambda and map</h1><p class="lede">A function is an object. You can store it in a variable, pass it into another function or return it. This is how callback functions and configurable data transformations work.</p><div class="toc"><a href="#reading">Reading</a><a href="#practice">Practice session</a><a href="#end">Save reading progress</a></div><div class="rule"><span class="tag">The rule</span><p>A lambda is a small anonymous function containing one expression. map applies a function to each item and returns an iterator. filter keeps items for which a function returns a truthy value. reduce combines items into one result and must be imported from functools. A comprehension is often easier to read.</p></div><h2>Worked example</h2><pre><code>double = lambda x: x * 2
+values = [1, 2, 3]
+print(list(map(double, values)))
+print(list(filter(lambda x: x &gt; 1, values)))
+print([double(x) for x in values])</code></pre><div class="trace"><span class="tag">Trace every line</span><p>map calls double on 1, 2 and 3, producing 2, 4 and 6. list consumes the iterator for display. filter keeps 2 and 3. The comprehension produces the same values as map. In Python 3, a consumed iterator does not automatically restart.</p></div><div id="reading"><section class="reading" id="lesson-42"><h2>42. Functions as First-Class Citizens</h2><p>Functions are values: store them, pass them around and return them.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=35768s">Watch 9:56:08</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/42-first-class-functions">Original resources</a></div><details open><summary>Read and trace the code examples · code.ipynb</summary><pre><code class="language-python">def sum(a,b):
+    return a+b
+</code></pre>
+<pre><code class="language-python">fun1 = sum
+</code></pre>
+<pre><code class="language-python">fun1
+</code></pre>
+<pre><code class="language-python">fun1(1,3)
+</code></pre>
+<pre><code class="language-python">type(sum)
+</code></pre>
+<pre><code class="language-python">l1 = [1,2,3,4]
+</code></pre>
+<pre><code class="language-python">l1.append(sum)
+</code></pre>
+<pre><code class="language-python">print(l1)
+</code></pre>
+<pre><code class="language-python">l1[4](https://github.com/mayank953/python-ai-crash-course/blob/2b82779181363734d86fc202bc7e00770b36f8fc/python/42-first-class-functions/1,3)
+</code></pre>
+<pre><code class="language-python">d1 = {&#39;sum&#39; : sum,
+     &#39;diff&#39; : diff,
+     &#39;prod&#39;: prod,
+     &#39;len&#39;:len }
+</code></pre>
+<pre><code class="language-python">print(type(5))
+</code></pre>
+<h3>5 is a object of Type (Integer)</h3>
+<pre><code class="language-python">sum
+</code></pre>
+<pre><code class="language-python">type(sum)
+</code></pre>
+<pre><code class="language-python">print(type(sum))
+</code></pre>
+<h3>Can be passed as an argument to another function</h3>
+<pre><code class="language-python">def sum(a,b):
+    print(a+b)
+</code></pre>
+<pre><code class="language-python">sum(&#39;3&#39;,&#39;4.5&#39;)
+</code></pre>
+<pre><code class="language-python">def CubeOfaNumber(x):
+    return x**3
+</code></pre>
+<pre><code class="language-python">def squareRootOfaNumber(x):
+    return x**0.5
+</code></pre>
+<pre><code class="language-python">def squareOfaNumber(x):
+    return x*x
+</code></pre>
+<pre><code class="language-python">squareOfaNumber(5)
+</code></pre>
+<pre><code class="language-python">def squareOfaList(l1,functionWhichYouWantToApply):
+    l1Squared = []
+    for i in l1:
+        l1Squared.append(functionWhichYouWantToApply(i))
+
+    return l1Squared
+</code></pre>
+<pre><code class="language-python">squareOfaList([1,2,3,4],CubeOfaNumber)
+</code></pre>
+<pre><code class="language-python">### Write a program to get a list and return each and every element as a positive/abs value.
+</code></pre>
+<pre><code class="language-python">import math
+</code></pre>
+<pre><code class="language-python">math.
+</code></pre>
+<pre><code class="language-python">def factorialOfANumber(x):
+    return math.factorial(x)
+</code></pre>
+<pre><code class="language-python">def OperationOnAList(l1,func):
+    l1Modified = []
+    for i in l1:
+        l1Modified.append(func(i))
+
+    return l1Modified
+</code></pre>
+<pre><code class="language-python">OperationOnAList([1,2,3,4],factorialOfANumber)
+</code></pre>
+<pre><code class="language-python">def positive(x):
+    return x&gt;=0
+</code></pre>
+<pre><code class="language-python">def FilterMyList(l1,func):
+    l1Modified = []
+    for i in l1:
+        if(func(i)):
+            l1Modified.append(i)
+
+    return l1Modified
+</code></pre>
+<pre><code class="language-python">FilterMyList([1,2,-5,-4,-100,100],positive)
+</code></pre>
+<pre><code class="language-python">def sum(a,b):
+    return a+b
+</code></pre>
+<pre><code class="language-python">def greet(name):
+    return f&quot;Namaste {name}&quot;
+</code></pre>
+<pre><code class="language-python">def hello():
+    return greet(&quot;Mayank&quot;)
+</code></pre>
+<pre><code class="language-python">hello()
+</code></pre>
+<pre><code class="language-python">def factorial():
+    return math.factorial
+</code></pre>
+<pre><code class="language-python">def FindFactorial(num):
+    f = factorial()
+    return f(num)
+</code></pre>
+<pre><code class="language-python">FindFactorial(5)
+</code></pre>
+<pre><code class="language-python">def shout(text): 
+    return text.upper() 
+  
+def whisper(text): 
+    return text.lower() 
+
+def greet(func):
+    return func(&quot;Mayank&quot;)
+</code></pre>
+<pre><code class="language-python">greet(whisper)
+</code></pre>
+<pre><code class="language-python">def squareRoot(x):
+
+    def square(y):
+        return y*y
+
+    return square
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Assign a function to another variable and call it through that name.</li><li>Write a function that takes another function as an argument and applies it.</li><li>Store `+`, `-`, `*`, `/` functions in a dictionary and use it as a calculator.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section><section class="reading" id="lesson-43"><h2>43. Lambda Functions</h2><p>Short anonymous functions with `lambda`, and when not to use them.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=37324s">Watch 10:22:04</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/43-lambda-functions">Original resources</a></div><details open><summary>Read the explanation · theory.ipynb</summary><h3>Lambda Functions in Python</h3>
+<p>Lambda functions, also known as anonymous functions, are small, single-expression functions that are not bound to a name. They are defined using the <code>lambda</code> keyword and can have any number of arguments but only one expression.</p>
+<h4>Syntax</h4>
+<p>The syntax for a lambda function is:</p>
+<pre><code>lambda arguments: expression
+</code></pre>
+<p>The <code>arguments</code> are the parameters that the function takes, and the <code>expression</code> is the single line of code that the function will execute and return.</p>
+<h4>Example 1: Basic Lambda Function</h4>
+<pre><code class="language-python">multiply = lambda x, y: x * y
+print(multiply(5, 4))  # Output: 20
+</code></pre>
+<p>In this example, <code>multiply</code> is a lambda function that takes two arguments, <code>x</code> and <code>y</code>, and returns their product.</p>
+<pre><code class="language-python">### Example 1: Basic Lambda Function
+multiply = lambda x, y: x * y
+print(multiply(5, 4))  # Output: 20
+</code></pre>
+<h4>Example 2: Lambda with Filter Function</h4>
+<p>Lambda functions are often used with functions like <code>filter()</code>, <code>map()</code>, and <code>reduce()</code>.</p>
+<pre><code class="language-python">numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+even_numbers = list(filter(lambda x: x % 2 == 0, numbers))
+print(even_numbers)  # Output: [2, 4, 6, 8, 10]
+</code></pre>
+<p>In this example, <code>filter()</code> is used with a lambda function to filter out even numbers from the list <code>numbers</code>.</p>
+<pre><code class="language-python">### Example 2: Lambda with Filter Function
+numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+even_numbers = list(filter(lambda x: x % 2 == 0, numbers))
+print(even_numbers)  # Output: [2, 4, 6, 8, 10]
+</code></pre>
+<h4>Example 3: Lambda with Map Function</h4>
+<pre><code class="language-python">squares = list(map(lambda x: x ** 2, numbers))
+print(squares)  # Output: [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
+</code></pre>
+<p>In this example, <code>map()</code> is used with a lambda function to square each number in the list <code>numbers</code>.</p>
+<pre><code class="language-python">### Example 3: Lambda with Map Function
+squares = list(map(lambda x: x ** 2, numbers))
+print(squares)  # Output: [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
+</code></pre>
+<h4>Example 4: Lambda with Reduce Function</h4>
+<pre><code class="language-python">from functools import reduce
+product = reduce(lambda x, y: x * y, numbers)
+print(product)  # Output: 3628800
+</code></pre>
+<p>In this example, <code>reduce()</code> is used with a lambda function to calculate the product of all numbers in the list <code>numbers</code>.</p>
+<pre><code class="language-python">### Example 4: Lambda with Reduce Function
+from functools import reduce
+product = reduce(lambda x, y: x * y, numbers)
+print(product)  # Output: 3628800
+</code></pre>
+<h4>Example 5: Lambda with Sorted Function</h4>
+<p>Lambda functions can also be used as a <code>key</code> argument in functions like <code>sorted()</code>.</p>
+<pre><code class="language-python">points = [(2, 3), (1, 2), (4, 1), (3, 5)]
+points_sorted = sorted(points, key=lambda x: x[1])
+print(points_sorted)  # Output: [(4, 1), (1, 2), (2, 3), (3, 5)]
+</code></pre>
+<p>In this example, <code>sorted()</code> is used with a lambda function to sort a list of tuples by the second element.</p>
+<pre><code class="language-python">### Example 5: Lambda with Sorted Function
+points = [(2, 3), (1, 2), (4, 1), (3, 5)]
+points_sorted = sorted(points, key=lambda x: x[1])
+print(points_sorted)  # Output: [(4, 1), (1, 2), (2, 3), (3, 5)]
+</code></pre>
+<h4>Industry Use Cases</h4>
+<ol>
+<li><strong>Data Analysis</strong>: Lambda functions are used in data analysis for operations like filtering, mapping, and reducing data.</li>
+<li><strong>Web Development</strong>: They are used in web development frameworks like Django for defining small, one-off functions, such as sorting lists or manipulating data.</li>
+<li><strong>Automation</strong>: In automation scripts, lambda functions are used for quick, on-the-fly calculations and data processing.</li>
+<li><strong>Testing</strong>: In testing frameworks, lambda functions are used for defining simple test cases and assertions.</li>
+<li><strong>Machine Learning</strong>: In machine learning, they are used for data preprocessing, feature engineering, and defining simple models.</li>
+</ol>
+<h3>Questions</h3>
+<ol>
+<li>What is a lambda function in Python?</li>
+<li>How does the syntax of a lambda function differ from a regular function?</li>
+<li>Give an example of using a lambda function with the <code>filter()</code> function.</li>
+<li>Explain how to use a lambda function with the <code>map()</code> function.</li>
+<li>How can a lambda function be used with the <code>reduce()</code> function?</li>
+<li>Write a lambda function that adds 10 to its input.</li>
+<li>What is the purpose of the <code>key</code> argument in the <code>sorted()</code> function?</li>
+<li>Can lambda functions have multiple expressions? Why or why not?</li>
+<li>How are lambda functions useful in data preprocessing?</li>
+<li>Write a lambda function that takes two arguments and returns their concatenation.</li>
+</ol>
+<h3>Answers</h3>
+<ol>
+<li>A lambda function is a small, anonymous function in Python that can have any number of arguments but only one expression.</li>
+<li>The syntax of a lambda function is: <code>lambda arguments: expression</code>. It differs from a regular function as it doesn&#39;t use the <code>def</code> keyword and doesn&#39;t have a name.</li>
+<li>Example of using a lambda function with the <code>filter()</code> function:<pre><code class="language-python">numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+even_numbers = list(filter(lambda x: x % 2 == 0, numbers))
+print(even_numbers)  # Output: [2, 4, 6, 8, 10]
+</code></pre>
+</li>
+<li>Example of using a lambda function with the <code>map()</code> function:<pre><code class="language-python">numbers = [1, 2, 3, 4, 5]
+squares = list(map(lambda x: x ** 2, numbers))
+print(squares)  # Output: [1, 4, 9, 16, 25]
+</code></pre>
+</li>
+<li>Example of using a lambda function with the <code>reduce()</code> function:<pre><code class="language-python">from functools import reduce
+numbers = [1, 2, 3, 4, 5]
+product = reduce(lambda x, y: x * y, numbers)
+print(product)  # Output: 120
+</code></pre>
+</li>
+<li>Lambda function that adds 10 to its input:<pre><code class="language-python">add_ten = lambda x: x + 10
+print(add_ten(5))  # Output: 15
+</code></pre>
+</li>
+<li>The <code>key</code> argument in the <code>sorted()</code> function specifies a function that returns a value to be used for sorting the elements.</li>
+<li>Lambda functions cannot have multiple expressions because they are designed to be simple and concise, allowing only one expression.</li>
+<li>Lambda functions are useful in data preprocessing for tasks like filtering, transforming, and aggregating data in a concise manner.</li>
+<li>Lambda function that takes two arguments and returns their concatenation:<pre><code class="language-python">concatenate = lambda x, y: x + y
+print(concatenate(&#39;Hello, &#39;, &#39;World!&#39;))  # Output: &#39;Hello, World!&#39;
+</code></pre>
+</li>
+</ol>
+</details><details ><summary>Read and trace the code examples · code.ipynb</summary><h3>Lambda Function</h3>
+<pre><code class="language-python">def square(x):
+    return x*x
+</code></pre>
+<pre><code class="language-python">def absolute(x):
+    return abs(x)
+</code></pre>
+<pre><code class="language-python">def cube(x):
+    return x*x*x
+</code></pre>
+<pre><code class="language-python">def squareRoot(x):
+    return x**(1/2)
+</code></pre>
+<pre><code class="language-python">def ApplyOnList(l1,func):
+    l2 = []
+    for i in l1:
+        l2.append(func(i))
+    return l2
+</code></pre>
+<pre><code class="language-python">ApplyOnList([1,2,3,4,5],squareRoot)
+</code></pre>
+<pre><code class="language-python">def square(x):
+    return x*x
+</code></pre>
+<pre><code class="language-python">sqLambda = lambda x : x*x
+</code></pre>
+<pre><code class="language-python">sqLambda(5)
+</code></pre>
+<pre><code class="language-python">ApplyOnList([1,2,3,4,5],sqLambda)
+</code></pre>
+<pre><code class="language-python">ApplyOnList([1,2,3,4,5],lambda x : x*x)
+</code></pre>
+<pre><code class="language-python">ApplyOnList([1,2,3,4,5],lambda x : x*x*x)
+</code></pre>
+<pre><code class="language-python">ApplyOnList([1,2,3,4,5],lambda x : x**(0.5))
+</code></pre>
+<pre><code class="language-python">ApplyOnList([1,2,3,4,5],lambda x : abs(x))
+</code></pre>
+<pre><code class="language-python">def sum(a,b):
+    return a+b
+</code></pre>
+<pre><code class="language-python">sumLambda = lambda a,b : (a+b)
+</code></pre>
+<pre><code class="language-python">sumLambda(3,5)
+</code></pre>
+<pre><code class="language-python">(lambda a,b : (a+b))(3,5)
+</code></pre>
+<pre><code class="language-python">ApplyOnList([1,2,3,4,-5,-6,-100], lambda x : abs(x))
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Write a lambda that squares a number.</li><li>Write a lambda that takes two arguments and returns the larger one.</li><li>Sort a list of `(name, age)` tuples by age using a lambda as the key.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section><section class="reading" id="lesson-44"><h2>44. map(), filter() &amp; reduce()</h2><p>Transforming, filtering and combining sequences with `map()`, `filter()` and `reduce()`.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=37958s">Watch 10:32:38</a><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=38227s">Watch 10:37:07</a><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=38586s">Watch 10:43:06</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/44-map-filter-reduce">Original resources</a></div><details open><summary>Read and trace the code examples · code.ipynb</summary><h3>Map Function</h3>
+<pre><code class="language-python">def square(x):
+    return x*x
+</code></pre>
+<pre><code class="language-python">def ApplyOnList(func,l1):
+    l2 = []
+    for i in l1:
+        l2.append(func(i))
+    return l2
+</code></pre>
+<pre><code class="language-python">tuple(map(square,(1,2,3,4,5)))
+</code></pre>
+<pre><code class="language-python">tuple(map(lambda x : x + 5,(1,2,3,4,5)))
+</code></pre>
+<h3>Filter</h3>
+<pre><code class="language-python">def FilterMyList(func,l1):
+    l1Modified = []
+    for i in l1:
+        if(func(i)):
+            l1Modified.append(i)
+
+    return l1Modified
+</code></pre>
+<pre><code class="language-python">def isEven(num):
+    return num%2==0
+</code></pre>
+<pre><code class="language-python">FilterMyList(isEven,[1,2,3,4,5])
+</code></pre>
+<pre><code class="language-python">f1 = list(filter(isEven,[1,2,3,4,5]))
+</code></pre>
+<pre><code class="language-python">list(f1)
+</code></pre>
+<pre><code class="language-python">list(filter(lambda x : x*x , [1,2,5,10,20,100,150,9]))
+</code></pre>
+<pre><code class="language-python">from functools import reduce
+</code></pre>
+<pre><code class="language-python">reduce(lambda a,b: a*b ,[1,2,3,4,5])
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Use `map()` to convert a list of numeric strings to integers.</li><li>Use `filter()` to keep only the even numbers.</li><li>Use `reduce()` from `functools` to multiply the numbers 1 to 5.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section></div><h2 id="practice">Practice session</h2><div class="scorebox"><span class="tag">This chapter</span><p data-score aria-live="polite"></p><p>Predict the output before running it. Output checks preserve case and line breaks. Written programs are saved for self-review and are not executed here. Drafts and progress stay in this browser.</p></div><article class="drill" id="ch11-q1"><p class="drill-id">Practice 01 · checked answer</p><h3>What prints?</h3><pre><code>print(list(map(lambda x: x * 2, [1, 2])))</code></pre><label for="input-ch11-q1">Your answer</label><textarea id="input-ch11-q1" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch11-q1">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch11-q1">See answer</button></div>
+<div class="drill-hint" id="hint-ch11-q1" data-hint hidden><span class="tag">Step by step</span><p>map applies the function to every item.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch11-q1" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>[2, 4]</code></pre><p>map applies the function to every item.</p></div></article><article class="drill" id="ch11-q2"><p class="drill-id">Practice 02 · checked answer</p><h3>What prints?</h3><pre><code>print(list(filter(lambda x: x &gt; 2, [1, 2, 3])))</code></pre><label for="input-ch11-q2">Your answer</label><textarea id="input-ch11-q2" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch11-q2">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch11-q2">See answer</button></div>
+<div class="drill-hint" id="hint-ch11-q2" data-hint hidden><span class="tag">Step by step</span><p>filter keeps the values whose predicate is true.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch11-q2" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>[3]</code></pre><p>filter keeps the values whose predicate is true.</p></div></article><article class="drill" id="ch11-q3"><p class="drill-id">Practice 03 · checked answer</p><h3>What prints?</h3><pre><code>from functools import reduce
+print(reduce(lambda a, b: a + b, [1, 2, 3]))</code></pre><label for="input-ch11-q3">Your answer</label><textarea id="input-ch11-q3" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch11-q3">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch11-q3">See answer</button></div>
+<div class="drill-hint" id="hint-ch11-q3" data-hint hidden><span class="tag">Step by step</span><p>reduce repeatedly combines the running result with the next value.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch11-q3" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>6</code></pre><p>reduce repeatedly combines the running result with the next value.</p></div></article><article class="drill" id="ch11-q4"><p class="drill-id">Practice 04 · checked answer</p><h3>What prints?</h3><pre><code>items = map(str, [1, 2])
+list(items)
+print(list(items))</code></pre><label for="input-ch11-q4">Your answer</label><textarea id="input-ch11-q4" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch11-q4">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch11-q4">See answer</button></div>
+<div class="drill-hint" id="hint-ch11-q4" data-hint hidden><span class="tag">Step by step</span><p>The map iterator has already been consumed.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch11-q4" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>[]</code></pre><p>The map iterator has already been consumed.</p></div></article><article class="drill" id="ch11-write"><p class="drill-id">Practice 05 · write and self-review</p><h3>Use map and lambda to convert [0, 10, 20] Celsius to Fahrenheit.</h3><label for="input-ch11-write">Your answer</label><textarea id="input-ch11-write" class="drill-in" rows="10" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch11-write">Hint</button><button type="button" data-submit>Submit draft</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch11-write">See answer</button></div>
+<div class="drill-hint" id="hint-ch11-write" data-hint hidden><span class="tag">Step by step</span><p>Fahrenheit = Celsius * 9 / 5 + 32.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch11-write" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>celsius = [0, 10, 20]
+fahrenheit = list(map(lambda c: c * 9 / 5 + 32, celsius))
+print(fahrenheit)  # [32.0, 50.0, 68.0]</code></pre><p>Compare the result with your own answer. Explain what each line does before moving on.</p></div></article><div class="course-actions chapter-end" id="end"><button type="button" data-complete aria-pressed="false">Mark chapter as read</button><a href="#main">Back to reading</a></div><div class="pager"><a href="ch10.html">← Previous chapter</a><a href="ch12.html">Next chapter →</a></div>
+<p class="source-note">Reading notes and course sequence adapted from <a href="https://github.com/mayank953/python-ai-crash-course">Mayank Aggarwal’s Python AI Crash Course</a>, under the <a href="LICENSE-upstream.txt">MIT license</a>. Classroom adaptation, chapter guides and project exercises: Learn with Mynul. <a href="sources.html">Sources and study guide</a>.</p>
+</div></main><footer class="cos-foot"><div class="wrap">Learn with Mynul · Read. Trace. Practice. Build.</div></footer>
+<script>window.PYTHON_PRACTICE = [{"prompt": "What prints?", "accept": ["[2, 4]"], "hint": "map applies the function to every item.", "code": "print(list(map(lambda x: x * 2, [1, 2])))", "answer": "[2, 4]", "why": "map applies the function to every item.", "id": "ch11-q1"}, {"prompt": "What prints?", "accept": ["[3]"], "hint": "filter keeps the values whose predicate is true.", "code": "print(list(filter(lambda x: x > 2, [1, 2, 3])))", "answer": "[3]", "why": "filter keeps the values whose predicate is true.", "id": "ch11-q2"}, {"prompt": "What prints?", "accept": ["6"], "hint": "reduce repeatedly combines the running result with the next value.", "code": "from functools import reduce\nprint(reduce(lambda a, b: a + b, [1, 2, 3]))", "answer": "6", "why": "reduce repeatedly combines the running result with the next value.", "id": "ch11-q3"}, {"prompt": "What prints?", "accept": ["[]"], "hint": "The map iterator has already been consumed.", "code": "items = map(str, [1, 2])\nlist(items)\nprint(list(items))", "answer": "[]", "why": "The map iterator has already been consumed.", "id": "ch11-q4"}, {"id": "ch11-write", "prompt": "Use map and lambda to convert [0, 10, 20] Celsius to Fahrenheit.", "hint": "Fahrenheit = Celsius * 9 / 5 + 32.", "answer": "celsius = [0, 10, 20]\nfahrenheit = list(map(lambda c: c * 9 / 5 + 32, celsius))\nprint(fahrenheit)  # [32.0, 50.0, 68.0]"}];</script><script src="js/practice.js?v=1" defer></script><script src="../../assets/js/theme.js?v=3" defer></script></body></html>

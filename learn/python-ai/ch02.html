@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
+  </script><title>Variables and numeric types · Python + AI · Learn with Mynul</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<meta name="description" content="Python and AI from scratch. Read the lessons, trace examples and practice with hints, saved drafts and commented answers.">
+<link rel="stylesheet" href="course.css?v=1"></head>
+<body class="cos" data-chapter="2"><a class="skip" href="#main">Skip to content</a>
+<header class="cos-bar"><div class="wrap"><a class="cos-brand" href="index.html">Python · AI</a><nav class="cos-nav" aria-label="Python course"><a href="index.html">Map</a><a  href="ch01.html">1</a><a class="is-on" href="ch02.html">2</a><a  href="ch03.html">3</a><a  href="ch04.html">4</a><a  href="ch05.html">5</a><a  href="ch06.html">6</a><a  href="ch07.html">7</a><a  href="ch08.html">8</a><a  href="ch09.html">9</a><a  href="ch10.html">10</a><a  href="ch11.html">11</a><a  href="ch12.html">12</a><a  href="ch13.html">13</a><a  href="ch14.html">14</a><a href="index.html#projects">Projects</a><a href="../index.html">Learn hub</a></nav><button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode"><svg class="theme-sun" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="#F5C518"/><g stroke="#F5C518" stroke-width="1.8" stroke-linecap="round" fill="none"><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M5.6 18.4l1.7-1.7M16.7 7.3l1.7-1.7"/></g></svg><svg class="theme-moon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="#8EA0FF" d="M16.2 3.1A8.9 8.9 0 1 0 21.1 18 7.4 7.4 0 0 1 16.2 3.1z"/></svg></button></div></header>
+<main id="main"><div class="wrap"><p class="kicker"><a href="index.html">Python + AI</a> · Chapter 02</p><h1>Variables and numeric types</h1><p class="lede">A variable is a name referring to a Python object. Assignment binds or rebinds that name. It does not create a permanent box restricted to one type. Start with int for whole numbers, float for approximate decimal values and bool for True or False.</p><div class="toc"><a href="#reading">Reading</a><a href="#practice">Practice session</a><a href="#end">Save reading progress</a></div><div class="rule"><span class="tag">The rule</span><p>Use type(value) to inspect a type. Division / returns a float for integer operands. // performs floor division. Empty containers, empty strings, zero and None are falsy. A nonempty string such as &quot;False&quot; is truthy. Floating-point arithmetic is approximate; use math.isclose for approximate comparisons.</p></div><h2>Worked example</h2><pre><code>count = 3  # int
+price = 2.5  # float
+total = count * price  # 7.5
+print(total)
+print(bool(&quot;False&quot;))  # A nonempty string is truthy.
+print(type(count).__name__)</code></pre><div class="trace"><span class="tag">Trace every line</span><p>count refers to 3. Multiplication produces 7.5 and binds total to it. The output is 7.5, True and int on separate lines. Reassigning count = &quot;three&quot; would change count to refer to a string, without changing total.</p></div><div id="reading"><section class="reading" id="lesson-04"><h2>04. Data Types</h2><p>How Python classifies data, why variables can change type, and why integers have no fixed size.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=3117s">Watch 51:57</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/04-data-types">Original resources</a></div><details open><summary>Read the explanation · theory.ipynb</summary><h3>Data Types in Python</h3>
+<p>In this lesson, we will master the various data types in Python. Although a programmer does not explicitly mention the type while creating a variable in a Python program, Python internally allocates a data type based on the declaration style and value.</p>
+<h4>Key Points about Python Data Types</h4>
+<ol>
+<li><p><strong>Dynamic Typing</strong>: Data types in Python are dynamic. This means we can assign different values to the same variable at different points in time, and Python will dynamically change the type of the variable as per the value given.</p>
+<pre><code class="language-python">a = 5
+print(type(a))  # Output: 
+a = &#39;Python&#39;
+print(type(a))  # Output: 
+a = 3.5
+print(type(a))  # Output: 
+</code></pre>
+</li>
+<li><p><strong>Dynamic Size Management</strong>: The size of data types in Python is dynamically managed. Unlike C/C++/Java, variables in Python are not of fixed size. Python makes variables as big as required on demand.</p>
+<pre><code class="language-python">import sys
+a = 5
+print(sys.getsizeof(a))  # Output: size in bytes
+a = &#39;Python&#39;
+print(sys.getsizeof(a))  # Output: size in bytes
+</code></pre>
+</li>
+<li><p><strong>Unbounded Data Types</strong>: Python data types like integers do not have any range, i.e., they are unbounded. Unlike C/C++, they do not have a min or max value. An <code>int</code> type can store as many digits as needed.</p>
+<pre><code class="language-python">a = 10**1000  # a very large number
+print(a)
+print(type(a))  # Output: 
+</code></pre>
+</li>
+</ol>
+<pre><code class="language-python">### Example of dynamic typing
+a = 5
+print(type(a))  # Output: &lt;class &#39;int&#39;&gt;
+a = &#39;Python&#39;
+print(type(a))  # Output: &lt;class &#39;str&#39;&gt;
+a = 3.5
+print(type(a))  # Output: &lt;class &#39;float&#39;&gt;
+</code></pre>
+<pre><code class="language-python">### Example of dynamic size management
+import sys
+a = 5
+print(sys.getsizeof(a))  # Output: size in bytes
+a = &#39;Python&#39;
+print(sys.getsizeof(a))  # Output: size in bytes
+</code></pre>
+<pre><code class="language-python">### Example of unbounded data types
+a = 10**1000  # a very large number
+print(a)
+print(type(a))  # Output: &lt;class &#39;int&#39;&gt;
+</code></pre>
+<h3>Industry Use Cases</h3>
+<ol>
+<li><strong>Scientific Computing</strong>: Dynamic typing and unbounded integers make Python ideal for scientific computing, where calculations with very large numbers and dynamic data structures are common.</li>
+<li><strong>Web Development</strong>: Dynamic size management allows for flexible handling of various data types, making it easier to manage web content and user inputs.</li>
+<li><strong>Data Analysis</strong>: Python&#39;s dynamic typing and size management are beneficial for data analysis, where data types can vary greatly and large datasets need efficient handling.</li>
+<li><strong>Machine Learning</strong>: In machine learning, Python&#39;s ability to handle large datasets and perform complex calculations with dynamic typing and size management is crucial.</li>
+<li><strong>Automation</strong>: Python&#39;s flexible data types and dynamic typing simplify automation scripts, allowing them to handle different data inputs seamlessly.</li>
+</ol>
+<h3>Questions</h3>
+<ol>
+<li>What does dynamic typing mean in Python? Provide an example.</li>
+<li>How does Python manage the size of data types dynamically? Give an example using the <code>sys</code> module.</li>
+<li>Explain unbounded data types in Python with an example.</li>
+<li>Write a code snippet to demonstrate assigning different types of values to the same variable.</li>
+<li>Why is dynamic typing useful in scientific computing?</li>
+</ol>
+<h3>Answers</h3>
+<ol>
+<li><p><strong>Dynamic Typing</strong>: It means that the type of a variable can change during runtime based on the value assigned to it.</p>
+<pre><code class="language-python">a = 5
+print(type(a))  # Output: 
+a = &#39;Python&#39;
+print(type(a))  # Output: 
+a = 3.5
+print(type(a))  # Output: 
+</code></pre>
+</li>
+<li><p><strong>Dynamic Size Management</strong>: Python adjusts the size of the variable as needed. The <code>sys</code> module&#39;s <code>getsizeof</code> function can be used to check the size.</p>
+<pre><code class="language-python">import sys
+a = 5
+print(sys.getsizeof(a))  # Output: size in bytes
+a = &#39;Python&#39;
+print(sys.getsizeof(a))  # Output: size in bytes
+</code></pre>
+</li>
+<li><p><strong>Unbounded Data Types</strong>: Python integers do not have a min or max value limit.</p>
+<pre><code class="language-python">a = 10**1000  # a very large number
+print(a)
+print(type(a))  # Output: 
+</code></pre>
+</li>
+<li><p><strong>Assigning Different Types</strong>:</p>
+<pre><code class="language-python">a = 5
+print(type(a))  # Output: 
+a = &#39;Python&#39;
+print(type(a))  # Output: 
+a = 3.5
+print(type(a))  # Output: 
+</code></pre>
+</li>
+<li><p><strong>Dynamic Typing in Scientific Computing</strong>: It allows handling various types of data efficiently without needing to declare types explicitly, which is useful for large and complex scientific computations.</p>
+</li>
+</ol>
+</details><details ><summary>Read and trace the code examples · code.ipynb</summary><h3>Data Types In Python</h3>
+<pre><code class="language-python">a = 10
+b = &quot;python&quot;
+</code></pre>
+<h3>Type Function</h3>
+<pre><code class="language-python">type(a)
+</code></pre>
+<pre><code class="language-python">type(b)
+</code></pre>
+<pre><code class="language-python">a 
+</code></pre>
+<pre><code class="language-python">a = &quot;python&quot;
+</code></pre>
+<pre><code class="language-python">a
+</code></pre>
+<pre><code class="language-python">import sys
+</code></pre>
+<pre><code class="language-python">c = 500
+</code></pre>
+<pre><code class="language-python">sys.getsizeof(c)
+</code></pre>
+<pre><code class="language-python">c = 500000000
+</code></pre>
+<pre><code class="language-python">sys.getsizeof(c)
+</code></pre>
+<pre><code class="language-python">c = 500000000 * 10000000
+</code></pre>
+<pre><code class="language-python">c
+</code></pre>
+<pre><code class="language-python">sys.getsizeof(c)
+</code></pre>
+<pre><code class="language-python">c = c*c
+</code></pre>
+<pre><code class="language-python">sys.getsizeof(c)
+</code></pre>
+<pre><code class="language-python">c = 10
+</code></pre>
+<pre><code class="language-python">sys.getsizeof(c)
+</code></pre>
+<pre><code class="language-python">c = 5000000000000000500000000000000050000000000000005000000000000000500000000000000050000000000000005000000000000000
+</code></pre>
+<pre><code class="language-python">sys.getsizeof(c)
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Run `type()` on five different values and list the types you see.</li><li>Re-assign one variable to a value of another type and print `type()` after each step.</li><li>Compute `2 ** 200` and confirm it is still an `int`.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section><section class="reading" id="lesson-05"><h2>05. Numeric Types: int, float, complex</h2><p>The three numeric types: `int`, `float` and `complex`, including float precision surprises.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=3117s">Watch 51:57</a><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=3614s">Watch 1:00:14</a><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=3793s">Watch 1:03:13</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/05-numeric-data-types">Original resources</a></div><details open><summary>Read the explanation · theory.ipynb</summary><h3>Numeric Data Types in Python</h3>
+<p>In this lesson, we will master the various numeric data types in Python. Python supports integers, floating-point numbers, and complex numbers, which are commonly used in mathematical computations.</p>
+<h4>Integer (int)</h4>
+<p>Integers in Python are used for storing whole numbers, both negative and positive, without any fractional part.</p>
+<pre><code class="language-python">a = 10
+b = -5
+print(type(a))  # Output: 
+print(type(b))  # Output: 
+</code></pre>
+<h4>Float (float)</h4>
+<p>Floats in Python are used for storing real numbers with a fractional part. They are specified with a decimal point.</p>
+<pre><code class="language-python">c = 3.14
+d = -2.7
+print(type(c))  # Output: 
+print(type(d))  # Output: 
+</code></pre>
+<p>Python&#39;s float has a precision of 16 digits, similar to the <code>double</code> data type in C or Java. Floats can also be represented in exponential form.</p>
+<pre><code class="language-python">e = 1.05e3  # equivalent to 1050.0
+print(e)  # Output: 1050.0
+print(type(e))  # Output: 
+</code></pre>
+<h4>Complex (complex)</h4>
+<p>Complex numbers in Python are written with a real part and an imaginary part, using the letter <code>j</code> as the imaginary unit.</p>
+<pre><code class="language-python">f = 3 + 4j
+g = 2.5 - 1.5j
+print(type(f))  # Output: 
+print(type(g))  # Output: 
+</code></pre>
+<p>In complex numbers, both the real and imaginary parts can be floats as well as integers.</p>
+<pre><code class="language-python">### Example of integer
+a = 10
+b = -5
+print(type(a))  # Output: &lt;class &#39;int&#39;&gt;
+print(type(b))  # Output: &lt;class &#39;int&#39;&gt;
+</code></pre>
+<pre><code class="language-python">### Example of float
+c = 3.14
+d = -2.7
+print(type(c))  # Output: &lt;class &#39;float&#39;&gt;
+print(type(d))  # Output: &lt;class &#39;float&#39;&gt;
+
+### Example of float in exponential form
+e = 1.05e3  # equivalent to 1050.0
+print(e)  # Output: 1050.0
+print(type(e))  # Output: &lt;class &#39;float&#39;&gt;
+</code></pre>
+<pre><code class="language-python">### Example of complex number
+f = 3 + 4j
+g = 2.5 - 1.5j
+print(type(f))  # Output: &lt;class &#39;complex&#39;&gt;
+print(type(g))  # Output: &lt;class &#39;complex&#39;&gt;
+</code></pre>
+<h3>Industry Use Cases</h3>
+<ol>
+<li><strong>Scientific Computing</strong>: Python&#39;s support for floats and complex numbers is essential for scientific computing tasks involving calculations with real and imaginary numbers.</li>
+<li><strong>Data Analysis</strong>: In data analysis, numeric data types are used to store and process large datasets of numerical information.</li>
+<li><strong>Finance</strong>: Financial applications use floats for precise calculations involving currency and interest rates, and integers for counting discrete items like stocks.</li>
+<li><strong>Machine Learning</strong>: In machine learning, numeric data types are used to represent and manipulate features and weights in algorithms.</li>
+<li><strong>Graphics</strong>: Complex numbers can be used in graphics programming to represent points and transformations in the complex plane.</li>
+</ol>
+<h3>Questions</h3>
+<ol>
+<li>What are the three numeric data types in Python? Provide examples for each.</li>
+<li>How are floating-point numbers represented in Python? Explain with an example.</li>
+<li>Write a code snippet to demonstrate the creation of a complex number and how to access its real and imaginary parts.</li>
+<li>Explain the concept of precision in Python floats. How is it similar to the <code>double</code> data type in C or Java?</li>
+<li>Why are numeric data types important in scientific computing?</li>
+</ol>
+<h3>Answers</h3>
+<ol>
+<li><p><strong>Numeric Data Types</strong>: Integers (<code>int</code>), Floats (<code>float</code>), and Complex numbers (<code>complex</code>).</p>
+<pre><code class="language-python">a = 10  # int
+b = 3.14  # float
+c = 1 + 2j  # complex
+print(type(a))  # Output: 
+print(type(b))  # Output: 
+print(type(c))  # Output: 
+</code></pre>
+</li>
+<li><p><strong>Floating-Point Numbers</strong>: Represented with a decimal point or in exponential form.</p>
+<pre><code class="language-python">d = 2.5
+e = 1.05e3  # equivalent to 1050.0
+print(d)  # Output: 2.5
+print(e)  # Output: 1050.0
+</code></pre>
+</li>
+<li><p><strong>Complex Numbers</strong>:</p>
+<pre><code class="language-python">f = 3 + 4j
+print(f.real)  # Output: 3.0
+print(f.imag)  # Output: 4.0
+</code></pre>
+</li>
+<li><p><strong>Precision in Floats</strong>: Python&#39;s floats have a precision of 16 digits, similar to <code>double</code> in C or Java.</p>
+<pre><code class="language-python">g = 3.141592653589793
+print(g)  # Output: 3.141592653589793
+</code></pre>
+</li>
+<li><p><strong>Numeric Data Types in Scientific Computing</strong>: They allow for accurate representation and manipulation of numerical data, which is crucial for scientific experiments and calculations.</p>
+</li>
+</ol>
+</details><details ><summary>Read and trace the code examples · code.ipynb</summary><pre><code class="language-python">a = 5
+</code></pre>
+<pre><code class="language-python">type(a)
+</code></pre>
+<pre><code class="language-python">b = -5
+type(b)
+</code></pre>
+<pre><code class="language-python">c = 5.5
+</code></pre>
+<pre><code class="language-python">type(c)
+</code></pre>
+<pre><code class="language-python">d = 3.1341
+type(d)
+</code></pre>
+<pre><code class="language-python">e = 1e5
+</code></pre>
+<pre><code class="language-python">e
+</code></pre>
+<pre><code class="language-python">type(e)
+</code></pre>
+<pre><code class="language-python">f = 1e-3
+</code></pre>
+<pre><code class="language-python">f
+</code></pre>
+<pre><code class="language-python">type(f)
+</code></pre>
+<pre><code class="language-python">c1 = 3+4j
+type(c1)
+</code></pre>
+<pre><code class="language-python">c2 = 5+ 5j
+</code></pre>
+<pre><code class="language-python">c3 = 4+ 6.5j
+</code></pre>
+<pre><code class="language-python">c4 = 5.4+4.54j
+</code></pre>
+<pre><code class="language-python">c4.real
+</code></pre>
+<pre><code class="language-python">c4.imag
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Evaluate `0.1 + 0.2 == 0.3`, then fix the comparison with `round()` or `math.isclose()`.</li><li>Create `3 + 4j` and print its `real`, `imag` and `abs()`.</li><li>Compare `type(10 / 2)` with `type(10 // 2)` and explain the difference.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section><section class="reading" id="lesson-06"><h2>06. Boolean Data Type</h2><p>What `True` and `False` really are, and which values Python treats as truthy or falsy.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=3980s">Watch 1:06:20</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/06-boolean">Original resources</a></div><details open><summary>Read the explanation · theory.ipynb</summary><h3>Boolean Data Type in Python</h3>
+<p>In this lesson, we will master the Boolean data type in Python. Booleans are used to represent truth values, which can either be <code>True</code> or <code>False</code>. Booleans are essential in controlling the flow of a program and making comparisons.</p>
+<h4>Boolean Values</h4>
+<p>In Python, the Boolean data type is denoted by the keywords <code>True</code> and <code>False</code>. These values are case-sensitive and must be written with a capital &#39;T&#39; and &#39;F&#39; respectively.</p>
+<p>Examples:</p>
+<pre><code class="language-python">a = True
+b = False
+print(a)  # Output: True
+print(b)  # Output: False
+print(type(a))  # Output: 
+print(type(b))  # Output: 
+</code></pre>
+<p>Booleans are commonly used in conditions and loops to control the flow of the program.</p>
+<pre><code class="language-python">a = True
+b = False
+print(a)  # Output: True
+print(b)  # Output: False
+print(type(a))  # Output: &lt;class &#39;bool&#39;&gt;
+print(type(b))  # Output: &lt;class &#39;bool&#39;&gt;
+</code></pre>
+<h4>Comparison Operations</h4>
+<p>Boolean values are often the result of comparison operations. Python provides several comparison operators, such as <code>==</code>, <code>!=</code>, ``, <code>=</code>.</p>
+<p>Examples:</p>
+<pre><code class="language-python">x = 10
+y = 20
+print(x == y)  # Output: False
+print(x != y)  # Output: True
+print(x  y)   # Output: False
+</code></pre>
+<p>These comparisons yield Boolean values and can be used to control the flow of the program, such as in if statements.</p>
+<pre><code class="language-python">x = 10
+y = 20
+print(x == y)  # Output: False
+print(x != y)  # Output: True
+print(x &lt; y)   # Output: True
+print(x &gt; y)   # Output: False
+</code></pre>
+<h4>Boolean in Control Flow</h4>
+<p>Booleans are heavily used in controlling the flow of programs using <code>if</code>, <code>elif</code>, and <code>else</code> statements.</p>
+<p>Examples:</p>
+<pre><code class="language-python">is_raining = True
+if is_raining:
+    print(&quot;Take an umbrella.&quot;)
+else:
+    print(&quot;Enjoy the sunshine!&quot;)
+</code></pre>
+<p>This example demonstrates how a Boolean value can determine which block of code is executed.</p>
+<pre><code class="language-python">is_raining = True
+if is_raining:
+    print(&quot;Take an umbrella.&quot;)
+else:
+    print(&quot;Enjoy the sunshine!&quot;)
+</code></pre>
+<h4>Boolean Operators</h4>
+<p>Python provides three Boolean operators: <code>and</code>, <code>or</code>, and <code>not</code>.</p>
+<ul>
+<li><code>and</code>: Returns <code>True</code> if both operands are <code>True</code>.</li>
+<li><code>or</code>: Returns <code>True</code> if at least one operand is <code>True</code>.</li>
+<li><code>not</code>: Returns <code>True</code> if the operand is <code>False</code>.</li>
+</ul>
+<p>Examples:</p>
+<pre><code class="language-python">a = True
+b = False
+print(a and b)  # Output: False
+print(a or b)   # Output: True
+print(not a)    # Output: False
+</code></pre>
+<p>These operators are often used in complex conditions to combine multiple comparisons.</p>
+<pre><code class="language-python">a = True
+b = False
+print(a and b)  # Output: False
+print(a or b)   # Output: True
+print(not a)    # Output: False
+</code></pre>
+<h4>Boolean Type Conversion</h4>
+<p>Any value in Python can be converted to a Boolean using the <code>bool()</code> function. The following values are considered <code>False</code>:</p>
+<ul>
+<li><code>None</code></li>
+<li><code>False</code></li>
+<li>Zero of any numeric type: <code>0</code>, <code>0.0</code>, <code>0j</code></li>
+<li>Empty sequences and collections: <code>&#39;&#39;</code>, <code>()</code>, <code>[]</code>, <code>{}</code></li>
+</ul>
+<p>All other values are considered <code>True</code>.</p>
+<p>Examples:</p>
+<pre><code class="language-python">print(bool(0))  # Output: False
+print(bool(1))  # Output: True
+print(bool([]))  # Output: False
+print(bool([1, 2, 3]))  # Output: True
+</code></pre>
+<p>This can be useful when you need to evaluate a value in a Boolean context.</p>
+<pre><code class="language-python">print(bool(0))  # Output: False
+print(bool(1))  # Output: True
+print(bool([]))  # Output: False
+print(bool([1, 2, 3]))  # Output: True
+</code></pre>
+<h3>Industry Use Cases</h3>
+<ol>
+<li><strong>Conditional Logic</strong>: Booleans are used to implement conditional logic in programs, allowing different code paths based on conditions.</li>
+<li><strong>Validation</strong>: Boolean values are used to validate inputs and ensure that the correct conditions are met before executing certain operations.</li>
+<li><strong>Error Handling</strong>: Booleans can be used to handle errors and exceptions by checking conditions and returning appropriate responses.</li>
+<li><strong>Flags</strong>: Boolean flags are used to control the execution of loops and other control structures in a program.</li>
+<li><strong>Configuration Settings</strong>: Booleans are often used to store configuration settings that can enable or disable certain features.</li>
+</ol>
+<h3>Questions</h3>
+<ol>
+<li>What are the Boolean values in Python?</li>
+<li>How are comparison operators used with Boolean values? Give examples.</li>
+<li>Write a code snippet to demonstrate the use of <code>and</code>, <code>or</code>, and <code>not</code> operators.</li>
+<li>Explain how Boolean values can control the flow of a program with an example.</li>
+<li>Write a code snippet to convert different data types to Boolean using the <code>bool()</code> function.</li>
+<li>How can Boolean values be used in error handling? Provide an example.</li>
+<li>Create a code snippet that checks if a list is empty and prints a message accordingly.</li>
+</ol>
+<h3>Solutions:</h3>
+<pre><code class="language-python">
+
+### 1. What are the Boolean values in Python?
+boolean_values = True, False
+print(boolean_values)  # Output: (True, False)
+
+### 2. How are comparison operators used with Boolean values? Give examples.
+x = 5
+y = 10
+print(x &lt; y)  # Output: True
+print(x == y)  # Output: False
+
+### 3. Write a code snippet to demonstrate the use of `and`, `or`, and `not` operators.
+a = True
+b = False
+print(a and b)  # Output: False
+print(a or b)   # Output: True
+print(not a)    # Output: False
+
+### 4. Explain how Boolean values can control the flow of a program with an example.
+is_raining = True
+if is_raining:
+    print(&quot;Take an umbrella.&quot;)
+else:
+    print(&quot;Enjoy the sunshine!&quot;)
+
+### 5. Write a code snippet to convert different data types to Boolean using the `bool()` function.
+print(bool(0))  # Output: False
+print(bool(1))  # Output: True
+print(bool([]))  # Output: False
+print(bool([1, 2, 3]))  # Output: True
+
+### 6. How can Boolean values be used in error handling? Provide an example.
+def divide(a, b):
+    if b == 0:
+        return False, &quot;Cannot divide by zero&quot;
+    else:
+        return True, a / b
+
+success, result = divide(10, 0)
+print(success, result)  # Output: False Cannot divide by zero
+
+### 7. Create a code snippet that checks if a list is empty and prints a message accordingly.
+my_list = []
+if not my_list:
+    print(&quot;The list is empty.&quot;)
+else:
+    print(&quot;The list is not empty.&quot;)
+</code></pre>
+</details><details ><summary>Read and trace the code examples · code.ipynb</summary><pre><code class="language-python">a = False
+b= True
+</code></pre>
+<pre><code class="language-python">a = false
+</code></pre>
+<pre><code class="language-python">true
+</code></pre>
+<pre><code class="language-python">True, False
+</code></pre>
+<pre><code class="language-python">3&gt;5
+</code></pre>
+<pre><code class="language-python">res = 7&gt;3
+res
+</code></pre>
+<pre><code class="language-python">a =True
+b = True
+c = a+b
+</code></pre>
+<pre><code class="language-python">print(c)
+</code></pre>
+<pre><code class="language-python">d = False
+print(a+d)
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Print `bool()` of `0`, `1`, `&quot;&quot;`, `&quot;0&quot;`, `[]`, `[0]` and `None`.</li><li>Predict, then check, the value of `True + True + False`.</li><li>Predict the result of `bool(&quot;False&quot;)`, then run it.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section></div><h2 id="practice">Practice session</h2><div class="scorebox"><span class="tag">This chapter</span><p data-score aria-live="polite"></p><p>Predict the output before running it. Output checks preserve case and line breaks. Written programs are saved for self-review and are not executed here. Drafts and progress stay in this browser.</p></div><article class="drill" id="ch02-q1"><p class="drill-id">Practice 01 · checked answer</p><h3>What prints?</h3><pre><code>print(type(10 / 2).__name__)</code></pre><label for="input-ch02-q1">Your answer</label><textarea id="input-ch02-q1" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch02-q1">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch02-q1">See answer</button></div>
+<div class="drill-hint" id="hint-ch02-q1" data-hint hidden><span class="tag">Step by step</span><p>/ is true division.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch02-q1" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>float</code></pre><p>/ is true division.</p></div></article><article class="drill" id="ch02-q2"><p class="drill-id">Practice 02 · checked answer</p><h3>What prints?</h3><pre><code>print(bool(&quot;False&quot;))</code></pre><label for="input-ch02-q2">Your answer</label><textarea id="input-ch02-q2" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch02-q2">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch02-q2">See answer</button></div>
+<div class="drill-hint" id="hint-ch02-q2" data-hint hidden><span class="tag">Step by step</span><p>The string is nonempty.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch02-q2" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>True</code></pre><p>The string is nonempty.</p></div></article><article class="drill" id="ch02-q3"><p class="drill-id">Practice 03 · checked answer</p><h3>What prints?</h3><pre><code>print(True + True + False)</code></pre><label for="input-ch02-q3">Your answer</label><textarea id="input-ch02-q3" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch02-q3">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch02-q3">See answer</button></div>
+<div class="drill-hint" id="hint-ch02-q3" data-hint hidden><span class="tag">Step by step</span><p>bool is a subclass of int.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch02-q3" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>2</code></pre><p>bool is a subclass of int.</p></div></article><article class="drill" id="ch02-q4"><p class="drill-id">Practice 04 · checked answer</p><h3>What prints?</h3><pre><code>print(0.1 + 0.2 == 0.3)</code></pre><label for="input-ch02-q4">Your answer</label><textarea id="input-ch02-q4" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch02-q4">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch02-q4">See answer</button></div>
+<div class="drill-hint" id="hint-ch02-q4" data-hint hidden><span class="tag">Step by step</span><p>Binary floating point is approximate.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch02-q4" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>False</code></pre><p>Binary floating point is approximate.</p></div></article><article class="drill" id="ch02-write"><p class="drill-id">Practice 05 · write and self-review</p><h3>Calculate a total for 4 items at 2.5 EUR each. Print the total and whether it is greater than 8.</h3><label for="input-ch02-write">Your answer</label><textarea id="input-ch02-write" class="drill-in" rows="10" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch02-write">Hint</button><button type="button" data-submit>Submit draft</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch02-write">See answer</button></div>
+<div class="drill-hint" id="hint-ch02-write" data-hint hidden><span class="tag">Step by step</span><p>Multiply first, then compare.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch02-write" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>quantity = 4
+price = 2.5
+total = quantity * price
+print(total)  # 10.0
+print(total &gt; 8)  # True</code></pre><p>Compare the result with your own answer. Explain what each line does before moving on.</p></div></article><div class="course-actions chapter-end" id="end"><button type="button" data-complete aria-pressed="false">Mark chapter as read</button><a href="#main">Back to reading</a></div><div class="pager"><a href="ch01.html">← Previous chapter</a><a href="ch03.html">Next chapter →</a></div>
+<p class="source-note">Reading notes and course sequence adapted from <a href="https://github.com/mayank953/python-ai-crash-course">Mayank Aggarwal’s Python AI Crash Course</a>, under the <a href="LICENSE-upstream.txt">MIT license</a>. Classroom adaptation, chapter guides and project exercises: Learn with Mynul. <a href="sources.html">Sources and study guide</a>.</p>
+</div></main><footer class="cos-foot"><div class="wrap">Learn with Mynul · Read. Trace. Practice. Build.</div></footer>
+<script>window.PYTHON_PRACTICE = [{"prompt": "What prints?", "accept": ["float"], "hint": "/ is true division.", "code": "print(type(10 / 2).__name__)", "answer": "float", "why": "/ is true division.", "id": "ch02-q1"}, {"prompt": "What prints?", "accept": ["True"], "hint": "The string is nonempty.", "code": "print(bool(\"False\"))", "answer": "True", "why": "The string is nonempty.", "id": "ch02-q2"}, {"prompt": "What prints?", "accept": ["2"], "hint": "bool is a subclass of int.", "code": "print(True + True + False)", "answer": "2", "why": "bool is a subclass of int.", "id": "ch02-q3"}, {"prompt": "What prints?", "accept": ["False"], "hint": "Binary floating point is approximate.", "code": "print(0.1 + 0.2 == 0.3)", "answer": "False", "why": "Binary floating point is approximate.", "id": "ch02-q4"}, {"id": "ch02-write", "prompt": "Calculate a total for 4 items at 2.5 EUR each. Print the total and whether it is greater than 8.", "hint": "Multiply first, then compare.", "answer": "quantity = 4\nprice = 2.5\ntotal = quantity * price\nprint(total)  # 10.0\nprint(total > 8)  # True"}];</script><script src="js/practice.js?v=1" defer></script><script src="../../assets/js/theme.js?v=3" defer></script></body></html>

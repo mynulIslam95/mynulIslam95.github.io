@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
+  </script><title>Your first Python program · Python + AI · Learn with Mynul</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<meta name="description" content="Python and AI from scratch. Read the lessons, trace examples and practice with hints, saved drafts and commented answers.">
+<link rel="stylesheet" href="course.css?v=1"></head>
+<body class="cos" data-chapter="1"><a class="skip" href="#main">Skip to content</a>
+<header class="cos-bar"><div class="wrap"><a class="cos-brand" href="index.html">Python · AI</a><nav class="cos-nav" aria-label="Python course"><a href="index.html">Map</a><a class="is-on" href="ch01.html">1</a><a  href="ch02.html">2</a><a  href="ch03.html">3</a><a  href="ch04.html">4</a><a  href="ch05.html">5</a><a  href="ch06.html">6</a><a  href="ch07.html">7</a><a  href="ch08.html">8</a><a  href="ch09.html">9</a><a  href="ch10.html">10</a><a  href="ch11.html">11</a><a  href="ch12.html">12</a><a  href="ch13.html">13</a><a  href="ch14.html">14</a><a href="index.html#projects">Projects</a><a href="../index.html">Learn hub</a></nav><button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode"><svg class="theme-sun" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="#F5C518"/><g stroke="#F5C518" stroke-width="1.8" stroke-linecap="round" fill="none"><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M5.6 18.4l1.7-1.7M16.7 7.3l1.7-1.7"/></g></svg><svg class="theme-moon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="#8EA0FF" d="M16.2 3.1A8.9 8.9 0 1 0 21.1 18 7.4 7.4 0 0 1 16.2 3.1z"/></svg></button></div></header>
+<main id="main"><div class="wrap"><p class="kicker"><a href="index.html">Python + AI</a> · Chapter 01</p><h1>Your first Python program</h1><p class="lede">A program is a set of instructions. Python executes the statements at the top level of a file in order. You write a .py file, save it and ask the Python interpreter to run it. A notebook uses the same language but keeps results between cell runs.</p><div class="toc"><a href="#reading">Reading</a><a href="#practice">Practice session</a><a href="#end">Save reading progress</a></div><div class="rule"><span class="tag">The rule</span><p>On Windows, install Python from python.org. Open a terminal and check py --version. Save print(&quot;Hello, Mynul!&quot;) in hello.py and run py hello.py. On macOS or Linux the command is usually python3 hello.py. Do not put the terminal command inside the Python file. In a notebook, restart the kernel and run all cells before trusting the result.</p></div><h2>Worked example</h2><pre><code>import math  # Load the standard-library math module.
+name = &quot;Mynul&quot;  # Bind a name to a string.
+print(&quot;Hello&quot;, name)  # Print two values separated by a space.
+print(math.sqrt(81))  # Call sqrt and print its result.</code></pre><div class="trace"><span class="tag">Trace every line</span><p>Import makes math available. Assignment binds name to &quot;Mynul&quot;. The first print produces Hello Mynul. sqrt(81) returns the float 9.0. A syntax error stops a file before its statements run; a runtime error happens while an instruction is executing.</p></div><div class="need"><span class="tag">Windows setup, step by step</span><ol><li>Install Python from <a href="https://www.python.org/downloads/">python.org</a>. Open a new terminal and run <code>py --version</code>.</li><li>Create a folder called python-practice. Save hello.py there using a code editor or IDLE. Make sure it is not hello.py.txt.</li><li>Open a terminal in that folder and run <code>py hello.py</code>. <code>&gt;&gt;&gt;</code> is the Python prompt, not a terminal prompt. Use <code>exit()</code> to leave it.</li><li>For notebooks, create a virtual environment with <code>py -m venv .venv</code>. In Command Prompt activate it with <code>.venv\Scripts\activate.bat</code>, then run <code>python -m pip install jupyterlab</code> and <code>python -m jupyter lab</code>.</li><li>You can also use <a href="https://colab.research.google.com/">Google Colab</a> for notebooks without installing Python. Start by typing examples yourself.</li></ol></div><div id="reading"><section class="reading" id="lesson-01"><h2>01. Introduction to Python</h2><p>Why programming exists, what makes Python a good first language, and where it is used in the real world.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=0s">Watch 0:00</a><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=158s">Watch 2:38</a><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=405s">Watch 6:45</a><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=670s">Watch 11:10</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/01-introduction-to-python">Original resources</a></div><p>Start with the chapter guide and worked example above. The video and original PDF provide the accompanying introduction.</p><h3>Try it yourself</h3><ol><li>List three repetitive tasks in your own day that a program could do for you.</li><li>Search for two well-known products or companies that use Python and note what for.</li><li>Write down which Python feature from the video matters most for your goals, and why.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section><section class="reading" id="lesson-02"><h2>02. Installing Python &amp; Setting Up Jupyter</h2><p>Install Python, run it from the terminal and IDLE, and set up Anaconda with Jupyter notebooks.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=862s">Watch 14:22</a><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=978s">Watch 16:18</a><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=1231s">Watch 20:31</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/02-installing-python">Original resources</a></div><details open><summary>Read and trace the code examples · code.ipynb</summary><pre><code class="language-python">print(&quot;hello Python&quot;)
+</code></pre>
+<pre><code class="language-python">print(&quot;hello Python again&quot;)
+
+
+a = 5
+if(a&lt;10):
+    print(&quot;I am here&quot;)
+</code></pre>
+<pre><code class="language-python">if(b&gt;5):
+    pass
+</code></pre>
+<h3>Hello Python</h3>
+<pre><code class="language-python">print(&quot;Hello Python&quot;)
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Start the Python shell and calculate `2 ** 10`, then exit it.</li><li>Open a Jupyter notebook and run `import sys; print(sys.version)`.</li><li>Save a one-line `hello.py` file and run it from the terminal.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section><section class="reading" id="lesson-03"><h2>03. Built-in Functions, print(), Modules, Errors &amp; Identifiers</h2><p>Built-in functions, `print()` with `sep` and `end`, importing modules such as `math`, telling syntax errors from runtime errors, and the rules for naming things.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=1758s">Watch 29:18</a><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=2142s">Watch 35:42</a><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=2300s">Watch 38:20</a><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=2639s">Watch 43:59</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/03-print-input-modules">Original resources</a></div><details open><summary>Read the explanation · theory.ipynb</summary><h3>Predefined Functions in Python</h3>
+<p>Python has a rich set of predefined functions divided into two categories:</p>
+<ol>
+<li>Built-In Functions</li>
+<li>Functions Defined in Modules</li>
+</ol>
+<h4>Built-In Functions</h4>
+<h5><code>print</code> Function</h5>
+<p>The <code>print</code> function is used to output text to the console.</p>
+<h6>Example:</h6>
+<pre><code class="language-python">print(&#39;Hello Python&#39;)
+</code></pre>
+<p>This will print the words <code>Hello Python</code> to the console.</p>
+<pre><code class="language-python">### Using the print function
+print(&#39;Hello Python&#39;)  # This will print: Hello Python
+</code></pre>
+<h5>Modifying the <code>print</code> Function&#39;s Behavior</h5>
+<p>The <code>print</code> function has two useful arguments: <code>end</code> and <code>sep</code>.</p>
+<ul>
+<li><strong><code>end</code> argument</strong>: By default, <code>print</code> ends with a newline character. This can be changed.</li>
+</ul>
+<h6>Example:</h6>
+<pre><code class="language-python">print(&#39;Hello&#39;, end=&#39; &#39;)
+print(&#39;Python&#39;)
+</code></pre>
+<p>This will print: <code>Hello Python</code> on the same line.</p>
+<pre><code class="language-python">### Using the end argument in print
+print(&#39;Hello&#39;, end=&#39; &#39;)
+print(&#39;Python&#39;)  # This will print: Hello Python
+</code></pre>
+<ul>
+<li><strong><code>sep</code> argument</strong>: By default, <code>print</code> separates arguments with a space. This can be changed.</li>
+</ul>
+<h6>Example:</h6>
+<pre><code class="language-python">print(&#39;Hello&#39;, &#39;Python&#39;, sep=&#39;-&#39;)
+</code></pre>
+<p>This will print: <code>Hello-Python</code>.</p>
+<pre><code class="language-python">### Using the sep argument in print
+print(&#39;Hello&#39;, &#39;Python&#39;, sep=&#39;-&#39;)  # This will print: Hello-Python
+</code></pre>
+<h4>Functions Defined in Modules</h4>
+<p>A module in Python is a collection of functions and statements that provide additional functionality compared to built-in functions.</p>
+<p>Python has hundreds of built-in modules like <code>math</code>, <code>sys</code>, <code>platform</code>, etc., which are very useful to programmers.</p>
+<h5>Example: <code>math</code> Module</h5>
+<p>The <code>math</code> module provides mathematical functions.</p>
+<h6>Example:</h6>
+<pre><code class="language-python">import math
+print(math.sqrt(16))
+</code></pre>
+<p>This will print: <code>4.0</code>.</p>
+<pre><code class="language-python">### Using the math module
+import math
+print(math.sqrt(16))  # This will print: 4.0
+</code></pre>
+<h3>Errors in Python</h3>
+<p>Python has two kinds of errors:</p>
+<ol>
+<li>Syntax Errors</li>
+<li>Runtime Errors</li>
+</ol>
+<h4>Syntax Errors</h4>
+<p>Syntax errors occur when the rules of the language are broken.</p>
+<h6>Examples:</h6>
+<ul>
+<li>Misspelled keywords</li>
+<li>Incorrect use of operators</li>
+<li>Missing parentheses</li>
+</ul>
+<h6>Example:</h6>
+<pre><code class="language-python">prin(&#39;Hello&#39;)  # This will cause a syntax error because &#39;print&#39; is misspelled
+</code></pre>
+<pre><code class="language-python">### Syntax error example
+### prin(&#39;Hello&#39;)  # Uncommenting this line will cause a syntax error
+</code></pre>
+<h4>Runtime Errors (Exceptions)</h4>
+<p>Runtime errors occur while the program is running.
+When Python encounters a runtime error, it halts the execution of the program and displays an error message.</p>
+<h6>Example: Zero Division Error</h6>
+<pre><code class="language-python">print(10 / 0)  # This will cause a runtime error because division by zero is not allowed
+</code></pre>
+<pre><code class="language-python">### Runtime error example
+### print(10 / 0)  # Uncommenting this line will cause a ZeroDivisionError
+</code></pre>
+<h3>Identifiers in Python</h3>
+<p>Identifiers are names given to entities like variables, classes, functions, modules, etc.</p>
+<h4>Rules for Naming Identifiers</h4>
+<ol>
+<li>Cannot be a reserved word. The reserved word in python are as follows. (<a href="https://docs.python.org/3/reference/lexical_analysis.html#keywords">https://docs.python.org/3/reference/lexical_analysis.html#keywords</a>)</li>
+<li>Cannot begin with a number.</li>
+<li>Cannot contain special characters except for <code>_</code>.</li>
+<li>Can have alphanumeric characters and underscores.</li>
+<li>Are case-sensitive.</li>
+</ol>
+<h6>Examples:</h6>
+<ul>
+<li>Valid: <code>variable1</code>, <code>_variable</code>, <code>variable_name</code></li>
+<li>Invalid: <code>1variable</code>, <code>variable-name</code>, <code>variable!</code></li>
+</ul>
+<pre><code class="language-python">### Valid and invalid identifiers
+### Valid identifiers
+variable1 = 10
+_variable = 20
+variable_name = 30
+
+### Invalid identifiers (Uncomment to see errors)
+### 1variable = 10  # SyntaxError
+### variable-name = 20  # SyntaxError
+### variable! = 30  # SyntaxError
+</code></pre>
+<h3>Industry Use Case</h3>
+<h4>Real-World Application of Python Functions and Error Handling</h4>
+<ol>
+<li><strong>Scientific Computing</strong>: The <code>math</code> module is used for performing complex mathematical calculations in scientific research and engineering.</li>
+<li><strong>Web Development</strong>: Functions like <code>print</code> are used for debugging and displaying outputs during web application development.</li>
+<li><strong>Data Analysis</strong>: Handling errors gracefully is crucial in data analysis pipelines to ensure robustness and reliability.</li>
+<li><strong>Automation</strong>: Modules and functions are used extensively in automation scripts to handle repetitive tasks efficiently.</li>
+<li><strong>Software Development</strong>: Proper error handling ensures that software applications can handle unexpected situations without crashing, improving user experience.</li>
+</ol>
+<h3>Questions</h3>
+<ol>
+<li>What are the two types of predefined functions in Python?</li>
+<li>How can you modify the default behavior of the <code>print</code> function?</li>
+<li>What is a module in Python? Give an example.</li>
+<li>What are syntax errors? Provide an example.</li>
+<li>What are runtime errors? Provide an example.</li>
+<li>What are identifiers in Python? List the rules for naming identifiers.</li>
+<li>Write a code snippet to demonstrate a <code>ZeroDivisionError</code>.</li>
+<li>Write a code snippet to demonstrate the use of <code>end</code> and <code>sep</code> arguments in the <code>print</code> function.</li>
+</ol>
+<h3>Answers</h3>
+<ol>
+<li>Built-in functions and functions defined in modules.</li>
+<li>By using the <code>end</code> and <code>sep</code> arguments.</li>
+<li>A collection of functions and statements. Example: <code>math</code> module.</li>
+<li>Errors due to breaking language rules. Example: <code>prin(&#39;Hello&#39;)</code>.</li>
+<li>Errors that occur while the program is running. Example: <code>print(10 / 0)</code>.</li>
+<li>Names for entities like variables, classes, functions, etc. Rules: Cannot be reserved words, cannot begin with a number, cannot contain special characters except <code>_</code>, can have alphanumeric characters and underscores, are case-sensitive.</li>
+<li></li>
+</ol>
+<pre><code class="language-python">try:
+    print(10 / 0)
+except ZeroDivisionError as e:
+    print(f&quot;Error occurred: {e}&quot;)
+</code></pre>
+<p>8. </p>
+<pre><code class="language-python">print(&#39;Hello&#39;, end=&#39; &#39;)
+print(&#39;Python&#39;)
+print(&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, sep=&#39;-&#39;)
+</code></pre>
+</details><details ><summary>Read and trace the code examples · code.ipynb</summary><h3>Print Function - Built In Function</h3>
+<pre><code class="language-python">print(&quot;hello Python&quot;)
+</code></pre>
+<pre><code class="language-python">print(&quot;hello&quot;,&quot;world&quot;)
+</code></pre>
+<pre><code class="language-python">print(&quot;hello&quot;,&quot;python&quot;,&quot;!!&quot;)
+</code></pre>
+<pre><code class="language-python">print(&quot;hello&quot;)
+print(&quot;python&quot;)
+</code></pre>
+<h3>End Argument</h3>
+<pre><code class="language-python">print(&quot;hello&quot;, end = &quot; &quot; )
+print(&quot;python&quot;)
+</code></pre>
+<pre><code class="language-python">print(&quot;hello&quot;,&quot;python&quot;,&quot;!!&quot; , sep = &quot;@@&quot;)
+</code></pre>
+<pre><code class="language-python">### Input Function
+</code></pre>
+<pre><code class="language-python">name = input()
+</code></pre>
+<pre><code class="language-python">name
+</code></pre>
+<pre><code class="language-python">num = input(&#39;enter a number&#39;)
+</code></pre>
+<pre><code class="language-python">num
+</code></pre>
+<pre><code class="language-python">import math
+</code></pre>
+<pre><code class="language-python">math.sqrt(5)
+</code></pre>
+<pre><code class="language-python">sqrt(5)
+</code></pre>
+<pre><code class="language-python">math.factorial(5)
+</code></pre>
+<h3>Errors</h3>
+<h3>Syntax Error</h3>
+<pre><code class="language-python">print(&quot;hello&quot;
+</code></pre>
+<pre><code class="language-python">prin(&quot;python&quot;)
+</code></pre>
+<pre><code class="language-python">fol i 
+</code></pre>
+<h3>Runtime Error</h3>
+<pre><code class="language-python">a = 5
+b = 0
+
+print(a/b)
+
+
+print(&quot;I am the last line&quot;)
+</code></pre>
+<h3>Identifiers</h3>
+<pre><code class="language-python">rais = 5
+</code></pre>
+<pre><code class="language-python">as = 10
+</code></pre>
+<pre><code class="language-python">0abc =10 
+</code></pre>
+<pre><code class="language-python">1c = 13
+</code></pre>
+<pre><code class="language-python">c1 = 10
+c2 = 20
+</code></pre>
+<pre><code class="language-python">c1
+</code></pre>
+<pre><code class="language-python">c1 = 25
+c1
+</code></pre>
+<pre><code class="language-python">- = 4
+</code></pre>
+<pre><code class="language-python">a@ = 5
+</code></pre>
+<pre><code class="language-python">a_ = 40
+</code></pre>
+<pre><code class="language-python">b_ = 50
+</code></pre>
+<pre><code class="language-python">_c = 10
+_c
+</code></pre>
+<pre><code class="language-python">_ = 25
+_
+</code></pre>
+<h4>Rules for Naming Identifiers</h4>
+<ol>
+<li>Cannot be a reserved word. The reserved word in python are as follows. (<a href="https://docs.python.org/3/reference/lexical_analysis.html#keywords">https://docs.python.org/3/reference/lexical_analysis.html#keywords</a>)</li>
+<li>Cannot begin with a number.</li>
+<li>Cannot contain special characters except for <code>_</code>.</li>
+<li>Can have alphanumeric characters and underscores.</li>
+<li>Are case-sensitive.</li>
+</ol>
+<pre><code class="language-python">a123 = 0
+b123=  1
+_abc =1
+</code></pre>
+<pre><code class="language-python">a = 5
+A=10
+</code></pre>
+<pre><code class="language-python">print(a)
+print(A)
+</code></pre>
+<pre><code class="language-python">abc= 10
+Abc = 20
+</code></pre>
+<pre><code class="language-python">abc,Abc
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Print `2026-10-05` from the numbers 2026, 10 and 5 using a single `print()` call.</li><li>Use `math` to get the square root of 144 and the floor of 7.9.</li><li>Decide which of `my_var`, `2fast`, `_x`, `class`, `total$` are valid names, then test each in a cell.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section></div><h2 id="practice">Practice session</h2><div class="scorebox"><span class="tag">This chapter</span><p data-score aria-live="polite"></p><p>Predict the output before running it. Output checks preserve case and line breaks. Written programs are saved for self-review and are not executed here. Drafts and progress stay in this browser.</p></div><article class="drill" id="ch01-q1"><p class="drill-id">Practice 01 · checked answer</p><h3>What prints?</h3><pre><code>print(&quot;Hello&quot;, &quot;Mynul&quot;)</code></pre><label for="input-ch01-q1">Your answer</label><textarea id="input-ch01-q1" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch01-q1">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch01-q1">See answer</button></div>
+<div class="drill-hint" id="hint-ch01-q1" data-hint hidden><span class="tag">Step by step</span><p>print separates its arguments with a space.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch01-q1" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>Hello Mynul</code></pre><p>print separates its arguments with a space.</p></div></article><article class="drill" id="ch01-q2"><p class="drill-id">Practice 02 · checked answer</p><h3>Which Windows terminal command runs hello.py?</h3><label for="input-ch01-q2">Your answer</label><textarea id="input-ch01-q2" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch01-q2">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch01-q2">See answer</button></div>
+<div class="drill-hint" id="hint-ch01-q2" data-hint hidden><span class="tag">Step by step</span><p>Use the interpreter launcher, followed by the file name.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch01-q2" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>py hello.py</code></pre><p>Use the interpreter launcher, followed by the file name.</p></div></article><article class="drill" id="ch01-q3"><p class="drill-id">Practice 03 · checked answer</p><h3>What prints?</h3><pre><code>import math
+print(math.sqrt(16))</code></pre><label for="input-ch01-q3">Your answer</label><textarea id="input-ch01-q3" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch01-q3">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch01-q3">See answer</button></div>
+<div class="drill-hint" id="hint-ch01-q3" data-hint hidden><span class="tag">Step by step</span><p>math.sqrt returns a float.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch01-q3" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>4.0</code></pre><p>math.sqrt returns a float.</p></div></article><article class="drill" id="ch01-q4"><p class="drill-id">Practice 04 · checked answer</p><h3>Does defining a function immediately run its body? Answer yes or no.</h3><label for="input-ch01-q4">Your answer</label><textarea id="input-ch01-q4" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch01-q4">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch01-q4">See answer</button></div>
+<div class="drill-hint" id="hint-ch01-q4" data-hint hidden><span class="tag">Step by step</span><p>A function body runs when you call the function.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch01-q4" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>no</code></pre><p>A function body runs when you call the function.</p></div></article><article class="drill" id="ch01-write"><p class="drill-id">Practice 05 · write and self-review</p><h3>Write a hello.py file that imports math, prints your name and prints the square root of 144.</h3><label for="input-ch01-write">Your answer</label><textarea id="input-ch01-write" class="drill-in" rows="10" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch01-write">Hint</button><button type="button" data-submit>Submit draft</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch01-write">See answer</button></div>
+<div class="drill-hint" id="hint-ch01-write" data-hint hidden><span class="tag">Step by step</span><p>Import first, then use two print calls.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch01-write" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>import math  # Standard-library module.
+print(&quot;Mynul&quot;)  # Replace with your name.
+print(math.sqrt(144))  # Expected: 12.0</code></pre><p>Compare the result with your own answer. Explain what each line does before moving on.</p></div></article><div class="course-actions chapter-end" id="end"><button type="button" data-complete aria-pressed="false">Mark chapter as read</button><a href="#main">Back to reading</a></div><div class="pager"><a href="index.html">← Map</a><a href="ch02.html">Next chapter →</a></div>
+<p class="source-note">Reading notes and course sequence adapted from <a href="https://github.com/mayank953/python-ai-crash-course">Mayank Aggarwal’s Python AI Crash Course</a>, under the <a href="LICENSE-upstream.txt">MIT license</a>. Classroom adaptation, chapter guides and project exercises: Learn with Mynul. <a href="sources.html">Sources and study guide</a>.</p>
+</div></main><footer class="cos-foot"><div class="wrap">Learn with Mynul · Read. Trace. Practice. Build.</div></footer>
+<script>window.PYTHON_PRACTICE = [{"prompt": "What prints?", "accept": ["Hello Mynul"], "hint": "print separates its arguments with a space.", "code": "print(\"Hello\", \"Mynul\")", "answer": "Hello Mynul", "why": "print separates its arguments with a space.", "id": "ch01-q1"}, {"prompt": "Which Windows terminal command runs hello.py?", "accept": ["py hello.py"], "hint": "Use the interpreter launcher, followed by the file name.", "code": "", "answer": "py hello.py", "why": "Use the interpreter launcher, followed by the file name.", "id": "ch01-q2"}, {"prompt": "What prints?", "accept": ["4.0"], "hint": "math.sqrt returns a float.", "code": "import math\nprint(math.sqrt(16))", "answer": "4.0", "why": "math.sqrt returns a float.", "id": "ch01-q3"}, {"prompt": "Does defining a function immediately run its body? Answer yes or no.", "accept": ["no"], "hint": "A function body runs when you call the function.", "code": "", "answer": "no", "why": "A function body runs when you call the function.", "id": "ch01-q4"}, {"id": "ch01-write", "prompt": "Write a hello.py file that imports math, prints your name and prints the square root of 144.", "hint": "Import first, then use two print calls.", "answer": "import math  # Standard-library module.\nprint(\"Mynul\")  # Replace with your name.\nprint(math.sqrt(144))  # Expected: 12.0"}];</script><script src="js/practice.js?v=1" defer></script><script src="../../assets/js/theme.js?v=3" defer></script></body></html>

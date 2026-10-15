@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
+  </script><title>Decisions with if, elif and else · Python + AI · Learn with Mynul</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<meta name="description" content="Python and AI from scratch. Read the lessons, trace examples and practice with hints, saved drafts and commented answers.">
+<link rel="stylesheet" href="course.css?v=1"></head>
+<body class="cos" data-chapter="5"><a class="skip" href="#main">Skip to content</a>
+<header class="cos-bar"><div class="wrap"><a class="cos-brand" href="index.html">Python · AI</a><nav class="cos-nav" aria-label="Python course"><a href="index.html">Map</a><a  href="ch01.html">1</a><a  href="ch02.html">2</a><a  href="ch03.html">3</a><a  href="ch04.html">4</a><a class="is-on" href="ch05.html">5</a><a  href="ch06.html">6</a><a  href="ch07.html">7</a><a  href="ch08.html">8</a><a  href="ch09.html">9</a><a  href="ch10.html">10</a><a  href="ch11.html">11</a><a  href="ch12.html">12</a><a  href="ch13.html">13</a><a  href="ch14.html">14</a><a href="index.html#projects">Projects</a><a href="../index.html">Learn hub</a></nav><button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode"><svg class="theme-sun" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="#F5C518"/><g stroke="#F5C518" stroke-width="1.8" stroke-linecap="round" fill="none"><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M5.6 18.4l1.7-1.7M16.7 7.3l1.7-1.7"/></g></svg><svg class="theme-moon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="#8EA0FF" d="M16.2 3.1A8.9 8.9 0 1 0 21.1 18 7.4 7.4 0 0 1 16.2 3.1z"/></svg></button></div></header>
+<main id="main"><div class="wrap"><p class="kicker"><a href="index.html">Python + AI</a> · Chapter 05</p><h1>Decisions with if, elif and else</h1><p class="lede">A conditional selects a block of instructions. The condition is evaluated first. Python then executes the first matching branch and skips the other branches of that same if statement.</p><div class="toc"><a href="#reading">Reading</a><a href="#practice">Practice session</a><a href="#end">Save reading progress</a></div><div class="rule"><span class="tag">The rule</span><p>End an if, elif or else header with a colon. Indent each body consistently, normally four spaces. Put specific conditions before broader ones. A second independent if is a separate decision, while elif belongs to the preceding decision.</p></div><h2>Worked example</h2><pre><code>score = 75
+if score &gt;= 80:
+    print(&quot;Excellent&quot;)
+elif score &gt;= 50:
+    print(&quot;Pass&quot;)
+else:
+    print(&quot;Try again&quot;)</code></pre><div class="trace"><span class="tag">Trace every line</span><p>75 &gt;= 80 is False, so the first body is skipped. 75 &gt;= 50 is True, so Pass prints. Python skips else. If score were 90, only Excellent would print, even though 90 also satisfies the second comparison.</p></div><div id="reading"><section class="reading" id="lesson-17"><h2>17. Decision Control &amp; the if Statement</h2><p>Making decisions in code with `if`, and why indentation matters in Python.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=12523s">Watch 3:28:43</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/17-conditionals-if">Original resources</a></div><details open><summary>Read the explanation · theory.ipynb</summary><h3>Conditionals in Python</h3>
+<h4>Introduction to Conditionals</h4>
+<p>Conditional statements are used to execute a block of code only if a specified condition is met. They help in decision-making in a program, allowing for different actions based on different conditions. In Python, the main types of conditional statements are:</p>
+<ol>
+<li><code>if</code> statement</li>
+<li><code>if-else</code> statement</li>
+<li><code>if-elif-else</code> statement</li>
+<li>Nested <code>if</code> statements</li>
+</ol>
+<h4>The <code>if</code> Statement</h4>
+<p>The <code>if</code> statement in Python is used to decide whether a certain block of code should be executed or not. It is similar to the <code>if</code> statements found in languages like C or Java. If the condition specified in the <code>if</code> statement is <code>True</code>, then the block of code inside the <code>if</code> statement is executed.</p>
+<h5>Syntax</h5>
+<pre><code class="language-python">if condition:
+    # block of code
+</code></pre>
+<h5>Example</h5>
+<p>Let&#39;s write a simple program to check if a number is even.</p>
+<pre><code class="language-python">### Checking if a number is even
+num = int(input(&quot;Enter a number: &quot;))
+if num % 2 == 0:
+    print(f&quot;{num} is even.&quot;)
+if num % 2 != 0:
+    print(f&quot;{num} is odd.&quot;)
+</code></pre>
+<h5>Indentation in Python</h5>
+<p>Indentation is very important in Python. It defines the scope of the conditional statement. The block of code that needs to be executed if the condition is true should be indented.</p>
+<h5>More Examples</h5>
+<p>Here are a few more examples to illustrate the use of <code>if</code> statements.</p>
+<pre><code class="language-python">### Example 1: Checking if a number is positive
+num = 10
+if num &gt; 0:
+    print(&quot;The number is positive.&quot;)
+</code></pre>
+<pre><code class="language-python">### Example 2: Checking if a number is negative
+num = -5
+if num &lt; 0:
+    print(&quot;The number is negative.&quot;)
+</code></pre>
+<pre><code class="language-python">### Example 3: Checking if a number is zero
+num = 0
+if num == 0:
+    print(&quot;The number is zero.&quot;)
+</code></pre>
+<h3>Industry Use Case</h3>
+<p>Conditional statements are widely used in various industries for different purposes. Here are a few examples:</p>
+<ol>
+<li><strong>Web Development</strong>: Conditional statements are used to display different content based on user input or roles. For example, displaying a different user interface for admins and regular users.</li>
+<li><strong>Data Analysis</strong>: Conditional statements help in filtering data. For example, selecting rows from a dataset that meet certain criteria.</li>
+<li><strong>Automation</strong>: Used in scripts to perform different actions based on the results of a previous command. For example, running a backup script only if there is enough disk space.</li>
+<li><strong>Game Development</strong>: Conditional statements are crucial in game logic, such as determining if a player has won or lost a game.</li>
+<li><strong>Finance</strong>: Used to make decisions based on financial data, such as approving or rejecting loan applications based on credit scores.</li>
+</ol>
+<h3>Questions</h3>
+<ol>
+<li>What is a conditional statement in Python?</li>
+<li>Write a code snippet to check if a number is positive, negative, or zero.</li>
+<li>Explain the importance of indentation in Python with an example.</li>
+<li>How would you use a conditional statement to check if a user is an admin?</li>
+<li>Provide an example of a nested <code>if</code> statement.</li>
+<li>Write a code snippet to check if a number is divisible by both 3 and 5.</li>
+<li>Explain how conditional statements can be used in web development.</li>
+<li>Write a code snippet to find the largest of three numbers using <code>if</code> statements.</li>
+<li>Describe a scenario in automation where conditional statements are used.</li>
+<li>How can you handle multiple conditions in a single <code>if</code> statement?</li>
+</ol>
+<pre><code class="language-python">### Solutions
+
+### 1. What is a conditional statement in Python?
+### A conditional statement is used to execute a block of code only if a specified condition is met.
+
+### 2. Write a code snippet to check if a number is positive, negative, or zero.
+num = int(input(&quot;Enter a number: &quot;))
+if num &gt; 0:
+    print(&quot;The number is positive.&quot;)
+elif num &lt; 0:
+    print(&quot;The number is negative.&quot;)
+else:
+    print(&quot;The number is zero.&quot;)
+
+### 3. Explain the importance of indentation in Python with an example.
+### Indentation is important because it defines the scope of the code block inside the conditional statement.
+if True:
+    print(&quot;This is inside the if block.&quot;)
+print(&quot;This is outside the if block.&quot;)
+
+### 4. How would you use a conditional statement to check if a user is an admin?
+user_role = &quot;admin&quot;
+if user_role == &quot;admin&quot;:
+    print(&quot;User is an admin.&quot;)
+
+### 5. Provide an example of a nested `if` statement.
+num = 10
+if num &gt; 0:
+    if num % 2 == 0:
+        print(&quot;The number is positive and even.&quot;)
+    else:
+        print(&quot;The number is positive and odd.&quot;)
+
+### 6. Write a code snippet to check if a number is divisible by both 3 and 5.
+num = 15
+if num % 3 == 0 and num % 5 == 0:
+    print(&quot;The number is divisible by both 3 and 5.&quot;)
+
+### 7. Explain how conditional statements can be used in web development.
+### Conditional statements can be used to display different content based on user input or roles.
+### For example, displaying a different user interface for admins and regular users.
+
+### 8. Write a code snippet to find the largest of three numbers using `if` statements.
+a = 10
+b = 20
+c = 30
+if a &gt; b and a &gt; c:
+    print(&quot;a is the largest.&quot;)
+elif b &gt; a and b &gt; c:
+    print(&quot;b is the largest.&quot;)
+else:
+    print(&quot;c is the largest.&quot;)
+
+### 9. Describe a scenario in automation where conditional statements are used.
+### Conditional statements are used in scripts to perform different actions based on the results of a previous command.
+### For example, running a backup script only if there is enough disk space.
+
+### 10. How can you handle multiple conditions in a single `if` statement?
+### Multiple conditions can be handled using logical operators such as `and`, `or`, and `not`.
+num = 10
+if num &gt; 0 and num % 2 == 0:
+    print(&quot;The number is positive and even.&quot;)
+</code></pre>
+</details><details ><summary>Read and trace the code examples · code.ipynb</summary><h3>Conditionals In Python</h3>
+<pre><code class="language-python">Number = &quot;+91-9999999999&quot;
+</code></pre>
+<pre><code class="language-python">msg1 = &quot;You are from India&quot;
+msg2 = &quot;Outside India Scam&quot;
+</code></pre>
+<pre><code class="language-python">if (&quot;+91&quot; in Number ):
+    print(msg1)      # after 4 spaces or 1 tab
+    msg1 = &quot;Hello Python&quot;
+    print(msg1)
+
+if (&quot;+91&quot; not in Number):
+    print(msg2)
+</code></pre>
+<pre><code class="language-python">inp = int(input(&quot;Enter a number&quot;))
+</code></pre>
+<pre><code class="language-python">if (inp %2 ==0):
+    print(&quot;even&quot;)
+if(inp%2!=0):
+    print(&quot;odd&quot;)
+</code></pre>
+<pre><code class="language-python">if (inp%2==0): 
+    print(&quot;num is even&quot;)
+</code></pre>
+<pre><code class="language-python">loggedIn = False
+
+msg1 = &quot;Welcome to Netflix&quot;
+msg2 = &quot;Please buy Netflix and don&#39;t use your friend&#39;s Account &quot;
+</code></pre>
+<pre><code class="language-python">if(loggedIn == True):
+
+
+if(loggedIn == False)
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Print `Adult` only when `age &gt;= 18`.</li><li>Remove one level of indentation on purpose and read the `IndentationError`.</li><li>Use an empty list inside an `if` and explain what happens.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section><section class="reading" id="lesson-18"><h2>18. if-else &amp; the elif Ladder</h2><p>Choosing between two paths with `else` and between many with an `elif` ladder.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=13277s">Watch 3:41:17</a><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=13623s">Watch 3:47:03</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/18-if-else-elif">Original resources</a></div><details open><summary>Read and trace the code examples · code.ipynb</summary><pre><code class="language-python">
+LoggedIn = False
+</code></pre>
+<pre><code class="language-python">print(&quot;I am here&quot;)
+
+if (LoggedIn):
+    print(&quot;Welcome Back&quot;)
+    print(&quot;Helo Python is awesome&quot;)
+else:
+    print(&quot;Please go&quot;)
+    print(&quot;Still share this series&quot;)
+
+print(&quot;I am out&quot;)
+</code></pre>
+<pre><code class="language-python">num = int(input(&quot;enter a num&quot;))
+</code></pre>
+<pre><code class="language-python">if(num&lt;10):
+    print(&quot;less than 10&quot;)
+else:
+    print(&quot;greater than 10&quot;)
+</code></pre>
+<pre><code class="language-python">charInp = input(&quot;Enter a character&quot;)
+</code></pre>
+<pre><code class="language-python">if (charInp &gt;= &#39;a&#39; and charInp &lt;=&#39;z&#39;):
+    print(&quot;its a small char&quot;)
+    #print(&quot;another statement&quot;)
+elif (charInp &gt;= &#39;A&#39; and charInp &lt;=&#39;Z&#39;):
+    print(&quot;Its a capital&quot;)
+elif (charInp &gt;= &#39;0&#39; and charInp &lt;=&#39;9&#39;):
+    print(&quot;its a number&quot;)   
+else :
+    print(&quot;its a special symbol&quot;)
+</code></pre>
+<pre><code class="language-python">ord(charInp)
+</code></pre>
+<pre><code class="language-python">perc = int(input(&quot;enter a perc %&quot;))
+</code></pre>
+<pre><code class="language-python">if(perc &gt; 90):
+    print(&quot;A&quot;)
+elif(perc &gt;=80 and perc &lt;=90):
+    print(&quot;B&quot;)
+elif(perc &gt;=80 and perc &lt;=90):
+    print(&quot;B2&quot;)
+elif(perc &gt;=60 and perc &lt;= 80):
+    print(&quot;B&quot;)
+elif(perc &lt; 60 and perc &gt; 0):
+    print(&quot;B&quot;)
+else:
+    print(&quot;invalid Percentage&quot;)
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Print whether a number is even or odd.</li><li>Turn a marks value into a grade (A, B, C, D) using an `elif` ladder.</li><li>Rewrite one `if/else` as a one-line conditional expression.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section><section class="reading" id="lesson-19"><h2>19. Nested if Statements</h2><p>Placing an `if` inside another `if` to model decisions that depend on earlier decisions.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=14184s">Watch 3:56:24</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/19-nested-if">Original resources</a></div><details open><summary>Read the explanation · theory.ipynb</summary><h3>Conditionals - Nested If</h3>
+<p>Nested if statements allow you to place an <code>if</code>, <code>elif</code>, or <code>else</code> statement inside another <code>if</code>, <code>elif</code>, or <code>else</code> statement. This is called nesting in programming. You can nest any number of these statements inside one another.</p>
+<h4>Syntax</h4>
+<pre><code class="language-python">if expression1:
+    if expression2:
+        # code block
+    elif expression3:
+        if expression4:
+            # code block
+        else:
+            if expression5:
+                # code block
+    else:
+        # code block
+</code></pre>
+<p>Indentation is the only way to figure out the level of nesting. Proper indentation is crucial for nested statements to work correctly in Python.</p>
+<h4>Example 1: Simple Nested If</h4>
+<pre><code class="language-python">x = 10
+y = 20
+if x &gt; 5:
+    print(&#39;x is greater than 5&#39;)
+    if y &gt; 15:
+        print(&#39;y is greater than 15&#39;)
+    else:
+        print(&#39;y is not greater than 15&#39;)
+else:
+    print(&#39;x is not greater than 5&#39;)
+</code></pre>
+<p>In this example, the first <code>if</code> statement checks if <code>x</code> is greater than 5. If it is, the program prints &#39;x is greater than 5&#39; and then evaluates the nested <code>if</code> statement, which checks if <code>y</code> is greater than 15. Based on the evaluation, it prints the appropriate message.</p>
+<pre><code class="language-python">x = 10
+y = 20
+if x &gt; 5:
+    print(&#39;x is greater than 5&#39;)
+    if y &gt; 15:
+        print(&#39;y is greater than 15&#39;)
+    else:
+        print(&#39;y is not greater than 15&#39;)
+else:
+    print(&#39;x is not greater than 5&#39;)
+</code></pre>
+<h4>Example 2: Multiple Levels of Nesting</h4>
+<pre><code class="language-python">num = 30
+if num &gt; 0:
+    print(&#39;The number is positive&#39;)
+    if num % 2 == 0:
+        print(&#39;The number is even&#39;)
+        if num % 3 == 0:
+            print(&#39;The number is divisible by 3&#39;)
+        else:
+            print(&#39;The number is not divisible by 3&#39;)
+    else:
+        print(&#39;The number is odd&#39;)
+else:
+    print(&#39;The number is not positive&#39;)
+</code></pre>
+<p>In this example, we have multiple levels of nested <code>if</code> statements. It first checks if <code>num</code> is positive, then checks if it is even, and finally checks if it is divisible by 3.</p>
+<pre><code class="language-python">num = 30
+if num &gt; 0:
+    print(&#39;The number is positive&#39;)
+    if num % 2 == 0:
+        print(&#39;The number is even&#39;)
+        if num % 3 == 0:
+            print(&#39;The number is divisible by 3&#39;)
+        else:
+            print(&#39;The number is not divisible by 3&#39;)
+    else:
+        print(&#39;The number is odd&#39;)
+else:
+    print(&#39;The number is not positive&#39;)
+</code></pre>
+<h4>Industry Use Case</h4>
+<ol>
+<li><strong>Form Validation</strong>: Nested if statements are often used in form validation, where multiple fields need to be checked, and further conditions are applied based on initial checks.</li>
+<li><strong>Decision Making Systems</strong>: In systems like automated decision making or rule-based systems, nested conditions help in evaluating complex rules.</li>
+<li><strong>Game Development</strong>: Nested conditions are used to handle different states and actions based on user input or game scenarios.</li>
+<li><strong>Data Processing Pipelines</strong>: In data processing, nested conditions can be used to handle various processing steps based on the attributes of the data.</li>
+<li><strong>Machine Learning</strong>: Nested conditions can be used in feature engineering or data cleaning processes where multiple conditions need to be checked and processed.</li>
+</ol>
+<h3>Questions</h3>
+<ol>
+<li>What is a nested if statement? Provide an example.</li>
+<li>How does indentation affect nested if statements?</li>
+<li>Write a nested if statement to check if a number is positive, even, and a multiple of 4.</li>
+<li>Explain how nested if statements can be used in form validation.</li>
+<li>Write a code snippet to demonstrate a three-level nested if statement.</li>
+<li>How can nested if statements be useful in game development?</li>
+<li>Write a nested if statement to check if a person is eligible to vote (age &gt;= 18) and eligible to run for president (age &gt;= 35).</li>
+<li>Explain with an example how nested if statements can be used in data processing pipelines.</li>
+<li>Provide an example of using nested if statements in a machine learning data cleaning process.</li>
+<li>Write a code snippet using nested if statements to determine the grade of a student based on their score: A (&gt;= 90), B (&gt;= 80), C (&gt;= 70), D (&gt;= 60), F (&lt; 60).</li>
+</ol>
+<h3>Answers</h3>
+<ol>
+<li>A nested if statement is an if statement placed inside another if statement. Example:<pre><code class="language-python">x = 10
+if x &gt; 5:
+    if x  0:
+    if num % 2 == 0:
+        if num % 4 == 0:
+            print(&#39;The number is positive, even, and a multiple of 4&#39;)
+</code></pre>
+</li>
+<li>In form validation, nested if statements can be used to check multiple fields sequentially and apply further checks based on the initial conditions.</li>
+<li><pre><code class="language-python">num = 30
+if num &gt; 0:
+    if num % 2 == 0:
+        if num % 5 == 0:
+            print(&#39;The number is positive, even, and a multiple of 5&#39;)
+</code></pre>
+</li>
+<li>In game development, nested if statements help manage different states and actions based on player input or game conditions.</li>
+<li><pre><code class="language-python">age = 40
+if age &gt;= 18:
+    print(&#39;Eligible to vote&#39;)
+    if age &gt;= 35:
+        print(&#39;Eligible to run for president&#39;)
+</code></pre>
+</li>
+<li>In data processing pipelines, nested if statements can manage various processing steps based on data attributes. Example:<pre><code class="language-python">data = {&#39;age&#39;: 25, &#39;income&#39;: 50000}
+if data[&#39;age&#39;] &gt; 18:
+    if data[&#39;income&#39;] &gt; 30000:
+        print(&#39;Eligible for loan&#39;)
+</code></pre>
+</li>
+<li>In machine learning, nested if statements can clean data by applying multiple conditions. Example:<pre><code class="language-python">data = {&#39;age&#39;: None, &#39;income&#39;: 50000}
+if data[&#39;age&#39;] is not None:
+    if data[&#39;income&#39;] &gt; 30000:
+        print(&#39;Data is clean&#39;)
+</code></pre>
+</li>
+<li><pre><code class="language-python">score = 85
+if score &gt;= 90:
+    grade = &#39;A&#39;
+elif score &gt;= 80:
+    grade = &#39;B&#39;
+    if score &gt;= 85:
+        print(&#39;Great job!&#39;)
+elif score &gt;= 70:
+    grade = &#39;C&#39;
+elif score &gt;= 60:
+    grade = &#39;D&#39;
+else:
+    grade = &#39;F&#39;
+print(&#39;Grade:&#39;, grade)
+</code></pre>
+</li>
+</ol>
+</details><details ><summary>Read and trace the code examples · code.ipynb</summary><h3>nested If Statement</h3>
+<pre><code class="language-python">hungry = True
+Money = 1200
+
+restaurantOpen = False
+</code></pre>
+<pre><code class="language-python">if(hungry):
+    print(&quot;we will try to eat&quot;)
+    if(Money == 0):
+        print(&quot;Just sleep&quot;)
+    elif(Money &gt; 1000):
+        print(&quot;have a party&quot;)
+    elif(Money &gt; 100 and Money &lt; 500):
+        print(&quot;have something great&quot;)
+        if(restaurantOpen):
+            print(&quot; ORder from restro&quot;)
+        else:
+            print(&quot; just sleep&quot;)
+    else:
+        print(&quot;order in&quot;)
+        
+else :
+    print(&quot;we won&#39;t eat&quot;)
+</code></pre>
+<h3>We will be taking a input from the user, first we will check if its a character ( a-z , A-z , 0-9) and then what exactly it is ?</h3>
+<pre><code class="language-python">ch = input()
+</code></pre>
+<pre><code class="language-python">if((c&gt;=&#39;a&#39; and c&lt;= &#39;z&#39;) or (c &gt;=&#39;A&#39; and c&lt;=&#39;Z&#39;) or (c&gt;=&#39;0&#39; and c&lt;=&#39;9&#39;)):
+
+else:
+    
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Decide a ticket price from age and student status using nested `if` statements.</li><li>Rewrite the same logic with a single `and` condition. Which is easier to read?</li><li>Check a username first and only then the password.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section><section class="reading" id="lesson-20"><h2>20. Conditionals: Practice Questions</h2><p>Practice: solving typical decision-making problems end to end.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=14658s">Watch 4:04:18</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/20-conditionals-practice">Original resources</a></div><h3>Try it yourself</h3><ol><li>Decide whether a year is a leap year.</li><li>Find the largest of three numbers without using `max()`.</li><li>Build a tiny calculator that picks `+`, `-`, `*` or `/` with `if/elif`.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section></div><h2 id="practice">Practice session</h2><div class="scorebox"><span class="tag">This chapter</span><p data-score aria-live="polite"></p><p>Predict the output before running it. Output checks preserve case and line breaks. Written programs are saved for self-review and are not executed here. Drafts and progress stay in this browser.</p></div><article class="drill" id="ch05-q1"><p class="drill-id">Practice 01 · checked answer</p><h3>What prints?</h3><pre><code>score = 75
+if score &gt;= 80:
+    print(&quot;Excellent&quot;)
+elif score &gt;= 50:
+    print(&quot;Pass&quot;)
+else:
+    print(&quot;Retry&quot;)</code></pre><label for="input-ch05-q1">Your answer</label><textarea id="input-ch05-q1" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch05-q1">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch05-q1">See answer</button></div>
+<div class="drill-hint" id="hint-ch05-q1" data-hint hidden><span class="tag">Step by step</span><p>Only the first true branch runs.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch05-q1" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>Pass</code></pre><p>Only the first true branch runs.</p></div></article><article class="drill" id="ch05-q2"><p class="drill-id">Practice 02 · checked answer</p><h3>What prints?</h3><pre><code>if &quot;0&quot;:
+    print(&quot;A&quot;)
+else:
+    print(&quot;B&quot;)</code></pre><label for="input-ch05-q2">Your answer</label><textarea id="input-ch05-q2" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch05-q2">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch05-q2">See answer</button></div>
+<div class="drill-hint" id="hint-ch05-q2" data-hint hidden><span class="tag">Step by step</span><p>A nonempty string is truthy.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch05-q2" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>A</code></pre><p>A nonempty string is truthy.</p></div></article><article class="drill" id="ch05-q3"><p class="drill-id">Practice 03 · checked answer</p><h3>Which symbol ends an if header?</h3><label for="input-ch05-q3">Your answer</label><textarea id="input-ch05-q3" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch05-q3">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch05-q3">See answer</button></div>
+<div class="drill-hint" id="hint-ch05-q3" data-hint hidden><span class="tag">Step by step</span><p>The body follows a colon and indentation.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch05-q3" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>:</code></pre><p>The body follows a colon and indentation.</p></div></article><article class="drill" id="ch05-q4"><p class="drill-id">Practice 04 · checked answer</p><h3>What prints?</h3><pre><code>x = 10
+print(1 &lt; x &lt; 10)</code></pre><label for="input-ch05-q4">Your answer</label><textarea id="input-ch05-q4" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch05-q4">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch05-q4">See answer</button></div>
+<div class="drill-hint" id="hint-ch05-q4" data-hint hidden><span class="tag">Step by step</span><p>Both comparisons must be true.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch05-q4" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>False</code></pre><p>Both comparisons must be true.</p></div></article><article class="drill" id="ch05-write"><p class="drill-id">Practice 05 · write and self-review</p><h3>For score=65, print Distinction for 80+, Pass for 50+ and Retry otherwise.</h3><label for="input-ch05-write">Your answer</label><textarea id="input-ch05-write" class="drill-in" rows="10" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch05-write">Hint</button><button type="button" data-submit>Submit draft</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch05-write">See answer</button></div>
+<div class="drill-hint" id="hint-ch05-write" data-hint hidden><span class="tag">Step by step</span><p>Test the highest threshold first.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch05-write" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>score = 65
+if score &gt;= 80:
+    print(&quot;Distinction&quot;)
+elif score &gt;= 50:
+    print(&quot;Pass&quot;)  # This branch runs.
+else:
+    print(&quot;Retry&quot;)</code></pre><p>Compare the result with your own answer. Explain what each line does before moving on.</p></div></article><div class="course-actions chapter-end" id="end"><button type="button" data-complete aria-pressed="false">Mark chapter as read</button><a href="#main">Back to reading</a></div><div class="pager"><a href="ch04.html">← Previous chapter</a><a href="ch06.html">Next chapter →</a></div>
+<p class="source-note">Reading notes and course sequence adapted from <a href="https://github.com/mayank953/python-ai-crash-course">Mayank Aggarwal’s Python AI Crash Course</a>, under the <a href="LICENSE-upstream.txt">MIT license</a>. Classroom adaptation, chapter guides and project exercises: Learn with Mynul. <a href="sources.html">Sources and study guide</a>.</p>
+</div></main><footer class="cos-foot"><div class="wrap">Learn with Mynul · Read. Trace. Practice. Build.</div></footer>
+<script>window.PYTHON_PRACTICE = [{"prompt": "What prints?", "accept": ["Pass"], "hint": "Only the first true branch runs.", "code": "score = 75\nif score >= 80:\n    print(\"Excellent\")\nelif score >= 50:\n    print(\"Pass\")\nelse:\n    print(\"Retry\")", "answer": "Pass", "why": "Only the first true branch runs.", "id": "ch05-q1"}, {"prompt": "What prints?", "accept": ["A"], "hint": "A nonempty string is truthy.", "code": "if \"0\":\n    print(\"A\")\nelse:\n    print(\"B\")", "answer": "A", "why": "A nonempty string is truthy.", "id": "ch05-q2"}, {"prompt": "Which symbol ends an if header?", "accept": [":"], "hint": "The body follows a colon and indentation.", "code": "", "answer": ":", "why": "The body follows a colon and indentation.", "id": "ch05-q3"}, {"prompt": "What prints?", "accept": ["False"], "hint": "Both comparisons must be true.", "code": "x = 10\nprint(1 \u003c x \u003c 10)", "answer": "False", "why": "Both comparisons must be true.", "id": "ch05-q4"}, {"id": "ch05-write", "prompt": "For score=65, print Distinction for 80+, Pass for 50+ and Retry otherwise.", "hint": "Test the highest threshold first.", "answer": "score = 65\nif score >= 80:\n    print(\"Distinction\")\nelif score >= 50:\n    print(\"Pass\")  # This branch runs.\nelse:\n    print(\"Retry\")"}];</script><script src="js/practice.js?v=1" defer></script><script src="../../assets/js/theme.js?v=3" defer></script></body></html>

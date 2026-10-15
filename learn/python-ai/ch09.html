@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
+  </script><title>Dictionaries and text cleaning · Python + AI · Learn with Mynul</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<meta name="description" content="Python and AI from scratch. Read the lessons, trace examples and practice with hints, saved drafts and commented answers.">
+<link rel="stylesheet" href="course.css?v=1"></head>
+<body class="cos" data-chapter="9"><a class="skip" href="#main">Skip to content</a>
+<header class="cos-bar"><div class="wrap"><a class="cos-brand" href="index.html">Python · AI</a><nav class="cos-nav" aria-label="Python course"><a href="index.html">Map</a><a  href="ch01.html">1</a><a  href="ch02.html">2</a><a  href="ch03.html">3</a><a  href="ch04.html">4</a><a  href="ch05.html">5</a><a  href="ch06.html">6</a><a  href="ch07.html">7</a><a  href="ch08.html">8</a><a class="is-on" href="ch09.html">9</a><a  href="ch10.html">10</a><a  href="ch11.html">11</a><a  href="ch12.html">12</a><a  href="ch13.html">13</a><a  href="ch14.html">14</a><a href="index.html#projects">Projects</a><a href="../index.html">Learn hub</a></nav><button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode"><svg class="theme-sun" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="#F5C518"/><g stroke="#F5C518" stroke-width="1.8" stroke-linecap="round" fill="none"><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M5.6 18.4l1.7-1.7M16.7 7.3l1.7-1.7"/></g></svg><svg class="theme-moon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="#8EA0FF" d="M16.2 3.1A8.9 8.9 0 1 0 21.1 18 7.4 7.4 0 0 1 16.2 3.1z"/></svg></button></div></header>
+<main id="main"><div class="wrap"><p class="kicker"><a href="index.html">Python + AI</a> · Chapter 09</p><h1>Dictionaries and text cleaning</h1><p class="lede">A dictionary maps unique hashable keys to values. Use it for structured records, lookup tables and frequency counters. String methods help turn messy input into consistent dictionary keys.</p><div class="toc"><a href="#reading">Reading</a><a href="#practice">Practice session</a><a href="#end">Save reading progress</a></div><div class="rule"><span class="tag">The rule</span><p>record[key] raises KeyError if a key is missing. record.get(key, default) returns a fallback. Iterating a dictionary yields keys; .items() yields key-value pairs. strip removes characters from the ends and lower returns lowercase text. Strings are immutable, so keep the returned result.</p></div><h2>Worked example</h2><pre><code>words = &quot; Python SQL python &quot;.strip().lower().split()
+counts = {}
+for word in words:
+    counts[word] = counts.get(word, 0) + 1
+print(counts[&quot;python&quot;])
+print(counts.get(&quot;java&quot;, 0))</code></pre><div class="trace"><span class="tag">Trace every line</span><p>Cleaning gives the words python, sql and python. The first occurrence starts from zero and adds one. The second python increments the existing count to 2. Looking up missing java with get returns 0 without adding a new key.</p></div><div id="reading"><section class="reading" id="lesson-34"><h2>34. Dictionaries</h2><p>Dictionaries: key-value pairs for fast lookup by name instead of by position.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=28138s">Watch 7:48:58</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/34-dictionaries">Original resources</a></div><details open><summary>Read and trace the code examples · code.ipynb</summary><h3>Dictionary</h3>
+<pre><code class="language-python">d1 = {&#39;python&#39;:2,&#39;hello&#39;:1}
+</code></pre>
+<pre><code class="language-python">type(d1)
+</code></pre>
+<pre><code class="language-python">d1[&#39;python&#39;]
+</code></pre>
+<pre><code class="language-python">d1[&#39;p&#39;]
+</code></pre>
+<pre><code class="language-python">d2 = {&quot;name&quot;:&quot;mayank&quot;,&quot;age&quot;:30,&quot;gadgets&quot;:[&#39;ipad&#39;,&#39;android&#39;,&#39;magicPencil&#39;],0:1000}
+</code></pre>
+<pre><code class="language-python">d2
+</code></pre>
+<pre><code class="language-python">d2[0]
+</code></pre>
+<pre><code class="language-python">for k in d2:
+    print(k)
+</code></pre>
+<pre><code class="language-python">d2.keys()
+</code></pre>
+<pre><code class="language-python">d2.values()
+</code></pre>
+<pre><code class="language-python">for v in d2.values():
+    print(v)
+</code></pre>
+<pre><code class="language-python">for key,value in d2.items():
+    print(f&quot;key : {key}  Value : {value}&quot;)
+</code></pre>
+<pre><code class="language-python">d2.items()
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Create a dictionary of names and marks; read a value with `[]` and with `.get()`.</li><li>Add, update and delete a key.</li><li>Loop over keys, values and items separately.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section><section class="reading" id="lesson-35"><h2>35. Dictionary Operations &amp; Methods</h2><p>Everyday dictionary methods and patterns such as counting and merging.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=28964s">Watch 8:02:44</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/35-dictionary-functions-methods">Original resources</a></div><details open><summary>Read and trace the code examples · code.ipynb</summary><pre><code class="language-python">d1 = {&#39;id&#39; : 123,&#39;name&#39;:&#39;mayank&#39;,&#39;course&#39;:&#39;HelloPython&#39;,1000:&#39;Done&#39;}
+</code></pre>
+<pre><code class="language-python">d1[&#39;id&#39;]
+</code></pre>
+<pre><code class="language-python">d1[&#39;id&#39;] = 234
+</code></pre>
+<pre><code class="language-python">d1
+</code></pre>
+<pre><code class="language-python">d1[&#39;age&#39;] = 24
+</code></pre>
+<pre><code class="language-python">d1
+</code></pre>
+<pre><code class="language-python">del d1[&#39;age&#39;]
+</code></pre>
+<pre><code class="language-python">d1
+</code></pre>
+<pre><code class="language-python">del d1[&#39;123&#39;]
+</code></pre>
+<pre><code class="language-python">del d1[1000]
+</code></pre>
+<pre><code class="language-python">d1
+</code></pre>
+<pre><code class="language-python">d1.get(&#39;id2&#39;)
+</code></pre>
+<pre><code class="language-python">if d1.get(&#39;id2&#39;,False) == False:
+    print(&quot;key not present&quot;)
+</code></pre>
+<pre><code class="language-python">d123
+</code></pre>
+<pre><code class="language-python">d123.clear()
+</code></pre>
+<pre><code class="language-python">d1
+</code></pre>
+<pre><code class="language-python">d2 = d1
+</code></pre>
+<pre><code class="language-python">d2[&#39;id2&#39;] = 10000000
+</code></pre>
+<pre><code class="language-python">d1
+</code></pre>
+<pre><code class="language-python">d2
+</code></pre>
+<pre><code class="language-python">d3 = d1.copy()
+</code></pre>
+<pre><code class="language-python">d3
+</code></pre>
+<pre><code class="language-python">d3[&#39;id3&#39;] = 1000000000000
+</code></pre>
+<pre><code class="language-python">d1
+</code></pre>
+<pre><code class="language-python">d3
+</code></pre>
+<pre><code class="language-python">d3.update({&#39;college&#39;:&#39;NSIT&#39;})
+</code></pre>
+<pre><code class="language-python">d3
+</code></pre>
+<pre><code class="language-python">d3.update({&#39;college&#39;:&#39;NSIT&#39;, &#39;company&#39;:[&#39;Goldman Sachs&#39;,&#39;Mindtickle&#39;]})
+</code></pre>
+<pre><code class="language-python">d3
+</code></pre>
+<pre><code class="language-python">d3.update([(&#39;pass year&#39;,2019),(&#39;lang&#39;,&quot;Python&quot;)])
+</code></pre>
+<pre><code class="language-python">d3
+</code></pre>
+<pre><code class="language-python">d3.pop(&#39;lang&#39;,&quot;Not Found&quot;)
+</code></pre>
+<pre><code class="language-python">d4={}
+</code></pre>
+<pre><code class="language-python">d4.pop(&#39;key&#39;,0)
+</code></pre>
+<pre><code class="language-python">d3.fromkeys([&#39;company&#39;,&#39;college&#39;],&quot;Default&quot;)
+</code></pre>
+<pre><code class="language-python">jsonExample = &#39;{ &quot;id&quot;: 111, &quot;name&quot;: &quot;Mayank&quot;, &quot;course&quot;: &quot;Hello Python&quot;, &quot;data&quot;:}&#39;
+</code></pre>
+<pre><code class="language-python">import json
+</code></pre>
+<pre><code class="language-python">jsonDict = json.loads(jsonExample)
+</code></pre>
+<pre><code class="language-python">jsonDict
+</code></pre>
+<pre><code class="language-python">square= { x : &#39;value&#39; + str(x**x)for x in range(1,5) if x %2==0} 
+</code></pre>
+<pre><code class="language-python">square
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Count how often each letter occurs in a word using a dictionary.</li><li>Merge two dictionaries with `update()` and with `|`.</li><li>Use `.get(key, default)` and `.pop()` and describe what each returns.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section><section class="reading" id="lesson-36"><h2>36. Strings Revisited: ord(), chr() &amp; String Methods</h2><p>Characters as numbers with `ord()` and `chr()`, plus the string methods used to clean and search text.</p><div class="lesson-links"><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=29970s">Watch 8:19:30</a><a href="https://www.youtube.com/watch?v=J9BI0jGOds8&amp;t=30401s">Watch 8:26:41</a><a href="https://github.com/mayank953/python-ai-crash-course/tree/2b82779181363734d86fc202bc7e00770b36f8fc/python/36-string-methods">Original resources</a></div><details open><summary>Read and trace the code examples · code.ipynb</summary><h3>String</h3>
+<pre><code class="language-python">s1 = &#39;mayank&#39;
+</code></pre>
+<pre><code class="language-python">s1[2] = &#39;b&#39;
+</code></pre>
+<pre><code class="language-python">s2 = &quot;mayank Aggarwal&quot;
+</code></pre>
+<pre><code class="language-python">s3 = &#39;&#39;&#39;Hello 
+
+Python 
+
+Learn from the best&#39;&#39;&#39;
+</code></pre>
+<pre><code class="language-python">s2
+</code></pre>
+<pre><code class="language-python">print(s3)
+</code></pre>
+<pre><code class="language-python">s3 = &#39;ab&#39;
+</code></pre>
+<pre><code class="language-python">&#39;ab&#39; + &#39;cd&#39;
+</code></pre>
+<pre><code class="language-python">s3*2
+</code></pre>
+<pre><code class="language-python">&#39;c&#39; in s3
+</code></pre>
+<h3>Function On Strings</h3>
+<pre><code class="language-python">s1
+</code></pre>
+<pre><code class="language-python">len(s1)
+</code></pre>
+<pre><code class="language-python">ord(&#39;a&#39;)
+</code></pre>
+<pre><code class="language-python">ord(&#39;abv&#39;)
+</code></pre>
+<pre><code class="language-python">for i in s1:
+    print(f&quot;Ord of {i} is   &quot; + str(ord(i)) )
+</code></pre>
+<pre><code class="language-python">max(s1)
+</code></pre>
+<pre><code class="language-python">min(s1)
+</code></pre>
+<pre><code class="language-python">chr(97)
+</code></pre>
+<pre><code class="language-python">sorted(s1)
+</code></pre>
+<pre><code class="language-python">s1Caps = &#39;Mayank&#39;
+</code></pre>
+<pre><code class="language-python">s1 = &#39;hello PYTHOon is the best series to learn python&#39;
+</code></pre>
+<pre><code class="language-python">s1.upper()
+</code></pre>
+<pre><code class="language-python">s1Caps.lower()
+</code></pre>
+<pre><code class="language-python">s1
+</code></pre>
+<pre><code class="language-python">s1.capitalize()
+</code></pre>
+<pre><code class="language-python">s1.title()
+</code></pre>
+<pre><code class="language-python">s1Caps.swapcase()
+</code></pre>
+<pre><code class="language-python">s1.split(&#39; &#39;)
+</code></pre>
+<pre><code class="language-python">name = input()
+</code></pre>
+<pre><code class="language-python">name
+</code></pre>
+<pre><code class="language-python">nameDivided=  name.split()
+</code></pre>
+<pre><code class="language-python">newStr = &quot;\n&quot;.join([&#39;1&#39;, &#39;2&#39;,&#39;3&#39;])
+</code></pre>
+<pre><code class="language-python">print(newStr)
+</code></pre>
+<pre><code class="language-python">ord(&#39;z&#39;)
+</code></pre>
+<pre><code class="language-python">a - 97
+z- 122
+</code></pre>
+<pre><code class="language-python">0-9 - digits/numerics
+a-z, A-Z - Char/alphabet
+!,*, - special symbol
+_ 
+</code></pre>
+<pre><code class="language-python">s4 = &#39;anc123!!&#39;
+</code></pre>
+<pre><code class="language-python">s4.isalnum()
+</code></pre>
+<pre><code class="language-python">s5 = &#39;1234451a&#39;
+</code></pre>
+<pre><code class="language-python">s5.isdigit()
+</code></pre>
+<pre><code class="language-python">s5.endswith(&#39;a1&#39;)
+</code></pre>
+<pre><code class="language-python">s5
+</code></pre>
+<pre><code class="language-python">s5.count(&#39;a&#39;)
+</code></pre>
+<pre><code class="language-python">s5.find(&#39;z&#39;)
+</code></pre>
+<pre><code class="language-python">s6 = &quot;mayank@gmail.com&quot;
+</code></pre>
+<pre><code class="language-python">s6.find(&quot;gmail.com&quot;)
+</code></pre>
+<pre><code class="language-python">s6[7:7+9]
+</code></pre>
+<pre><code class="language-python">&quot;gmail&quot; in s6
+</code></pre>
+</details><h3>Try it yourself</h3><ol><li>Shift each letter of `&quot;abc&quot;` by one using `ord()` and `chr()`.</li><li>Clean `&quot;  Hello, World  &quot;` using `strip`, `lower` and `replace`; then `split` and `join` it.</li><li>Test strings with `isdigit()`, `isalpha()` and `startswith()`.</li></ol><p>These are extra independent tasks. Use the chapter practice below for hints and worked answers.</p></section></div><h2 id="practice">Practice session</h2><div class="scorebox"><span class="tag">This chapter</span><p data-score aria-live="polite"></p><p>Predict the output before running it. Output checks preserve case and line breaks. Written programs are saved for self-review and are not executed here. Drafts and progress stay in this browser.</p></div><article class="drill" id="ch09-q1"><p class="drill-id">Practice 01 · checked answer</p><h3>What prints?</h3><pre><code>d = {&quot;a&quot;: 2}
+print(d.get(&quot;b&quot;, 0))</code></pre><label for="input-ch09-q1">Your answer</label><textarea id="input-ch09-q1" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch09-q1">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch09-q1">See answer</button></div>
+<div class="drill-hint" id="hint-ch09-q1" data-hint hidden><span class="tag">Step by step</span><p>get returns the provided fallback.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch09-q1" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>0</code></pre><p>get returns the provided fallback.</p></div></article><article class="drill" id="ch09-q2"><p class="drill-id">Practice 02 · checked answer</p><h3>What prints?</h3><pre><code>print(&quot; Python &quot;.strip().lower())</code></pre><label for="input-ch09-q2">Your answer</label><textarea id="input-ch09-q2" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch09-q2">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch09-q2">See answer</button></div>
+<div class="drill-hint" id="hint-ch09-q2" data-hint hidden><span class="tag">Step by step</span><p>strip trims the ends; lower changes case.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch09-q2" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>python</code></pre><p>strip trims the ends; lower changes case.</p></div></article><article class="drill" id="ch09-q3"><p class="drill-id">Practice 03 · checked answer</p><h3>What prints?</h3><pre><code>d = {&quot;a&quot;: 1}
+d[&quot;a&quot;] = 2
+print(d[&quot;a&quot;])</code></pre><label for="input-ch09-q3">Your answer</label><textarea id="input-ch09-q3" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch09-q3">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch09-q3">See answer</button></div>
+<div class="drill-hint" id="hint-ch09-q3" data-hint hidden><span class="tag">Step by step</span><p>Assigning an existing key replaces its value.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch09-q3" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>2</code></pre><p>Assigning an existing key replaces its value.</p></div></article><article class="drill" id="ch09-q4"><p class="drill-id">Practice 04 · checked answer</p><h3>What prints?</h3><pre><code>print(len(&quot;one  two three&quot;.split()))</code></pre><label for="input-ch09-q4">Your answer</label><textarea id="input-ch09-q4" class="drill-in" rows="3" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch09-q4">Hint</button><button type="button" data-submit>Submit</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch09-q4">See answer</button></div>
+<div class="drill-hint" id="hint-ch09-q4" data-hint hidden><span class="tag">Step by step</span><p>split without arguments splits on whitespace.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch09-q4" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>3</code></pre><p>split without arguments splits on whitespace.</p></div></article><article class="drill" id="ch09-write"><p class="drill-id">Practice 05 · write and self-review</p><h3>Count words in &quot;AI python AI&quot; without treating AI and ai as different words.</h3><label for="input-ch09-write">Your answer</label><textarea id="input-ch09-write" class="drill-in" rows="10" spellcheck="false"></textarea>
+<div class="drill-actions"><button type="button" data-hint-button aria-expanded="false" aria-controls="hint-ch09-write">Hint</button><button type="button" data-submit>Submit draft</button><button type="button" data-answer-button aria-expanded="false" aria-controls="answer-ch09-write">See answer</button></div>
+<div class="drill-hint" id="hint-ch09-write" data-hint hidden><span class="tag">Step by step</span><p>lower, split, get with a zero fallback.</p></div>
+<p class="drill-fb" data-feedback role="status" aria-live="polite"></p>
+<div class="drill-ans" id="answer-ch09-write" data-answer hidden><span class="tag">Answer and explanation</span><pre><code>counts = {}
+for word in &quot;AI python AI&quot;.lower().split():
+    counts[word] = counts.get(word, 0) + 1
+print(counts)  # {&#x27;ai&#x27;: 2, &#x27;python&#x27;: 1}</code></pre><p>Compare the result with your own answer. Explain what each line does before moving on.</p></div></article><div class="course-actions chapter-end" id="end"><button type="button" data-complete aria-pressed="false">Mark chapter as read</button><a href="#main">Back to reading</a></div><div class="pager"><a href="ch08.html">← Previous chapter</a><a href="ch10.html">Next chapter →</a></div>
+<p class="source-note">Reading notes and course sequence adapted from <a href="https://github.com/mayank953/python-ai-crash-course">Mayank Aggarwal’s Python AI Crash Course</a>, under the <a href="LICENSE-upstream.txt">MIT license</a>. Classroom adaptation, chapter guides and project exercises: Learn with Mynul. <a href="sources.html">Sources and study guide</a>.</p>
+</div></main><footer class="cos-foot"><div class="wrap">Learn with Mynul · Read. Trace. Practice. Build.</div></footer>
+<script>window.PYTHON_PRACTICE = [{"prompt": "What prints?", "accept": ["0"], "hint": "get returns the provided fallback.", "code": "d = {\"a\": 2}\nprint(d.get(\"b\", 0))", "answer": "0", "why": "get returns the provided fallback.", "id": "ch09-q1"}, {"prompt": "What prints?", "accept": ["python"], "hint": "strip trims the ends; lower changes case.", "code": "print(\" Python \".strip().lower())", "answer": "python", "why": "strip trims the ends; lower changes case.", "id": "ch09-q2"}, {"prompt": "What prints?", "accept": ["2"], "hint": "Assigning an existing key replaces its value.", "code": "d = {\"a\": 1}\nd[\"a\"] = 2\nprint(d[\"a\"])", "answer": "2", "why": "Assigning an existing key replaces its value.", "id": "ch09-q3"}, {"prompt": "What prints?", "accept": ["3"], "hint": "split without arguments splits on whitespace.", "code": "print(len(\"one  two three\".split()))", "answer": "3", "why": "split without arguments splits on whitespace.", "id": "ch09-q4"}, {"id": "ch09-write", "prompt": "Count words in \"AI python AI\" without treating AI and ai as different words.", "hint": "lower, split, get with a zero fallback.", "answer": "counts = {}\nfor word in \"AI python AI\".lower().split():\n    counts[word] = counts.get(word, 0) + 1\nprint(counts)  # {'ai': 2, 'python': 1}"}];</script><script src="js/practice.js?v=1" defer></script><script src="../../assets/js/theme.js?v=3" defer></script></body></html>
