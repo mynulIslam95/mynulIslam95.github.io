@@ -26,6 +26,8 @@
       btn.setAttribute("aria-pressed", light ? "true" : "false");
       btn.setAttribute("aria-label", light ? "Switch to dark mode" : "Switch to light mode");
       btn.title = light ? "Dark mode" : "Light mode";
+      var label = btn.querySelector(".theme-label");
+      if (label) label.textContent = light ? "LIGHT" : "DARK";
     });
   }
 
