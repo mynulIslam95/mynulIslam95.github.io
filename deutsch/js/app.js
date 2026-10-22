@@ -146,7 +146,21 @@
 
   function catName(c, fallback) {
     if (!c) return fallback || "";
-    return help(c.label, c.label_bn) || fallback || "";
+    var banglaLabels = {
+      "der-ওয়ালা": "der দিয়ে শেখার শব্দ", "die-ওয়ালা": "die দিয়ে শেখার শব্দ",
+      "das-ওয়ালা": "das দিয়ে শেখার শব্দ", "মানুষ": "মানুষ বোঝায় এমন শব্দ",
+      "মিক্স": "একাধিক article হয় এমন শব্দ", "কেমন": "বিশেষণ: কেমন বোঝায়",
+      "কখন-কোথায়": "কখন, কোথায় বা কীভাবে বোঝায়",
+      "in auf mit": "Preposition: in, auf, mit",
+      "ich du er": "সর্বনাম: ich, du, er",
+      "und aber weil": "বাক্য জোড়ার শব্দ: und, aber, weil",
+      "ja doch mal": "কথার ভঙ্গি বোঝায়: ja, doch, mal",
+      "জায়গার নাম": "জায়গা আর নাম", "আর্টিকেল ছাড়া": "article ছাড়া বিশেষ্য",
+      "মুখের কথা": "দরকারি কথাবার্তা", "বাকি": "অন্যান্য শব্দ",
+      "বাসা": "বাড়ি আর দৈনন্দিন জীবন", "যাওয়া-আসা": "যাতায়াত",
+      "কাজ-পড়া": "কাজ আর পড়াশোনা"
+    };
+    return help(c.label, banglaLabels[c.label_bn] || c.label_bn) || fallback || "";
   }
 
   function wordGloss(w) {
