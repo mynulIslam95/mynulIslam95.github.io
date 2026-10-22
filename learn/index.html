@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500" rel="stylesheet"/>
-  <link rel="stylesheet" href="../assets/css/systemflow.css?v=1"/>
+  <link rel="stylesheet" href="../assets/css/systemflow.css?v=2"/>
 </head>
 <body translate="no" class="flow flow-inner notranslate">
   <a class="skip" href="#main">Skip to content</a>
@@ -23,7 +23,7 @@
       <label class="burger" for="nav-toggle" aria-label="Open menu"><span></span><span></span><span></span></label>
       <nav class="nav-panel" aria-label="Primary">
         <ul class="nav-links">
-          <li><a href="index.html" data-i18n="nav.learn">Learn with Mynul</a></li>
+          <li><a href="index.html" aria-current="page" data-i18n="nav.learn">Learn with Mynul</a></li>
           <li><a href="../index.html#projects" data-i18n="nav.queue">Projects</a></li>
           <li><a href="../index.html#stack" data-i18n="nav.stack">Skills</a></li>
           <li><a href="../index.html#closed" data-i18n="nav.closed">Experience</a></li>
@@ -43,51 +43,23 @@
     </div>
   </header>
   <main id="main">
-    <section class="tone tone-mint">
-      <div class="wrap">
-        <p class="section-kicker">Learn with Mynul</p>
-        <h1>Learn with Mynul</h1>
-        <p class="lede">Written lessons and practice sessions for technology and German. Start with Python and AI, C programming or operating systems. Read the explanations, try the exercises and build something yourself.</p>
-
-        <div class="learn-track tone tone-sky">
-          <p class="section-kicker">Technology</p>
-          <h2>Technology</h2>
-          <div class="ticket-grid">
-            <article class="ticket">
-              <div class="ticket-head"><span class="tid">T-03</span><span class="tstate">open</span></div>
-              <h3>Python from scratch, then AI</h3>
-              <p>Fourteen written chapters with examples, hints, checked questions and commented answers. Then build an expense tracker, a document search tool and a text classifier.</p>
-              <div class="card-links"><a href="python-ai/index.html">Start Python + AI</a></div>
-            </article>
-            <article class="ticket">
-              <div class="ticket-head"><span class="tid">T-01</span><span class="tstate">open</span></div>
-              <h3>C programming for Operating System</h3>
-              <p>Ten chapters, then three projects: process table, two threads, shared memory. Hint, submit, commented answer. After the hard one, publish on GitHub.</p>
-              <div class="card-links"><a href="c-os/index.html">Start here</a></div>
-            </article>
-            <article class="ticket">
-              <div class="ticket-head"><span class="tid">T-02</span><span class="tstate">open</span></div>
-              <h3>Operating systems</h3>
-              <p>What the OS is actually doing on your laptop. Kernel, programs, files. Windows and Linux are both this.</p>
-              <div class="card-links"><a href="os/index.html">Open OS</a></div>
-            </article>
-          </div>
-        </div>
-
-        <div class="learn-track tone tone-gold">
-          <p class="section-kicker">German</p>
-          <h2>German</h2>
-          <div class="ticket-grid">
-            <article class="ticket">
-              <div class="ticket-head"><span class="tid">G-01</span><span class="tstate">open</span></div>
-              <h3>German desk · A1 to B1</h3>
-              <p>Words, stories and grammar. Explain in English or Bangla. German stays German.</p>
-              <div class="card-links"><a href="../deutsch/index.html">Open the desk</a></div>
-            </article>
-          </div>
-        </div>
+    <section class="learn-hero"><div class="wrap">
+      <p class="section-kicker"><span class="learn-signal" aria-hidden="true"></span> YOUR LEARNING SPACE</p>
+      <h1>Learn with Mynul<span class="learn-dot">.</span></h1>
+      <p class="lede">Understand the idea. Try it yourself. Build something useful. Written lessons and practice, one clear step at a time.</p>
+      <div class="hero-actions"><a class="btn btn-primary" href="python-ai/index.html">Start Python + AI <span aria-hidden="true">→</span></a><a class="btn btn-secondary" href="#tracks">Explore all four tracks <span aria-hidden="true">↓</span></a></div>
+      <div class="learn-facts"><span>04 learning tracks</span><span>Read at your own pace</span><span>Light + dark mode</span></div>
+    </div></section>
+    <section class="learn-catalogue" id="tracks"><div class="wrap">
+      <div class="section-heading"><div><p class="section-kicker">01 / CHOOSE YOUR PATH</p><h2>Start where you are.</h2></div><p>You do not need to know everything before you begin. Choose a subject, read the first lesson and try the first exercise.</p></div>
+      <div class="learning-grid">
+        <a class="learning-card learning-featured" href="python-ai/index.html"><span class="course-label">RECOMMENDED START · BEGINNER</span><h3>Python &amp; AI<span>↗</span></h3><p>Learn Python from the beginning, understand AI ideas and practise with hints and answers. Then try three projects.</p><div class="learning-footer"><span>14 chapters · 3 projects</span><span>Start learning →</span></div></a>
+        <a class="learning-card" href="c-os/index.html"><span class="mono">02 / C PROGRAMMING</span><h3>C for systems<span>↗</span></h3><p>Learn variables, functions, pointers and memory. Use C to understand how programs work with an operating system.</p><div class="learning-footer"><span>10 chapters · 3 projects</span><span>Start learning →</span></div></a>
+        <a class="learning-card" href="os/index.html"><span class="mono">03 / OPERATING SYSTEMS</span><h3>Operating systems<span>↗</span></h3><p>Understand processes, memory and files. Learn what Windows and Linux do when you run a program.</p><div class="learning-footer"><span>Systems foundations</span><span>Open the course →</span></div></a>
+        <a class="learning-card" href="../deutsch/index.html"><span class="mono">04 / GERMAN</span><h3>Deutsch A1 → B1<span>↗</span></h3><p>Build your German with words, stories, grammar and practice. Use English or Bangla explanations when you need help.</p><div class="learning-footer"><span>A1 / A2 / B1</span><span>Open the desk →</span></div></a>
       </div>
-    </section>
+    </div></section>
+    <section class="learn-method"><div class="wrap"><p class="section-kicker">02 / HOW TO LEARN</p><h2>A small step. Then another.</h2><div class="method-grid"><article><span class="mono">01 / READ</span><h3>Understand the idea</h3><p>Read the explanation and follow the example. Take your time with new words.</p></article><article><span class="mono">02 / PRACTISE</span><h3>Try before you check</h3><p>Write your answer first. Use a hint if you get stuck, then compare with the explanation.</p></article><article><span class="mono">03 / BUILD</span><h3>Use what you learned</h3><p>Work through a project. Change one part, run it again and explain what happened.</p></article></div></div></section>
   </main>
   <footer>
     <div class="wrap">

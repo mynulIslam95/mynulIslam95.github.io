@@ -66,7 +66,7 @@ def page(title, body, chapter='', practice=None):
 {theme_boot}<title>{E(title)} · Python + AI · Learn with Mynul</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <meta name="description" content="Python and AI from scratch. Read the lessons, trace examples and practice with hints, saved drafts and commented answers.">
-<link rel="stylesheet" href="course.css?v=1"></head>
+<link rel="stylesheet" href="course.css?v=1"><link rel="stylesheet" href="../../assets/css/learning-theme.css?v=1"></head>
 <body class="cos" data-chapter="{chapter}"><a class="skip" href="#main">Skip to content</a>
 <header class="cos-bar"><div class="wrap"><a class="cos-brand" href="index.html">Python · AI</a><nav class="cos-nav" aria-label="Python course">{nav}</nav>{theme_button}</div></header>
 <main id="main"><div class="wrap">{body}

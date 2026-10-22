@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+:root[data-theme],:root {--void:#121110;--paper:#121110;--panel:#1b1a18;--card:#1b1a18;--ink:#e8e3db;--dim:#c6c0b6;--muted:#8f8980;--line:#3d3934;--neon:#ff2d20;--forest:#ff2d20;--forest-2:#ff2d20;--neon-dim:#ff2d2014;--neon-line:#3d3934;--ok:#d8ee9f;--warn:#e3b341;--bad:#ff776e;--on-accent:#fff;--header-bg:#121110;--sans:'DM Sans','Noto Sans Bengali',sans-serif;--mono:'DM Mono',monospace;--serif:'Manrope','Noto Sans Bengali',sans-serif}
+:root[data-theme="light"] {--void:#e8e3db;--paper:#e8e3db;--panel:#f3efe8;--card:#f3efe8;--ink:#121110;--dim:#3a3632;--muted:#5c574f;--line:#b5aea2;--neon:#e0261a;--forest:#e0261a;--forest-2:#e0261a;--neon-dim:#ff2d201a;--neon-line:#b5aea2;--ok:#4a6420;--warn:#9a6b00;--bad:#b51e14;--on-accent:#fff;--header-bg:#e8e3db}
+html body::before{display:none!important}
+html h1,html h2,html h3,html[data-theme] h1,html[data-theme] h2,html[data-theme] h3{font-family:'Manrope','Noto Sans Bengali',sans-serif;color:var(--ink);text-shadow:none;letter-spacing:-.025em}
+html h1{font-size:clamp(2rem,5vw,3.4rem);font-weight:800;line-height:1.15;margin-bottom:24px}
+html h2{font-size:1.4rem;line-height:1.4}html h3{font-size:1.08rem;line-height:1.5}
+html a:hover,html .cos-brand,html .os-brand,html .brand{text-shadow:none}
+html .cos-brand,html .os-brand{letter-spacing:0;font-family:'Manrope',sans-serif;text-transform:none;color:var(--ink);font-size:17px}
+html .card,html .drill,html .quiz,html .rule,html .paper,html .bar,html .need,html .trace,html .scorebox{box-shadow:none;border-radius:4px}
+html pre,html[data-theme] pre{background:#0d0c0b;color:#e8e3db;border-color:#3d3934;box-shadow:none;border-radius:4px}
+html pre code{color:inherit;background:transparent}
+html textarea,html input{border-radius:3px}
+html[data-theme] .choices button,html[data-theme] .drill-actions button,html[data-theme] .quiz .actions button{background:var(--panel);color:var(--ink)}
+html[data-theme] .choices button.is-pick,html[data-theme] .drill-actions button.is-on{background:var(--neon);color:#fff}
+html .cos-nav a[href="../index.html"],html .os-nav a[href="../index.html"]{color:var(--neon);font-weight:500}
+html main{padding-top:48px}
+@media(prefers-reduced-motion:no-preference){a,button{transition:background-color .2s,border-color .2s,color .2s}}

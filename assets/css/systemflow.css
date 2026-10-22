@@ -69,3 +69,15 @@ h2{white-space:pre-line}
 @media(max-width:760px){.nav-links a{font:700 24px var(--display)}}
 @media(max-width:760px){.nav-toggle{display:block;position:absolute;right:20px;top:15px;width:30px;height:34px;opacity:0;z-index:54;cursor:pointer}.nav-toggle:focus-visible+.burger{outline:2px solid var(--brand);outline-offset:4px}.nav-toggle:checked+.burger span:first-child{transform:translateY(6px) rotate(45deg)}.nav-toggle:checked+.burger span:nth-child(2){opacity:0}.nav-toggle:checked+.burger span:last-child{transform:translateY(-6px) rotate(-45deg)}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}.flow-motion .flow-reveal,.motion .reveal{opacity:1;transform:none;filter:none}}
+
+/* Give the learning space a distinct entrance across the portfolio. */
+.nav-links a[data-i18n="nav.learn"]{display:inline-flex;align-items:center;color:var(--ink);border:1px solid var(--brand);background:var(--brand-bg);padding:7px 10px;border-radius:3px;white-space:nowrap}
+.nav-links a[data-i18n="nav.learn"]::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--brand);margin-right:7px}
+.btn-learning{border:1px solid var(--brand);background:var(--brand-bg);color:var(--ink)}.btn-learning:hover{background:var(--brand);color:#fff}
+.learning-section{border-top:2px solid var(--brand);background:linear-gradient(120deg,var(--brand-bg),transparent 60%)}
+.learning-hub-link{display:flex;justify-content:space-between;align-items:center;grid-column:1/-1;font:800 clamp(1.6rem,3vw,2.4rem) var(--display);border-bottom:1px solid var(--line);padding-bottom:22px;margin-bottom:0}.learning-hub-link>span:last-child{color:var(--brand)}
+.learn-hero{padding:30px 0 65px;border-bottom:1px solid var(--line);background:radial-gradient(ellipse at 85% 20%,var(--brand-bg),transparent 65%)}.learn-hero h1{max-width:58rem;margin-top:22px}.learn-hero .lede{max-width:41rem}.learn-signal{display:inline-block;width:7px;height:7px;background:var(--brand);border-radius:50%;margin-right:10px}
+.learn-facts{display:flex;gap:30px;flex-wrap:wrap;margin-top:38px;color:var(--muted);font:11px var(--mono)}.learn-catalogue{padding:65px 0}.learning-featured{border:1px solid var(--brand);background:linear-gradient(140deg,var(--brand-bg),var(--card) 65%)}.course-label{font:11px var(--mono);color:var(--brand)}.learn-method{border-top:1px solid var(--line);padding:50px 0 0}.method-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:35px;margin-top:38px}.method-grid article{border-top:1px solid var(--line);padding-top:24px}.method-grid .mono{color:var(--brand);font-size:11px}.method-grid h3{margin:17px 0 12px}.method-grid p{color:var(--soft);font-size:15px}
+@media(max-width:760px){.nav-links a[data-i18n="nav.learn"]{font-size:22px;padding:10px 12px}.learn-hero{padding-top:0}.learn-facts{gap:16px;font-size:10px}.method-grid{grid-template-columns:1fr;gap:18px}.learn-catalogue{padding:45px 0}.learning-hub-link{font-size:25px}.learning-footer{flex-wrap:wrap;gap:12px}}
+
+.learn-dot{color:var(--brand)}
