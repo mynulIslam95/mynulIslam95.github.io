@@ -36,3 +36,33 @@
     });
   }
 })();
+
+/* Learning pages: progressive enhancement without hiding content. */
+(() => {
+  const preference = matchMedia('(prefers-reduced-motion: reduce)');
+  if (preference.matches || !('IntersectionObserver' in window) || !Element.prototype.animate) return;
+  const running = new Set();
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      observer.unobserve(entry.target);
+      if (preference.matches) return;
+      const animation = entry.target.animate(
+        [{opacity: 0.3, transform: 'translateY(18px)'}, {opacity: 1, transform: 'translateY(0)'}],
+        {duration: 580, easing: 'cubic-bezier(0.22, 1, 0.36, 1)'}
+      );
+      running.add(animation);
+      animation.onfinish = () => running.delete(animation);
+      animation.oncancel = () => running.delete(animation);
+    });
+  }, {threshold: 0.08});
+  document.querySelectorAll('.learning-card:not(.flow-reveal), .method-grid article, .rm-module > summary, .rm-toc, .learn-hero .lede, #roadmap > .wrap > h2').forEach(element => observer.observe(element));
+  function reduce(event) {
+    if (event.matches) {
+      observer.disconnect();
+      running.forEach(animation => animation.cancel());
+      running.clear();
+    }
+  }
+  if (preference.addEventListener) preference.addEventListener('change', reduce);
+})();
