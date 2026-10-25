@@ -81,3 +81,13 @@ h2{white-space:pre-line}
 @media(max-width:760px){.nav-links a[data-i18n="nav.learn"]{font-size:22px;padding:10px 12px}.learn-hero{padding-top:0}.learn-facts{gap:16px;font-size:10px}.method-grid{grid-template-columns:1fr;gap:18px}.learn-catalogue{padding:45px 0}.learning-hub-link{font-size:25px}.learning-footer{flex-wrap:wrap;gap:12px}}
 
 .learn-hero h1 .learn-dot{display:inline;color:var(--brand)}
+
+/* Native anchor scrolling preserves normal wheel and touch behavior. */
+html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  .flow-motion .flow-reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+}
+@media print {
+  .flow-motion .flow-reveal { opacity: 1 !important; transform: none !important; }
+}
