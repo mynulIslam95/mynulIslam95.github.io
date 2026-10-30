@@ -49,7 +49,113 @@
 <p class="lede" lang="bn">পাইথন থেকে শুরু করে নিজের AI অ্যাপ AWS-এ কীভাবে ডিপ্লয় করতে হয়। শুধু চ্যাটবট বানানো নয়। এই পথে আমরা শিখব কীভাবে AI সিস্টেম তৈরি করতে হয়, যেটা একটি প্রতিষ্ঠান তার প্রতিদিনের কাজে ব্যবহার করতে পারে।</p>
 <div class="hero-actions"><a class="btn btn-primary" href="#module-1">Module 1 দেখো ↓</a><a class="btn btn-secondary" href="index.html">← Learn with Mynul</a></div>
 </div></section>
-<section class="learn-catalogue" id="module-1"><div class="wrap"><p class="section-kicker">Module 1</p><h2>Python &amp; Linux Foundations</h2><p lang="bn">এই Module এর Lessons খুব শীগ্রই Add করা হবে</p></div></section>
+<section class="learn-catalogue" id="module-1"><div class="wrap">
+<p class="section-kicker">Module 1</p><h2>Python &amp; Linux Foundations</h2>
+<h3>Lesson 1: Python Core Data Structures</h3>
+<nav aria-label="Sublessons"><ol>
+<li><a href="#python-basics">Python Basics &amp; Variables</a></li>
+<li>Operators &amp; String Operations</li><li>Control Flow</li><li>Lists, Tuples, Sets &amp; Dictionaries</li><li>Loops &amp; Comprehensions</li><li>Functions &amp; Variable Scope</li>
+</ol></nav>
+<article id="python-basics" lang="bn" class="python-lesson">
+<p class="section-kicker">SUBLESSON 1</p><h2>Python Basics &amp; Variables</h2>
+<p>ধরো, তোমার Account এ €100 আছে। তুমি Penny তে €22 খরচ করলে। এখন কত টাকা বাকি আছে? মাথায় হিসাব করলে €78। এবার একই কাজ Python দিয়ে করি।</p>
+<h3>1. Python Code কোথায় Run করবো?</h3>
+<p>Computer এ Python 3 Install করা থাকলে একটা File বানাও: <code>transactions.py</code>। নিচের Code লিখে Save করো। Terminal এ <code>python3 transactions.py</code> দিয়ে Run করতে পারবে। Windows এ <code>py transactions.py</code> ব্যবহার করতে পারো।</p>
+<pre><code>print("My first transaction")</code></pre>
+<p><code>print()</code> দিয়ে Screen এ কিছু দেখাই। এখানে Quotes এর ভিতরে লেখা Text টা Output হবে।</p>
+<h3>2. Variable মানে কী?</h3>
+<p>Variable কে একটা নাম মনে করো, যেটা দিয়ে কোনো Value ব্যবহার করতে পারি। যেমন <code>balance</code> নাম দিয়ে Account এর টাকা রাখবো।</p>
+<pre><code>balance = 100
+expense = 22
+remaining_balance = balance - expense
+
+print(remaining_balance)
+# Output: 78</code></pre>
+<p>এখানে <code>=</code> দিয়ে ডান পাশের Value বাম পাশের Variable এ Assign করছি। এটা দুইটা Value সমান কিনা Check করে না। <code>balance - expense</code> এর Result রাখছি <code>remaining_balance</code> এ।</p>
+<p>Variable এর Name এ Space দেওয়া যায় না। <code>remaining_balance</code> ভালো Name। <code>2balance</code> হবে না, কারণ Name Number দিয়ে শুরু করা যায় না। Python এ <code>balance</code> আর <code>Balance</code> আলাদা Name।</p>
+<h3>3. Transaction এর Data Types</h3>
+<pre><code>store = "Penny"          # str: Text
+item_count = 3           # int: Whole number
+amount = 22.50          # float: Decimal number
+payment_successful = True  # bool: True or False
+
+print(type(store))
+print(type(amount))
+# Output:
+# &lt;class 'str'&gt;
+# &lt;class 'float'&gt;</code></pre>
+<p>Store এর Name Text, তাই Quotes ব্যবহার করেছি। Amount Number, তাই Quotes দিইনি। <code>True</code> আর <code>False</code> এর প্রথম Letter Capital হবে। <code>type()</code> দিয়ে Value এর Type দেখা যায়।</p>
+<h3>4. Balance Update করি</h3>
+<pre><code>balance = 100
+balance = balance - 22
+print(balance)  # 78
+
+balance = balance + 50
+print(balance)  # 128</code></pre>
+<p>প্রথম Transaction এর পরে Balance €78। তারপর €50 Deposit করলে Balance €128। Python আগে ডান পাশের হিসাব করে, তারপর Result Assign করে। তাই একই Variable এর Value Update করা যায়।</p>
+<h3>5. Transaction Receipt দেখাই</h3>
+<pre><code>store = "Penny"
+amount = 22.50
+
+print(f"Paid €{amount:.2f} at {store}")
+# Output: Paid €22.50 at Penny</code></pre>
+<p>এটা একটা f-string। Text এর আগে <code>f</code> দিলে <code>{}</code> এর ভিতরে Variable বসানো যায়। <code>:.2f</code> দিয়ে Decimal এর পরে ২টা Digit দেখাচ্ছি। পরে String Operations এ এটা আরও Practice করবো।</p>
+<h3>6. User এর কাছ থেকে Input নিই</h3>
+<pre><code>store = input("Store name: ")
+amount_text = input("Amount in euros: ")
+amount = float(amount_text)
+
+print(f"Paid €{amount:.2f} at {store}")</code></pre>
+<p><code>input()</code> সবসময় String Return করে। তুমি <code>22.50</code> লিখলেও সেটা প্রথমে Text থাকে। হিসাব করার আগে <code>float()</code> দিয়ে Number এ Convert করছি। Whole Number এর জন্য <code>int()</code> ব্যবহার করা যায়।</p>
+<p>এই Example এ Amount হিসেবে <code>22.50</code> লিখবে, <code>€22.50</code> বা <code>22,50</code> দিলে Conversion Error হবে। Error Handle করা পরে শিখবো।</p>
+<h3>7. Common Mistakes</h3>
+<pre><code># Text আর Number এক না
+print("22" + "3")  # 223
+print(22 + 3)      # 25
+
+# Variable ব্যবহার করার আগে Assign করতে হয়
+expense = 22
+print(expense)    # 22</code></pre>
+<p><code>#</code> এর পরে লেখা অংশ Comment। Python এটা Execute করে না। নিজের Code বুঝিয়ে রাখতে Comment ব্যবহার করবো। এই Lesson এ সহজ হিসাবের জন্য Float ব্যবহার করছি। Real Payment System এ টাকার হিসাব করতে Integer Cents বা Decimal ব্যবহার করা ভালো, কারণ Float সব Decimal Value একদম Exact রাখতে পারে না।</p>
+
+<section class="practice" aria-labelledby="practice-1"><h3 id="practice-1">Practice 1: Shopping Balance</h3>
+<p>তোমার Balance €150। Penny তে €22 আর Restaurant এ €18 খরচ করলে। তিনটা Variable বানিয়ে Total Expense আর Remaining Balance Calculate করো। তারপর নিচের মতো Receipt Print করো।</p>
+<pre><code>Total spent: €40.00
+Remaining balance: €110.00</code></pre>
+<p><strong>Try it yourself:</strong> আগে নিজের Python File এ Code লিখে Run করো।</p>
+<details><summary>Hint</summary><p>Add the two expenses first. Subtract that total from the starting balance. Use an f-string with <code>:.2f</code> to format the results.</p></details>
+<details><summary>See Solution</summary><pre><code>balance = 150
+penny_expense = 22
+restaurant_expense = 18
+
+total_spent = penny_expense + restaurant_expense
+remaining_balance = balance - total_spent
+
+print(f"Total spent: €{total_spent:.2f}")
+print(f"Remaining balance: €{remaining_balance:.2f}")</code></pre></details>
+<div class="answer-check"><h4>Check Solution</h4><p lang="en">Enter the values your code calculated. This checks your results, not your Python code.</p>
+<label for="spent">Total spent (€)</label><input id="spent" type="number" step="0.01">
+<label for="remaining">Remaining balance (€)</label><input id="remaining" type="number" step="0.01">
+<button type="button" data-check="shopping">Check Solution</button><p id="shopping-feedback" role="status" aria-live="polite"></p></div></section>
+
+<section class="practice" aria-labelledby="practice-2"><h3 id="practice-2">Practice 2: Transaction Input</h3>
+<p>User এর কাছ থেকে Store Name আর Amount নাও। Amount কে Number এ Convert করো। Starting Balance €80। Store হিসেবে <code>Lidl</code> আর Amount হিসেবে <code>12.50</code> দিয়ে Run করলে নিচের Output আসতে হবে।</p>
+<pre><code>Paid €12.50 at Lidl
+Remaining balance: €67.50</code></pre>
+<details><summary>Hint</summary><p>Use <code>input()</code> twice. Convert the amount with <code>float()</code> before subtracting it from the balance.</p></details>
+<details><summary>See Solution</summary><pre><code>balance = 80
+store = input("Store name: ")
+amount = float(input("Amount in euros: "))
+
+remaining_balance = balance - amount
+
+print(f"Paid €{amount:.2f} at {store}")
+print(f"Remaining balance: €{remaining_balance:.2f}")</code></pre></details>
+<div class="answer-check"><h4>Check Solution</h4><p lang="en">Paste the two output lines from the Lidl example. Python input prompts do not need to be included. This checks the output only.</p>
+<label for="receipt">Your output</label><textarea id="receipt" rows="4" spellcheck="false"></textarea>
+<button type="button" data-check="receipt">Check Solution</button><p id="receipt-feedback" role="status" aria-live="polite"></p></div></section>
+<p>এই Sublesson শেষে তুমি Variables এ Data রাখতে, Data Types চিনতে, Input নিতে আর একটা Transaction এর Balance Calculate করতে পারবে।</p>
+</article></div></section>
 </main>
   <footer>
     <div class="wrap">
@@ -59,5 +165,29 @@
   <script src="../assets/js/main.js?v=45" defer></script>
   <script src="../assets/js/theme.js?v=4"></script>
 <script src="../assets/js/flow.js?v=2" defer></script>
+<style>
+.python-lesson{max-width:850px;margin-top:3rem;line-height:1.9}
+.python-lesson h3{margin-top:2rem}.python-lesson pre{overflow-x:auto;padding:1.2rem;background:rgba(128,128,128,.12);border-radius:12px;line-height:1.65}
+.practice{margin:2rem 0;padding:1.4rem;border:1px solid rgba(128,128,128,.4);border-radius:16px}
+.practice summary{cursor:pointer;font-weight:700;padding:.7rem 0}
+.answer-check{margin-top:1rem}.answer-check label{display:block;margin-top:.7rem}
+.answer-check input,.answer-check textarea{display:block;box-sizing:border-box;width:100%;padding:.7rem;font:inherit;color:inherit;background:transparent;border:1px solid #888;border-radius:6px}
+.answer-check button{margin-top:1rem;padding:.7rem 1rem;cursor:pointer}
+#python-basics,#module-1{scroll-margin-top:100px}
+</style>
+<script>
+document.querySelectorAll('[data-check]').forEach(function(button){
+button.addEventListener('click',function(){
+if(button.dataset.check==='shopping'){
+var a=document.getElementById('spent'),b=document.getElementById('remaining');
+var feedback=document.getElementById('shopping-feedback');
+if(!a.value.trim()||!b.value.trim()){feedback.textContent='Enter both results first.';return;}
+feedback.textContent=Number(a.value)===40&&Number(b.value)===110?'Correct! Your total expense and balance match.':'Not quite. Add 22 + 18, then subtract the total from 150. Try again.';
+}else{
+var actual=document.getElementById('receipt').value.trim().split(/\r?\n/).map(function(line){return line.trim();}).filter(Boolean).join('\n');
+document.getElementById('receipt-feedback').textContent=actual==='Paid €12.50 at Lidl\nRemaining balance: €67.50'?'Correct! Your receipt matches the expected output.':'Not quite. Check the store name, remaining balance and two decimal places.';
+}
+});});
+</script>
 </body>
 </html>
