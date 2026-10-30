@@ -145,10 +145,7 @@ remaining_balance = balance - total_spent
 
 print(f"Total spent: €{total_spent:.2f}")
 print(f"Remaining balance: €{remaining_balance:.2f}")</code></pre></details>
-<div class="answer-check"><h4>Check Solution</h4><p lang="en">তোমার Code এর Result এখানে দাও। এখানে Result Check হবে, Python Code Run হবে না।</p>
-<label for="spent">Total spent (€)</label><input id="spent" type="number" step="0.01">
-<label for="remaining">Remaining balance (€)</label><input id="remaining" type="number" step="0.01">
-<button type="button" data-check="shopping">Check Solution</button><p id="shopping-feedback" role="status" aria-live="polite"></p></div></section>
+</section>
 
 <section class="practice" aria-labelledby="practice-2"><h3 id="practice-2">Practice 2: Transaction Input</h3>
 <p>User এর কাছ থেকে Store Name আর Amount নাও। Amount কে Number এ Convert করো। Starting Balance €80। Store হিসেবে <code>Lidl</code> আর Amount হিসেবে <code>12.50</code> দিয়ে Run করলে নিচের Output আসতে হবে।</p>
@@ -163,9 +160,7 @@ remaining_balance = balance - amount
 
 print(f"Paid €{amount:.2f} at {store}")
 print(f"Remaining balance: €{remaining_balance:.2f}")</code></pre></details>
-<div class="answer-check"><h4>Check Solution</h4><p lang="en">Lidl Example এর দুইটা Output Line Paste করো। Input Prompt দিতে হবে না। এখানে শুধু Output Check হবে।</p>
-<label for="receipt">Your output</label><textarea id="receipt" rows="4" spellcheck="false"></textarea>
-<button type="button" data-check="receipt">Check Solution</button><p id="receipt-feedback" role="status" aria-live="polite"></p></div></section>
+</section>
 <p>এই Sublesson শেষে তুমি Variables এ Data রাখতে, Data Types চিনতে, Input নিতে আর একটা Transaction এর Balance Calculate করতে পারবে।</p>
 </article></div></section>
 </main>
@@ -219,20 +214,7 @@ print(f"Remaining balance: €{remaining_balance:.2f}")</code></pre></details>
 @media(max-width:600px){.bootcamp main{font-size:16px}.bootcamp .learn-hero{padding-top:24px}.practice{padding:14px}}
 @media(prefers-reduced-motion:reduce){.bootcamp *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
-<script>
-document.querySelectorAll('[data-check]').forEach(function(button){
-button.addEventListener('click',function(){
-if(button.dataset.check==='shopping'){
-var a=document.getElementById('spent'),b=document.getElementById('remaining');
-var feedback=document.getElementById('shopping-feedback');
-if(!a.value.trim()||!b.value.trim()){feedback.textContent='Enter both results first.';return;}
-feedback.textContent=Number(a.value)===40&&Number(b.value)===110?'Correct! Your total expense and balance match.':'Not quite. Add 22 + 18, then subtract the total from 150. Try again.';
-}else{
-var actual=document.getElementById('receipt').value.trim().split(/\r?\n/).map(function(line){return line.trim();}).filter(Boolean).join('\n');
-document.getElementById('receipt-feedback').textContent=actual==='Paid €12.50 at Lidl\nRemaining balance: €67.50'?'Correct! Your receipt matches the expected output.':'Not quite. Check the store name, remaining balance and two decimal places.';
-}
-});});
-</script>
+
 <style>.bootcamp main,.bootcamp .section-kicker,.bootcamp .scenario strong{font-family:Montserrat,"Noto Sans Bengali",sans-serif}.bootcamp h1,.bootcamp h2,.bootcamp h3,.bootcamp h4{font-family:Montserrat,"Noto Sans Bengali",sans-serif;font-weight:800}.bootcamp h1{font-weight:900}</style>
 </body>
 </html>
