@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" translate="no" class="notranslate">
+<head>
+  <meta charset="UTF-8"/>
+  <script>
+  (function(){try{var t=localStorage.getItem("mynul-theme");if(t!=="light"&&t!=="dark"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Bootcamp Modules | Learn with Mynul</title>
+  <meta name="google" content="notranslate"/>
+  <meta name="description" content="Learn with Mynul: a complete software engineering and AI roadmap, C programming, operating systems and German A1 to B1."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500" rel="stylesheet"/>
+  <link rel="stylesheet" href="../assets/css/systemflow.css?v=3"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+.bootcamp{font-family:Montserrat,"Noto Sans Bengali",sans-serif}
+.bootcamp main,.bootcamp .section-kicker,.bootcamp .scenario strong,.bootcamp button,.bootcamp input,.bootcamp textarea,.bootcamp .mono,.bootcamp .brand,.bootcamp .nav-links,.bootcamp footer{font-family:Montserrat,"Noto Sans Bengali",sans-serif}
+.bootcamp h1,.bootcamp h2,.bootcamp h3,.bootcamp h4{font-family:Montserrat,"Noto Sans Bengali",sans-serif;letter-spacing:-.025em;font-weight:800}
+.bootcamp h1{font-weight:900}
+.bootcamp .director-credit{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px;margin:12px 0 18px;font-family:Montserrat,sans-serif;letter-spacing:-.025em;color:var(--bc-title)}
+.bootcamp .director-credit strong{font-weight:900;text-transform:uppercase}.bootcamp .director-credit span{font-weight:400}
+.bootcamp main{font-weight:400}
+.bootcamp .python-lesson code{font-family:"JetBrains Mono",monospace}
+</style>
+</head>
+<body translate="no" class="flow flow-inner notranslate bootcamp">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap nav">
+      <a class="brand" href="../index.html">Mynul Islam</a>
+      <input id="nav-toggle" class="nav-toggle" type="checkbox"/>
+      <label class="burger" for="nav-toggle" aria-label="Open menu"><span></span><span></span><span></span></label>
+      <nav class="nav-panel" aria-label="Primary">
+        <ul class="nav-links">
+          <li><a href="index.html" aria-current="page" data-i18n="nav.learn">Learn with Mynul</a></li>
+          <li><a href="../index.html#projects" data-i18n="nav.queue">Projects</a></li>
+          <li><a href="../index.html#stack" data-i18n="nav.stack">Skills</a></li>
+          <li><a href="../index.html#closed" data-i18n="nav.closed">Experience</a></li>
+          <li><a href="../index.html#runbooks" data-i18n="nav.runbooks">Education</a></li>
+          <li><a href="../index.html#escalate" data-i18n="nav.escalate">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" data-lang="en" class="is-on" aria-label="English">
+          <img class="flag" src="../assets/icons/flag-gb.svg" width="22" height="15" alt=""/>
+        </button>
+        <button type="button" data-lang="de" aria-label="Deutsch">
+          <img class="flag" src="../assets/icons/flag-de.svg" width="22" height="15" alt=""/>
+        </button>
+      </div>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode"><svg class="theme-sun" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="#F5C518"/><g stroke="#F5C518" stroke-width="1.8" stroke-linecap="round" fill="none"><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M5.6 18.4l1.7-1.7M16.7 7.3l1.7-1.7"/></g></svg><svg class="theme-moon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="#8EA0FF" d="M16.2 3.1A8.9 8.9 0 1 0 21.1 18 7.4 7.4 0 0 1 16.2 3.1z"/></svg><span class="theme-label" aria-hidden="true">DARK</span></button>
+    </div>
+  </header>
+  <main id="main"><section class="learn-catalogue"><div class="wrap"><p><a href="ai-fde-bootcamp.html">Bootcamp</a> / <a href="ai-fde-module.html?module=3">Module 3: Cloud Fundamentals &amp; Networking</a></p><p class="section-kicker" id="lesson-label"></p><h1 id="lesson-title"></h1></div></section><script>(function(){var titles=["Provisioning virtual machines","Object storage lifecycle policies","Managed relational databases setup","Event-driven serverless function basics","Creating virtual private clouds","Public vs private subnet routing","Outbound traffic via NAT","Configuring strict security groups","Principle of least privilege","Creating identity policies","Assuming cross-account roles","Navigating the AWS Billing console","Setting automated budget thresholds"];var n=Number(new URLSearchParams(location.search).get('lesson')||1);if(!Number.isInteger(n)||n<1||n>13)n=1;document.getElementById('lesson-label').textContent='LESSON 3.'+n;document.getElementById('lesson-title').textContent='3.'+n+' '+titles[n-1];document.title=titles[n-1]+' | Learn with Mynul';})();</script></main>
+  <footer>
+    <div class="wrap">
+      <p>Mynul Islam · Hamburg · I teach what I studied and what I use at work.</p>
+    </div>
+  </footer>
+  <script src="../assets/js/main.js?v=45" defer></script>
+  <script src="../assets/js/theme.js?v=4"></script>
+<script src="../assets/js/flow.js?v=2" defer></script>
+<style>
+.bootcamp{--bc-text:#cbd5e1;--bc-title:#f1f5f9;--bc-blue:#60a5fa;--bc-teal:#2dd4bf;--bc-purple:#c4b5fd;--bc-amber:#fbbf24;--bc-green:#4ade80;--bc-coral:#fb7185;--bc-line:#475569;--bc-panel:#111827}
+[data-theme="light"] .bootcamp{--bc-text:#334155;--bc-title:#0f172a;--bc-blue:#1d4ed8;--bc-teal:#0f766e;--bc-purple:#6d28d9;--bc-amber:#92400e;--bc-green:#166534;--bc-coral:#be123c;--bc-line:#94a3b8;--bc-panel:#f1f5f9}
+.bootcamp main{font-family:Inter,"Noto Sans Bengali",sans-serif;color:var(--bc-text);font-size:17px;line-height:1.65}
+.bootcamp main .wrap{max-width:800px}
+.bootcamp .learn-hero{padding:36px 0 24px}.bootcamp .learn-catalogue{padding:24px 0 36px}
+.bootcamp h1{font-size:clamp(27px,4.2vw,42px);line-height:1.4;color:var(--bc-title);margin:8px 0 12px}
+.bootcamp h2{font-size:clamp(23px,3vw,30px);color:var(--bc-title);line-height:1.4;margin:8px 0 12px}
+.bootcamp p{margin:0 0 10px}.bootcamp .lede{font-size:inherit;line-height:1.7}
+.bootcamp .section-kicker{font:600 12px Inter,sans-serif;letter-spacing:.08em;color:var(--bc-teal);margin-bottom:8px}
+.course-tags{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.course-tags span{border:1px solid var(--bc-line);border-radius:20px;padding:4px 10px;font-size:12px}
+.bootcamp .hero-actions{gap:10px;margin-top:16px;flex-wrap:wrap}
+.lesson-heading{border-top:1px solid var(--bc-line);padding-top:20px;margin-top:20px}
+.lesson-heading h3{font-size:22px;margin:0 0 8px;color:var(--bc-blue)}
+.bootcamp nav[aria-label="Sublessons"] ol{padding-left:24px;margin:14px 0 24px}
+.bootcamp nav[aria-label="Sublessons"] li{padding:5px 0}
+.bootcamp small{font-size:11px;color:var(--bc-text);border:1px solid var(--bc-line);padding:2px 6px;border-radius:5px;margin-left:5px}
+.bootcamp main a{color:var(--bc-blue)}.bootcamp main .btn-primary{color:var(--bc-title)}
+.python-lesson{max-width:800px;margin-top:24px;line-height:1.65}
+.python-lesson h3{font-size:20px;line-height:1.45;margin:24px 0 10px;color:var(--bc-blue)}
+.python-lesson pre{overflow-x:auto;padding:16px;background:var(--bc-panel);border:1px solid var(--bc-line);border-radius:8px;line-height:1.65;margin:12px 0}
+.python-lesson code{font-family:"JetBrains Mono",monospace;font-size:.85em}
+.python-lesson p code{color:var(--bc-teal)}
+.scenario{border-left:3px solid var(--bc-teal);padding:12px 16px;background:var(--bc-panel);border-radius:6px}
+.scenario strong{color:var(--bc-teal);font-family:Inter,sans-serif}
+.python-lesson .debug-heading{color:var(--bc-coral)}
+.practice{margin:24px 0;padding:16px;border:1px solid var(--bc-line);border-left:3px solid var(--bc-purple);border-radius:8px}
+.practice h3{margin-top:0;color:var(--bc-purple)}
+.practice summary{cursor:pointer;font-weight:600;padding:10px 0;color:var(--bc-amber)}
+.practice details+details summary{color:var(--bc-green)}
+.practice details{border-bottom:1px solid var(--bc-line)}
+.answer-check{margin-top:16px}.answer-check h4{color:var(--bc-green);margin:0 0 8px}
+.answer-check label{display:block;margin-top:8px;font-size:14px}
+.answer-check input,.answer-check textarea{display:block;box-sizing:border-box;width:100%;padding:10px;font:inherit;color:var(--bc-title);background:var(--bc-panel);border:1px solid var(--bc-line);border-radius:6px}
+.answer-check button{margin-top:12px;padding:10px 16px;cursor:pointer;border:1px solid var(--bc-green);color:var(--bc-green);background:var(--bc-panel);border-radius:6px;font-weight:600}
+.bootcamp :focus-visible{outline:3px solid var(--bc-blue);outline-offset:3px}
+.answer-check [role="status"]{margin-top:10px}
+#python-basics,#module-1{scroll-margin-top:100px}
+@media(max-width:600px){.bootcamp main{font-size:16px}.bootcamp .learn-hero{padding-top:24px}.practice{padding:14px}}
+@media(prefers-reduced-motion:reduce){.bootcamp *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+
+<style>.bootcamp main,.bootcamp .section-kicker,.bootcamp .scenario strong{font-family:Montserrat,"Noto Sans Bengali",sans-serif}.bootcamp h1,.bootcamp h2,.bootcamp h3,.bootcamp h4{font-family:Montserrat,"Noto Sans Bengali",sans-serif;font-weight:800}.bootcamp h1{font-weight:900}</style>
+</body>
+</html>
