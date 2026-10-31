@@ -1,0 +1,51 @@
+<!doctype html><html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>1.2 Data Structures &amp; Memory | Learn with Mynul</title><meta name="description" content="Python শিখি transaction, customer data আর service workflow দিয়ে। Explanations, runnable examples ও practice solutions।"><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=1"></head><body class="bootcamp-thesis"><div class="reading shell"><header><a href="../ai-fde-bootcamp.html">← Bootcamp</a><button class="theme-button" id="reading-theme" type="button" aria-label="Toggle light and dark theme">Light / Dark</button></header><main id="main"><p class="breadcrumbs"><a href="../python-engineering-module-1.html">Module 1</a> / Lesson 1.2</p><p class="chapter-kicker">LESSON 1.2</p><h1>1.2 Data Structures &amp; Memory</h1><div class="scenario"><p>Support team-এর কাছে customer IDs আর ticket records এসেছে। Duplicate IDs সরাতে হবে, original order রাখতে হবে আর এক customer-এর ticket update করলে অন্য customer-এর data বদলানো চলবে না। Data structure বেছে নেওয়া এখানে correctness-এর অংশ।</p></div><p><strong>এই Lesson শেষে:</strong> List, tuple, dict ও set বেছে নিতে পারবে এবং shared-reference bug explain ও fix করতে পারবে।</p><nav class="topic-nav" aria-label="Lesson topics"><ol type="i"><li><a href="#topic-1">1.2.1 Lists, tuples and slicing</a></li><li><a href="#topic-2">1.2.2 Dictionaries and sets</a></li><li><a href="#topic-3">1.2.3 Mutability and references</a></li><li><a href="#topic-4">1.2.4 Shallow copying</a></li><li><a href="#topic-5">1.2.5 Membership and complexity</a></li></ol></nav><section class="topic" id="topic-1"><h2>1.2.1 Lists, tuples and slicing</h2><p><code>list</code> ordered ও mutable, যেমন incoming ticket IDs। <code>tuple</code> fixed grouping-এর জন্য useful, যেমন (customer_id, region)। Tuple-এর ভেতরে list থাকলে সেই inner list mutable-ই থাকে। Index 0 থেকে শুরু; <code>items[-1]</code> শেষ item। Slice <code>[start:stop]</code>-এ stop excluded। Empty list-এ <code>items[0]</code> fail করবে; আগে data আছে কি না check করো।</p><pre><code data-language="python">ids = [101, 102, 103]
+ids.append(104)
+first_two = ids[:2]
+customer_region = (101, &quot;EU&quot;)
+assert first_two == [101, 102]
+assert ids[-1] == 104
+assert customer_region[1] == &quot;EU&quot;
+</code></pre></section><section class="topic" id="topic-2"><h2>1.2.2 Dictionaries and sets</h2><p><code>dict</code> key দিয়ে value খুঁজে দেয়, যেমন ticket ID থেকে status। <code>set</code> unique values আর membership check-এর জন্য। Set-এর iteration order-এর উপর business output depend করাবে না। Dict insertion order রাখে। Missing key-এ <code>record["x"]</code> KeyError দেয়, <code>get()</code> default ফেরত দিতে পারে। Required field missing হলে silently default দেওয়া ঠিক কি না contract অনুযায়ী decide করো।</p><pre><code data-language="python">ticket = {&quot;id&quot;: 101, &quot;status&quot;: &quot;open&quot;}
+ticket[&quot;status&quot;] = &quot;closed&quot;
+known_ids = {101, 102, 101}
+assert ticket[&quot;status&quot;] == &quot;closed&quot;
+assert ticket.get(&quot;owner&quot;, &quot;unassigned&quot;) == &quot;unassigned&quot;
+assert len(known_ids) == 2
+assert 102 in known_ids
+</code></pre></section><section class="topic" id="topic-3"><h2>1.2.3 Mutability and references</h2><p><code>b = a</code> copy তৈরি করে না, একই object-এর আরেকটা reference দেয়। তাই <code>b.append()</code> করলে a দিয়েও change দেখা যায়। <code>is</code> object identity আর <code>==</code> value equality check করে। None check করতে <code>is None</code> ব্যবহার করো, string/number value compare করতে ==। প্রতিটি customer-এর জন্য fresh list বানাও। Variable delete করলে শুধু সেই binding সরায়; process memory সঙ্গে সঙ্গে OS-এ ফেরত যাবে ধরে নিও না।</p><pre><code data-language="python">a = [&quot;T1&quot;]
+b = a
+b.append(&quot;T2&quot;)
+assert a == [&quot;T1&quot;, &quot;T2&quot;]
+assert a is b
+c = [&quot;T1&quot;, &quot;T2&quot;]
+assert a == c
+assert a is not c
+</code></pre></section><section class="topic" id="topic-4"><h2>1.2.4 Shallow copying</h2><p><code>copy()</code> outer list/dict নতুন করে, কিন্তু nested objects shared থাকতে পারে। নিচে draft-এর tags list বদলালে original-ও বদলায়। শুধু যেই field edit করবে সেটার fresh copy বানানো অনেক সময় sufficient। পুরো nested structure independent লাগলে <code>copy.deepcopy()</code> consider করো; বড় data blindly copy করলে memory ও time খরচ হয়। File handle বা network connection copy করে independent resource পাওয়া যায় না।</p><pre><code data-language="python">original = {&quot;id&quot;: 101, &quot;tags&quot;: [&quot;billing&quot;]}
+draft = original.copy()
+assert draft is not original
+assert draft[&quot;tags&quot;] is original[&quot;tags&quot;]
+draft[&quot;tags&quot;] = original[&quot;tags&quot;].copy()
+draft[&quot;tags&quot;].append(&quot;urgent&quot;)
+assert original[&quot;tags&quot;] == [&quot;billing&quot;]
+assert draft[&quot;tags&quot;] == [&quot;billing&quot;, &quot;urgent&quot;]
+</code></pre></section><section class="topic" id="topic-5"><h2>1.2.5 Membership and complexity</h2><p>List-এ <code>x in items</code> সাধারণত scan করে, তাই n items হলে O(n)। Dict/set lookup average O(1), তবে hashing, collisions ও key size-এর cost আছে। List থেকে set বানাতে O(n) work ও extra memory লাগে। একবার lookup হলে conversion waste হতে পারে; repeated lookup হলে useful। Memory growth দেখলে unbounded cache/list-এ পুরোনো records জমছে কি না দেখো। বড় files streaming করা Lesson 1.6-এ করবো।</p><pre><code data-language="python">allowed = {&quot;open&quot;, &quot;pending&quot;, &quot;closed&quot;}
+incoming = [&quot;open&quot;, &quot;deleted&quot;, &quot;closed&quot;]
+accepted = []
+for status in incoming:
+    if status in allowed:
+        accepted.append(status)
+assert accepted == [&quot;open&quot;, &quot;closed&quot;]
+</code></pre></section><section class="debug-box"><h2>Debugging: কোথা থেকে শুরু করবে?</h2><p>দুই record একসাথে বদলালে values দেখার পাশাপাশি <code>a is b</code> দিয়ে shared object check করো। Nested field-এর reference-ও দেখবে। Garbage collector tune করার আগে নিজের retained references আর collection growth investigate করো।</p></section><section class="practice" id="practice-1"><h3>Practice 1: Unique Customers, Same Order</h3><p>[42, 7, 42, 9, 7] থেকে [42, 7, 9] বানাও। Input list change করবে না।</p><details><summary>Hint</summary><div><p>Seen set আর output list একসাথে ব্যবহার করো।</p></div></details><details><summary>See Solution</summary><div><p>Set membership দিয়ে duplicate detect করো, first appearance output-এ append করো।</p><pre><code data-language="python">incoming = [42, 7, 42, 9, 7]
+seen = set()
+unique = []
+for customer_id in incoming:
+    if customer_id not in seen:
+        seen.add(customer_id)
+        unique.append(customer_id)
+assert unique == [42, 7, 9]
+assert incoming == [42, 7, 42, 9, 7]
+</code></pre></div></details><h4>নিজের কাজ মিলিয়ে দেখো</h4><p>Empty list ও all-duplicate list test করো। কেন শুধু list(set(incoming)) যথেষ্ট না explain করো।</p></section><section class="practice" id="practice-2"><h3>Practice 2: Independent Customer Tags</h3><p>দুই customer-এর tags list যেন independent থাকে। একজনকে urgent tag দিলে অন্যজন unchanged থাকবে।</p><details><summary>Hint</summary><div><p>একটা common empty list assign না করে প্রতিবার নতুন list তৈরি করো।</p></div></details><details><summary>See Solution</summary><div><p>প্রতিটি record-এর mutable field আলাদাভাবে initialize করো।</p><pre><code data-language="python">customers = [{&quot;id&quot;: 1, &quot;tags&quot;: []}, {&quot;id&quot;: 2, &quot;tags&quot;: []}]
+customers[0][&quot;tags&quot;].append(&quot;urgent&quot;)
+assert customers[1][&quot;tags&quot;] == []
+assert customers[0][&quot;tags&quot;] is not customers[1][&quot;tags&quot;]
+</code></pre></div></details><h4>নিজের কাজ মিলিয়ে দেখো</h4><p>আগে একই shared list দিয়ে bug reproduce করো। তারপর fresh list দিয়ে fix verify করো।</p></section><section class="completion" id="module-check"><h2>পরের Lesson-এ যাওয়ার আগে</h2><ul><li>নিজের ভাষায় main concept explain করো।</li><li>দুই practice-এর solution বন্ধ করে একটা changed-input version solve করো।</li><li>একটা failing case দেখিয়ে কেন fail করে এবং fix কী হবে বলো।</li></ul></section><details><summary>আরও পড়তে চাইলে</summary><div><ul><li><a href="https://docs.python.org/3/library/copy.html">Python: references ও copying</a></li></ul></div></details><nav class="lesson-nav" aria-label="Lesson navigation"><a href="lesson-1.html">← Lesson 1.1</a><a href="lesson-3.html">Lesson 1.3 →</a></nav></main><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script></body></html>

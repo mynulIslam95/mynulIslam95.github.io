@@ -1,0 +1,262 @@
+<!doctype html><html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>1.9 Async &amp; Concurrency Essentials | Learn with Mynul</title><meta name="description" content="Python শিখি transaction, customer data আর service workflow দিয়ে। Explanations, runnable examples ও practice solutions।"><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=1"></head><body class="bootcamp-thesis"><div class="reading shell"><header><a href="../ai-fde-bootcamp.html">← Bootcamp</a><button class="theme-button" id="reading-theme" type="button" aria-label="Toggle light and dark theme">Light / Dark</button></header><main id="main"><p class="breadcrumbs"><a href="../python-engineering-module-1.html">Module 1</a> / Lesson 1.9</p><p class="chapter-kicker">LESSON 1.9</p><h1>1.9 Async &amp; Concurrency Essentials</h1><div class="scenario"><p>তিনটা customer service lookup করতে হবে। প্রতিটির response-এর জন্য অপেক্ষা করছি, কিন্তু work independent। Sequentially অপেক্ষা না করে concurrent requests useful হতে পারে। এই Lesson-এ local simulated I/O দিয়ে behavior শিখবো, real paid API লাগবে না।</p></div><p><strong>এই Lesson শেষে:</strong> Async wait আর blocking work আলাদা করতে, bounded concurrent tasks চালাতে আর timeout/race explain করতে পারবে।</p><nav class="topic-nav" aria-label="Lesson topics"><ol type="i"><li><a href="#topic-1">1.9.1 Sequential vs concurrent work</a></li><li><a href="#topic-2">1.9.2 Threads, processes and coroutines</a></li><li><a href="#topic-3">1.9.3 async and await</a></li><li><a href="#topic-4">1.9.4 Timeouts and cancellation</a></li><li><a href="#topic-5">1.9.5 Race condition awareness</a></li></ol></nav><section class="topic" id="topic-1"><h2>1.9.1 Sequential vs concurrent work</h2><p>Sequential মানে এক কাজ শেষ করে পরেরটা। Concurrent মানে multiple কাজের progress overlap করে। Parallel মানে একই সময়ে multiple execution, যেমন একাধিক CPU core। Async network wait overlap করতে পারে; CPU calculation automatically faster হয় না। Output order আর completion order আলাদা হতে পারে। Speed claim করার আগে একই workload measure করতে হবে। নিচে result order inputs-এর সঙ্গে মিলে, যদিও task completion আলাদা হতে পারে।</p><pre><code data-language="python">import asyncio
+
+async def lookup(customer_id):
+    await asyncio.sleep(0.01)
+    return {&quot;id&quot;: customer_id, &quot;status&quot;: &quot;active&quot;}
+
+async def main():
+    results = await asyncio.gather(lookup(1), lookup(2), lookup(3))
+    assert [item[&quot;id&quot;] for item in results] == [1, 2, 3]
+
+asyncio.run(main())
+</code></pre></section><section class="topic" id="topic-2"><h2>1.9.2 Threads, processes and coroutines</h2><p>Coroutines cooperative: await point-এ অন্য task progress করতে পারে। Blocking synchronous I/O থাকলে thread bridge useful। CPU-heavy Python কাজের জন্য standard GIL-enabled CPython-এ threads সাধারণত multicore speedup দেয় না; process বা native library behavior investigate করতে হয়। Python build ও library অনুযায়ী details বদলায়। Process creation, serialization আর memory overhead আছে। এই stage-এ সব model combine করার বদলে workload classify করো।</p><pre><code data-language="python">import asyncio
+import time
+
+def blocking_lookup():
+    time.sleep(0.01)
+    return &quot;ready&quot;
+
+async def main():
+    value = await asyncio.to_thread(blocking_lookup)
+    assert value == &quot;ready&quot;
+
+asyncio.run(main())
+</code></pre></section><section class="topic" id="topic-3"><h2>1.9.3 async and await</h2><p><code>async def</code> call করলে coroutine object পাওয়া যায়, execution complete হয় না। await দিয়ে চালাও বা task schedule করো। Standalone script-এ top-level <code>asyncio.run(main())</code> ব্যবহার করো; already-running notebook event loop-এ <code>await main()</code> লাগতে পারে। <code>async with</code> asynchronous cleanup handle করে। নিচে semaphore concurrent in-flight work দুইটায় limit করছে। Limit thread count বা API provider quota-এর substitute না, app-side boundary।</p><pre><code data-language="python">import asyncio
+
+async def main():
+    limit = asyncio.Semaphore(2)
+    active = 0
+    peak = 0
+
+    async def worker(value):
+        nonlocal active, peak
+        async with limit:
+            active += 1
+            peak = max(peak, active)
+            try:
+                await asyncio.sleep(0.01)
+                return value * 2
+            finally:
+                active -= 1
+
+    results = await asyncio.gather(*(worker(i) for i in range(5)))
+    assert results == [0, 2, 4, 6, 8]
+    assert peak &lt;= 2
+    assert active == 0
+
+asyncio.run(main())
+</code></pre></section><section class="topic" id="topic-4"><h2>1.9.4 Timeouts and cancellation</h2><p>Deadline ছাড়া external wait hang করতে পারে। Python 3.11+ এ asyncio.timeout block deadline পেরোলে task cancellation ব্যবহার করে TimeoutError দেয়। Async cleanup <code>finally</code>-তে রাখো; CancelledError catch করলে cleanup শেষে সাধারণত re-raise করতে হয়। Timeout মানে remote action হয়নি, এমন guarantee নেই। <code>to_thread</code>-এর await cancel করলেও already-running thread থামবে ধরে নিও না। Side-effect retry-এর idempotency পরে backend Module-এ করবে।</p><pre><code data-language="python">import asyncio
+
+async def slow_lookup():
+    await asyncio.sleep(1)
+    return &quot;late&quot;
+
+async def main():
+    try:
+        async with asyncio.timeout(0.01):
+            await slow_lookup()
+    except TimeoutError:
+        result = &quot;timeout&quot;
+    else:
+        result = &quot;success&quot;
+    assert result == &quot;timeout&quot;
+
+asyncio.run(main())
+</code></pre></section><section class="topic" id="topic-5"><h2>1.9.5 Race condition awareness</h2><p>Single event loop থাকলেও logical race হতে পারে। দুই task পুরোনো balance read করে await-এর পরে overwrite করলে একটি update হারায়। Read → check → write operation-এর invariant identify করো। asyncio.Lock একই event loop-এর cooperating tasks coordinate করে; separate process বা database transaction protect করে না। নিচে await boundary-সহ shared counter lock-এর মধ্যে আছে। Real app-এ slow external calls যতটা সম্ভব critical section-এর বাইরে রাখবে।</p><pre><code data-language="python">import asyncio
+
+async def main():
+    balance = 0
+    lock = asyncio.Lock()
+
+    async def credit():
+        nonlocal balance
+        async with lock:
+            current = balance
+            await asyncio.sleep(0)
+            balance = current + 100
+
+    await asyncio.gather(credit(), credit())
+    assert balance == 200
+
+asyncio.run(main())
+</code></pre></section><section class="debug-box"><h2>Debugging: কোথা থেকে শুরু করবে?</h2><p>Async endpoint slow হলে function-এর নাম না দেখে ভেতরে blocking call আছে কি না দেখো। <code>time.sleep()</code> event loop block করে, <code>await asyncio.sleep()</code> অন্য tasks-কে সুযোগ দেয়। “coroutine was never awaited” warning হলে missing await/scheduling খুঁজো। Timeout-এর পরে unfinished tasks ও cleanup ownership check করো।</p></section><section class="practice" id="practice-1"><h3>Practice 1: Concurrent Customer Checks</h3><p>IDs [1,2,3] concurrent check করো। Each fake lookup async wait করে ID return করবে। Final IDs input order-এ থাকবে।</p><details><summary>Hint</summary><div><p>asyncio.gather results input awaitables-এর order-এ দেয়।</p></div></details><details><summary>See Solution</summary><div><p>Independent coroutine calls gather করো। Error policy explicit রাখো; এই exercise সব calls succeed ধরে।</p><pre><code data-language="python">import asyncio
+
+async def check(customer_id):
+    await asyncio.sleep(0.01)
+    return customer_id
+
+async def main():
+    ids = [1, 2, 3]
+    results = await asyncio.gather(*(check(i) for i in ids))
+    assert results == ids
+
+asyncio.run(main())
+</code></pre></div></details><h4>নিজের কাজ মিলিয়ে দেখো</h4><p>Sequential version-ও লিখে timing observe করো। Exact milliseconds assertion করবে না; execution environment বদলায়।</p></section><section class="practice" id="practice-2"><h3>Practice 2: Reproduce and Fix a Lost Update</h3><p>দুই task shared counter +1 করবে। Await read ও write-এর মাঝে দিয়ে bug reproduce করো। তারপর lock দিয়ে fix করো।</p><details><summary>Hint</summary><div><p>দুই task-ই 0 read করলে দুইজন 1 লিখবে। Final 2 হওয়া উচিত।</p></div></details><details><summary>See Solution</summary><div><p>Critical read-modify-write lock দিয়ে protect করো; network/process safety নিয়ে বেশি claim করবে না।</p><pre><code data-language="python">import asyncio
+
+async def demonstrate(use_lock):
+    count = 0
+    lock = asyncio.Lock()
+
+    async def update():
+        nonlocal count
+        old = count
+        await asyncio.sleep(0)
+        count = old + 1
+
+    async def worker():
+        if use_lock:
+            async with lock:
+                await update()
+        else:
+            await update()
+
+    await asyncio.gather(worker(), worker())
+    return count
+
+async def main():
+    assert await demonstrate(False) == 1
+    assert await demonstrate(True) == 2
+
+asyncio.run(main())
+</code></pre></div></details><h4>নিজের কাজ মিলিয়ে দেখো</h4><p>Wrong result deterministic reproduction হবে; fix-এ 2 হবে। Database balance update-এর জন্য এই lock কেন যথেষ্ট না explain করো।</p></section><section id="module-project" class="topic"><h2>Module Project: Transaction Tracker CLI</h2><p>এখন Lessons 1.1–1.8-এর skills একসাথে ব্যবহার করি। Team CSV দেবে, তোমার CLI spending, credits, balance আর rejected rows-এর JSON report দেবে। এই কাজ synchronous রাখাই যথেষ্ট; async ব্যবহার করতেই হবে এমন কোনো rule নেই।</p><h3>Input contract</h3><p>Headers: id, kind, amount। ID unique, kind debit বা credit, amount positive euro value ও whole cents। Opening balance zero হতে পারে। এটা historical report, payment authorization service না, তাই report balance negative হওয়া allowed। Duplicate ID এই file-এর মধ্যে reject হবে; process restart-এর পর deduplication database ছাড়া persistent না।</p><pre><code data-language="csv">id,kind,amount
+T1,debit,12.50
+T2,debit,7.25
+T3,credit,20.00
+T4,debit,oops
+T1,debit,12.50
+</code></pre><p>আগে নিজের implementation করো। Expected: accepted 3, spent_cents 1975, received_cents 2000, balance_cents 10025। Row 5 invalid amount আর row 6 duplicate হিসেবে rejected হবে।</p><details><summary>Project Hint</summary><div><p>Money parser → row validator → single-pass summary → file adapter → CLI। Calculation আলাদা রাখলে file ছাড়া tests লিখতে পারবে। Malformed header batch reject করবে, bad amount শুধু সেই row reject করবে।</p></div></details><details><summary>See Project Solution: tracker.py</summary><div><pre><code data-language="python">&quot;&quot;&quot;CSV transaction report. Run: python tracker.py transactions.csv --opening 100.00&quot;&quot;&quot;
+import argparse
+import csv
+import json
+from decimal import Decimal, InvalidOperation
+from pathlib import Path
+
+
+def money_to_cents(raw: str, allow_zero: bool = False) -&gt; int:
+    text = raw.strip()
+    if not text or len(text) &gt; 30:
+        raise ValueError(&quot;Invalid amount length&quot;)
+    try:
+        value = Decimal(text)
+    except InvalidOperation as error:
+        raise ValueError(&quot;Invalid decimal amount&quot;) from error
+    if not value.is_finite() or value &lt; 0 or value &gt; Decimal(&quot;1000000&quot;):
+        raise ValueError(&quot;Amount outside allowed range&quot;)
+    if value == 0 and not allow_zero:
+        raise ValueError(&quot;Transaction amount must be positive&quot;)
+    cents = value * 100
+    if cents != cents.to_integral_value():
+        raise ValueError(&quot;Fractional cents are not allowed&quot;)
+    return int(cents)
+
+
+def summarize_rows(rows, opening_cents: int) -&gt; dict:
+    if opening_cents &lt; 0:
+        raise ValueError(&quot;Opening balance cannot be negative&quot;)
+    spent = 0
+    received = 0
+    accepted = 0
+    seen = set()
+    rejected = []
+    for line, row in enumerate(rows, start=2):
+        try:
+            transaction_id = (row.get(&quot;id&quot;) or &quot;&quot;).strip()
+            kind = (row.get(&quot;kind&quot;) or &quot;&quot;).strip().casefold()
+            if not transaction_id or kind not in {&quot;debit&quot;, &quot;credit&quot;}:
+                raise ValueError(&quot;ID and debit/credit kind required&quot;)
+            amount = money_to_cents(row.get(&quot;amount&quot;) or &quot;&quot;)
+            if transaction_id in seen:
+                raise ValueError(&quot;Duplicate transaction ID&quot;)
+        except ValueError as error:
+            rejected.append({&quot;row&quot;: line, &quot;reason&quot;: str(error)})
+            continue
+        seen.add(transaction_id)
+        accepted += 1
+        if kind == &quot;debit&quot;:
+            spent += amount
+        else:
+            received += amount
+    return {
+        &quot;currency&quot;: &quot;EUR&quot;,
+        &quot;accepted&quot;: accepted,
+        &quot;spent_cents&quot;: spent,
+        &quot;received_cents&quot;: received,
+        &quot;balance_cents&quot;: opening_cents - spent + received,
+        &quot;rejected&quot;: rejected,
+    }
+
+
+def load_report(path: Path, opening_cents: int) -&gt; dict:
+    with path.open(encoding=&quot;utf-8&quot;, newline=&quot;&quot;) as handle:
+        reader = csv.DictReader(handle)
+        required = {&quot;id&quot;, &quot;kind&quot;, &quot;amount&quot;}
+        if not required.issubset(reader.fieldnames or []):
+            raise ValueError(&quot;CSV headers must include id, kind, amount&quot;)
+        return summarize_rows(reader, opening_cents)
+
+
+def main() -&gt; None:
+    parser = argparse.ArgumentParser(description=&quot;Build a transaction report&quot;)
+    parser.add_argument(&quot;csv_path&quot;, type=Path)
+    parser.add_argument(&quot;--opening&quot;, default=&quot;0.00&quot;)
+    args = parser.parse_args()
+    try:
+        report = load_report(args.csv_path, money_to_cents(args.opening, allow_zero=True))
+    except (OSError, UnicodeError, csv.Error, ValueError) as error:
+        parser.exit(2, f&quot;Import failed: {error}\n&quot;)
+    print(json.dumps(report, ensure_ascii=False, indent=2, allow_nan=False))
+
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre></div></details><details><summary>See Project Tests: test_tracker.py</summary><div><pre><code data-language="python">import csv
+from io import StringIO
+
+import pytest
+
+from tracker import load_report, money_to_cents, summarize_rows
+
+
+def test_report_separates_spending_and_credits():
+    rows = csv.DictReader(StringIO(&quot;id,kind,amount\nT1,debit,12.50\nT2,debit,7.25\nT3,credit,20.00\n&quot;))
+    report = summarize_rows(rows, 10000)
+    assert report[&quot;spent_cents&quot;] == 1975
+    assert report[&quot;received_cents&quot;] == 2000
+    assert report[&quot;balance_cents&quot;] == 10025
+
+
+def test_bad_and_duplicate_rows_are_reported():
+    rows = [
+        {&quot;id&quot;: &quot;A&quot;, &quot;kind&quot;: &quot;debit&quot;, &quot;amount&quot;: &quot;1.00&quot;},
+        {&quot;id&quot;: &quot;A&quot;, &quot;kind&quot;: &quot;debit&quot;, &quot;amount&quot;: &quot;1.00&quot;},
+        {&quot;id&quot;: &quot;B&quot;, &quot;kind&quot;: &quot;debit&quot;, &quot;amount&quot;: &quot;NaN&quot;},
+    ]
+    report = summarize_rows(rows, 0)
+    assert report[&quot;accepted&quot;] == 1
+    assert report[&quot;spent_cents&quot;] == 100
+    assert [item[&quot;row&quot;] for item in report[&quot;rejected&quot;]] == [3, 4]
+
+
+@pytest.mark.parametrize(&quot;raw&quot;, [&quot;&quot;, &quot;NaN&quot;, &quot;Infinity&quot;, &quot;-1&quot;, &quot;1.001&quot;, &quot;1000001&quot;, &quot;oops&quot;])
+def test_invalid_amount(raw):
+    with pytest.raises(ValueError):
+        money_to_cents(raw)
+
+
+def test_zero_opening_and_empty_report():
+    assert money_to_cents(&quot;0&quot;, allow_zero=True) == 0
+    assert summarize_rows([], 500)[&quot;balance_cents&quot;] == 500
+    with pytest.raises(ValueError):
+        money_to_cents(&quot;0&quot;)
+
+
+def test_load_and_missing_headers(tmp_path):
+    path = tmp_path / &quot;transactions.csv&quot;
+    path.write_text(&quot;id,kind,amount\nT1,debit,1.00\n&quot;, encoding=&quot;utf-8&quot;)
+    assert load_report(path, 200)[&quot;balance_cents&quot;] == 100
+    path.write_text(&quot;id,amount\nT1,1.00\n&quot;, encoding=&quot;utf-8&quot;)
+    with pytest.raises(ValueError, match=&quot;headers&quot;):
+        load_report(path, 0)
+</code></pre></div></details><h3>Run locally</h3><pre><code data-language="shell">python tracker.py transactions.csv --opening 100.00
+python -m pytest -q test_tracker.py
+</code></pre><p>Sample-টা <code>transactions.csv</code>, solution-টা <code>tracker.py</code> আর tests-টা <code>test_tracker.py</code> হিসেবে একই directory-তে রাখো। Lesson 1.7-এর environment activate করো। Missing file দিলে exit code 2, valid file-এর report-এ rejected rows থাকলেও command success হবে; rejection count caller-কে inspect করতে হবে।</p><p><a download href="files/tracker.py">Download tracker.py</a> · <a download href="files/test_tracker.py">Download test_tracker.py</a> · <a download href="files/transactions.csv">Download sample CSV</a></p><h3>Done বলতে কী বোঝাবে?</h3><ul><li>Sample output-এর প্রতিটি number explain করতে পারবে।</li><li>Empty file/header, duplicate ID, NaN, zero, negative ও fractional-cent inputs-এর behavior verify করবে।</li><li>README-তে setup, run, test আর known limits লিখবে।</li><li>একটি bug reproduce → fix → regression test-এর ছোট note রাখবে।</li><li>Reference বন্ধ করে parser বা summary function নতুন input-এর জন্য নিজে লিখতে পারবে।</li></ul></section><section class="completion" id="module-check"><h2>পরের Lesson-এ যাওয়ার আগে</h2><ul><li>নিজের ভাষায় main concept explain করো।</li><li>দুই practice-এর solution বন্ধ করে একটা changed-input version solve করো।</li><li>একটা failing case দেখিয়ে কেন fail করে এবং fix কী হবে বলো।</li></ul></section><details><summary>আরও পড়তে চাইলে</summary><div><ul><li><a href="https://docs.python.org/3/library/asyncio-task.html">Python: tasks, timeout ও thread bridge</a></li></ul></div></details><nav class="lesson-nav" aria-label="Lesson navigation"><a href="lesson-8.html">← Lesson 1.8</a><a href="../ai-fde-module.html?module=2">Module 2 →</a></nav></main><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script></body></html>

@@ -1,0 +1,70 @@
+<!doctype html><html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>1.3 Functions, Scope &amp; Modules | Learn with Mynul</title><meta name="description" content="Python শিখি transaction, customer data আর service workflow দিয়ে। Explanations, runnable examples ও practice solutions।"><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=1"></head><body class="bootcamp-thesis"><div class="reading shell"><header><a href="../ai-fde-bootcamp.html">← Bootcamp</a><button class="theme-button" id="reading-theme" type="button" aria-label="Toggle light and dark theme">Light / Dark</button></header><main id="main"><p class="breadcrumbs"><a href="../python-engineering-module-1.html">Module 1</a> / Lesson 1.3</p><p class="chapter-kicker">LESSON 1.3</p><h1>1.3 Functions, Scope &amp; Modules</h1><div class="scenario"><p>Transaction fee calculate করার code তিন জায়গায় copy হয়েছে। এক জায়গায় rule বদলেছে, অন্য দুই জায়গায় পুরোনো rule। এবার calculation-টা ছোট function-এ রাখবো, যাতে input/output পরিষ্কার থাকে আর test করা সহজ হয়।</p></div><p><strong>এই Lesson শেষে:</strong> Reusable functions লিখতে, mutable default bug এড়াতে আর script-কে modules-এ ভাগ করতে পারবে।</p><nav class="topic-nav" aria-label="Lesson topics"><ol type="i"><li><a href="#topic-1">1.3.1 Parameters and returns</a></li><li><a href="#topic-2">1.3.2 Default arguments</a></li><li><a href="#topic-3">1.3.3 Scope and pure functions</a></li><li><a href="#topic-4">1.3.4 Imports and modules</a></li><li><a href="#topic-5">1.3.5 Docstrings and decomposition</a></li></ol></nav><section class="topic" id="topic-1"><h2>1.3.1 Parameters and returns</h2><p>Function-এর parameter হলো input, return হলো result। <code>print()</code> screen-এ দেখায়, কিন্তু caller-কে calculated value ফেরত দেয় না। Reuse করতে চাইলে result return করো। এখানে fee calculation-এর contract: amount nonnegative integer cents, basis points nonnegative integer। 100 basis points মানে 1%। এই example-এ fraction of a cent floor করবো, কারণ rounding rule explicit হওয়া দরকার।</p><pre><code data-language="python">def fee_cents(amount_cents, basis_points):
+    if amount_cents &lt; 0 or basis_points &lt; 0:
+        raise ValueError(&quot;Inputs must be nonnegative&quot;)
+    return amount_cents * basis_points // 10000
+
+fee = fee_cents(10000, 250)
+assert fee == 250
+</code></pre></section><section class="topic" id="topic-2"><h2>1.3.2 Default arguments</h2><p>Default value function define হওয়ার সময় evaluate হয়। <code>def add(item, items=[])</code> লিখলে একই list calls-এর মধ্যে reuse হয়। Result: এক request-এর data অন্য request-এ দেখা যায়। Optional mutable input-এর default None রাখো, function-এর ভেতরে fresh collection বানাও। Caller list দিলে সেটা mutate করবে কি নতুন copy ফেরত দেবে contract-এ বলো।</p><pre><code data-language="python">def add_tag(tag, tags=None):
+    result = [] if tags is None else list(tags)
+    result.append(tag)
+    return result
+
+assert add_tag(&quot;billing&quot;) == [&quot;billing&quot;]
+assert add_tag(&quot;urgent&quot;) == [&quot;urgent&quot;]
+original = [&quot;open&quot;]
+assert add_tag(&quot;review&quot;, original) == [&quot;open&quot;, &quot;review&quot;]
+assert original == [&quot;open&quot;]
+</code></pre></section><section class="topic" id="topic-3"><h2>1.3.3 Scope and pure functions</h2><p>Function-এর local variable বাইরের একই নামের variable change করে না। Module-level global state edit করলে tests order-dependent হতে পারে। Pure function একই input-এ একই output দেয় আর বাইরের state change করে না। Fee বা summary calculation pure রাখলে easy tests পাওয়া যায়। Network call, file write আর current time-এর মতো changing dependency আলাদা boundary-তে রাখো। <code>global</code> দিয়ে balance update করার বদলে নতুন value return করা সাধারণত clearer।</p><pre><code data-language="python">balance = 10000
+
+def apply_debit(current_balance, amount):
+    if amount &lt;= 0 or amount &gt; current_balance:
+        raise ValueError(&quot;Invalid debit&quot;)
+    return current_balance - amount
+
+updated = apply_debit(balance, 2500)
+assert balance == 10000
+assert updated == 7500
+</code></pre></section><section class="topic" id="topic-4"><h2>1.3.4 Imports and modules</h2><p>একটা .py file-ই module। Calculation <code>fees.py</code>-তে, CLI entry point <code>main.py</code>-তে রাখো। Import করলে module-এর top-level code execute হয়, তাই input prompt বা file write import-এর সময় করাবে না। <code>if __name__ == "__main__"</code> entry point guard রাখো। নিজের file-এর নাম <code>json.py</code> বা <code>logging.py</code> রাখলে standard library import shadow হতে পারে। নিচের standalone file run করলে main চলে; import করলে শুধু function পাওয়া যায়।</p><pre><code data-language="python">def summarize(amounts):
+    return {&quot;count&quot;: len(amounts), &quot;total_cents&quot;: sum(amounts)}
+
+def main():
+    print(summarize([100, 250]))
+
+if __name__ == &quot;__main__&quot;:
+    main()
+
+assert summarize([]) == {&quot;count&quot;: 0, &quot;total_cents&quot;: 0}
+</code></pre></section><section class="topic" id="topic-5"><h2>1.3.5 Docstrings and decomposition</h2><p>একটা function-এর নাম দেখে কাজ বোঝা উচিত। <code>process()</code>-এর বদলে <code>summarize_debits()</code> clearer। Docstring-এ input unit, output আর surprising rule লিখো। Parse, validate, calculate আর display এক function-এ ঠেসে দিও না। আবার এক লাইনের প্রতি expression-এর জন্য class/function বানানোরও দরকার নেই। Meaningful boundary বেছে নাও।</p><pre><code data-language="python">def summarize_debits(amounts):
+    &quot;&quot;&quot;Return count and total for positive integer-cent debits.&quot;&quot;&quot;
+    valid = [amount for amount in amounts if amount &gt; 0]
+    return {&quot;count&quot;: len(valid), &quot;spent_cents&quot;: sum(valid)}
+
+assert summarize_debits([500, -20, 0, 100]) == {
+    &quot;count&quot;: 2, &quot;spent_cents&quot;: 600
+}
+</code></pre></section><section class="debug-box"><h2>Debugging: কোথা থেকে শুরু করবে?</h2><p>Caller None পাচ্ছে? Function-এ return আছে কি না দেখো। Calls-এর মধ্যে আগের values থাকছে? Mutable default আছে কি না দেখো। Import-এর সময় CLI শুরু হচ্ছে? Entry-point guard check করো।</p></section><section class="practice" id="practice-1"><h3>Practice 1: Reusable Fee Function</h3><p>amount_cents ও rate_bps নিয়ে fee return করো। Negative input reject করবে; floor-to-cent rule রাখবে।</p><details><summary>Hint</summary><div><p>Return দিয়ে result দাও। 250 bps মানে 2.5%, 250% না।</p></div></details><details><summary>See Solution</summary><div><p>Basis points-কে 10000 দিয়ে ভাগ করি। Negative validation আগে করি।</p><pre><code data-language="python">def calculate_fee(amount_cents, rate_bps=250):
+    if amount_cents &lt; 0 or rate_bps &lt; 0:
+        raise ValueError(&quot;Negative amount or rate&quot;)
+    return amount_cents * rate_bps // 10000
+
+assert calculate_fee(10000) == 250
+assert calculate_fee(0) == 0
+assert calculate_fee(199, 100) == 1
+try:
+    calculate_fee(-1)
+except ValueError:
+    pass
+else:
+    raise AssertionError(&quot;Negative amount was accepted&quot;)
+</code></pre></div></details><h4>নিজের কাজ মিলিয়ে দেখো</h4><p>Boundary 0, default rate আর one fractional-cent result explain করো।</p></section><section class="practice" id="practice-2"><h3>Practice 2: No Shared Request History</h3><p>append_event(event, history=None) লিখো। Result-এ event থাকবে, caller history বদলাবে না।</p><details><summary>Hint</summary><div><p>Fresh result list বানাও; passed list-ও copy করবে।</p></div></details><details><summary>See Solution</summary><div><p>Function-এর বাইরে state রাখার প্রয়োজন নেই।</p><pre><code data-language="python">def append_event(event, history=None):
+    result = [] if history is None else list(history)
+    result.append(event)
+    return result
+
+old = [&quot;received&quot;]
+assert append_event(&quot;validated&quot;, old) == [&quot;received&quot;, &quot;validated&quot;]
+assert old == [&quot;received&quot;]
+assert append_event(&quot;new&quot;) == [&quot;new&quot;]
+assert append_event(&quot;other&quot;) == [&quot;other&quot;]
+</code></pre></div></details><h4>নিজের কাজ মিলিয়ে দেখো</h4><p>দুই consecutive call independent আর existing list unchanged হতে হবে।</p></section><section class="completion" id="module-check"><h2>পরের Lesson-এ যাওয়ার আগে</h2><ul><li>নিজের ভাষায় main concept explain করো।</li><li>দুই practice-এর solution বন্ধ করে একটা changed-input version solve করো।</li><li>একটা failing case দেখিয়ে কেন fail করে এবং fix কী হবে বলো।</li></ul></section><details><summary>আরও পড়তে চাইলে</summary><div><ul><li><a href="https://docs.python.org/3/tutorial/controlflow.html#defining-functions">Python: functions</a></li><li><a href="https://docs.python.org/3/tutorial/modules.html">Python: modules</a></li></ul></div></details><nav class="lesson-nav" aria-label="Lesson navigation"><a href="lesson-2.html">← Lesson 1.2</a><a href="lesson-4.html">Lesson 1.4 →</a></nav></main><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script></body></html>

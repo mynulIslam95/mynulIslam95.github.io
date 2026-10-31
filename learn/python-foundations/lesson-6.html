@@ -1,0 +1,72 @@
+<!doctype html><html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>1.6 Iterators, Generators &amp; Pythonic Code | Learn with Mynul</title><meta name="description" content="Python শিখি transaction, customer data আর service workflow দিয়ে। Explanations, runnable examples ও practice solutions।"><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=1"></head><body class="bootcamp-thesis"><div class="reading shell"><header><a href="../ai-fde-bootcamp.html">← Bootcamp</a><button class="theme-button" id="reading-theme" type="button" aria-label="Toggle light and dark theme">Light / Dark</button></header><main id="main"><p class="breadcrumbs"><a href="../python-engineering-module-1.html">Module 1</a> / Lesson 1.6</p><p class="chapter-kicker">LESSON 1.6</p><h1>1.6 Iterators, Generators &amp; Pythonic Code</h1><div class="scenario"><p>একদিনের report ছোট ছিল। এখন ছয় মাসের logs process করতে হবে। সব records একসাথে list-এ রাখলে memory বাড়বে। এবার item-by-item processing করবো, তবে readable code বজায় রেখে।</p></div><p><strong>এই Lesson শেষে:</strong> Iterator consumption বুঝতে, generator pipeline বানাতে আর unnecessary materialization এড়াতে পারবে।</p><nav class="topic-nav" aria-label="Lesson topics"><ol type="i"><li><a href="#topic-1">1.6.1 Iterables vs iterators</a></li><li><a href="#topic-2">1.6.2 yield and generators</a></li><li><a href="#topic-3">1.6.3 Comprehensions</a></li><li><a href="#topic-4">1.6.4 Lazy pipelines</a></li><li><a href="#topic-5">1.6.5 Readable Python idioms</a></li></ol></nav><section class="topic" id="topic-1"><h2>1.6.1 Iterables vs iterators</h2><p>Iterable থেকে <code>iter()</code> দিয়ে iterator পাওয়া যায়। Iterator-এর <code>next()</code> পরের item দেয়; শেষ হলে StopIteration। List আবার iterate করা যায়, কিন্তু একই iterator একবার consume হলে exhausted। <code>for</code> এই protocol নিজে handle করে। Report প্রথম pass-এ total, দ্বিতীয় pass-এ count নিলে generator-এর দ্বিতীয় result zero হতে পারে। Re-iteration দরকার হলে নতুন source তৈরি করো বা justified হলে materialize করো।</p><pre><code data-language="python">items = [100, 200]
+cursor = iter(items)
+assert next(cursor) == 100
+assert list(cursor) == [200]
+assert list(cursor) == []
+assert list(items) == [100, 200]
+</code></pre></section><section class="topic" id="topic-2"><h2>1.6.2 yield and generators</h2><p>Generator function-এ <code>yield</code> একটা value দেয় আর পরে সেখান থেকে resume করে। Function call করলেই সব কাজ execute হয় না, iteration-এর সময় হয়। তাই error-ও consume করার সময় আসতে পারে। File থেকে yield করলে consumer early stop করলেও handle cleanup-এর ownership ঠিক রাখো। নিচে simple positive-debit generator; পুরো data copy করে না।</p><pre><code data-language="python">def positive_debits(amounts):
+    for amount in amounts:
+        if amount &gt; 0:
+            yield amount
+
+stream = positive_debits([100, -5, 250])
+assert next(stream) == 100
+assert list(stream) == [250]
+</code></pre></section><section class="topic" id="topic-3"><h2>1.6.3 Comprehensions</h2><p>Short transform/filter-এর জন্য list/dict/set comprehension readable। <code>[x * 2 for x in values]</code> list তৈরি করে; <code>(x * 2 for x in values)</code> generator expression। Side effects, nested conditions বা error handling বড় হলে normal loop clearer। এক লাইনে হওয়াই clean code-এর প্রমাণ না।</p><pre><code data-language="python">rows = [{&quot;id&quot;: &quot;T1&quot;, &quot;amount&quot;: 100}, {&quot;id&quot;: &quot;T2&quot;, &quot;amount&quot;: -5}]
+valid_ids = [row[&quot;id&quot;] for row in rows if row[&quot;amount&quot;] &gt; 0]
+by_id = {row[&quot;id&quot;]: row for row in rows}
+total = sum(row[&quot;amount&quot;] for row in rows if row[&quot;amount&quot;] &gt; 0)
+assert valid_ids == [&quot;T1&quot;]
+assert by_id[&quot;T2&quot;][&quot;amount&quot;] == -5
+assert total == 100
+</code></pre></section><section class="topic" id="topic-4"><h2>1.6.4 Lazy pipelines</h2><p>Parse → filter → aggregate আলাদা stages হতে পারে। Lazy pipeline item ধরে এগোয়। তবে source already huge list হলে generator বানালেই source memory disappear করে না। <code>sorted()</code> ও <code>list()</code> সব items materialize করে। Duplicate detection-এর seen set unique items অনুযায়ী বাড়ে, তাই lazy মানেই constant memory না। Production-এ memory claim করার আগে source, buffers আর retained state সব ধরো।</p><pre><code data-language="python">def cleaned_lines(lines):
+    for line in lines:
+        value = line.strip()
+        if value:
+            yield value
+
+def parse_positive(lines):
+    for line in lines:
+        value = int(line)
+        if value &gt; 0:
+            yield value
+
+total = sum(parse_positive(cleaned_lines([&quot;100\n&quot;, &quot;\n&quot;, &quot;250\n&quot;, &quot;-5\n&quot;])))
+assert total == 350
+</code></pre></section><section class="topic" id="topic-5"><h2>1.6.5 Readable Python idioms</h2><p>Index ও item একসাথে লাগলে enumerate, দুই sequence pair করতে zip, key/value-তে dict.items ব্যবহার করো। Python 3.10+ এ <code>zip(..., strict=True)</code> length mismatch ধরতে পারে। Default zip shortest input-এ থামে; IDs আর amounts silently drop করলে financial report ভুল হবে। Early return, clear names আর explicit mismatch checks clever nesting-এর চেয়ে useful।</p><pre><code data-language="python">ids = [&quot;T1&quot;, &quot;T2&quot;]
+amounts = [100, 250]
+pairs = list(zip(ids, amounts, strict=True))
+for row_number, (transaction_id, cents) in enumerate(pairs, start=1):
+    print(row_number, transaction_id, cents)
+assert dict(pairs) == {&quot;T1&quot;: 100, &quot;T2&quot;: 250}
+</code></pre></section><section class="debug-box"><h2>Debugging: কোথা থেকে শুরু করবে?</h2><p>Total ঠিক কিন্তু count zero? একই exhausted iterator twice ব্যবহার করেছ কি না দেখো। Memory high? Pipeline-এর মাঝে list(), sorted(), unbounded cache বা accumulating results আছে কি না খুঁজো।</p></section><section class="practice" id="practice-1"><h3>Practice 1: One-pass Summary</h3><p>একটা iterator থেকে count ও total এক pass-এ বের করো। Empty input-ও support করবে।</p><details><summary>Hint</summary><div><p>প্রথমে sum করে পরে len বা loop করলে source already consumed হতে পারে।</p></div></details><details><summary>See Solution</summary><div><p>দুই accumulators একই loop-এ update করো।</p><pre><code data-language="python">def summarize(stream):
+    count = 0
+    total = 0
+    for value in stream:
+        count += 1
+        total += value
+    return {&quot;count&quot;: count, &quot;total&quot;: total}
+
+assert summarize(iter([100, 250])) == {&quot;count&quot;: 2, &quot;total&quot;: 350}
+assert summarize(iter([])) == {&quot;count&quot;: 0, &quot;total&quot;: 0}
+</code></pre></div></details><h4>নিজের কাজ মিলিয়ে দেখো</h4><p>List না বানিয়ে summary হবে। Source একবারই iterate হবে।</p></section><section class="practice" id="practice-2"><h3>Practice 2: Bounded Batches</h3><p>batch(iterable, size) generator বানাও। size=2 হলে [1,2,3,4,5] থেকে [[1,2],[3,4],[5]] আসবে।</p><details><summary>Hint</summary><div><p>Current batch পূর্ণ হলে yield করে fresh list শুরু করো। size positive হতে হবে।</p></div></details><details><summary>See Solution</summary><div><p>শেষে partial batch থাকলে সেটাও yield করবে।</p><pre><code data-language="python">def batches(iterable, size):
+    if size &lt;= 0:
+        raise ValueError(&quot;Batch size must be positive&quot;)
+    current = []
+    for item in iterable:
+        current.append(item)
+        if len(current) == size:
+            yield current
+            current = []
+    if current:
+        yield current
+
+assert list(batches(iter([1, 2, 3, 4, 5]), 2)) == [[1, 2], [3, 4], [5]]
+assert list(batches([], 2)) == []
+try:
+    list(batches([1], 0))
+except ValueError:
+    pass
+else:
+    raise AssertionError(&quot;Invalid batch size accepted&quot;)
+</code></pre></div></details><h4>নিজের কাজ মিলিয়ে দেখো</h4><p>Output batches independent lists হবে। Generator validation iteration-এর সময় হয়, call-এর সময় না, explain করো।</p></section><section class="completion" id="module-check"><h2>পরের Lesson-এ যাওয়ার আগে</h2><ul><li>নিজের ভাষায় main concept explain করো।</li><li>দুই practice-এর solution বন্ধ করে একটা changed-input version solve করো।</li><li>একটা failing case দেখিয়ে কেন fail করে এবং fix কী হবে বলো।</li></ul></section><details><summary>আরও পড়তে চাইলে</summary><div><ul><li><a href="https://docs.python.org/3/tutorial/classes.html#iterators">Python: iterators ও generators</a></li></ul></div></details><nav class="lesson-nav" aria-label="Lesson navigation"><a href="lesson-5.html">← Lesson 1.5</a><a href="lesson-7.html">Lesson 1.7 →</a></nav></main><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script></body></html>

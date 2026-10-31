@@ -1,0 +1,67 @@
+<!doctype html><html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>1.1 Python Basics, Conditions &amp; Loops | Learn with Mynul</title><meta name="description" content="Python শিখি transaction, customer data আর service workflow দিয়ে। Explanations, runnable examples ও practice solutions।"><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=1"></head><body class="bootcamp-thesis"><div class="reading shell"><header><a href="../ai-fde-bootcamp.html">← Bootcamp</a><button class="theme-button" id="reading-theme" type="button" aria-label="Toggle light and dark theme">Light / Dark</button></header><main id="main"><p class="breadcrumbs"><a href="../python-engineering-module-1.html">Module 1</a> / Lesson 1.1</p><p class="chapter-kicker">LESSON 1.1</p><h1>1.1 Python Basics, Conditions &amp; Loops</h1><div class="scenario"><p>ধরো তুমি একটা customer operations team-এর জন্য daily transaction report বানাচ্ছ। Raw amounts থেকে total spent বের করতে হবে, বড় transaction flag করতে হবে আর ভুল input যেন পুরো report বন্ধ না করে। এই Lesson-এ সেই ছোট workflow দিয়েই Python শুরু করি।</p></div><p><strong>এই Lesson শেষে:</strong> একটা ছোট script run করতে, values track করতে, condition দিতে আর loop দিয়ে report বানাতে পারবে।</p><nav class="topic-nav" aria-label="Lesson topics"><ol type="i"><li><a href="#topic-1">1.1.1 Variables and types</a></li><li><a href="#topic-2">1.1.2 Conditions and comparisons</a></li><li><a href="#topic-3">1.1.3 for and while loops</a></li><li><a href="#topic-4">1.1.4 Input validation</a></li><li><a href="#topic-5">1.1.5 f-strings</a></li></ol></nav><section class="topic" id="topic-1"><h2>1.1.1 Variables and types</h2><p>Variable হলো একটা value-এর নাম। <code>amount_cents = 1250</code> লিখলে amount_cents দিয়ে 1250 value-টাকে refer করছি। <code>int</code> whole number, <code>str</code> text আর <code>bool</code> True/False রাখে। API থেকে <code>"1250"</code> এলে সেটা text, number না। <code>type()</code> দিয়ে সন্দেহটা check করো। এই Lesson-এ money integer cents-এ রাখবো, যাতে decimal rounding এখনই problem না হয়।<br>একটা <code>lesson.py</code> file বানাও। Terminal-এ <code>python3 lesson.py</code> দিয়ে run করো। তোমার machine-এ command <code>python</code> হলে সেটাই ব্যবহার করবে।</p><pre><code data-language="python">opening_cents = 10000
+amount_cents = 1250
+merchant = &quot;Penny&quot;
+is_debit = True
+print(type(amount_cents).__name__)
+print(type(&quot;1250&quot;).__name__)
+assert opening_cents - amount_cents == 8750
+</code></pre></section><section class="topic" id="topic-2"><h2>1.1.2 Conditions and comparisons</h2><p>একটা debit-এর amount balance-এর চেয়ে বেশি হলে payment reject করবে। <code>if</code>, <code>elif</code> আর <code>else</code> দিয়ে এই decision লিখি। <code>==</code> compare করে, <code>=</code> value assign করে। <code>and</code>, <code>or</code>, <code>not</code> দিয়ে conditions combine করা যায়। Python-এ indentation block ঠিক করে, তাই একই block-এ consistent spaces রাখো। Empty string, zero আর empty collection false হিসেবে behave করে; business rule-এ zero valid কি না আগে ঠিক করো।</p><pre><code data-language="python">balance_cents = 8750
+request_cents = 9000
+if request_cents &lt;= 0:
+    result = &quot;invalid&quot;
+elif request_cents &gt; balance_cents:
+    result = &quot;insufficient_balance&quot;
+else:
+    result = &quot;approved&quot;
+assert result == &quot;insufficient_balance&quot;
+</code></pre></section><section class="topic" id="topic-3"><h2>1.1.3 for and while loops</h2><p>একই কাজ প্রতিটি transaction-এর জন্য করলে <code>for</code> ব্যবহার করো। <code>range(3)</code> থেকে 0, 1, 2 আসে। কোনো condition true থাকা পর্যন্ত কাজ করলে <code>while</code> লাগে; condition বদলানোর ব্যবস্থা না থাকলে infinite loop হবে। <code>continue</code> current item skip করে, <code>break</code> loop থামায়। Report-এর জন্য total loop-এর আগে initialize করবে; ভেতরে reset করলে শুধু শেষ amount থাকবে।</p><pre><code data-language="python">amounts = [1250, 725, 8500]
+total_cents = 0
+alerts = []
+for amount in amounts:
+    total_cents += amount
+    if amount &gt; 8000:
+        alerts.append(amount)
+assert total_cents == 10475
+assert alerts == [8500]
+attempt = 0
+while attempt &lt; 2:
+    attempt += 1
+assert attempt == 2
+</code></pre></section><section class="topic" id="topic-4"><h2>1.1.4 Input validation</h2><p><code>input()</code> সবসময় text দেয়। এখানে integer cents-এর contract রাখছি: digits হলে accept, blank বা <code>12.50</code> হলে reject। <code>strip()</code> বাইরের whitespace সরায়। পরে Lesson 1.5-এ Decimal দিয়ে euro input parse করবো। Input conversion fail করতে পারে, তাই user input-কে number ভেবে calculation শুরু করবে না। Operator practice: <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>//</code> আর <code>%</code>; শেষ দুইটা quotient ও remainder দেয়।</p><pre><code data-language="python">raw = &quot; 1250 &quot;
+cleaned = raw.strip()
+if cleaned.isascii() and cleaned.isdigit():
+    cents = int(cleaned)
+    print(cents)
+else:
+    print(&quot;Enter a whole number of cents&quot;)
+assert 1250 // 100 == 12
+assert 1250 % 100 == 50
+</code></pre></section><section class="topic" id="topic-5"><h2>1.1.5 f-strings</h2><p>Log বা receipt-এ value বসাতে f-string readable। <code>{value}</code> expression evaluate করে। Cents থেকে display-এর জন্য euro আর remainder আলাদা করি। <code>:02d</code> integer-কে অন্তত দুই digit দেখায়। Merchant name clean করতে <code>strip()</code>, compare করতে <code>casefold()</code> আর text ভাগ করতে <code>split()</code> কাজে লাগে। String immutable, তাই method call করে নতুন string ফেরত পাও; original নিজে বদলায় না।</p><pre><code data-language="python">merchant = &quot;  Penny  &quot;.strip()
+cents = 1975
+receipt = f&quot;{merchant}: EUR {cents // 100}.{cents % 100:02d}&quot;
+print(receipt)
+assert receipt == &quot;Penny: EUR 19.75&quot;
+assert &quot;PENNY&quot;.casefold() == &quot;penny&quot;
+</code></pre></section><section class="debug-box"><h2>Debugging: কোথা থেকে শুরু করবে?</h2><p>Report ভুল হলে আগে প্রতিটি variable-এর value ও type দেখো। Total loop-এর ভেতরে reset হয়েছে কি? Credit-কে debit ধরেছ? Zero amount reject করার rule কি consistent? একসাথে পাঁচটা change না করে সবচেয়ে ছোট failing input দিয়ে শুরু করো।</p></section><section class="practice" id="practice-1"><h3>Practice 1: Shopping Balance</h3><p>Opening balance €100। Debit €12.50 ও €7.25, credit €20। Total spent ও remaining balance বের করো।</p><details><summary>Hint</summary><div><p>সব amount cents-এ রাখো। Credit balance বাড়ায়, spent বাড়ায় না।</p></div></details><details><summary>See Solution</summary><div><p>Debit values যোগ করে spending বের করো; opening থেকে debit বাদ দিয়ে credit যোগ করো।</p><pre><code data-language="python">opening = 10000
+debits = [1250, 725]
+credit = 2000
+spent = 0
+for debit in debits:
+    spent += debit
+remaining = opening - spent + credit
+print(f&quot;Spent: EUR {spent / 100:.2f}&quot;)
+print(f&quot;Balance: EUR {remaining / 100:.2f}&quot;)
+assert spent == 1975
+assert remaining == 10025
+</code></pre></div></details><h4>নিজের কাজ মিলিয়ে দেখো</h4><p>Expected spent €19.75 ও balance €100.25। Empty debit list দিয়েও result predict করে run করো।</p></section><section class="practice" id="practice-2"><h3>Practice 2: Transaction Alerts</h3><p>Amounts [1200, 0, -500, 9200]। শুধু positive transactions total করবে, €80-এর বেশি হলে alert list-এ রাখবে।</p><details><summary>Hint</summary><div><p>Invalid item-এ continue দাও। Alert-এর boundary > 8000, >= না।</p></div></details><details><summary>See Solution</summary><div><p>প্রথমে validation, তারপর total ও alert update করো।</p><pre><code data-language="python">amounts = [1200, 0, -500, 9200]
+total = 0
+alerts = []
+for amount in amounts:
+    if amount &lt;= 0:
+        continue
+    total += amount
+    if amount &gt; 8000:
+        alerts.append(amount)
+assert total == 10400
+assert alerts == [9200]
+</code></pre></div></details><h4>নিজের কাজ মিলিয়ে দেখো</h4><p>8000 দিলে alert হবে না; 8001 দিলে হবে। এই দুই boundary নিজে test করো।</p></section><section class="completion" id="module-check"><h2>পরের Lesson-এ যাওয়ার আগে</h2><ul><li>নিজের ভাষায় main concept explain করো।</li><li>দুই practice-এর solution বন্ধ করে একটা changed-input version solve করো।</li><li>একটা failing case দেখিয়ে কেন fail করে এবং fix কী হবে বলো।</li></ul></section><details><summary>আরও পড়তে চাইলে</summary><div><ul><li><a href="https://docs.python.org/3/tutorial/introduction.html">Python: numbers, text ও lists</a></li><li><a href="https://docs.python.org/3/tutorial/controlflow.html">Python: control flow</a></li></ul></div></details><nav class="lesson-nav" aria-label="Lesson navigation"><a href="../python-engineering-module-1.html">← Lessons List</a><a href="lesson-2.html">Lesson 1.2 →</a></nav></main><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script></body></html>

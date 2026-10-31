@@ -1,0 +1,6 @@
+id,kind,amount
+T1,debit,12.50
+T2,debit,7.25
+T3,credit,20.00
+T4,debit,oops
+T1,debit,12.50

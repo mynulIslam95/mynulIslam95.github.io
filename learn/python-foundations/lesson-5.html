@@ -1,0 +1,97 @@
+<!doctype html><html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>1.5 Exceptions, Files, CSV &amp; JSON | Learn with Mynul</title><meta name="description" content="Python শিখি transaction, customer data আর service workflow দিয়ে। Explanations, runnable examples ও practice solutions।"><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=1"></head><body class="bootcamp-thesis"><div class="reading shell"><header><a href="../ai-fde-bootcamp.html">← Bootcamp</a><button class="theme-button" id="reading-theme" type="button" aria-label="Toggle light and dark theme">Light / Dark</button></header><main id="main"><p class="breadcrumbs"><a href="../python-engineering-module-1.html">Module 1</a> / Lesson 1.5</p><p class="chapter-kicker">LESSON 1.5</p><h1>1.5 Exceptions, Files, CSV &amp; JSON</h1><div class="scenario"><p>Finance team একটা CSV দিয়েছে। কিছু row-তে amount ভুল, কিছু file missing, আর report আবার JSON হিসেবে save করতে হবে। সব exception চেপে success দেখালে wrong report তৈরি হবে। তাই expected input error আর real programming bug আলাদা করি।</p></div><p><strong>এই Lesson শেষে:</strong> Specific errors handle, UTF-8 files safely read/write আর decimal money validate করতে পারবে।</p><nav class="topic-nav" aria-label="Lesson topics"><ol type="i"><li><a href="#topic-1">1.5.1 try/except and error categories</a></li><li><a href="#topic-2">1.5.2 pathlib and context managers</a></li><li><a href="#topic-3">1.5.3 CSV parsing</a></li><li><a href="#topic-4">1.5.4 JSON serialization</a></li><li><a href="#topic-5">1.5.5 Decimal for money</a></li></ol></nav><section class="topic" id="topic-1"><h2>1.5.1 try/except and error categories</h2><p>Exception হলো normal execution থামিয়ে caller-কে problem জানানোর mechanism। <code>ValueError</code> invalid value, <code>FileNotFoundError</code> missing file, <code>KeyError</code> missing dict key। শুধু যেই error recover করতে পারো সেটাই catch করো। <code>except Exception: pass</code> দিলে data loss লুকাতে পারে। Input error-এ useful message দাও; unexpected bug-এর traceback রাখো। <code>finally</code> cleanup-এর জন্য, আর <code>raise ... from error</code> root cause preserve করে।</p><pre><code data-language="python">def parse_count(raw):
+    try:
+        count = int(raw)
+    except ValueError as error:
+        raise ValueError(&quot;Count must be a whole number&quot;) from error
+    if count &lt; 0:
+        raise ValueError(&quot;Count cannot be negative&quot;)
+    return count
+
+assert parse_count(&quot;3&quot;) == 3
+try:
+    parse_count(&quot;three&quot;)
+except ValueError as error:
+    print(error)
+    assert isinstance(error.__cause__, ValueError)
+</code></pre></section><section class="topic" id="topic-2"><h2>1.5.2 pathlib and context managers</h2><p>Relative path current working directory থেকে resolve হয়, script-এর folder থেকে automatically না। <code>Path</code> দিয়ে paths compose করো। <code>with</code> file success বা failure দুই অবস্থাতেই close করতে সাহায্য করে। <code>encoding="utf-8"</code> explicit রাখো, যাতে Bangla text machine বদলালেও readable থাকে। গুরুত্বপূর্ণ report overwrite করার সময় same-directory temporary file লিখে replace করা safer pattern; atomic replace মানেই crash durability বা backup guarantee না।</p><pre><code data-language="python">from pathlib import Path
+from tempfile import TemporaryDirectory
+
+with TemporaryDirectory() as folder:
+    path = Path(folder) / &quot;report.txt&quot;
+    with path.open(&quot;w&quot;, encoding=&quot;utf-8&quot;) as handle:
+        handle.write(&quot;Report ready: বাংলা&quot;)
+    with path.open(encoding=&quot;utf-8&quot;) as handle:
+        text = handle.read()
+    assert &quot;বাংলা&quot; in text
+</code></pre></section><section class="topic" id="topic-3"><h2>1.5.3 CSV parsing</h2><p>CSV text manual <code>split(",")</code> করলে quoted comma ভেঙে যেতে পারে। <code>csv.DictReader</code> header দিয়ে dict বানায়। Field values strings থাকে, conversion ও required-field validation তোমাকে করতে হবে। <code>newline=""</code> দিয়ে file open করলে csv module newline handle করতে পারে। Bad row skip করলে row number ও safe reason রাখো; silent skip হলে audit করা কঠিন।</p><pre><code data-language="python">import csv
+from io import StringIO
+
+source = StringIO(&#x27;id,merchant,amount_cents\nT1,&quot;Shop, Berlin&quot;,1250\nT2,Penny,725\n&#x27;)
+rows = list(csv.DictReader(source))
+assert rows[0][&quot;merchant&quot;] == &quot;Shop, Berlin&quot;
+assert sum(int(row[&quot;amount_cents&quot;]) for row in rows) == 1975
+</code></pre></section><section class="topic" id="topic-4"><h2>1.5.4 JSON serialization</h2><p>JSON data interchange format। Python dict/list থেকে <code>json.dumps()</code> text বানায়, <code>json.loads()</code> text থেকে objects ফেরত দেয়। JSON true/null Python-এ True/None হয়। Decimal, datetime বা custom class default encoder সরাসরি জানে না; stable explicit representation বেছে নাও। Money decimal string বা integer cents হিসেবে রাখো। Untrusted data-তে <code>eval()</code> করবে না।</p><pre><code data-language="python">import json
+
+report = {&quot;currency&quot;: &quot;EUR&quot;, &quot;spent_cents&quot;: 1975, &quot;valid&quot;: True}
+encoded = json.dumps(report, ensure_ascii=False, allow_nan=False)
+decoded = json.loads(encoded)
+assert decoded == report
+assert decoded[&quot;valid&quot;] is True
+</code></pre></section><section class="topic" id="topic-5"><h2>1.5.5 Decimal for money</h2><p><code>0.1 + 0.2</code> binary floating point-এ exactly 0.3 নাও হতে পারে। Monetary input-এর জন্য <code>Decimal("12.50")</code> string থেকে বানাও। Decimal(0.1) করলে already approximated float-এর value ঢুকে যায়। Finite check জরুরি: NaN ও Infinity valid payment না। এই course-এর input rule: amount positive এবং cent-এর নিচে fraction থাকবে না। Display-এ .2f দিলেই invalid business amount validate হয়ে যায় না।</p><pre><code data-language="python">from decimal import Decimal, InvalidOperation
+
+def parse_euros(raw):
+    try:
+        amount = Decimal(raw.strip())
+    except InvalidOperation as error:
+        raise ValueError(&quot;Invalid amount&quot;) from error
+    if not amount.is_finite() or amount &lt;= 0:
+        raise ValueError(&quot;Positive finite amount required&quot;)
+    if amount != amount.quantize(Decimal(&quot;0.01&quot;)):
+        raise ValueError(&quot;Use whole cents&quot;)
+    return amount
+
+assert parse_euros(&quot;12.50&quot;) == Decimal(&quot;12.50&quot;)
+</code></pre></section><section class="debug-box"><h2>Debugging: কোথা থেকে শুরু করবে?</h2><p>File পাওয়া যাচ্ছে না? <code>Path.cwd()</code> আর resolved path দেখো। CSV total wrong? Header, quote, empty field ও conversion check করো। Error message-এ full customer record, password বা token log করবে না।</p></section><section class="practice" id="practice-1"><h3>Practice 1: CSV Import with Rejections</h3><p>CSV-এর amount_cents whole positive integer হতে হবে। Good rows total করো, bad row numbers আলাদা রাখো।</p><details><summary>Hint</summary><div><p>DictReader-এ enumerate start=2 দাও, কারণ header row 1।</p></div></details><details><summary>See Solution</summary><div><p>প্রতিটি row-কে আলাদাভাবে validate করো; একটি bad row পুরো batch থামাবে না।</p><pre><code data-language="python">import csv
+from io import StringIO
+
+source = StringIO(&quot;id,amount_cents\nT1,1250\nT2,oops\nT3,-2\nT4,725\n&quot;)
+total = 0
+rejected = []
+for line, row in enumerate(csv.DictReader(source), start=2):
+    try:
+        amount = int(row[&quot;amount_cents&quot;])
+        if amount &lt;= 0:
+            raise ValueError(&quot;Nonpositive amount&quot;)
+    except (ValueError, TypeError):
+        rejected.append(line)
+        continue
+    total += amount
+assert total == 1975
+assert rejected == [3, 4]
+</code></pre></div></details><h4>নিজের কাজ মিলিয়ে দেখো</h4><p>Malformed file header batch-level error, bad value row-level error। Missing amount_cents header আলাদা করে reject করার check নিজে যোগ করো।</p></section><section class="practice" id="practice-2"><h3>Practice 2: Safe Money to JSON</h3><p>Positive euro amount string থেকে integer cents return করো। NaN, Infinity, blank, negative আর fractional cent reject করো। Result JSON encode করো।</p><details><summary>Hint</summary><div><p>Decimal finite check comparison-এর আগে; float conversion এড়াও। এই exercise input length 30 characters limit রাখো।</p></div></details><details><summary>See Solution</summary><div><p>Bound input, parse, finite/range check, cent validation, তারপর integer conversion।</p><pre><code data-language="python">import json
+from decimal import Decimal, InvalidOperation
+
+def to_cents(raw):
+    text = raw.strip()
+    if not text or len(text) &gt; 30:
+        raise ValueError(&quot;Invalid input length&quot;)
+    try:
+        value = Decimal(text)
+    except InvalidOperation as error:
+        raise ValueError(&quot;Invalid amount&quot;) from error
+    if not value.is_finite() or not (0 &lt; value &lt;= Decimal(&quot;1000000&quot;)):
+        raise ValueError(&quot;Amount outside allowed range&quot;)
+    if value * 100 != (value * 100).to_integral_value():
+        raise ValueError(&quot;Fractional cents&quot;)
+    return int(value * 100)
+
+assert to_cents(&quot;12.50&quot;) == 1250
+for bad in (&quot;NaN&quot;, &quot;Infinity&quot;, &quot;&quot;, &quot;-1&quot;, &quot;1.001&quot;):
+    try:
+        to_cents(bad)
+    except ValueError:
+        pass
+    else:
+        raise AssertionError(f&quot;Accepted invalid input: {bad}&quot;)
+assert json.loads(json.dumps({&quot;amount_cents&quot;: to_cents(&quot;7.25&quot;)}))[&quot;amount_cents&quot;] == 725
+</code></pre></div></details><h4>নিজের কাজ মিলিয়ে দেখো</h4><p>Good amount round-trip হবে। প্রতিটি invalid value ValueError দেবে।</p></section><section class="completion" id="module-check"><h2>পরের Lesson-এ যাওয়ার আগে</h2><ul><li>নিজের ভাষায় main concept explain করো।</li><li>দুই practice-এর solution বন্ধ করে একটা changed-input version solve করো।</li><li>একটা failing case দেখিয়ে কেন fail করে এবং fix কী হবে বলো।</li></ul></section><details><summary>আরও পড়তে চাইলে</summary><div><ul><li><a href="https://docs.python.org/3/tutorial/errors.html">Python: exceptions</a></li><li><a href="https://docs.python.org/3/library/csv.html">Python: CSV</a></li><li><a href="https://docs.python.org/3/library/decimal.html">Python: Decimal</a></li></ul></div></details><nav class="lesson-nav" aria-label="Lesson navigation"><a href="lesson-4.html">← Lesson 1.4</a><a href="lesson-6.html">Lesson 1.6 →</a></nav></main><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script></body></html>

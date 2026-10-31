@@ -1,0 +1,63 @@
+<!doctype html><html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>1.7 Type Hints, Clean Code &amp; Dependencies | Learn with Mynul</title><meta name="description" content="Python শিখি transaction, customer data আর service workflow দিয়ে। Explanations, runnable examples ও practice solutions।"><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=1"></head><body class="bootcamp-thesis"><div class="reading shell"><header><a href="../ai-fde-bootcamp.html">← Bootcamp</a><button class="theme-button" id="reading-theme" type="button" aria-label="Toggle light and dark theme">Light / Dark</button></header><main id="main"><p class="breadcrumbs"><a href="../python-engineering-module-1.html">Module 1</a> / Lesson 1.7</p><p class="chapter-kicker">LESSON 1.7</p><h1>1.7 Type Hints, Clean Code &amp; Dependencies</h1><div class="scenario"><p>তোমার script এখন teammate ব্যবহার করবে। কোন field required, function কী return করে আর কোন package লাগবে সেটা guess করতে হলে maintenance কঠিন হয়। এবার code-এর contract আর environment পরিষ্কার করি।</p></div><p><strong>এই Lesson শেষে:</strong> Readable typed interfaces লিখতে, dependency environment isolate করতে আর ছোট project-এর setup document করতে পারবে।</p><nav class="topic-nav" aria-label="Lesson topics"><ol type="i"><li><a href="#topic-1">1.7.1 Annotations and generic types</a></li><li><a href="#topic-2">1.7.2 Dataclasses and Optional</a></li><li><a href="#topic-3">1.7.3 Naming and refactoring</a></li><li><a href="#topic-4">1.7.4 venv and pip</a></li><li><a href="#topic-5">1.7.5 pyproject.toml and formatting</a></li></ol></nav><section class="topic" id="topic-1"><h2>1.7.1 Annotations and generic types</h2><p>Type hints developer ও static checker-কে expected types জানায়। Python নিজে hint দেখে input reject করে না। <code>list[int]</code>, <code>dict[str, int]</code> দিয়ে collection structure বোঝাও। Boundary-তে runtime validation আলাদা লাগবে। এই Module-এর code Python 3.11+ syntax ব্যবহার করে। Interpreter version <code>python3 --version</code> দিয়ে check করো।</p><pre><code data-language="python">def total_cents(amounts: list[int]) -&gt; int:
+    return sum(amounts)
+
+assert total_cents([100, 250]) == 350
+# A type checker can flag a list[str] passed to total_cents.
+# Python annotations alone do not validate that input.
+</code></pre></section><section class="topic" id="topic-2"><h2>1.7.2 Dataclasses and Optional</h2><p><code>str | None</code> মানে value text অথবা absent। এটা optional business value বোঝায়; function argument automatically optional হয়ে যায় না, default লাগবে। Missing owner-কে empty string দিয়ে represent করলে unassigned আর invalid blank name মিশে যায়। Dataclass দিয়ে record shape declare করো, None explicitly handle করো।</p><pre><code data-language="python">from dataclasses import dataclass
+
+@dataclass
+class Ticket:
+    title: str
+    owner: str | None = None
+
+def owner_label(ticket: Ticket) -&gt; str:
+    if ticket.owner is None:
+        return &quot;unassigned&quot;
+    return ticket.owner
+
+assert owner_label(Ticket(&quot;Refund&quot;)) == &quot;unassigned&quot;
+assert owner_label(Ticket(&quot;Refund&quot;, &quot;Mynul&quot;)) == &quot;Mynul&quot;
+</code></pre></section><section class="topic" id="topic-3"><h2>1.7.3 Naming and refactoring</h2><p>Refactor মানে externally expected behavior ঠিক রেখে internal structure improve করা। আগে expected input/output লিখো, তারপর duplicated rule বা mixed responsibility আলাদা করো। Money-তে unit name-এ রাখো: <code>amount_cents</code>। <code>x</code>, <code>data2</code> দিয়ে business meaning হারাবে না। Type checker pass করলেও wrong rule থাকতে পারে; tests লাগবে।</p><pre><code data-language="python">def is_large_debit(amount_cents: int, threshold_cents: int = 8000) -&gt; bool:
+    return amount_cents &gt; threshold_cents
+
+def large_debits(amounts: list[int]) -&gt; list[int]:
+    return [amount for amount in amounts if is_large_debit(amount)]
+
+assert large_debits([8000, 8001, 0]) == [8001]
+</code></pre></section><section class="topic" id="topic-4"><h2>1.7.4 venv and pip</h2><p>Project-এর packages আলাদা environment-এ রাখলে unrelated project-এর dependency conflict কমে। <code>python -m pip</code> লিখলে কোন interpreter-এর pip ব্যবহার হচ্ছে clearer থাকে। Editor-এও সেই .venv interpreter select করবে। নিচের commands terminal-এ run করো। Linux/macOS-এ activate command source .venv/bin/activate; Windows PowerShell-এ .venv\Scripts\Activate.ps1। Activation policy বাধা দিলে .venv-এর Python executable সরাসরি ব্যবহার করা যায়।</p><pre><code data-language="shell">python3 -m venv .venv
+# Linux/macOS:
+source .venv/bin/activate
+python -m pip install pytest==8.3.5 ruff==0.11.13 mypy==1.15.0
+python -c &quot;import sys; print(sys.executable)&quot;
+python -m pip freeze &gt; requirements-dev.txt
+</code></pre></section><section class="topic" id="topic-5"><h2>1.7.5 pyproject.toml and formatting</h2><p><code>pyproject.toml</code> project metadata আর tool configuration এক জায়গায় রাখে। এটা একা resolved dependency lock নয়। ছোট app-এর reproducible setup-এর জন্য tested dependency versions record ও clean environment-এ verify করো। Direct packages আর transitive packages-এর difference বুঝে রাখো। Formatting, linting আর type checking আলাদা checks; formatter business bug fix করে না। এই example-এর version pins learning setup-এর জন্য। নিজের project-এ updates review ও test করে নেবে।</p><pre><code data-language="toml">[project]
+name = &quot;transaction-tracker&quot;
+version = &quot;0.1.0&quot;
+requires-python = &quot;&gt;=3.11&quot;
+dependencies = []
+
+[tool.ruff]
+line-length = 88
+target-version = &quot;py311&quot;
+
+[tool.mypy]
+python_version = &quot;3.11&quot;
+check_untyped_defs = true
+</code></pre><p>File-টা project root-এ <code>pyproject.toml</code> নামে রাখো। <code>python -m ruff check .</code>, <code>python -m ruff format --check .</code> আর <code>python -m mypy tracker.py</code> আলাদা command। Tool install না থাকলে আগে উপরের dev setup করো।</p></section><section class="debug-box"><h2>Debugging: কোথা থেকে শুরু করবে?</h2><p>Terminal-এ import works কিন্তু editor-এ fail? Interpreter path compare করো। Hint আছে বলে invalid API payload safe মনে হচ্ছে? Runtime validation test করো। Package install হওয়ার পরে dependency conflict দেখলে clean environment-এ reproduce করো।</p></section><section class="practice" id="practice-1"><h3>Practice 1: Typed Customer Lookup</h3><p>Customer map থেকে name return করো। ID missing হলে None। Caller None handle করে label দেখাবে।</p><details><summary>Hint</summary><div><p>Return type str | None রাখো। Missing-কে existing empty value-এর সঙ্গে মিলাবে না।</p></div></details><details><summary>See Solution</summary><div><p>Dict.get দিয়ে missing represent করো, caller explicit None branch দেবে।</p><pre><code data-language="python">def find_customer(customers: dict[int, str], customer_id: int) -&gt; str | None:
+    return customers.get(customer_id)
+
+customers = {42: &quot;Mynul&quot;}
+assert find_customer(customers, 42) == &quot;Mynul&quot;
+missing = find_customer(customers, 7)
+label = &quot;unknown customer&quot; if missing is None else missing
+assert label == &quot;unknown customer&quot;
+</code></pre></div></details><h4>নিজের কাজ মিলিয়ে দেখো</h4><p>Empty map, known ID ও missing ID test করো। Type hints validation নয়, এই difference explain করো।</p></section><section class="practice" id="practice-2"><h3>Practice 2: Refactor Without Changing the Rule</h3><p>৮০০০ cents-এর বেশি হলে review, অন্যথায় normal। Function-এ extract করো এবং boundary tests রাখো।</p><details><summary>Hint</summary><div><p>> আর >= এক না। Refactor-এর সময় business rule বদলাবে না।</p></div></details><details><summary>See Solution</summary><div><p>Pure classifier function রাখো; output formatting caller করবে।</p><pre><code data-language="python">def review_status(amount_cents: int) -&gt; str:
+    if amount_cents &lt; 0:
+        raise ValueError(&quot;Amount cannot be negative&quot;)
+    return &quot;review&quot; if amount_cents &gt; 8000 else &quot;normal&quot;
+
+assert review_status(0) == &quot;normal&quot;
+assert review_status(8000) == &quot;normal&quot;
+assert review_status(8001) == &quot;review&quot;
+</code></pre></div></details><h4>নিজের কাজ মিলিয়ে দেখো</h4><p>Clean venv-এ script run করে setup steps README-তে লেখো। অন্য কাউকে command follow করতে দাও।</p></section><section class="completion" id="module-check"><h2>পরের Lesson-এ যাওয়ার আগে</h2><ul><li>নিজের ভাষায় main concept explain করো।</li><li>দুই practice-এর solution বন্ধ করে একটা changed-input version solve করো।</li><li>একটা failing case দেখিয়ে কেন fail করে এবং fix কী হবে বলো।</li></ul></section><details><summary>আরও পড়তে চাইলে</summary><div><ul><li><a href="https://docs.python.org/3/library/typing.html">Python: type hints</a></li><li><a href="https://docs.python.org/3/library/venv.html">Python: virtual environments</a></li></ul></div></details><nav class="lesson-nav" aria-label="Lesson navigation"><a href="lesson-6.html">← Lesson 1.6</a><a href="lesson-8.html">Lesson 1.8 →</a></nav></main><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script></body></html>

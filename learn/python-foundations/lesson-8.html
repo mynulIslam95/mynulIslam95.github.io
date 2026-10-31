@@ -1,0 +1,70 @@
+<!doctype html><html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>1.8 pytest, Debugging &amp; Logging | Learn with Mynul</title><meta name="description" content="Python শিখি transaction, customer data আর service workflow দিয়ে। Explanations, runnable examples ও practice solutions।"><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=1"></head><body class="bootcamp-thesis"><div class="reading shell"><header><a href="../ai-fde-bootcamp.html">← Bootcamp</a><button class="theme-button" id="reading-theme" type="button" aria-label="Toggle light and dark theme">Light / Dark</button></header><main id="main"><p class="breadcrumbs"><a href="../python-engineering-module-1.html">Module 1</a> / Lesson 1.8</p><p class="chapter-kicker">LESSON 1.8</p><h1>1.8 pytest, Debugging &amp; Logging</h1><div class="scenario"><p>Refund function সাধারণ input-এ কাজ করছে, কিন্তু zero amount-এ wrong result। User report দিয়েছে, “কখনো balance ভুল হয়”। এখন guess না করে bug reproduce, expected result define আর regression test দিয়ে fix verify করবো।</p></div><p><strong>এই Lesson শেষে:</strong> pytest tests run করতে, boundary cases design করতে, traceback পড়তে আর safe logs লিখতে পারবে।</p><nav class="topic-nav" aria-label="Lesson topics"><ol type="i"><li><a href="#topic-1">1.8.1 pytest assertions</a></li><li><a href="#topic-2">1.8.2 Arrange Act Assert</a></li><li><a href="#topic-3">1.8.3 Edge cases and parametrization</a></li><li><a href="#topic-4">1.8.4 Tracebacks</a></li><li><a href="#topic-5">1.8.5 Logging without secrets</a></li></ol></nav><section class="topic" id="topic-1"><h2>1.8.1 pytest assertions</h2><p>Test হলো code দিয়ে লেখা expected behavior। <code>assert actual == expected</code> fail করলে pytest difference দেখায়। Test file-এর নাম <code>test_*.py</code>, function-এর নাম <code>test_*</code> রাখো। নিচের code <code>test_fees.py</code> হিসেবে save করো, তারপর <code>python -m pytest -q</code> run করো। Production input validation-এর জন্য assert ব্যবহার করবে না; optimized Python mode-এ assertions disable হতে পারে।</p><pre><code data-language="python">def calculate_fee(amount_cents):
+    if amount_cents &lt; 0:
+        raise ValueError(&quot;Negative amount&quot;)
+    return amount_cents * 250 // 10000
+
+def test_fee_for_one_hundred_euros():
+    assert calculate_fee(10000) == 250
+
+def test_zero_fee():
+    assert calculate_fee(0) == 0
+</code></pre></section><section class="topic" id="topic-2"><h2>1.8.2 Arrange Act Assert</h2><p>Arrange-এ setup, Act-এ যে behavior test করছি সেটা call, Assert-এ expected outcome। নাম থেকে failure বোঝা উচিত। <code>test_1</code>-এর বদলে <code>test_rejected_debit_keeps_balance</code> useful। Result test করো, implementation-এর প্রতিটি internal line mirror করে brittle test বানাবে না। Database বা external service লাগলে পরে integration test আলাদা হবে।</p><pre><code data-language="python">def debit(balance, amount):
+    if amount &lt;= 0 or amount &gt; balance:
+        raise ValueError(&quot;Debit rejected&quot;)
+    return balance - amount
+
+def test_valid_debit_returns_remaining_balance():
+    opening = 10000  # Arrange
+    remaining = debit(opening, 2500)  # Act
+    assert remaining == 7500  # Assert
+</code></pre></section><section class="topic" id="topic-3"><h2>1.8.3 Edge cases and parametrization</h2><p>Happy path-এর পাশে empty input, zero, negative, exact threshold, one over threshold আর malformed type ভাবো। সব possible input enumerate করা লাগবে না, meaningful partitions বেছে নাও। <code>pytest.mark.parametrize</code> একই behavior কয়েক input-এ test করে। Expected exception-এর জন্য pytest.raises ব্যবহার করো। Broad Exception catch করলে wrong error-ও pass করতে পারে।</p><pre><code data-language="python">import pytest
+
+def review(amount):
+    if amount &lt; 0:
+        raise ValueError(&quot;Negative amount&quot;)
+    return amount &gt; 8000
+
+@pytest.mark.parametrize(&quot;amount, expected&quot;, [(0, False), (8000, False), (8001, True)])
+def test_review_boundary(amount, expected):
+    assert review(amount) is expected
+
+def test_negative_amount_is_rejected():
+    with pytest.raises(ValueError, match=&quot;Negative&quot;):
+        review(-1)
+</code></pre></section><section class="topic" id="topic-4"><h2>1.8.4 Tracebacks</h2><p>Traceback-এর শেষ line exception type ও message দেখায়। তার উপরের frames কোন calls থেকে এসেছ সেটা বলে। “যেই line crash করেছে” আর “যেখানে wrong value তৈরি হয়েছে” একই নাও হতে পারে। Small reproduction বানাও, সন্দেহের boundary-তে value ও type inspect করো। <code>breakpoint()</code> দিয়ে debugger-এ pause করে p variable, n next আর c continue ব্যবহার করতে পারো। Shared/production output-এ sensitive data inspect বা print করবে না।</p><pre><code data-language="python">raw = &quot;1250&quot;
+# print(10000 - raw) would raise TypeError: raw is text.
+amount_cents = int(raw)
+remaining = 10000 - amount_cents
+assert remaining == 8750
+# For local investigation, put breakpoint() before the calculation.
+</code></pre></section><section class="topic" id="topic-5"><h2>1.8.5 Logging without secrets</h2><p>Log event, request ID আর safe status রাখবে, full token/password/customer payload না। <code>logging.getLogger(__name__)</code> module logger দেয়। Library function বারবার basicConfig করবে না; application entry point configure করবে। Exception catch করে re-raise করার আগে প্রতিটি layer-এ একই traceback log করলে noise হয়। Useful boundary-তে একবার log করো। Logging আর user-friendly error response আলাদা।</p><pre><code data-language="python">import logging
+
+logger = logging.getLogger(&quot;tracker&quot;)
+logging.basicConfig(level=logging.INFO, format=&quot;%(levelname)s %(message)s&quot;)
+request_id = &quot;demo-42&quot;
+rejected_rows = 2
+logger.info(&quot;import_complete request_id=%s rejected_rows=%s&quot;, request_id, rejected_rows)
+assert rejected_rows == 2
+</code></pre></section><section class="debug-box"><h2>Debugging: কোথা থেকে শুরু করবে?</h2><p>Fix করার আগে failing test দেখাও। তারপর smallest change দিয়ে pass করো। Test pass হলে bug-এর nearby boundary check করো। Slow বা flaky test ঠিক করতে arbitrary sleep যোগ না করে shared state, timing dependency আর cleanup দেখো।</p></section><section class="practice" id="practice-1"><h3>Practice 1: Catch the Threshold Bug</h3><p>এক developer amount >= 8000 লিখেছে। Requirement > 8000। Regression test দিয়ে bug ধরো, তারপর fix করো।</p><details><summary>Hint</summary><div><p>Exact boundary 8000 ছাড়া শুধু 9000 test করলে bug ধরা পড়বে না।</p></div></details><details><summary>See Solution</summary><div><p>দুই adjacent values 8000 ও 8001 test করো।</p><pre><code data-language="python">def requires_review(amount_cents):
+    return amount_cents &gt; 8000
+
+def test_exact_threshold_is_not_reviewed():
+    assert requires_review(8000) is False
+
+def test_one_cent_over_threshold_is_reviewed():
+    assert requires_review(8001) is True
+
+test_exact_threshold_is_not_reviewed()
+test_one_cent_over_threshold_is_reviewed()
+</code></pre></div></details><h4>নিজের কাজ মিলিয়ে দেখো</h4><p>Temporarily >= বসালে প্রথম test fail করবে। ঠিক করার পরে দুই test pass করবে।</p></section><section class="practice" id="practice-2"><h3>Practice 2: Assert an Invalid-input Contract</h3><p>parse_amount("oops") ValueError দেবে, valid integer string int return করবে। pytest দিয়ে test করো।</p><details><summary>Hint</summary><div><p>Invalid input-এ 0 return করলে caller malformed আর genuine zero আলাদা করতে পারবে না।</p></div></details><details><summary>See Solution</summary><div><p>Contract-এ exception explicit রাখো; pytest.raises exact category verify করবে।</p><pre><code data-language="python">import pytest
+
+def parse_amount(raw):
+    return int(raw)
+
+def test_valid_integer():
+    assert parse_amount(&quot;1250&quot;) == 1250
+
+def test_malformed_amount():
+    with pytest.raises(ValueError):
+        parse_amount(&quot;oops&quot;)
+</code></pre></div></details><h4>নিজের কাজ মিলিয়ে দেখো</h4><p>test_amounts.py নামে save করে python -m pytest -q run করো। Failure report-এর location explain করতে পারবে।</p></section><section class="completion" id="module-check"><h2>পরের Lesson-এ যাওয়ার আগে</h2><ul><li>নিজের ভাষায় main concept explain করো।</li><li>দুই practice-এর solution বন্ধ করে একটা changed-input version solve করো।</li><li>একটা failing case দেখিয়ে কেন fail করে এবং fix কী হবে বলো।</li></ul></section><details><summary>আরও পড়তে চাইলে</summary><div><ul><li><a href="https://docs.pytest.org/en/stable/how-to/assert.html">pytest: assertions</a></li><li><a href="https://docs.python.org/3/library/logging.html">Python: logging</a></li></ul></div></details><nav class="lesson-nav" aria-label="Lesson navigation"><a href="lesson-7.html">← Lesson 1.7</a><a href="lesson-9.html">Lesson 1.9 →</a></nav></main><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script></body></html>
