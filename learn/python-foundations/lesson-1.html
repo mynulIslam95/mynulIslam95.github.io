@@ -1,67 +1,64 @@
-<!doctype html><html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>1.1 Python Basics, Conditions &amp; Loops | Learn with Mynul</title><meta name="description" content="Python শিখি transaction, customer data আর service workflow দিয়ে। Explanations, runnable examples ও practice solutions।"><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=1"></head><body class="bootcamp-thesis"><div class="reading shell"><header><a href="../ai-fde-bootcamp.html">← Bootcamp</a><button class="theme-button" id="reading-theme" type="button" aria-label="Toggle light and dark theme">Light / Dark</button></header><main id="main"><p class="breadcrumbs"><a href="../python-engineering-module-1.html">Module 1</a> / Lesson 1.1</p><p class="chapter-kicker">LESSON 1.1</p><h1>1.1 Python Basics, Conditions &amp; Loops</h1><div class="scenario"><p>ধরো তুমি একটা customer operations team-এর জন্য daily transaction report বানাচ্ছ। Raw amounts থেকে total spent বের করতে হবে, বড় transaction flag করতে হবে আর ভুল input যেন পুরো report বন্ধ না করে। এই Lesson-এ সেই ছোট workflow দিয়েই Python শুরু করি।</p></div><p><strong>এই Lesson শেষে:</strong> একটা ছোট script run করতে, values track করতে, condition দিতে আর loop দিয়ে report বানাতে পারবে।</p><nav class="topic-nav" aria-label="Lesson topics"><ol type="i"><li><a href="#topic-1">1.1.1 Variables and types</a></li><li><a href="#topic-2">1.1.2 Conditions and comparisons</a></li><li><a href="#topic-3">1.1.3 for and while loops</a></li><li><a href="#topic-4">1.1.4 Input validation</a></li><li><a href="#topic-5">1.1.5 f-strings</a></li></ol></nav><section class="topic" id="topic-1"><h2>1.1.1 Variables and types</h2><p>Variable হলো একটা value-এর নাম। <code>amount_cents = 1250</code> লিখলে amount_cents দিয়ে 1250 value-টাকে refer করছি। <code>int</code> whole number, <code>str</code> text আর <code>bool</code> True/False রাখে। API থেকে <code>"1250"</code> এলে সেটা text, number না। <code>type()</code> দিয়ে সন্দেহটা check করো। এই Lesson-এ money integer cents-এ রাখবো, যাতে decimal rounding এখনই problem না হয়।<br>একটা <code>lesson.py</code> file বানাও। Terminal-এ <code>python3 lesson.py</code> দিয়ে run করো। তোমার machine-এ command <code>python</code> হলে সেটাই ব্যবহার করবে।</p><pre><code data-language="python">opening_cents = 10000
-amount_cents = 1250
-merchant = &quot;Penny&quot;
-is_debit = True
-print(type(amount_cents).__name__)
-print(type(&quot;1250&quot;).__name__)
-assert opening_cents - amount_cents == 8750
-</code></pre></section><section class="topic" id="topic-2"><h2>1.1.2 Conditions and comparisons</h2><p>একটা debit-এর amount balance-এর চেয়ে বেশি হলে payment reject করবে। <code>if</code>, <code>elif</code> আর <code>else</code> দিয়ে এই decision লিখি। <code>==</code> compare করে, <code>=</code> value assign করে। <code>and</code>, <code>or</code>, <code>not</code> দিয়ে conditions combine করা যায়। Python-এ indentation block ঠিক করে, তাই একই block-এ consistent spaces রাখো। Empty string, zero আর empty collection false হিসেবে behave করে; business rule-এ zero valid কি না আগে ঠিক করো।</p><pre><code data-language="python">balance_cents = 8750
-request_cents = 9000
-if request_cents &lt;= 0:
-    result = &quot;invalid&quot;
-elif request_cents &gt; balance_cents:
-    result = &quot;insufficient_balance&quot;
+<!doctype html><html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>1.1 Python Basics, Conditions &amp; Loops | Learn with Mynul</title><meta name="description" content="Python শিখি transaction, customer data আর service workflow দিয়ে। Explanations, runnable examples ও practice solutions।"><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=2"></head><body class="bootcamp-thesis"><div class="reading shell"><header><a href="../ai-fde-bootcamp.html">← Bootcamp</a><button class="theme-button" id="reading-theme" type="button" aria-label="Toggle light and dark theme">Light / Dark</button></header><main id="main"><p class="breadcrumbs"><a href="../python-engineering-module-1.html">Module 1</a> / Lesson 1.1</p><p class="chapter-kicker">LESSON 1.1</p><h1>1.1 Python Basics, Conditions &amp; Loops</h1><div class="scenario"><p>ধরো, তোমার account-এ €100 আছে। কিছু shopping করবে, তারপর remaining balance জানতে চাইবে। এই ছোট problem দিয়েই Python শুরু করি। প্রথমে value রাখবো, তারপর decision ও repeated calculation।</p></div><p><strong>এই Lesson শেষে:</strong> একটা ছোট script run করতে, values track করতে, condition দিতে আর loop দিয়ে report বানাতে পারবে।</p><nav class="topic-nav" aria-label="Lesson topics"><ol type="i"><li><a href="#topic-1">1.1.1 Variables and types</a></li><li><a href="#topic-2">1.1.2 Conditions and comparisons</a></li><li><a href="#topic-3">1.1.3 for and while loops</a></li><li><a href="#topic-4">1.1.4 Input validation</a></li><li><a href="#topic-5">1.1.5 f-strings</a></li></ol></nav><section class="topic" id="topic-1"><h2>1.1.1 Variables and types</h2><p>Python 3.11 বা newer ব্যবহার করো। <code>python3 --version</code> দিয়ে version দেখো। Command না পাওয়া গেলে Python install করে terminal আবার খোলো। Script save করার পরে run করো; শুধু file edit করলে পুরোনো terminal output বদলাবে না।</p><p>ধরো, তোমার account-এ €100 আছে। Penny-তে €12 খরচ করলে কত থাকবে? আগে Python-কে এই দুইটা value জানাই। Variable হলো value-কে refer করার একটা নাম। <code>balance = 100</code>-এ balance নামটা 100 value-এর সঙ্গে associate হচ্ছে। <code>=</code> এখানে assignment, equality check না।<br>প্রথমে <code>lesson.py</code> file বানিয়ে নিচের code save করো। Terminal-এ <code>python3 lesson.py</code> run করো। তোমার machine-এ Python command <code>python</code> হলে সেটাই ব্যবহার করবে। <code>print()</code> বন্ধনীর ভেতরের value screen-এ দেখায়।</p><h3>Code-টা run করি</h3><pre><code data-language="python">balance = 100
+expense = 12
+remaining = balance - expense
+print(remaining)
+print(balance)
+</code></pre><h4>Output</h4><pre><code data-language="text">88
+100
+</code></pre><h3>কীভাবে এই result হলো?</h3><ol><li>প্রথম line-এ balance-এর value 100। দ্বিতীয় line-এ expense-এর value 12।</li><li>তৃতীয় line-এ আগে ডান পাশ evaluate হয়: 100 - 12 = 88। তারপর remaining নামের সঙ্গে 88 associate হয়।</li><li>print(remaining) তাই 88 দেখায়। balance assign করা হয়নি, তাই print(balance) এখনো 100 দেখায়।</li></ol><div class="concept-check"><strong>এখানে যেটা ভুল হতে পারে</strong><p>নতুন result অন্য variable-এ রাখলে original variable নিজে থেকে update হয় না। balance update করতে <code>balance = balance - expense</code> লিখবে। তখন ডান পাশে পুরোনো balance ব্যবহার হয়, assignment-এর পরে balance 88 হয়।</p></div><p>Value-এর type-ও গুরুত্বপূর্ণ। <code>100</code> হলো int, <code>12.5</code> হলো float, <code>"Penny"</code> হলো str আর <code>True</code> হলো bool। Quotes থাকলে <code>"100"</code> text, number না। <code>print(type(balance))</code> দিয়ে type দেখতে পারো। Int আর string যোগ-বিয়োগ একভাবে করা যায় না। Naming-এ <code>opening_balance</code> readable; <code>2balance</code> invalid। Production money-এর exact decimal handling Lesson 1.5-এ করবো; এখানে arithmetic বোঝার জন্য whole euros ব্যবহার করছি।</p><section class="try-change"><h3>এবার তুমি বদলে দেখো</h3><p>শেষে <code>balance = balance - expense</code> লিখে দুবার run করো, অর্থাৎ একই script-এ এই assignment দুই line রাখো। Final balance কত?</p><details><summary>Reasoning মিলিয়ে দেখো</summary><div><p>প্রথম update-এ 100 - 12 = 88, দ্বিতীয় update-এ 88 - 12 = 76। পুরো script নতুন করে run করলে আবার প্রথম line থেকে balance 100 দিয়ে শুরু হবে।</p></div></details></section></section><section class="topic" id="topic-2"><h2>1.1.2 Conditions and comparisons</h2><p>এবার customer €120 pay করতে চাইছে, কিন্তু balance €100। Calculation-এর আগে decision লাগবে: amount positive কি, আর balance যথেষ্ট কি? <code>if</code> true condition-এর indented block চালায়। false হলে <code>elif</code> check হয়, শেষে <code>else</code> fallback। <code>:</code>-এর পরে block শুরু; একই block-এ চারটা space রাখো।</p><h3>Code-টা run করি</h3><pre><code data-language="python">balance = 100
+requested = 120
+if requested &lt;= 0:
+    print(&quot;Invalid amount&quot;)
+elif requested &gt; balance:
+    print(&quot;Not enough balance&quot;)
 else:
-    result = &quot;approved&quot;
-assert result == &quot;insufficient_balance&quot;
-</code></pre></section><section class="topic" id="topic-3"><h2>1.1.3 for and while loops</h2><p>একই কাজ প্রতিটি transaction-এর জন্য করলে <code>for</code> ব্যবহার করো। <code>range(3)</code> থেকে 0, 1, 2 আসে। কোনো condition true থাকা পর্যন্ত কাজ করলে <code>while</code> লাগে; condition বদলানোর ব্যবস্থা না থাকলে infinite loop হবে। <code>continue</code> current item skip করে, <code>break</code> loop থামায়। Report-এর জন্য total loop-এর আগে initialize করবে; ভেতরে reset করলে শুধু শেষ amount থাকবে।</p><pre><code data-language="python">amounts = [1250, 725, 8500]
-total_cents = 0
-alerts = []
-for amount in amounts:
-    total_cents += amount
-    if amount &gt; 8000:
-        alerts.append(amount)
-assert total_cents == 10475
-assert alerts == [8500]
-attempt = 0
-while attempt &lt; 2:
-    attempt += 1
-assert attempt == 2
-</code></pre></section><section class="topic" id="topic-4"><h2>1.1.4 Input validation</h2><p><code>input()</code> সবসময় text দেয়। এখানে integer cents-এর contract রাখছি: digits হলে accept, blank বা <code>12.50</code> হলে reject। <code>strip()</code> বাইরের whitespace সরায়। পরে Lesson 1.5-এ Decimal দিয়ে euro input parse করবো। Input conversion fail করতে পারে, তাই user input-কে number ভেবে calculation শুরু করবে না। Operator practice: <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>//</code> আর <code>%</code>; শেষ দুইটা quotient ও remainder দেয়।</p><pre><code data-language="python">raw = &quot; 1250 &quot;
+    print(&quot;Payment approved&quot;)
+</code></pre><h4>Output</h4><pre><code data-language="text">Not enough balance
+</code></pre><h3>কীভাবে এই result হলো?</h3><ol><li>120 <= 0 false, তাই প্রথম print execute হয় না।</li><li>120 > 100 true, তাই দ্বিতীয় print চলে।</li><li>একটা branch match হলে এই if/elif/else chain-এর বাকি branches আর execute হয় না।</li></ol><div class="concept-check"><strong>এখানে যেটা ভুল হতে পারে</strong><p><code>requested = balance</code> value overwrite করে। Compare করতে <code>requested == balance</code> লিখবে। >= মানে greater-or-equal; > শুধু greater। তিনটা independent if লিখলে একই input-এ একাধিক branch চলতে পারে।</p></div><p>দুই condition একসাথে চাইলে <code>and</code>, যেকোনো একটা হলে <code>or</code>, condition উল্টাতে <code>not</code>। যেমন <code>requested > 0 and requested <= balance</code> valid range check করে। Empty string আর zero false হিসেবে behave করলেও business rule explicit করে লেখা শুরুতে clearer।</p><section class="try-change"><h3>এবার তুমি বদলে দেখো</h3><p>requested 100, 0 আর -5 দিয়ে আলাদা করে run করো। কোন branch চলবে আগে লিখে নাও।</p><details><summary>Reasoning মিলিয়ে দেখো</summary><div><p>100 হলে first condition false, দ্বিতীয়টাও false, তাই approved। 0 ও -5 হলে প্রথম condition true, তাই invalid। Exact boundary-তে policy বোঝা যায়।</p></div></details></section></section><section class="topic" id="topic-3"><h2>1.1.3 for and while loops</h2><p>এখন তিনটা expense €12, €8 আর €5। আলাদা আলাদা যোগ না করে প্রতিটি amount-এর জন্য একই কাজ করবো। <code>[12, 8, 5]</code> একটা list, অর্থাৎ ordered values-এর group; পরের Lesson-এ lists বিস্তারিত দেখবো। <code>for amount in expenses</code> প্রতি iteration-এ পরের value amount নামের সঙ্গে associate করে।</p><h3>Code-টা run করি</h3><pre><code data-language="python">expenses = [12, 8, 5]
+total = 0
+for amount in expenses:
+    total = total + amount
+    print(total)
+print(&quot;Done&quot;)
+</code></pre><h4>Output</h4><pre><code data-language="text">12
+20
+25
+Done
+</code></pre><h3>কীভাবে এই result হলো?</h3><ol><li>Loop শুরুর আগে total 0। প্রথম amount 12, তাই total 0 + 12 = 12।</li><li>দ্বিতীয় amount 8। আগের total 12 ব্যবহার করে এবার total 20।</li><li>তৃতীয় amount 5 দিয়ে total 25। Loop শেষ হলে unindented print একবার Done দেখায়।</li></ol><div class="concept-check"><strong>এখানে যেটা ভুল হতে পারে</strong><p><code>total = 0</code> loop-এর ভেতরে রাখলে প্রতিবার আগের progress মুছে যাবে। <code>total += amount</code> এই integer example-এ total = total + amount-এর short form।</p></div><p><code>while</code> condition true থাকা পর্যন্ত চলে। যেমন attempts = 0 দিয়ে শুরু করে <code>while attempts < 3:</code>-এর ভেতরে attempts += 1 দিলে 3 বার চলে। Update বাদ দিলে loop থামবে না। <code>continue</code> current iteration-এর বাকি অংশ skip করে, <code>break</code> পুরো loop থামায়।</p><section class="try-change"><h3>এবার তুমি বদলে দেখো</h3><p>expenses empty list <code>[]</code> করে run করো। total print করতে চাইলে loop-এর পরে <code>print(total)</code> যোগ করো।</p><details><summary>Reasoning মিলিয়ে দেখো</summary><div><p>Loop body একবারও চলবে না। total 0 থাকবে। তারপর Done ও 0 print হবে। তাই accumulator loop-এর বাইরে initialize করা জরুরি।</p></div></details></section></section><section class="topic" id="topic-4"><h2>1.1.4 Input validation</h2><p>User যে input দেয় সেটা আগে text হিসেবে আসে। তাই <code>"12"</code> আর <code>12</code> এক না। Decimal euros parse না করে এখানে whole-euro input accept করছি। <code>strip()</code> text-এর বাইরের whitespace বাদ দিয়ে নতুন text দেয়। Dot-এর পরে method call মানে এই text-এর উপর operation।</p><h3>Code-টা run করি</h3><pre><code data-language="python">raw = &quot; 12 &quot;
 cleaned = raw.strip()
 if cleaned.isascii() and cleaned.isdigit():
-    cents = int(cleaned)
-    print(cents)
+    amount = int(cleaned)
+    print(amount + 1)
 else:
-    print(&quot;Enter a whole number of cents&quot;)
-assert 1250 // 100 == 12
-assert 1250 % 100 == 50
-</code></pre></section><section class="topic" id="topic-5"><h2>1.1.5 f-strings</h2><p>Log বা receipt-এ value বসাতে f-string readable। <code>{value}</code> expression evaluate করে। Cents থেকে display-এর জন্য euro আর remainder আলাদা করি। <code>:02d</code> integer-কে অন্তত দুই digit দেখায়। Merchant name clean করতে <code>strip()</code>, compare করতে <code>casefold()</code> আর text ভাগ করতে <code>split()</code> কাজে লাগে। String immutable, তাই method call করে নতুন string ফেরত পাও; original নিজে বদলায় না।</p><pre><code data-language="python">merchant = &quot;  Penny  &quot;.strip()
-cents = 1975
-receipt = f&quot;{merchant}: EUR {cents // 100}.{cents % 100:02d}&quot;
-print(receipt)
-assert receipt == &quot;Penny: EUR 19.75&quot;
-assert &quot;PENNY&quot;.casefold() == &quot;penny&quot;
-</code></pre></section><section class="debug-box"><h2>Debugging: কোথা থেকে শুরু করবে?</h2><p>Report ভুল হলে আগে প্রতিটি variable-এর value ও type দেখো। Total loop-এর ভেতরে reset হয়েছে কি? Credit-কে debit ধরেছ? Zero amount reject করার rule কি consistent? একসাথে পাঁচটা change না করে সবচেয়ে ছোট failing input দিয়ে শুরু করো।</p></section><section class="practice" id="practice-1"><h3>Practice 1: Shopping Balance</h3><p>Opening balance €100। Debit €12.50 ও €7.25, credit €20। Total spent ও remaining balance বের করো।</p><details><summary>Hint</summary><div><p>সব amount cents-এ রাখো। Credit balance বাড়ায়, spent বাড়ায় না।</p></div></details><details><summary>See Solution</summary><div><p>Debit values যোগ করে spending বের করো; opening থেকে debit বাদ দিয়ে credit যোগ করো।</p><pre><code data-language="python">opening = 10000
-debits = [1250, 725]
-credit = 2000
-spent = 0
-for debit in debits:
-    spent += debit
-remaining = opening - spent + credit
-print(f&quot;Spent: EUR {spent / 100:.2f}&quot;)
-print(f&quot;Balance: EUR {remaining / 100:.2f}&quot;)
-assert spent == 1975
-assert remaining == 10025
-</code></pre></div></details><h4>নিজের কাজ মিলিয়ে দেখো</h4><p>Expected spent €19.75 ও balance €100.25। Empty debit list দিয়েও result predict করে run করো।</p></section><section class="practice" id="practice-2"><h3>Practice 2: Transaction Alerts</h3><p>Amounts [1200, 0, -500, 9200]। শুধু positive transactions total করবে, €80-এর বেশি হলে alert list-এ রাখবে।</p><details><summary>Hint</summary><div><p>Invalid item-এ continue দাও। Alert-এর boundary > 8000, >= না।</p></div></details><details><summary>See Solution</summary><div><p>প্রথমে validation, তারপর total ও alert update করো।</p><pre><code data-language="python">amounts = [1200, 0, -500, 9200]
+    print(&quot;Enter whole euros&quot;)
+</code></pre><h4>Output</h4><pre><code data-language="text">13
+</code></pre><h3>কীভাবে এই result হলো?</h3><ol><li>raw-এর দুই পাশে space আছে; strip() থেকে cleaned হয় "12"।</li><li>isascii() আর isdigit() মিলে এখানে সাধারণ ASCII digits accept করছে। দুইটা check true হলে and true।</li><li>int("12") number 12 দেয়, তাই 12 + 1 থেকে 13। Invalid text হলে conversion না করে else message দেবে।</li></ol><div class="concept-check"><strong>এখানে যেটা ভুল হতে পারে</strong><p><code>raw + 1</code> করলে TypeError, কারণ string আর integer। আর <code>raw + "1"</code> text জোড়া লাগায়, যোগ করে না। এই rule decimal ও negative input reject করে, সেটাই এই ছোট form-এর contract।</p></div><p>Live input নিতে প্রথম line <code>raw = input("Amount in whole euros: ")</code> করবে। Prompt শেষ হলে Enter চাপো। Parsing সফল মানে business rule valid, এমন না: number হওয়া ও positive হওয়া আলাদা check।</p><section class="try-change"><h3>এবার তুমি বদলে দেখো</h3><p>raw-তে "oops", "12.50" আর "" দিয়ে run করো। এই form zero accept করবে কি?</p><details><summary>Reasoning মিলিয়ে দেখো</summary><div><p>তিনটাই else-এ যাবে। "0" digit হওয়ায় conversion হবে এবং 1 print করবে। Transaction-এর জন্য positive amount চাইলে conversion-এর পরে amount > 0 check যোগ করতে হবে।</p></div></details></section></section><section class="topic" id="topic-5"><h2>1.1.5 f-strings</h2><p>Receipt-এ merchant, expense আর remaining balance একসাথে দেখাতে চাই। <code>f</code> prefix থাকলে string-এর curly braces-এর expression evaluate হয়। Prefix না থাকলে braces-সহ literal text print হবে।</p><h3>Code-টা run করি</h3><pre><code data-language="python">merchant = &quot;Penny&quot;
+balance = 100
+expense = 12
+remaining = balance - expense
+print(f&quot;{merchant}: spent EUR {expense}&quot;)
+print(f&quot;Remaining: EUR {remaining}&quot;)
+</code></pre><h4>Output</h4><pre><code data-language="text">Penny: spent EUR 12
+Remaining: EUR 88
+</code></pre><h3>কীভাবে এই result হলো?</h3><ol><li>remaining calculate হচ্ছে 100 - 12 থেকে।</li><li>প্রথম f-string-এর {merchant} জায়গায় Penny আর {expense} জায়গায় 12 বসে।</li><li>দ্বিতীয় string-এর remaining 88। Formatting result দেখায়, balance update করার কাজ করে না।</li></ol><div class="concept-check"><strong>এখানে যেটা ভুল হতে পারে</strong><p><code>print("Remaining: {remaining}")</code>-এ f নেই, তাই value বসবে না। <code>{remaining:.2f}</code> display-এ দুই decimal place দেখায়; এতে underlying value বা money validation বদলায় না।</p></div><p>Text compare-এ <code>casefold()</code> useful: "PENNY".casefold() ও "penny".casefold() একই। <code>"T1,debit".split(",")</code> দুই অংশের list দেয়, তবে real CSV-তে quoted commas থাকতে পারে। তাই CSV parser Lesson 1.5-এ ব্যবহার করবো।</p><section class="try-change"><h3>এবার তুমি বদলে দেখো</h3><p>প্রথম line-এর merchant-এর বদলে "  PENNY  " দাও। Receipt clean করতে কী করবে?</p><details><summary>Reasoning মিলিয়ে দেখো</summary><div><p><code>merchant = merchant.strip().title()</code> দিলে বাইরের spaces বাদ দিয়ে Penny পাওয়া যায়। Method chain-এর প্রতিটি step নতুন string return করে। Original variable বদলাতে returned result assign করতে হয়।</p></div></details></section></section><section class="debug-box"><h2>Debugging: কোথা থেকে শুরু করবে?</h2><p>Report ভুল হলে আগে প্রতিটি variable-এর value ও type দেখো। Total loop-এর ভেতরে reset হয়েছে কি? Credit-কে debit ধরেছ? Zero amount reject করার rule কি consistent? একসাথে পাঁচটা change না করে সবচেয়ে ছোট failing input দিয়ে শুরু করো।</p></section><section class="practice" id="practice-1"><h3>Practice 1: নিজের Balance Report</h3><p>Opening €100। Penny-তে €12, restaurant-এ €8 খরচ। তারপর €20 credit এসেছে। Total spent ও final balance print করো।</p><details><summary>Hint</summary><div><p>আগে spent = 12 + 8। Credit spending বাড়ায় না।</p></div></details><details><summary>See Solution</summary><div><p>প্রথমে expense total, তারপর opening - spent + credit।</p><h4>Solution-টা বুঝে নিই</h4><p>Penny আর restaurant values আগে যোগ হয়েছে। Credit শুধু balance formula-তে আছে, spent-এ নেই। তাই spent 20 হলেও final balance আবার 100।</p><pre><code data-language="python">opening = 100
+penny = 12
+restaurant = 8
+credit = 20
+spent = penny + restaurant
+balance = opening - spent + credit
+print(f&#x27;Spent: EUR {spent}&#x27;)
+print(f&#x27;Balance: EUR {balance}&#x27;)
+</code></pre><h4>Output</h4><pre><code data-language="text">Spent: EUR 20
+Balance: EUR 100
+</code></pre></div></details><h4>নিজের কাজ মিলিয়ে দেখো</h4><p>Output Spent: EUR 20 এবং Balance: EUR 100। Credit বাদ দিলে balance 80 হয় কি না দেখো। এখানে list বা exception ব্যবহার করার দরকার নেই।</p></section><section class="practice" id="practice-2"><h3>Practice 2: Invalid Expense বাদ দাও</h3><p>Expenses [12, 0, -5, 92]। শুধু positive expenses যোগ করবে। €80-এর বেশি হলে সেই amount-এর alert print করবে। শেষে total print করো।</p><details><summary>Hint</summary><div><p>Loop-এ আগে amount <= 0 হলে continue। Alert check valid amount-এর পরে।</p></div></details><details><summary>See Solution</summary><div><p>প্রতিটি valid amount total-এ যোগ হয়। Invalid values total-এ ঢোকে না।</p><h4>Solution-টা বুঝে নিই</h4><p>continue 0 ও -5-এর বাকি processing skip করেছে। শুধু 12 ও 92 total-এ গেছে। Alert-এর condition true হয়েছে শুধু 92-এ।</p><pre><code data-language="python">expenses = [12, 0, -5, 92]
 total = 0
-alerts = []
-for amount in amounts:
+for amount in expenses:
     if amount &lt;= 0:
         continue
-    total += amount
-    if amount &gt; 8000:
-        alerts.append(amount)
-assert total == 10400
-assert alerts == [9200]
-</code></pre></div></details><h4>নিজের কাজ মিলিয়ে দেখো</h4><p>8000 দিলে alert হবে না; 8001 দিলে হবে। এই দুই boundary নিজে test করো।</p></section><section class="completion" id="module-check"><h2>পরের Lesson-এ যাওয়ার আগে</h2><ul><li>নিজের ভাষায় main concept explain করো।</li><li>দুই practice-এর solution বন্ধ করে একটা changed-input version solve করো।</li><li>একটা failing case দেখিয়ে কেন fail করে এবং fix কী হবে বলো।</li></ul></section><details><summary>আরও পড়তে চাইলে</summary><div><ul><li><a href="https://docs.python.org/3/tutorial/introduction.html">Python: numbers, text ও lists</a></li><li><a href="https://docs.python.org/3/tutorial/controlflow.html">Python: control flow</a></li></ul></div></details><nav class="lesson-nav" aria-label="Lesson navigation"><a href="../python-engineering-module-1.html">← Lessons List</a><a href="lesson-2.html">Lesson 1.2 →</a></nav></main><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script></body></html>
+    total = total + amount
+    if amount &gt; 80:
+        print(f&#x27;Review: EUR {amount}&#x27;)
+print(f&#x27;Total: EUR {total}&#x27;)
+</code></pre><h4>Output</h4><pre><code data-language="text">Review: EUR 92
+Total: EUR 104
+</code></pre></div></details><h4>নিজের কাজ মিলিয়ে দেখো</h4><p>Output Review: EUR 92 ও Total: EUR 104। 80 দিলে review হবে না, 81 দিলে হবে।</p></section><section class="completion" id="module-check"><h2>পরের Lesson-এ যাওয়ার আগে</h2><ul><li>নিজের ভাষায় main concept explain করো।</li><li>দুই practice-এর solution বন্ধ করে একটা changed-input version solve করো।</li><li>একটা failing case দেখিয়ে কেন fail করে এবং fix কী হবে বলো।</li></ul></section><details><summary>আরও পড়তে চাইলে</summary><div><ul><li><a href="https://docs.python.org/3/tutorial/introduction.html">Python: numbers, text ও lists</a></li><li><a href="https://docs.python.org/3/tutorial/controlflow.html">Python: control flow</a></li></ul></div></details><nav class="lesson-nav" aria-label="Lesson navigation"><a href="../python-engineering-module-1.html">← Lessons List</a><a href="lesson-2.html">Lesson 1.2 →</a></nav></main><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script></body></html>

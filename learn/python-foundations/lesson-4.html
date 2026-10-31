@@ -1,79 +1,28 @@
-<!doctype html><html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>1.4 Object-Oriented Programming | Learn with Mynul</title><meta name="description" content="Python শিখি transaction, customer data আর service workflow দিয়ে। Explanations, runnable examples ও practice solutions।"><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=1"></head><body class="bootcamp-thesis"><div class="reading shell"><header><a href="../ai-fde-bootcamp.html">← Bootcamp</a><button class="theme-button" id="reading-theme" type="button" aria-label="Toggle light and dark theme">Light / Dark</button></header><main id="main"><p class="breadcrumbs"><a href="../python-engineering-module-1.html">Module 1</a> / Lesson 1.4</p><p class="chapter-kicker">LESSON 1.4</p><h1>1.4 Object-Oriented Programming</h1><div class="scenario"><p>একটা account-এর balance আর তার debit rules একসাথে রাখতে চাই। আবার ticket create করার business rule যেন database code-এর সঙ্গে আটকে না যায়। OOP ব্যবহার করবো এই responsibilities বোঝার জন্য, শুধু class syntax মুখস্থ করার জন্য না।</p></div><p><strong>এই Lesson শেষে:</strong> State ও rules একসাথে model করতে, composition ব্যবহার করতে আর dependency replace করে test করতে পারবে।</p><nav class="topic-nav" aria-label="Lesson topics"><ol type="i"><li><a href="#topic-1">1.4.1 Classes and instances</a></li><li><a href="#topic-2">1.4.2 Methods and constructors</a></li><li><a href="#topic-3">1.4.3 Encapsulation</a></li><li><a href="#topic-4">1.4.4 Composition vs inheritance</a></li><li><a href="#topic-5">1.4.5 Dataclasses</a></li></ol></nav><section class="topic" id="topic-1"><h2>1.4.1 Classes and instances</h2><p>Class হলো object তৈরির definition, instance হলো সেই definition দিয়ে তৈরি নির্দিষ্ট object। দুই Account instance-এর balance আলাদা হবে। <code>__init__</code> initial state set করে, <code>self</code> সেই instance। Mutable collection class-level attribute করলে সব instance share করতে পারে। তাই per-account transactions <code>self.transactions = []</code> দিয়ে initialize করো।</p><pre><code data-language="python">class Account:
-    def __init__(self, owner, balance_cents=0):
+<!doctype html><html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>1.4 Object-Oriented Programming | Learn with Mynul</title><meta name="description" content="Python শিখি transaction, customer data আর service workflow দিয়ে। Explanations, runnable examples ও practice solutions।"><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=2"></head><body class="bootcamp-thesis"><div class="reading shell"><header><a href="../ai-fde-bootcamp.html">← Bootcamp</a><button class="theme-button" id="reading-theme" type="button" aria-label="Toggle light and dark theme">Light / Dark</button></header><main id="main"><p class="breadcrumbs"><a href="../python-engineering-module-1.html">Module 1</a> / Lesson 1.4</p><p class="chapter-kicker">LESSON 1.4</p><h1>1.4 Object-Oriented Programming</h1><div class="scenario"><p>একটা account-এর balance আর তার debit rules একসাথে রাখতে চাই। আবার ticket create করার business rule যেন database code-এর সঙ্গে আটকে না যায়। OOP ব্যবহার করবো এই responsibilities বোঝার জন্য, শুধু class syntax মুখস্থ করার জন্য না।</p></div><p><strong>এই Lesson শেষে:</strong> State ও rules একসাথে model করতে, composition ব্যবহার করতে আর dependency replace করে test করতে পারবে।</p><nav class="topic-nav" aria-label="Lesson topics"><ol type="i"><li><a href="#topic-1">1.4.1 Classes and instances</a></li><li><a href="#topic-2">1.4.2 Methods and constructors</a></li><li><a href="#topic-3">1.4.3 Encapsulation</a></li><li><a href="#topic-4">1.4.4 Composition vs inheritance</a></li><li><a href="#topic-5">1.4.5 Dataclasses</a></li></ol></nav><section class="topic" id="topic-1"><h2>1.4.1 Classes and instances</h2><p>একটা account-এর owner ও balance একসাথে রাখবো। Class হচ্ছে object তৈরির definition, instance সেই definition দিয়ে তৈরি নির্দিষ্ট account। <code>__init__</code> নতুন instance-এর initial values set করে।</p><h3>Code-টা run করি</h3><pre><code data-language="python">class Account:
+    def __init__(self, owner, balance):
         self.owner = owner
-        self.balance_cents = balance_cents
-        self.transactions = []
+        self.balance = balance
 
-first = Account(&quot;A&quot;, 10000)
-second = Account(&quot;B&quot;, 5000)
-first.transactions.append(1250)
-assert second.transactions == []
-assert first.owner == &quot;A&quot;
-</code></pre></section><section class="topic" id="topic-2"><h2>1.4.2 Methods and constructors</h2><p>Method হলো instance-এর উপর কাজ করা function। Constructor-এ valid initial state বানাও; method-এ business invariant রাখো। নিচে balance negative হতে পারবে না। Caller reject পেলে balance unchanged থাকবে। <code>ValueError</code> দিয়ে invalid value signal করছি; Lesson 1.5-এ error handling আরও পরিষ্কার করবো। Method state change করলে return contract explicit রাখো।</p><pre><code data-language="python">class Account:
-    def __init__(self, balance_cents=0):
-        if balance_cents &lt; 0:
-            raise ValueError(&quot;Negative opening balance&quot;)
-        self.balance_cents = balance_cents
+first = Account(&quot;Mynul&quot;, 100)
+second = Account(&quot;Lena&quot;, 50)
+print(first.owner, first.balance)
+print(second.owner, second.balance)
+</code></pre><h4>Output</h4><pre><code data-language="text">Mynul 100
+Lena 50
+</code></pre><h3>কীভাবে এই result হলো?</h3><ol><li>Account(...) call নতুন instance তৈরি করে, তারপর __init__ সেই object পায় self হিসেবে।</li><li>self.owner ও self.balance সেই নির্দিষ্ট instance-এর attributes।</li><li>দুই instances-এর initial values আলাদা। Class এক হলেও account এক নয়।</li></ol><div class="concept-check"><strong>এখানে যেটা ভুল হতে পারে</strong><p>self কোনো magic global variable না, method-এর conventional প্রথম parameter। Per-account mutable list class-level-এ রাখলে instances share করতে পারে; __init__-এ fresh list দাও।</p></div><section class="try-change"><h3>এবার তুমি বদলে দেখো</h3><p>first.balance = 80 করে second.balance print করো।</p><details><summary>Reasoning মিলিয়ে দেখো</summary><div><p>second.balance 50-ই থাকবে। এখানে balance instance attribute, shared class-level mutable object না।</p></div></details></section></section><section class="topic" id="topic-2"><h2>1.4.2 Methods and constructors</h2><p>Function object-এর state নিয়ে কাজ করলে method বলি। Deposit-এর rule: positive amount দরকার। নিচে আগে valid input দিয়ে method flow দেখি; validation ও ValueError পরের Lesson-এ যোগ করবো।</p><h3>Code-টা run করি</h3><pre><code data-language="python">class Account:
+    def __init__(self, balance):
+        self.balance = balance
 
-    def debit(self, amount_cents):
-        if amount_cents &lt;= 0 or amount_cents &gt; self.balance_cents:
-            raise ValueError(&quot;Debit rejected&quot;)
-        self.balance_cents -= amount_cents
-        return self.balance_cents
+    def deposit(self, amount):
+        self.balance = self.balance + amount
+        return self.balance
 
-account = Account(1000)
-assert account.debit(250) == 750
-</code></pre></section><section class="topic" id="topic-3"><h2>1.4.3 Encapsulation</h2><p>Encapsulation মানে rules bypass করার সুযোগ কমিয়ে clear interface দেওয়া। Python-এর <code>_balance_cents</code> naming convention বলে field internal; এটা security boundary না। Property দিয়ে read-only public view দেওয়া যায়। কেউ underscore field manually edit করতে পারবে, তাই database permission বা tenant isolation এই syntax দিয়ে enforce হয় না। নিচে public balance property assign করা যাবে না, change হবে deposit method দিয়ে।</p><pre><code data-language="python">class Account:
-    def __init__(self):
-        self._balance_cents = 0
-
-    @property
-    def balance_cents(self):
-        return self._balance_cents
-
-    def deposit(self, amount_cents):
-        if amount_cents &lt;= 0:
-            raise ValueError(&quot;Deposit must be positive&quot;)
-        self._balance_cents += amount_cents
-
-account = Account()
-account.deposit(500)
-assert account.balance_cents == 500
-</code></pre></section><section class="topic" id="topic-4"><h2>1.4.4 Composition vs inheritance</h2><p>Account <em>has a</em> notifier হলে composition useful: notifier object inject করো। <em>Is a</em> relationship আর genuinely substitutable behavior হলে inheritance consider করো। শুধু code reuse করতে deep inheritance tree দরকার নেই। TicketService business rule জানবে, repository save করবে। নিচের in-memory repository test double; production-এ database adapter একই ছোট contract implement করতে পারে। এটাই practical low-level design: কার responsibility কী, কোথায় state, আর কোথায় boundary।</p><pre><code data-language="python">class MemoryTickets:
-    def __init__(self):
-        self.items = []
-
-    def save(self, title):
-        self.items.append(title)
-
-class TicketService:
-    def __init__(self, repository):
-        self.repository = repository
-
-    def create(self, title):
-        cleaned = title.strip()
-        if not cleaned:
-            raise ValueError(&quot;Title required&quot;)
-        self.repository.save(cleaned)
-        return cleaned
-
-repo = MemoryTickets()
-service = TicketService(repo)
-assert service.create(&quot;  Payment failed  &quot;) == &quot;Payment failed&quot;
-assert repo.items == [&quot;Payment failed&quot;]
-</code></pre></section><section class="topic" id="topic-5"><h2>1.4.5 Dataclasses</h2><p>Mostly data carry করলে dataclass repetitive constructor ও representation কমায়। Type hint runtime validation করে না। <code>field(default_factory=list)</code> প্রতিটি instance-এ fresh list দেয়। <code>frozen=True</code> field reassignment আটকায়, কিন্তু nested list deep immutable করে না। Dataclass-কে ORM, authorization layer বা validation framework ধরে নিও না।</p><pre><code data-language="python">from dataclasses import dataclass, field
-
-@dataclass
-class Ticket:
-    title: str
-    tags: list[str] = field(default_factory=list)
-
-first = Ticket(&quot;Payment issue&quot;)
-second = Ticket(&quot;Delivery issue&quot;)
-first.tags.append(&quot;billing&quot;)
-assert second.tags == []
-assert first.title == &quot;Payment issue&quot;
-</code></pre></section><section class="debug-box"><h2>Debugging: কোথা থেকে শুরু করবে?</h2><p>দুই instance-এর state মিশে যাচ্ছে? Class-level mutable attribute খুঁজো। Unit test করতে real database লাগছে? Business rules আর storage responsibilities আলাদা করা যায় কি না দেখো। Design ভালো কি না class count দিয়ে মাপবে না, change ও testing কত সহজ সেটা দেখো।</p></section><section class="practice" id="practice-1"><h3>Practice 1: Safe Deposit</h3><p>Account বানাও। Zero/negative deposit reject হবে, valid deposit balance বাড়াবে। Invalid request state বদলাবে না।</p><details><summary>Hint</summary><div><p>Validation update-এর আগে করতে হবে।</p></div></details><details><summary>See Solution</summary><div><p>Internal balance property দিয়ে expose করো আর single deposit method দিয়ে change করো।</p><pre><code data-language="python">class Account:
+account = Account(100)
+print(account.deposit(20))
+print(account.balance)
+</code></pre><h4>Output</h4><pre><code data-language="text">120
+120
+</code></pre><h3>কীভাবে এই result হলো?</h3><ol><li>account.deposit(20)-এ account instance self হয়, amount হয় 20।</li><li>Method সেই instance-এর balance 100 থেকে 120 করে।</li><li>Method return-ও 120; print(account.balance)-এ updated state দেখা যায়।</li></ol><div class="concept-check"><strong>এখানে যেটা ভুল হতে পারে</strong><p>Method state edit করলে সেটা contract-এ স্পষ্ট রাখো। এই ছোট version negative deposit আটকায় না, তাই payment service-এর final rule হিসেবে ব্যবহার করবে না।</p></div><section class="try-change"><h3>এবার তুমি বদলে দেখো</h3><p>আরেকবার account.deposit(5) করলে result কত? নতুন Account(100) বানালে?</p><details><summary>Reasoning মিলিয়ে দেখো</summary><div><p>একই account-এ 125। নতুন instance-এর initial balance আবার 100, আগের account-এর history automatically আসে না।</p></div></details></section></section><section class="topic" id="topic-3"><h2>1.4.3 Encapsulation</h2><p>Caller যেন balance পড়তে পারে, কিন্তু balance change-এর approved path method হয়। Property read interface দিতে পারে। Underscore internal-use convention, security system নয়।</p><h3>Code-টা run করি</h3><pre><code data-language="python">class Account:
     def __init__(self):
         self._balance = 0
 
@@ -82,21 +31,13 @@ assert first.title == &quot;Payment issue&quot;
         return self._balance
 
     def deposit(self, amount):
-        if amount &lt;= 0:
-            raise ValueError(&quot;Positive amount required&quot;)
         self._balance += amount
 
-a = Account()
-a.deposit(100)
-for invalid in (0, -1):
-    try:
-        a.deposit(invalid)
-    except ValueError:
-        pass
-    else:
-        raise AssertionError(&quot;Invalid deposit accepted&quot;)
-assert a.balance == 100
-</code></pre></div></details><h4>নিজের কাজ মিলিয়ে দেখো</h4><p>দুই account independent হতে হবে। Invalid deposits-এর পর balance unchanged verify করো।</p></section><section class="practice" id="practice-2"><h3>Practice 2: Replace the Notification Dependency</h3><p>TicketService-এ notifier inject করো। Valid ticket create হলে notifier.send(title) চলবে। Blank title হলে notification হবে না।</p><details><summary>Hint</summary><div><p>Test-এ real email পাঠানোর দরকার নেই। Fake notifier messages list-এ রাখবে।</p></div></details><details><summary>See Solution</summary><div><p>Service validation own করবে; notifier external delivery boundary হবে।</p><pre><code data-language="python">class FakeNotifier:
+account = Account()
+account.deposit(20)
+print(account.balance)
+</code></pre><h4>Output</h4><pre><code data-language="text">20
+</code></pre><h3>কীভাবে এই result হলো?</h3><ol><li>@property decorator balance method-কে attribute-style read interface দেয়।</li><li>account.balance লিখলে getter return করে; balance() call করা লাগছে না।</li><li>deposit internal _balance update করে। Setter না থাকায় account.balance = 5 supported নয়।</li></ol><div class="concept-check"><strong>এখানে যেটা ভুল হতে পারে</strong><p>কেউ _balance manually edit করতে পারে। Property দিয়ে database authorization বা tenant isolation পাওয়া যায় না। Encapsulation interface বোঝায়, hostile code থেকে সম্পূর্ণ protection না।</p></div><section class="try-change"><h3>এবার তুমি বদলে দেখো</h3><p>এই class-এ negative deposit দিলে কী হবে? Rule কোথায় বসাবে?</p><details><summary>Reasoning মিলিয়ে দেখো</summary><div><p>এখন balance কমবে। deposit-এর শুরুতে invalid amount reject করতে হবে, update-এর পরে না। Lesson 1.5-এ exception দিয়ে rejection দেখবো।</p></div></details></section></section><section class="topic" id="topic-4"><h2>1.4.4 Composition vs inheritance</h2><p>TicketService যেন email provider-এর implementation না জানে। সে শুধু notifier.send(title) call করবে। এই “service has a notifier” relationship composition। Test-এ fake notifier দিয়ে observe করা যায়।</p><h3>Code-টা run করি</h3><pre><code data-language="python">class FakeNotifier:
     def __init__(self):
         self.messages = []
     def send(self, title):
@@ -106,18 +47,60 @@ class TicketService:
     def __init__(self, notifier):
         self.notifier = notifier
     def create(self, title):
-        cleaned = title.strip()
-        if not cleaned:
-            raise ValueError(&quot;Title required&quot;)
-        self.notifier.send(cleaned)
-        return cleaned
+        self.notifier.send(title)
 
 fake = FakeNotifier()
 service = TicketService(fake)
-assert service.create(&quot;  Refund  &quot;) == &quot;Refund&quot;
-try:
-    service.create(&quot;   &quot;)
-except ValueError:
-    pass
-assert fake.messages == [&quot;Refund&quot;]
-</code></pre></div></details><h4>নিজের কাজ মিলিয়ে দেখো</h4><p>Fake notifier বদলে অন্য implementation দিলে service logic unchanged থাকবে। Delivery failure recovery পরে backend reliability-তে করবে।</p></section><section class="completion" id="module-check"><h2>পরের Lesson-এ যাওয়ার আগে</h2><ul><li>নিজের ভাষায় main concept explain করো।</li><li>দুই practice-এর solution বন্ধ করে একটা changed-input version solve করো।</li><li>একটা failing case দেখিয়ে কেন fail করে এবং fix কী হবে বলো।</li></ul></section><details><summary>আরও পড়তে চাইলে</summary><div><ul><li><a href="https://docs.python.org/3/tutorial/classes.html">Python: classes</a></li><li><a href="https://docs.python.org/3/library/dataclasses.html">Python: dataclasses</a></li></ul></div></details><nav class="lesson-nav" aria-label="Lesson navigation"><a href="lesson-3.html">← Lesson 1.3</a><a href="lesson-5.html">Lesson 1.5 →</a></nav></main><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script></body></html>
+service.create(&quot;Payment failed&quot;)
+print(fake.messages)
+</code></pre><h4>Output</h4><pre><code data-language="text">[&#x27;Payment failed&#x27;]
+</code></pre><h3>কীভাবে এই result হলো?</h3><ol><li>Fake notifier messages list রাখে; external email যায় না।</li><li>Constructor দিয়ে dependency দেওয়া হয়েছে, এটাকেই এখানে dependency injection বলছি।</li><li>Service send contract ব্যবহার করে, provider-এর connection details জানে না।</li></ol><div class="concept-check"><strong>এখানে যেটা ভুল হতে পারে</strong><p>শুধু code reuse করতে deep inheritance tree বানিও না। Inheritance useful যখন subtype সত্যিই parent-এর জায়গায় expected behavior বজায় রেখে ব্যবহারযোগ্য।</p></div><p>এই example persistence বা notification failure recovery implement করছে না। Full ticket workflow পরে backend project-এ করবে। প্রথমে boundary বোঝা লক্ষ্য।</p><section class="try-change"><h3>এবার তুমি বদলে দেখো</h3><p>আরেকটা notifier class বানাও যার send শুধু title print করে। Service-এর create method বদলাতে হবে কি?</p><details><summary>Reasoning মিলিয়ে দেখো</summary><div><p>না, একই send(title) contract রাখলে injected object বদলালেই হয়। Validation/storage/delivery responsibilities ছোট রাখার এটাই practical benefit।</p></div></details></section></section><section class="topic" id="topic-5"><h2>1.4.5 Dataclasses</h2><p>শুধু data carry করার class-এ constructor বারবার লিখতে হয়। Dataclass সেই boilerplate generate করতে পারে। Import standard library থেকে, আলাদা install লাগবে না।</p><h3>Code-টা run করি</h3><pre><code data-language="python">from dataclasses import dataclass, field
+
+@dataclass
+class Ticket:
+    title: str
+    tags: list[str] = field(default_factory=list)
+
+first = Ticket(&quot;Refund&quot;)
+second = Ticket(&quot;Delivery&quot;)
+first.tags.append(&quot;billing&quot;)
+print(first.title)
+print(second.tags)
+</code></pre><h4>Output</h4><pre><code data-language="text">Refund
+[]
+</code></pre><h3>কীভাবে এই result হলো?</h3><ol><li>@dataclass annotated fields থেকে constructor generate করে। title: str expected type জানায়।</li><li>default_factory=list প্রতিটি নতুন instance-এর জন্য নতুন empty list তৈরি করে।</li><li>first tags বদলালেও second.tags empty, কারণ lists independent।</li></ol><div class="concept-check"><strong>এখানে যেটা ভুল হতে পারে</strong><p>Type annotations runtime validation না। frozen=True field reassignment সীমিত করে, কিন্তু nested mutable data deep immutable করে না।</p></div><section class="try-change"><h3>এবার তুমি বদলে দেখো</h3><p>second.tags.append("shipping") করলে first.tags কী থাকবে?</p><details><summary>Reasoning মিলিয়ে দেখো</summary><div><p>first.tags শুধু billing থাকবে, second.tags shipping। Shared default bug এখানে নেই।</p></div></details></section></section><section class="debug-box"><h2>Debugging: কোথা থেকে শুরু করবে?</h2><p>দুই instance-এর state মিশে যাচ্ছে? Class-level mutable attribute খুঁজো। Unit test করতে real database লাগছে? Business rules আর storage responsibilities আলাদা করা যায় কি না দেখো। Design ভালো কি না class count দিয়ে মাপবে না, change ও testing কত সহজ সেটা দেখো।</p></section><section class="practice" id="practice-1"><h3>Practice 1: দুই Account Independent</h3><p>Account class-এ deposit method ও balance রাখো। দুই account তৈরি করে একটিতে 20 deposit করো। এই exercise-এ caller positive amounts দিচ্ছে ধরে নাও।</p><details><summary>Hint</summary><div><p>প্রতি instance-এর state self-এ রাখো।</p></div></details><details><summary>See Solution</summary><div><p>দুই constructor call দুই আলাদা account তৈরি করে।</p><h4>Solution-টা বুঝে নিই</h4><p>Constructor per-instance balance set করেছে। Deposit first instance-এ হয়েছে; second-এর state access করা হয়নি।</p><pre><code data-language="python">class Account:
+
+    def __init__(self, balance):
+        self.balance = balance
+
+    def deposit(self, amount):
+        self.balance += amount
+        return self.balance
+first = Account(100)
+second = Account(50)
+print(first.deposit(20))
+print(second.balance)
+</code></pre><h4>Output</h4><pre><code data-language="text">120
+50
+</code></pre></div></details><h4>নিজের কাজ মিলিয়ে দেখো</h4><p>Output 120 ও 50। Validation boundary Lesson 1.5-এ exception শেখার পরে যোগ করো।</p></section><section class="practice" id="practice-2"><h3>Practice 2: Notifier Replace করো</h3><p>আগের TicketService-এ fake notifier inject করো। দুই title পাঠাও; fake messages-এ দুইটাই থাকবে। Real email পাঠাবে না।</p><details><summary>Hint</summary><div><p>Fake object-এর send method result messages list-এ রাখবে।</p></div></details><details><summary>See Solution</summary><div><p>Business service external provider-এর details ছাড়া কাজ করতে পারে।</p><h4>Solution-টা বুঝে নিই</h4><p>Fake notifier messages-এ প্রতিটি call record করে। Service সেই dependency ব্যবহার করছে, external email পাঠাচ্ছে না।</p><pre><code data-language="python">class FakeNotifier:
+
+    def __init__(self):
+        self.messages = []
+
+    def send(self, title):
+        self.messages.append(title)
+
+class TicketService:
+
+    def __init__(self, notifier):
+        self.notifier = notifier
+
+    def create(self, title):
+        self.notifier.send(title)
+fake = FakeNotifier()
+service = TicketService(fake)
+service.create(&#x27;Refund&#x27;)
+service.create(&#x27;Delivery&#x27;)
+print(fake.messages)
+</code></pre><h4>Output</h4><pre><code data-language="text">[&#x27;Refund&#x27;, &#x27;Delivery&#x27;]
+</code></pre></div></details><h4>নিজের কাজ মিলিয়ে দেখো</h4><p>Output ["Refund", "Delivery"]। Console notifier দিয়ে replace করে service অপরিবর্তিত থাকে কি না দেখো।</p></section><section class="completion" id="module-check"><h2>পরের Lesson-এ যাওয়ার আগে</h2><ul><li>নিজের ভাষায় main concept explain করো।</li><li>দুই practice-এর solution বন্ধ করে একটা changed-input version solve করো।</li><li>একটা failing case দেখিয়ে কেন fail করে এবং fix কী হবে বলো।</li></ul></section><details><summary>আরও পড়তে চাইলে</summary><div><ul><li><a href="https://docs.python.org/3/tutorial/classes.html">Python: classes</a></li><li><a href="https://docs.python.org/3/library/dataclasses.html">Python: dataclasses</a></li></ul></div></details><nav class="lesson-nav" aria-label="Lesson navigation"><a href="lesson-3.html">← Lesson 1.3</a><a href="lesson-5.html">Lesson 1.5 →</a></nav></main><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script></body></html>

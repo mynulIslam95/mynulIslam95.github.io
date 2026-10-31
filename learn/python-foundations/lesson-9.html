@@ -1,51 +1,42 @@
-<!doctype html><html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>1.9 Async &amp; Concurrency Essentials | Learn with Mynul</title><meta name="description" content="Python শিখি transaction, customer data আর service workflow দিয়ে। Explanations, runnable examples ও practice solutions।"><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=1"></head><body class="bootcamp-thesis"><div class="reading shell"><header><a href="../ai-fde-bootcamp.html">← Bootcamp</a><button class="theme-button" id="reading-theme" type="button" aria-label="Toggle light and dark theme">Light / Dark</button></header><main id="main"><p class="breadcrumbs"><a href="../python-engineering-module-1.html">Module 1</a> / Lesson 1.9</p><p class="chapter-kicker">LESSON 1.9</p><h1>1.9 Async &amp; Concurrency Essentials</h1><div class="scenario"><p>তিনটা customer service lookup করতে হবে। প্রতিটির response-এর জন্য অপেক্ষা করছি, কিন্তু work independent। Sequentially অপেক্ষা না করে concurrent requests useful হতে পারে। এই Lesson-এ local simulated I/O দিয়ে behavior শিখবো, real paid API লাগবে না।</p></div><p><strong>এই Lesson শেষে:</strong> Async wait আর blocking work আলাদা করতে, bounded concurrent tasks চালাতে আর timeout/race explain করতে পারবে।</p><nav class="topic-nav" aria-label="Lesson topics"><ol type="i"><li><a href="#topic-1">1.9.1 Sequential vs concurrent work</a></li><li><a href="#topic-2">1.9.2 Threads, processes and coroutines</a></li><li><a href="#topic-3">1.9.3 async and await</a></li><li><a href="#topic-4">1.9.4 Timeouts and cancellation</a></li><li><a href="#topic-5">1.9.5 Race condition awareness</a></li></ol></nav><section class="topic" id="topic-1"><h2>1.9.1 Sequential vs concurrent work</h2><p>Sequential মানে এক কাজ শেষ করে পরেরটা। Concurrent মানে multiple কাজের progress overlap করে। Parallel মানে একই সময়ে multiple execution, যেমন একাধিক CPU core। Async network wait overlap করতে পারে; CPU calculation automatically faster হয় না। Output order আর completion order আলাদা হতে পারে। Speed claim করার আগে একই workload measure করতে হবে। নিচে result order inputs-এর সঙ্গে মিলে, যদিও task completion আলাদা হতে পারে।</p><pre><code data-language="python">import asyncio
+<!doctype html><html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>1.9 Async &amp; Concurrency Essentials | Learn with Mynul</title><meta name="description" content="Python শিখি transaction, customer data আর service workflow দিয়ে। Explanations, runnable examples ও practice solutions।"><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=2"></head><body class="bootcamp-thesis"><div class="reading shell"><header><a href="../ai-fde-bootcamp.html">← Bootcamp</a><button class="theme-button" id="reading-theme" type="button" aria-label="Toggle light and dark theme">Light / Dark</button></header><main id="main"><p class="breadcrumbs"><a href="../python-engineering-module-1.html">Module 1</a> / Lesson 1.9</p><p class="chapter-kicker">LESSON 1.9</p><h1>1.9 Async &amp; Concurrency Essentials</h1><div class="scenario"><p>তিনটা customer service lookup করতে হবে। প্রতিটির response-এর জন্য অপেক্ষা করছি, কিন্তু work independent। Sequentially অপেক্ষা না করে concurrent requests useful হতে পারে। এই Lesson-এ local simulated I/O দিয়ে behavior শিখবো, real paid API লাগবে না।</p></div><p><strong>এই Lesson শেষে:</strong> Async wait আর blocking work আলাদা করতে, bounded concurrent tasks চালাতে আর timeout/race explain করতে পারবে।</p><nav class="topic-nav" aria-label="Lesson topics"><ol type="i"><li><a href="#topic-1">1.9.1 Sequential vs concurrent work</a></li><li><a href="#topic-2">1.9.2 Threads, processes and coroutines</a></li><li><a href="#topic-3">1.9.3 async and await</a></li><li><a href="#topic-4">1.9.4 Timeouts and cancellation</a></li><li><a href="#topic-5">1.9.5 Race condition awareness</a></li></ol></nav><section class="topic" id="topic-1"><h2>1.9.1 Sequential vs concurrent work</h2><p>তিন customer lookup independent। Sequential flow-এ এক lookup-এর wait শেষ না হলে পরেরটা শুরু হয় না। Async শেখার আগে সেই baseline দেখি। এখানে sleep fake I/O wait; কোনো real API call হচ্ছে না।</p><h3>Code-টা run করি</h3><pre><code data-language="python">import time
+
+def lookup(customer_id):
+    time.sleep(0.01)
+    return customer_id
+
+results = []
+for customer_id in [1, 2, 3]:
+    results.append(lookup(customer_id))
+print(results)
+</code></pre><h4>Output</h4><pre><code data-language="text">[1, 2, 3]
+</code></pre><h3>কীভাবে এই result হলো?</h3><ol><li>প্রথম lookup call sleep-এ অপেক্ষা করে, তারপর result return করে।</li><li>তারপর দ্বিতীয় call শুরু হয়। এই loop independent waits overlap করে না।</li><li>Result order input order-এর সঙ্গে মিলে, কারণ একের পর এক কাজ হয়েছে।</li></ol><div class="concept-check"><strong>এখানে যেটা ভুল হতে পারে</strong><p>Concurrent মানে একাধিক কাজের progress overlap। Parallel মানে একই সময়ে execution, যেমন multiple cores। Concurrency দেখেই CPU calculation faster হবে ধরে নেওয়া ভুল।</p></div><p>আগে workload classify করো: CPU calculate করছে, নাকি network/disk wait করছে? পরের দুই topic-এ synchronous I/O-তে threads আর async-aware I/O-তে coroutines-এর ছোট versions দেখবো।</p><section class="try-change"><h3>এবার তুমি বদলে দেখো</h3><p>প্রতিটি wait 1 second হলে তিন sequential lookup-এর total roughly কত? যদি waits overlap করা যায়?</p><details><summary>Reasoning মিলিয়ে দেখো</summary><div><p>Sequentially প্রায় 3 seconds plus overhead। Ideal independent overlap-এ প্রায় longest wait plus overhead হতে পারে। Real connection limits, failures ও scheduling measurement-এ ধরতে হবে।</p></div></details></section></section><section class="topic" id="topic-2"><h2>1.9.2 Threads, processes and coroutines</h2><p>একটা existing library synchronous blocking call দেয়। সেটাকে পুরো async API-তে rewrite করা সম্ভব নাও হতে পারে। I/O waits overlap করতে thread pool useful হতে পারে। নিচে thread pool fake lookup চালাবে।</p><h3>Code-টা run করি</h3><pre><code data-language="python">from concurrent.futures import ThreadPoolExecutor
+import time
+
+def lookup(customer_id):
+    time.sleep(0.01)
+    return customer_id
+
+with ThreadPoolExecutor(max_workers=2) as pool:
+    results = list(pool.map(lookup, [1, 2, 3]))
+print(results)
+</code></pre><h4>Output</h4><pre><code data-language="text">[1, 2, 3]
+</code></pre><h3>কীভাবে এই result হলো?</h3><ol><li>Pool সর্বোচ্চ দুই worker thread রাখে। Pending কাজ workers free হলে চলে।</li><li>map result input order-এ দেয়, completion order promise করছে না।</li><li>with block resources clean up করে। list() এখানে তিনটা result materialize করছে, huge input memory নিয়ে separately ভাববে।</li></ol><div class="concept-check"><strong>এখানে যেটা ভুল হতে পারে</strong><p>Threads standard GIL-enabled CPython-এ pure Python CPU-heavy work-কে সাধারণত multicore speedup দেয় না। Native libraries বা Python builds-এর behavior আলাদা হতে পারে। Processes-এ serialization/startup/memory cost আছে।</p></div><p>Coroutines cooperative event-loop tasks, threads OS-scheduled execution units, processes আলাদা address spaces। তিনটাকে শুধু “async” বলে এক করে ভাববে না।</p><section class="try-change"><h3>এবার তুমি বদলে দেখো</h3><p>max_workers=1 দিলে কী বদলাবে? সবসময় max_workers=1000 ভালো?</p><details><summary>Reasoning মিলিয়ে দেখো</summary><div><p>এক worker-এ waits overlap হবে না। বেশি workers resource/connection pressure বাড়ায়; workload ও external limits অনুযায়ী bound করবে।</p></div></details></section></section><section class="topic" id="topic-3"><h2>1.9.3 async and await</h2><p>Async-aware wait অন্য coroutine-কে progress করতে দিতে পারে। async def function call করে coroutine object পাওয়া যায়; await করলে execution/wait participate করে। নিচে একই lookup আগে sequentially, তারপর gather দিয়ে concurrently চালাই।</p><h3>Code-টা run করি</h3><pre><code data-language="python">import asyncio
 
 async def lookup(customer_id):
     await asyncio.sleep(0.01)
-    return {&quot;id&quot;: customer_id, &quot;status&quot;: &quot;active&quot;}
+    return customer_id
 
 async def main():
-    results = await asyncio.gather(lookup(1), lookup(2), lookup(3))
-    assert [item[&quot;id&quot;] for item in results] == [1, 2, 3]
+    first = await lookup(1)
+    second = await lookup(2)
+    print(&quot;Sequential:&quot;, [first, second])
+    together = await asyncio.gather(lookup(1), lookup(2))
+    print(&quot;Concurrent:&quot;, together)
 
 asyncio.run(main())
-</code></pre></section><section class="topic" id="topic-2"><h2>1.9.2 Threads, processes and coroutines</h2><p>Coroutines cooperative: await point-এ অন্য task progress করতে পারে। Blocking synchronous I/O থাকলে thread bridge useful। CPU-heavy Python কাজের জন্য standard GIL-enabled CPython-এ threads সাধারণত multicore speedup দেয় না; process বা native library behavior investigate করতে হয়। Python build ও library অনুযায়ী details বদলায়। Process creation, serialization আর memory overhead আছে। এই stage-এ সব model combine করার বদলে workload classify করো।</p><pre><code data-language="python">import asyncio
-import time
-
-def blocking_lookup():
-    time.sleep(0.01)
-    return &quot;ready&quot;
-
-async def main():
-    value = await asyncio.to_thread(blocking_lookup)
-    assert value == &quot;ready&quot;
-
-asyncio.run(main())
-</code></pre></section><section class="topic" id="topic-3"><h2>1.9.3 async and await</h2><p><code>async def</code> call করলে coroutine object পাওয়া যায়, execution complete হয় না। await দিয়ে চালাও বা task schedule করো। Standalone script-এ top-level <code>asyncio.run(main())</code> ব্যবহার করো; already-running notebook event loop-এ <code>await main()</code> লাগতে পারে। <code>async with</code> asynchronous cleanup handle করে। নিচে semaphore concurrent in-flight work দুইটায় limit করছে। Limit thread count বা API provider quota-এর substitute না, app-side boundary।</p><pre><code data-language="python">import asyncio
-
-async def main():
-    limit = asyncio.Semaphore(2)
-    active = 0
-    peak = 0
-
-    async def worker(value):
-        nonlocal active, peak
-        async with limit:
-            active += 1
-            peak = max(peak, active)
-            try:
-                await asyncio.sleep(0.01)
-                return value * 2
-            finally:
-                active -= 1
-
-    results = await asyncio.gather(*(worker(i) for i in range(5)))
-    assert results == [0, 2, 4, 6, 8]
-    assert peak &lt;= 2
-    assert active == 0
-
-asyncio.run(main())
-</code></pre></section><section class="topic" id="topic-4"><h2>1.9.4 Timeouts and cancellation</h2><p>Deadline ছাড়া external wait hang করতে পারে। Python 3.11+ এ asyncio.timeout block deadline পেরোলে task cancellation ব্যবহার করে TimeoutError দেয়। Async cleanup <code>finally</code>-তে রাখো; CancelledError catch করলে cleanup শেষে সাধারণত re-raise করতে হয়। Timeout মানে remote action হয়নি, এমন guarantee নেই। <code>to_thread</code>-এর await cancel করলেও already-running thread থামবে ধরে নিও না। Side-effect retry-এর idempotency পরে backend Module-এ করবে।</p><pre><code data-language="python">import asyncio
+</code></pre><h4>Output</h4><pre><code data-language="text">Sequential: [1, 2]
+Concurrent: [1, 2]
+</code></pre><h3>কীভাবে এই result হলো?</h3><ol><li>প্রথম দুই await-এ lookup(1) শেষ হলে lookup(2) শুরু হয়েছে।</li><li>gather দুই awaitables একসাথে schedule করে; sleep wait-এর সময় অন্য task এগোতে পারে।</li><li>gather results passed awaitables-এর order-এ দেয়। asyncio.run script-এর event loop চালায়।</li></ol><div class="concept-check"><strong>এখানে যেটা ভুল হতে পারে</strong><p>async def-এর ভিতরে time.sleep() লিখলে event loop block করবে। শুধু function async নাম হলেই operation nonblocking নয়। Coroutine call করে await/schedule না করলে কাজ complete হবে না।</p></div><p>Notebook-এ event loop আগে থেকেই চললে <code>await main()</code> লাগতে পারে, nested asyncio.run নয়। অনেক requests হলে <code>asyncio.Semaphore(2)</code> আর async with দিয়ে in-flight work bound করা যায়; module practice-এ bounded version দেখবে।</p><section class="try-change"><h3>এবার তুমি বদলে দেখো</h3><p>উপরের দুই print-এর results same হলেও performance behavior same কি? কী measure করবে?</p><details><summary>Reasoning মিলিয়ে দেখো</summary><div><p>না। একই values হলেও waits overlap আলাদা। Same workload-এ elapsed time measure করো; exact milliseconds-কে portable test assertion বানাবে না।</p></div></details></section></section><section class="topic" id="topic-4"><h2>1.9.4 Timeouts and cancellation</h2><p>External call forever wait করলে user requestও আটকে থাকবে। তাই total deadline লাগবে। Python 3.11+ timeout context cancellation ব্যবহার করে bounded wait দেয়।</p><h3>Code-টা run করি</h3><pre><code data-language="python">import asyncio
 
 async def slow_lookup():
     await asyncio.sleep(1)
@@ -54,32 +45,28 @@ async def slow_lookup():
 async def main():
     try:
         async with asyncio.timeout(0.01):
-            await slow_lookup()
+            result = await slow_lookup()
     except TimeoutError:
         result = &quot;timeout&quot;
-    else:
-        result = &quot;success&quot;
-    assert result == &quot;timeout&quot;
+    print(result)
 
 asyncio.run(main())
-</code></pre></section><section class="topic" id="topic-5"><h2>1.9.5 Race condition awareness</h2><p>Single event loop থাকলেও logical race হতে পারে। দুই task পুরোনো balance read করে await-এর পরে overwrite করলে একটি update হারায়। Read → check → write operation-এর invariant identify করো। asyncio.Lock একই event loop-এর cooperating tasks coordinate করে; separate process বা database transaction protect করে না। নিচে await boundary-সহ shared counter lock-এর মধ্যে আছে। Real app-এ slow external calls যতটা সম্ভব critical section-এর বাইরে রাখবে।</p><pre><code data-language="python">import asyncio
+</code></pre><h4>Output</h4><pre><code data-language="text">timeout
+</code></pre><h3>কীভাবে এই result হলো?</h3><ol><li>async with asynchronous context manager enter/exit করে।</li><li>Deadline পেরোলে awaited work cancellation পায়; context-এর বাইরে TimeoutError handle হচ্ছে।</li><li>Caller timeout result পেয়েছে। Remote system কী করেছে সেটা এই result একা প্রমাণ করে না।</li></ol><div class="concept-check"><strong>এখানে যেটা ভুল হতে পারে</strong><p>Timeout মানে remote ticket create হয়নি, এমন না। Blind retry duplicate effect তৈরি করতে পারে। Cancellation সব work জোর করে থামায় না; already-running thread চলতে পারে।</p></div><p>Cleanup finally-তে রাখো। CancelledError catch করলে cleanup-এর পরে সাধারণত re-raise করবে, cancellation silently swallow করবে না। Idempotent side-effect handling backend Module-এ শিখবে।</p><section class="try-change"><h3>এবার তুমি বদলে দেখো</h3><p>slow_lookup-এর wait 0 করে run করো। এবার কী result হওয়ার কথা?</p><details><summary>Reasoning মিলিয়ে দেখো</summary><div><p>এই simple case-এ work deadline-এর আগেই complete হবে, তাই late print হবে। Result test করার সময় controllable delay রাখো।</p></div></details></section></section><section class="topic" id="topic-5"><h2>1.9.5 Race condition awareness</h2><p>এক event loop হলেও read → await → write-এর মাঝে অন্য task একই পুরোনো state পড়তে পারে। ফলে একটি update হারায়। এখানে forced yield দিয়ে দুই tasks-এর lost update reproduce করি।</p><h3>Code-টা run করি</h3><pre><code data-language="python">import asyncio
 
 async def main():
-    balance = 0
-    lock = asyncio.Lock()
-
-    async def credit():
-        nonlocal balance
-        async with lock:
-            current = balance
-            await asyncio.sleep(0)
-            balance = current + 100
-
-    await asyncio.gather(credit(), credit())
-    assert balance == 200
+    counter = 0
+    async def increment():
+        nonlocal counter
+        old = counter
+        await asyncio.sleep(0)
+        counter = old + 1
+    await asyncio.gather(increment(), increment())
+    print(counter)
 
 asyncio.run(main())
-</code></pre></section><section class="debug-box"><h2>Debugging: কোথা থেকে শুরু করবে?</h2><p>Async endpoint slow হলে function-এর নাম না দেখে ভেতরে blocking call আছে কি না দেখো। <code>time.sleep()</code> event loop block করে, <code>await asyncio.sleep()</code> অন্য tasks-কে সুযোগ দেয়। “coroutine was never awaited” warning হলে missing await/scheduling খুঁজো। Timeout-এর পরে unfinished tasks ও cleanup ownership check করো।</p></section><section class="practice" id="practice-1"><h3>Practice 1: Concurrent Customer Checks</h3><p>IDs [1,2,3] concurrent check করো। Each fake lookup async wait করে ID return করবে। Final IDs input order-এ থাকবে।</p><details><summary>Hint</summary><div><p>asyncio.gather results input awaitables-এর order-এ দেয়।</p></div></details><details><summary>See Solution</summary><div><p>Independent coroutine calls gather করো। Error policy explicit রাখো; এই exercise সব calls succeed ধরে।</p><pre><code data-language="python">import asyncio
+</code></pre><h4>Output</h4><pre><code data-language="text">1
+</code></pre><h3>কীভাবে এই result হলো?</h3><ol><li>প্রথম task old=0 পড়েছে, তারপর sleep(0)-তে অন্য task-কে সুযোগ দিয়েছে।</li><li>দ্বিতীয় task-ও old=0 পড়েছে।</li><li>দুইজনই পরে old+1 অর্থাৎ 1 লিখেছে। Expected two increments হলেও final 1।</li></ol><div class="concept-check"><strong>এখানে যেটা ভুল হতে পারে</strong><p>async এক thread-এ বলে logical race নেই, এমন না। nonlocal enclosing function-এর counter rebind করতে দিয়েছে; এটা copy বা synchronization না।</p></div><p>asyncio.Lock আলাদা process বা database transaction protect করে না। Slow network call যতটা সম্ভব critical section-এর বাইরে রাখবে। Source-of-truth database হলে invariant সেখানেও enforce করতে হবে।</p><section class="try-change"><h3>এবার তুমি বদলে দেখো</h3><p>একটা asyncio.Lock তৈরি করে read/await/write async with lock-এর মধ্যে রাখো। Final কী হবে?</p><details><summary>Reasoning মিলিয়ে দেখো</summary><div><p>প্রথম task lock ধরে 0→1 করবে। দ্বিতীয় task এরপর 1 পড়ে 2 লিখবে। একই event loop-এর cooperating tasks-এর জন্য result 2।</p></div></details></section></section><section class="debug-box"><h2>Debugging: কোথা থেকে শুরু করবে?</h2><p>Async endpoint slow হলে function-এর নাম না দেখে ভেতরে blocking call আছে কি না দেখো। <code>time.sleep()</code> event loop block করে, <code>await asyncio.sleep()</code> অন্য tasks-কে সুযোগ দেয়। “coroutine was never awaited” warning হলে missing await/scheduling খুঁজো। Timeout-এর পরে unfinished tasks ও cleanup ownership check করো।</p></section><section class="practice" id="practice-1"><h3>Practice 1: Concurrent Customer Checks</h3><p>IDs [1,2,3] concurrent check করো। Each fake lookup async wait করে ID return করবে। Final IDs input order-এ থাকবে।</p><details><summary>Hint</summary><div><p>asyncio.gather results input awaitables-এর order-এ দেয়।</p></div></details><details><summary>See Solution</summary><div><p>Independent coroutine calls gather করো। Error policy explicit রাখো; এই exercise সব calls succeed ধরে।</p><h4>Solution-টা বুঝে নিই</h4><p>gather independent calls schedule করে, results requested ID order-এ দেয়। asyncio.run standalone script-এর event loop own করছে।</p><pre><code data-language="python">import asyncio
 
 async def check(customer_id):
     await asyncio.sleep(0.01)
@@ -91,7 +78,7 @@ async def main():
     assert results == ids
 
 asyncio.run(main())
-</code></pre></div></details><h4>নিজের কাজ মিলিয়ে দেখো</h4><p>Sequential version-ও লিখে timing observe করো। Exact milliseconds assertion করবে না; execution environment বদলায়।</p></section><section class="practice" id="practice-2"><h3>Practice 2: Reproduce and Fix a Lost Update</h3><p>দুই task shared counter +1 করবে। Await read ও write-এর মাঝে দিয়ে bug reproduce করো। তারপর lock দিয়ে fix করো।</p><details><summary>Hint</summary><div><p>দুই task-ই 0 read করলে দুইজন 1 লিখবে। Final 2 হওয়া উচিত।</p></div></details><details><summary>See Solution</summary><div><p>Critical read-modify-write lock দিয়ে protect করো; network/process safety নিয়ে বেশি claim করবে না।</p><pre><code data-language="python">import asyncio
+</code></pre><p>এই solution test functions define করে। নিচের command দিয়ে pytest-এ run করো।</p></div></details><h4>নিজের কাজ মিলিয়ে দেখো</h4><p>Sequential version-ও লিখে timing observe করো। Exact milliseconds assertion করবে না; execution environment বদলায়।</p></section><section class="practice" id="practice-2"><h3>Practice 2: Reproduce and Fix a Lost Update</h3><p>দুই task shared counter +1 করবে। Await read ও write-এর মাঝে দিয়ে bug reproduce করো। তারপর lock দিয়ে fix করো।</p><details><summary>Hint</summary><div><p>দুই task-ই 0 read করলে দুইজন 1 লিখবে। Final 2 হওয়া উচিত।</p></div></details><details><summary>See Solution</summary><div><p>Critical read-modify-write lock দিয়ে protect করো; network/process safety নিয়ে বেশি claim করবে না।</p><h4>Solution-টা বুঝে নিই</h4><p>Unsafe version-এ দুই task পুরোনো counter পড়েছে। Safe version-এ lock দ্বিতীয় task-কে অপেক্ষা করিয়েছে, তাই updated state পড়ে final 2 হয়েছে।</p><pre><code data-language="python">import asyncio
 
 async def demonstrate(use_lock):
     count = 0
@@ -118,7 +105,7 @@ async def main():
     assert await demonstrate(True) == 2
 
 asyncio.run(main())
-</code></pre></div></details><h4>নিজের কাজ মিলিয়ে দেখো</h4><p>Wrong result deterministic reproduction হবে; fix-এ 2 হবে। Database balance update-এর জন্য এই lock কেন যথেষ্ট না explain করো।</p></section><section id="module-project" class="topic"><h2>Module Project: Transaction Tracker CLI</h2><p>এখন Lessons 1.1–1.8-এর skills একসাথে ব্যবহার করি। Team CSV দেবে, তোমার CLI spending, credits, balance আর rejected rows-এর JSON report দেবে। এই কাজ synchronous রাখাই যথেষ্ট; async ব্যবহার করতেই হবে এমন কোনো rule নেই।</p><h3>Input contract</h3><p>Headers: id, kind, amount। ID unique, kind debit বা credit, amount positive euro value ও whole cents। Opening balance zero হতে পারে। এটা historical report, payment authorization service না, তাই report balance negative হওয়া allowed। Duplicate ID এই file-এর মধ্যে reject হবে; process restart-এর পর deduplication database ছাড়া persistent না।</p><pre><code data-language="csv">id,kind,amount
+</code></pre><p>এই solution test functions define করে। নিচের command দিয়ে pytest-এ run করো।</p></div></details><h4>নিজের কাজ মিলিয়ে দেখো</h4><p>Wrong result deterministic reproduction হবে; fix-এ 2 হবে। Database balance update-এর জন্য এই lock কেন যথেষ্ট না explain করো।</p></section><section id="module-project" class="topic"><h2>Module Project: Transaction Tracker CLI</h2><p>এখন Lessons 1.1–1.8-এর skills একসাথে ব্যবহার করি। Team CSV দেবে, তোমার CLI spending, credits, balance আর rejected rows-এর JSON report দেবে। এই কাজ synchronous রাখাই যথেষ্ট; async ব্যবহার করতেই হবে এমন কোনো rule নেই।</p><h3>একটা row কীভাবে report-এ পৌঁছায়?</h3><ol><li>CLI থেকে filename ও opening amount main() পায়। argparse terminal arguments পড়ে।</li><li>money_to_cents opening validate করে integer cents বানায়। load_report file খুলে required headers check করে।</li><li>DictReader row ধরে summarize_rows-এ দেয়। ID, kind ও amount আগে validate হয়।</li><li>Valid নতুন ID হলে seen set-এ যায়। Debit spending বাড়ায়, credit received বাড়ায়।</li><li>Invalid বা duplicate row accepted total বদলায় না; row number ও reason rejected list-এ যায়।</li><li>শেষে opening - spent + received দিয়ে balance। JSON output caller-কে summary ও rejected evidence দুইটাই দেয়।</li></ol><p>কেন helper functions আলাদা? Money parser file ছাড়াই test করা যায়। Summary function fake rows দিয়ে test করা যায়। Disk problem থাকলে calculation logic edit করার দরকার নেই।</p><h3>Input contract</h3><p>Headers: id, kind, amount। ID unique, kind debit বা credit, amount positive euro value ও whole cents। Opening balance zero হতে পারে। এটা historical report, payment authorization service না, তাই report balance negative হওয়া allowed। Duplicate ID এই file-এর মধ্যে reject হবে; process restart-এর পর deduplication database ছাড়া persistent না।</p><pre><code data-language="csv">id,kind,amount
 T1,debit,12.50
 T2,debit,7.25
 T3,credit,20.00
@@ -257,6 +244,6 @@ def test_load_and_missing_headers(tmp_path):
     path.write_text(&quot;id,amount\nT1,1.00\n&quot;, encoding=&quot;utf-8&quot;)
     with pytest.raises(ValueError, match=&quot;headers&quot;):
         load_report(path, 0)
-</code></pre></div></details><h3>Run locally</h3><pre><code data-language="shell">python tracker.py transactions.csv --opening 100.00
+</code></pre></div></details><h3>Numbers-গুলো মিলিয়ে দেখি</h3><p>Opening 10000 cents। T1 debit-এর পরে spending 1250, T2-এর পরে 1975। T3 credit received 2000 করে। তাই final 10000 - 1975 + 2000 = 10025। oops row rejected, duplicate T1-ও rejected; দুটোর কোনোটা total বদলায়নি।</p><h3>Run locally</h3><pre><code data-language="shell">python tracker.py transactions.csv --opening 100.00
 python -m pytest -q test_tracker.py
 </code></pre><p>Sample-টা <code>transactions.csv</code>, solution-টা <code>tracker.py</code> আর tests-টা <code>test_tracker.py</code> হিসেবে একই directory-তে রাখো। Lesson 1.7-এর environment activate করো। Missing file দিলে exit code 2, valid file-এর report-এ rejected rows থাকলেও command success হবে; rejection count caller-কে inspect করতে হবে।</p><p><a download href="files/tracker.py">Download tracker.py</a> · <a download href="files/test_tracker.py">Download test_tracker.py</a> · <a download href="files/transactions.csv">Download sample CSV</a></p><h3>Done বলতে কী বোঝাবে?</h3><ul><li>Sample output-এর প্রতিটি number explain করতে পারবে।</li><li>Empty file/header, duplicate ID, NaN, zero, negative ও fractional-cent inputs-এর behavior verify করবে।</li><li>README-তে setup, run, test আর known limits লিখবে।</li><li>একটি bug reproduce → fix → regression test-এর ছোট note রাখবে।</li><li>Reference বন্ধ করে parser বা summary function নতুন input-এর জন্য নিজে লিখতে পারবে।</li></ul></section><section class="completion" id="module-check"><h2>পরের Lesson-এ যাওয়ার আগে</h2><ul><li>নিজের ভাষায় main concept explain করো।</li><li>দুই practice-এর solution বন্ধ করে একটা changed-input version solve করো।</li><li>একটা failing case দেখিয়ে কেন fail করে এবং fix কী হবে বলো।</li></ul></section><details><summary>আরও পড়তে চাইলে</summary><div><ul><li><a href="https://docs.python.org/3/library/asyncio-task.html">Python: tasks, timeout ও thread bridge</a></li></ul></div></details><nav class="lesson-nav" aria-label="Lesson navigation"><a href="lesson-8.html">← Lesson 1.8</a><a href="../ai-fde-module.html?module=2">Module 2 →</a></nav></main><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script></body></html>
