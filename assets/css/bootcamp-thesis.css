@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=STIX+Two+Text:wght@400;500;600;700&family=Noto+Serif+Bengali:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+/* Shared academic reading system. All rules are scoped to the bootcamp. */
+.bootcamp,.bootcamp-thesis{--th-serif:'STIX Two Text','Noto Serif Bengali',Georgia,serif;--th-mono:'JetBrains Mono',monospace;--th-bg:#0e1420;--th-panel:#172132;--th-text:#d5deed;--th-title:#f2f4f8;--th-line:#40516b;--th-blue:#93bdff;--th-teal:#71d5c0;--th-purple:#d1b5ff;--th-gold:#f0c97d;--th-green:#8ce0ae;background:var(--th-bg);color:var(--th-text)}
+[data-theme=light] .bootcamp,[data-theme=light] .bootcamp-thesis{--th-bg:#faf8f2;--th-panel:#f1eee5;--th-text:#343b45;--th-title:#172332;--th-line:#b4b4aa;--th-blue:#244f86;--th-teal:#166859;--th-purple:#694590;--th-gold:#805811;--th-green:#23623c}
+.bootcamp main,.bootcamp-thesis main,.bootcamp .blueprint,.bootcamp h1,.bootcamp h2,.bootcamp h3,.bootcamp h4,.bootcamp-thesis h1,.bootcamp-thesis h2,.bootcamp-thesis h3,.bootcamp-thesis h4,.bootcamp .section-kicker,.bootcamp .scenario strong,.bootcamp .director-credit,.bootcamp-thesis .toc{font-family:var(--th-serif)!important}
+.bootcamp main,.bootcamp-thesis{font-size:18px!important;line-height:1.72!important;color:var(--th-text)!important}
+.bootcamp main .wrap,.bootcamp .blueprint{max-width:860px!important}
+.bootcamp main h1,.bootcamp-thesis h1{font-size:clamp(30px,4.5vw,46px)!important;line-height:1.25!important;font-weight:600!important;letter-spacing:-.025em!important;color:var(--th-title)!important;margin:12px 0 18px!important;text-wrap:balance}
+.bootcamp main h2,.bootcamp-thesis h2{font-size:clamp(23px,3vw,29px)!important;font-weight:600!important;line-height:1.35!important;color:var(--th-title)!important;letter-spacing:-.015em!important;margin:24px 0 10px!important}
+.bootcamp main h3,.bootcamp-thesis h3{font-size:21px!important;font-weight:600!important;color:var(--th-blue)!important;margin:18px 0 8px!important}
+.bootcamp main h4,.bootcamp-thesis h4{font-size:18px!important;margin:14px 0 6px!important;color:var(--th-green)!important}
+.bootcamp main p,.bootcamp-thesis main p{margin:0 0 12px!important}
+.bootcamp .learn-catalogue{padding:30px 0 40px!important}
+.bootcamp main a,.bootcamp-thesis a{color:var(--th-blue)}
+.bootcamp .section-kicker,.bootcamp-thesis .kicker{font-size:12px!important;color:var(--th-teal)!important;letter-spacing:.1em!important;line-height:1.6!important}
+.bootcamp .director-credit{text-transform:none!important;font-size:17px!important;justify-content:center;margin:12px 0 20px!important}
+.bootcamp main>.learn-catalogue>.wrap>h1{text-align:center}
+.bootcamp .module-list{gap:10px!important;margin-top:12px}
+.bootcamp .module-link{padding:14px 18px!important;background:var(--th-panel);border:1px solid var(--th-line)!important;border-radius:3px!important;box-shadow:none!important}
+.bootcamp .module-link h3{margin:6px 0!important;font-size:22px!important}
+.bootcamp .course-note,.bootcamp .practice,.bootcamp-thesis .challenge,.bootcamp-thesis .practice,.bootcamp-thesis .abstract,.bootcamp-thesis .project,.bootcamp-thesis .exam,.bootcamp .blueprint .abstract,.bootcamp .blueprint aside{background:var(--th-panel)!important;border:1px solid var(--th-line)!important;border-radius:3px!important;padding:16px 18px!important;margin:18px 0!important;box-shadow:none!important}
+.bootcamp .practice,.bootcamp-thesis .practice,.bootcamp-thesis .challenge{border-left:3px solid var(--th-purple)!important}
+.bootcamp .practice h3,.bootcamp-thesis .practice h3,.bootcamp-thesis .challenge h3{color:var(--th-purple)!important;margin-top:0!important}
+.bootcamp .practice summary,.bootcamp-thesis .practice summary,.bootcamp-thesis .challenge summary{color:var(--th-gold)!important;cursor:pointer;padding:8px 0!important;font-weight:600}
+.bootcamp .practice details+details summary,.bootcamp-thesis .practice details+details summary,.bootcamp-thesis .challenge details+details summary{color:var(--th-green)!important}
+.bootcamp-thesis details{background:transparent!important;border-radius:3px!important;padding:8px 12px!important;margin:8px 0!important}
+.bootcamp .scenario,.bootcamp-thesis .scenario{background:var(--th-panel)!important;border-left:3px solid var(--th-teal)!important;padding:12px 16px!important;border-radius:3px!important}
+.bootcamp main ol,.bootcamp main ul,.bootcamp-thesis main ol,.bootcamp-thesis main ul{padding-left:26px;margin:10px 0 16px}
+.bootcamp .course-lessons,.bootcamp-thesis .lesson ol{list-style-type:lower-roman!important}
+.bootcamp main li,.bootcamp-thesis main li{padding:4px 0!important;overflow-wrap:anywhere}
+.bootcamp .topic-label{color:var(--th-blue)}
+.bootcamp main pre,.bootcamp-thesis pre{max-width:100%;overflow:auto;background:var(--th-panel)!important;border:1px solid var(--th-line)!important;border-radius:3px!important;padding:14px 16px!important;margin:14px 0!important}
+.bootcamp main code,.bootcamp-thesis code{font-family:var(--th-mono)!important;font-size:13px!important;line-height:1.7!important}
+.bootcamp main table,.bootcamp-thesis table{font-size:16px!important;width:100%;border-collapse:collapse}
+.bootcamp main td,.bootcamp main th,.bootcamp-thesis td,.bootcamp-thesis th{padding:9px 10px!important;border-bottom:1px solid var(--th-line)!important;vertical-align:top}
+.bootcamp-thesis .shell{max-width:1180px;padding:0 24px}
+.bootcamp-thesis .grid{grid-template-columns:230px minmax(0,820px);gap:32px}
+.bootcamp-thesis .cover{min-height:0!important;padding:42px 0 30px!important}
+.bootcamp-thesis .lesson{padding:24px 0!important}
+.bootcamp-thesis .lesson>h2:before{content:attr(data-chapter);display:block;color:var(--th-teal);font-size:13px;letter-spacing:.06em;margin-bottom:6px}
+.bootcamp-thesis .toc a{font-size:15px!important;padding:6px 0!important}
+.bootcamp main,.bootcamp-thesis main{min-width:0;overflow-wrap:break-word}
+@media(max-width:820px){.bootcamp-thesis .grid{display:block}.bootcamp-thesis .toc{position:static;max-height:none}.bootcamp-thesis .shell{padding:0 18px}}
+@media(max-width:600px){.bootcamp main,.bootcamp-thesis{font-size:17px!important}.bootcamp .learn-catalogue{padding-top:22px!important}.bootcamp .practice,.bootcamp .course-note,.bootcamp-thesis .practice,.bootcamp-thesis .challenge{padding:14px!important}.bootcamp main td,.bootcamp main th{min-width:125px}.bootcamp .table-scroll{overflow-x:auto}.bootcamp-thesis .cover{padding-top:28px!important}}
+@media print{.bootcamp,.bootcamp-thesis{--th-bg:white;--th-panel:#f5f5f5;--th-text:#222;--th-title:#111;--th-line:#aaa;--th-blue:#163e68;--th-purple:#503060;--th-teal:#1b5549}.bootcamp .site-header,.bootcamp footer,.bootcamp-thesis .toc,.bootcamp-thesis .top{display:none!important}.bootcamp-thesis .grid{display:block}.bootcamp .practice,.bootcamp-thesis .challenge{break-inside:avoid}.bootcamp-thesis .cover{break-after:page}}
+@media(prefers-reduced-motion:reduce){.bootcamp *,.bootcamp-thesis *{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+
+.bootcamp main code,.bootcamp-thesis code{color:var(--th-text)!important}.bootcamp main th,.bootcamp-thesis th{color:var(--th-blue)!important}
