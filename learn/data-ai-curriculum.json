@@ -1,0 +1,273 @@
+{
+  "lessons": [
+    {
+      "id": 1,
+      "title": "Python Fundamentals",
+      "outcome": "Read files, transform records and write small reliable scripts.",
+      "core": "Variables and types; lists and dictionaries; conditions and loops; functions and return values; exceptions; pathlib; CSV and JSON; virtual environments.",
+      "build": "Write a script that reads orders.csv, rejects invalid rows, calculates revenue by category and exports a summary.csv. Split parsing, validation and reporting into functions.",
+      "verify": "Run it twice with different inputs. Test an empty file, a missing column and a malformed price. Add at least four pytest tests.",
+      "interview": "Why use a dictionary rather than a list? Explain a KeyError and how it should be handled."
+    },
+    {
+      "id": 2,
+      "title": "SQL Fundamentals",
+      "outcome": "Answer business questions directly from relational tables.",
+      "core": "SELECT and WHERE; ORDER BY and LIMIT; COUNT, SUM and AVG; GROUP BY and HAVING; INNER and LEFT JOIN; NULL and COALESCE; basic subqueries.",
+      "build": "Create customers and orders tables. Find monthly revenue, top customers, customers without orders and orders with missing customer references.",
+      "verify": "Write each query without copying. Compare row counts before and after a JOIN. Explain why a LEFT JOIN may produce NULL.",
+      "interview": "Explain WHERE versus HAVING, INNER versus LEFT JOIN and COUNT(*) versus COUNT(column)."
+    },
+    {
+      "id": 3,
+      "title": "Excel",
+      "outcome": "Clean, reconcile and explain small business datasets quickly.",
+      "core": "Excel tables and filters; relative and absolute references; SUMIFS and COUNTIFS; IF and IFERROR; XLOOKUP; pivot tables; simple charts.",
+      "build": "Build a sales workbook with raw data, a lookup sheet, a pivot report and a chart showing monthly sales by region.",
+      "verify": "Insert new rows and confirm calculations update. Reconcile pivot totals with source totals and document mismatches.",
+      "interview": "When would XLOOKUP, SUMIFS or a pivot table be the best choice?"
+    },
+    {
+      "id": 4,
+      "title": "Git & GitHub",
+      "outcome": "Work safely with code changes and communicate a project clearly.",
+      "core": "git status/add/commit; branches; pull requests; merge conflicts; .gitignore; README; reproducible setup; issues.",
+      "build": "Create a repository for the sales analysis, use a feature branch, make focused commits and open a pull request describing the change.",
+      "verify": "Clone into a fresh folder and follow the README. Confirm secrets, local databases and temporary files are excluded.",
+      "interview": "Explain how to recover from a bad commit and why a pull request is useful."
+    },
+    {
+      "id": 5,
+      "title": "Python for Data Analysis",
+      "outcome": "Explore and transform data reproducibly with pandas.",
+      "core": "read_csv/read_excel; DataFrame selection; filtering; assign; groupby; merge; datetime parsing; NumPy basics; exporting.",
+      "build": "Load two datasets, join them, calculate weekly KPIs and produce a tidy analysis table.",
+      "verify": "Check data types, merge cardinality and row counts. Recreate the final result from a fresh environment.",
+      "interview": "Explain the difference between merge and concat and why chained assignment is risky."
+    },
+    {
+      "id": 6,
+      "title": "Data Cleaning",
+      "outcome": "Make raw data trustworthy without silently hiding problems.",
+      "core": "Missingness; duplicates; inconsistent categories; numeric and date types; outliers; validation rules; cleaning logs.",
+      "build": "Clean a deliberately messy orders file. Preserve raw input and produce clean data plus a rejected-rows report.",
+      "verify": "Write before/after counts and tests for duplicates, null IDs, negative values and impossible dates.",
+      "interview": "When should missing values be imputed, dropped or flagged?"
+    },
+    {
+      "id": 7,
+      "title": "Intermediate SQL",
+      "outcome": "Write analytical queries used in reporting and interviews.",
+      "core": "CTEs; CASE; window functions; ROW_NUMBER; RANK; LAG; date grouping; conditional aggregation; query plans.",
+      "build": "Calculate month-over-month growth, each customer's latest order and a rolling revenue metric.",
+      "verify": "Verify results on a tiny hand-calculated dataset. Compare window output to GROUP BY output.",
+      "interview": "Explain partitioning, window functions versus aggregation and how to find duplicates."
+    },
+    {
+      "id": 8,
+      "title": "Data Visualization",
+      "outcome": "Choose charts that support decisions rather than decoration.",
+      "core": "Chart choice; distributions; comparisons; time series; axis integrity; labels; accessible colors; one-sentence insights.",
+      "build": "Create three charts for revenue trend, regional performance and order delays, each with a decision-oriented caption.",
+      "verify": "Remove unnecessary styling. Check units, zero baselines where relevant and whether the conclusion follows from the data.",
+      "interview": "Why is a line chart preferable for trends and when can a dual axis mislead?"
+    },
+    {
+      "id": 9,
+      "title": "Power BI",
+      "outcome": "Build a maintainable reporting model and interactive dashboard.",
+      "core": "Power Query transformations; star schema relationships; measures versus calculated columns; DAX CALCULATE, DIVIDE and filter context; slicers; refresh.",
+      "build": "Build a sales dashboard with KPI cards, trend chart, region filters and drill-through using a fact table and dimensions.",
+      "verify": "Reconcile DAX totals with SQL. Test slicers, blank values and refresh. Publish screenshots and a model diagram.",
+      "interview": "Explain filter context, one-to-many relationships and why measures are preferred for dynamic KPIs."
+    },
+    {
+      "id": 10,
+      "title": "Relational Databases",
+      "outcome": "Design tables that preserve data integrity and support queries.",
+      "core": "Primary and foreign keys; normalization; constraints; indexes; transactions; PostgreSQL basics; EXPLAIN.",
+      "build": "Model customers, products, orders and order_items in PostgreSQL with realistic constraints and sample data.",
+      "verify": "Try duplicate IDs, orphaned references and transaction rollback. Inspect a query plan before adding an index.",
+      "interview": "Explain normalization, indexes and the purpose of transactions."
+    },
+    {
+      "id": 11,
+      "title": "ETL / ELT",
+      "outcome": "Move data from sources to dependable reporting tables.",
+      "core": "Extract/transform/load versus extract/load/transform; staging; idempotency; incremental loads; scheduling; logging; retries.",
+      "build": "Build a repeatable Python pipeline from CSV or API into PostgreSQL staging and reporting tables.",
+      "verify": "Run the pipeline twice without duplicates. Simulate a failed run and demonstrate safe recovery.",
+      "interview": "Explain idempotency, incremental loads and when ELT is preferable."
+    },
+    {
+      "id": 12,
+      "title": "APIs & JSON",
+      "outcome": "Collect external data safely and predictably.",
+      "core": "HTTP GET and status codes; requests; JSON parsing; pagination; rate limits; timeouts; authentication concepts; secrets via environment variables.",
+      "build": "Ingest a paginated public API or local mock API and save normalized records to PostgreSQL.",
+      "verify": "Mock 429, 500 and timeout responses. Verify pagination termination and never commit tokens.",
+      "interview": "Explain 401 versus 403, pagination and retry with backoff."
+    },
+    {
+      "id": 13,
+      "title": "Data Quality Testing",
+      "outcome": "Detect broken data before it reaches a dashboard.",
+      "core": "Schema checks; null and uniqueness rules; referential integrity; accepted ranges; freshness; reconciliation; pytest.",
+      "build": "Add automated checks to the ETL pipeline and write a machine-readable validation report.",
+      "verify": "Inject bad rows deliberately and confirm failures identify the offending rule. Stop downstream publishing on critical errors.",
+      "interview": "Explain what makes a useful data-quality assertion and how false positives are handled."
+    },
+    {
+      "id": 14,
+      "title": "Data Modeling",
+      "outcome": "Organize analytical data around business questions.",
+      "core": "Grain; facts and dimensions; star schema; surrogate keys; slowly changing dimensions overview; metric definitions.",
+      "build": "Design a sales fact table with date, customer and product dimensions. Document the grain and revenue definition.",
+      "verify": "Check that joins do not multiply measures. Compare totals to raw transactions.",
+      "interview": "What is table grain and why can a many-to-many join inflate revenue?"
+    },
+    {
+      "id": 15,
+      "title": "Cloud Fundamentals",
+      "outcome": "Understand the cloud services used by junior data teams.",
+      "core": "AWS S3 objects and buckets; IAM least privilege; managed databases; environment variables; cost awareness; basic monitoring.",
+      "build": "Document how a local pipeline would store raw files in S3 and processed data in a managed database. Optionally deploy to a sandbox.",
+      "verify": "Explain permissions, data flow and cost controls. Do not put access keys in the repository.",
+      "interview": "Describe least privilege, object storage versus a database and how secrets are managed."
+    },
+    {
+      "id": 16,
+      "title": "Power Automate",
+      "outcome": "Automate repeatable business steps with visible controls.",
+      "core": "Triggers; actions; conditions; approvals; connectors; error branches; retries; run history.",
+      "build": "Design an approval flow: incoming request, validation, manager approval, notification and status update.",
+      "verify": "Test approved, rejected, duplicate and failed cases. Capture the flow diagram and run evidence.",
+      "interview": "When should a human approval be required and how is a failed run investigated?"
+    },
+    {
+      "id": 17,
+      "title": "Power Apps",
+      "outcome": "Create a simple front end for structured business workflows.",
+      "core": "Canvas app basics; forms; data sources; validation; role-aware views; Power Automate integration.",
+      "build": "Prototype a request form and status screen backed by a simple data table.",
+      "verify": "Validate required fields and show what a user can and cannot edit. Document permissions.",
+      "interview": "When is a Power App preferable to a custom web application?"
+    },
+    {
+      "id": 18,
+      "title": "UiPath Basics",
+      "outcome": "Recognize where robotic process automation helps and where it breaks.",
+      "core": "Selectors; attended versus unattended automation; variables; exception handling; logging; brittle UI dependencies.",
+      "build": "Map a repetitive spreadsheet-to-form workflow and implement a small safe prototype if UiPath is available.",
+      "verify": "Change a form field or input format and observe failure handling. Compare RPA to an API-based alternative.",
+      "interview": "Why is API integration usually more robust than screen clicking?"
+    },
+    {
+      "id": 19,
+      "title": "AI Fundamentals",
+      "outcome": "Evaluate what an LLM can and cannot safely do in a workflow.",
+      "core": "Tokens and context; prompting; structured output; hallucinations; deterministic rules versus LLMs; evaluation sets; cost and latency.",
+      "build": "Create a small classification or extraction task with 20 labeled examples. Compare rule-based and LLM outputs if a model is available.",
+      "verify": "Record accuracy, failures and cost. Keep a non-LLM fallback for unavailable services.",
+      "interview": "When is an LLM justified and how is output validated?"
+    },
+    {
+      "id": 20,
+      "title": "RAG",
+      "outcome": "Retrieve supporting documents before generating answers.",
+      "core": "Ingestion; chunking; embeddings versus keyword search; retrieval; citations; relevance; evaluation; access boundaries.",
+      "build": "Build a document search endpoint returning source passages. Add optional answer generation only when sources support it.",
+      "verify": "Use 15 answerable and unanswerable questions. Check citations and require an abstention for unsupported answers.",
+      "interview": "How is RAG different from fine-tuning and what causes poor retrieval?"
+    },
+    {
+      "id": 21,
+      "title": "AI Governance",
+      "outcome": "Build safeguards into AI-assisted business processes.",
+      "core": "Data minimization; access control; PII; audit trails; human review; prompt injection; retention; evaluation records.",
+      "build": "Write a threat and control checklist for the automation project, then implement permission checks and audit events.",
+      "verify": "Try unauthorized requests and hostile document instructions. Verify no secrets or private data enter logs.",
+      "interview": "Explain how human oversight, auditability and source trust reduce risk."
+    },
+    {
+      "id": 22,
+      "title": "Python Coding Interviews",
+      "outcome": "Solve common junior-level tasks clearly under constraints.",
+      "core": "Strings and lists; dictionaries and sets; counting; two pointers; sorting; simple complexity; edge cases.",
+      "build": "Solve 12 small problems such as deduplication, frequency counting, grouping and CSV aggregation. Explain before coding.",
+      "verify": "For each problem state inputs, edge cases, time complexity and at least two tests. Redo missed problems later.",
+      "interview": "Explain why a hash map changes the complexity of a repeated lookup."
+    },
+    {
+      "id": 23,
+      "title": "SQL Interview Exercises",
+      "outcome": "Translate ambiguous questions into correct SQL.",
+      "core": "Join cardinality; aggregations; NULL; CTEs; window functions; date filtering; deduplication.",
+      "build": "Solve 15 realistic questions on orders, customers and transactions without looking at saved solutions.",
+      "verify": "Run each query on seed data with known answers. Explain why each JOIN and grouping key is necessary.",
+      "interview": "Write a query for second-highest revenue per region and explain tie handling."
+    },
+    {
+      "id": 24,
+      "title": "Data Case Studies",
+      "outcome": "Turn a vague business problem into a measurable analysis.",
+      "core": "Clarifying questions; KPI definition; data limitations; segmentation; root-cause analysis; recommendations.",
+      "build": "Investigate a simulated decline in order conversion. Define metrics, analyze segments and propose two actions.",
+      "verify": "Separate observation from causation. Present assumptions and one follow-up experiment.",
+      "interview": "What would be checked before concluding that a campaign caused a decline?"
+    },
+    {
+      "id": 25,
+      "title": "Project Explanation",
+      "outcome": "Defend implementation choices with evidence.",
+      "core": "Problem, users, architecture, alternatives, validation, failures, limitations and next steps.",
+      "build": "Prepare a five-minute walkthrough for each of the three projects with a diagram and live demonstration.",
+      "verify": "Answer follow-up questions without notes. Reproduce a test failure and explain the fix.",
+      "interview": "Why was this database, model or tool selected instead of an alternative?"
+    },
+    {
+      "id": 26,
+      "title": "Business Communication",
+      "outcome": "Report technical work in plain English.",
+      "core": "Concise status updates; issue summaries; stakeholder questions; meeting notes; actionable recommendations.",
+      "build": "Write a one-page dashboard summary and a short incident update with impact, action, owner and next step.",
+      "verify": "Have someone unfamiliar with the project explain the message back. Remove jargon and unsupported claims.",
+      "interview": "Explain a failed pipeline to a nontechnical manager in 60 seconds."
+    },
+    {
+      "id": 27,
+      "title": "German for Work",
+      "outcome": "Handle basic workplace exchanges while using English for technical work.",
+      "core": "Greetings; scheduling; clarification requests; polite emails; ticket vocabulary; numbers and dates; asking for repetition.",
+      "build": "Prepare short German messages for arranging a meeting, reporting a delay and asking a colleague for clarification.",
+      "verify": "Practice aloud and check meaning. Keep phrases simple and accurate rather than claiming fluency.",
+      "interview": "Give a short introduction and politely request clarification in German."
+    }
+  ],
+  "projects": [
+    {
+      "id": 6,
+      "title": "Business Analytics & BI Project",
+      "name": "Sales & Operations Performance Dashboard",
+      "brief": "Use synthetic retail transactions, product and region tables. Clean the source, define KPIs, model a star schema and build an interactive Power BI dashboard.",
+      "deliver": "SQL queries, data dictionary, Power Query transformations, DAX measures, dashboard screenshots, README and a short business recommendation.",
+      "accept": "Totals reconcile with SQL; filters work; missing and duplicate records are addressed; three decisions can be explained."
+    },
+    {
+      "id": 7,
+      "title": "Data Engineering & Quality Project",
+      "name": "Reliable Orders Data Pipeline",
+      "brief": "Ingest CSV plus a paginated mock API into PostgreSQL. Add staging, transformations, incremental loading, data-quality checks and a reporting table.",
+      "deliver": "Python source, SQL schema, tests, sample synthetic data, run instructions, pipeline diagram, validation report and failure logs.",
+      "accept": "Second run creates no duplicates; bad input is detected; simulated API failures recover or fail clearly; a fresh clone can reproduce results."
+    },
+    {
+      "id": 8,
+      "title": "Business Automation & AI Project",
+      "name": "Request Approval & Document Assistant",
+      "brief": "Build a small request-management application with an API, role-based approval steps, audit history and optional document retrieval. LLM features are optional and must be evaluated separately.",
+      "deliver": "FastAPI app, database schema, basic UI or API examples, approval workflow, permission tests, audit logs, optional cited retrieval and setup guide.",
+      "accept": "Unauthorized actions are blocked; every decision is logged; failed operations are handled; retrieval never invents sources."
+    }
+  ]
+}
