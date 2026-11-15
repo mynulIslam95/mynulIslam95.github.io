@@ -37,6 +37,17 @@
     .project-step-content h2 { font-size: 20px; margin-top: 28px; }
     .project-step-nav { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; margin-top: 32px; }
     @media (max-width: 640px) { .project-step-cards { grid-template-columns: 1fr; } }
+
+    .build-guide { margin-top: 32px; padding-top: 20px; border-top: 1px solid currentColor; }
+    .project-step-content { line-height: 1.75; }
+    .project-step-content h3 { font-size: 18px; margin-top: 22px; }
+    .project-step-content pre { max-width: 100%; overflow-x: auto; padding: 18px; border: 1px solid currentColor; border-radius: 8px; font-size: 14px; line-height: 1.6; }
+    .project-step-content pre code { white-space: pre; }
+    .project-step-content li { margin: 10px 0; }
+    .guide-answer { padding: 16px 0; }
+    .guide-answer summary { cursor: pointer; font-weight: 600; }
+    .guide-toc { display: flex; flex-wrap: wrap; gap: 10px 20px; margin: 20px 0; }
+    .build-guide { scroll-margin-top: 100px; }
   </style>
 </head>
 <body translate="no" class="flow flow-inner notranslate">
@@ -85,6 +96,57 @@
               <h2>Step Output</h2><p lang="bn">একটি Complete Platform-এর সাথে IT Services, B2B SaaS, Lead Generation, Recruitment, Industrial Sales আর Logistics-এর ছয়টি Demo থাকবে।</p>
               <h2>Completion Check</h2><p lang="bn">প্রতিটি Demo-তে Business Criteria, Research Evidence, Qualification, Draft আর Approval Flow যাচাই করবো। Repository Instructions দিয়ে Fresh Setup চালাবো।</p>
             
+      <nav class="guide-toc" aria-label="Step guide contents"><a href="#system-design-review">System Design Review</a><a href="#guide-1">Build Along কীভাবে করবে</a><a href="#guide-2">Before you start</a><a href="#guide-3">Industry-specific build briefs</a><a href="#guide-4">Build tasks</a><a href="#guide-5">Worked configuration lab</a><a href="#guide-6">Portfolio documentation structure</a><a href="#guide-7">Practice &amp; review</a><a href="#guide-8">Final handoff</a><a href="#guide-9">Official references</a></nav><section class="build-guide" id="guide-1"><h2>Build Along কীভাবে করবে</h2><p lang="bn">একই Repository-তে Step অনুযায়ী ছোট Changes করবো। প্রতিটি Feature-এর আগে Expected Behaviour লিখবো, Working Example চালাবো, Input বদলাবো, Failure তৈরি করবো আর Test দিয়ে Fix যাচাই করবো। নিচের Local Labs প্রতিটি Step-এর Core Idea আলাদাভাবে Practice করার জন্য। Build Tasks-এ সেই Idea Main Platform-এ Integrate করবো।</p><p lang="bn">Running Example হিসেবে একটি fictional IT consultancy ধরবো, যারা Cloud Migration service দেয়। Customer Profile-এ Industry, Location, Company Size আর Documented Need রাখবো। সব Local Sample Company ও Result synthetic।</p></section><section class="build-guide" id="guide-2"><h2>Before you start</h2><p lang="bn">একটি Industry Pilot-এর Core Flow, Security Checks ও Evaluation থাকবে। এখন Shared Platform-এর ওপর Industry-specific Configuration বসাবো। প্রতিটি Demo-তে বাস্তব Workflow Difference দেখাবো আর Expected Results আগে লিখবো।</p></section><section class="build-guide" id="guide-3"><h2>Industry-specific build briefs</h2><ul><li lang="bn">IT Services — Service Catalogue, Supported Region আর Documented Need দিয়ে Client Fit। Evidence-backed Proposal Draft বানাও। Hiring Signal থেকে Confirmed Purchase Intent দাবি করবে না।</li><li lang="bn">B2B SaaS — Product Use Case, Company Size আর Existing Workflow দিয়ে Product Fit। CRM Fields আর Qualification Reasons দেখাও।</li><li lang="bn">Lead Generation Agency — Client Workspace, Client-specific Criteria, Data Isolation আর Approval Roles। একই Lead একাধিক Client-এর জন্য আলাদা Context পেতে পারে।</li><li lang="bn">Recruitment — Employer ও Open Role Research, Hiring Source Date, Recruitment Service Fit আর Employer Outreach। Employer Research-এর Scope স্পষ্ট রাখো।</li><li lang="bn">Industrial Sales — Product Specification, Geography, Distributor Coverage আর Procurement Requirements দিয়ে Buyer Fit। Missing Certification তথ্যকে Unknown রাখো।</li><li lang="bn">Logistics — Shipping Need, Lanes, Geography আর Service Coverage-এর Documented Evidence ব্যবহার করো। Unknown Shipment Volume বা Frequency নিজে বানাবে না।</li></ul></section><section class="build-guide" id="guide-4"><h2>Build tasks</h2><ol><li lang="bn">Industry Config Schema তৈরি করো। Required Fields, Qualification Criteria, Allowed Data Sources, Draft Template আর CRM Mapping define করো।</li><li lang="bn">Core Retrieval, Authorization, Approval আর Workflow Logic Shared রাখো। Industry Rules Versioned Configuration হিসেবে load করো।</li><li lang="bn">প্রতি Industry-তে ৫টি Synthetic Company, Positive/Negative/Unknown Evidence আর Expected Decision তৈরি করো।</li><li lang="bn">প্রতি Demo-তে Research Report থেকে Human Approval পর্যন্ত End-to-End Scenario চালাও। কমপক্ষে একটি Failure ও Recovery Case রাখো।</li><li lang="bn">Demo UI-তে Industry Selector, Run Status, Evidence, Draft Review আর Approval History দেখাও। Real vs Synthetic Data label করো।</li><li lang="bn">docs/architecture.md, docs/setup.md, docs/evaluation.md আর docs/runbook.md complete করো। Actual Measurements-এর পাশে Code Commit ও Test Date রাখো।</li><li lang="bn">৩–৫ মিনিটের Walkthrough-এ Business Problem, Successful Flow, Failure Recovery আর Measured Result দেখাও। Published Screenshots-এ Personal Data বাদ দাও।</li><li lang="bn">Project README-তে Inspiration Source, নিজের Implementation Decisions আর Future Work লেখো। Video-derived Roadmap আর নিজের Built Evidence-এর attribution স্পষ্ট করো।</li></ol></section><section class="build-guide" id="guide-5"><h2>Worked configuration lab</h2><h3>lab_8.py</h3><pre><code>from dataclasses import dataclass
+
+@dataclass(frozen=True)
+class IndustryConfig:
+    name: str
+    required_fields: tuple[str, ...]
+    report_focus: str
+
+CONFIGS = {
+    &quot;it_services&quot;: IndustryConfig(&quot;IT Services&quot;, (&quot;company&quot;, &quot;service_need&quot;), &quot;service fit&quot;),
+    &quot;saas&quot;: IndustryConfig(&quot;B2B SaaS&quot;, (&quot;company&quot;, &quot;use_case&quot;), &quot;product fit&quot;),
+    &quot;lead_agency&quot;: IndustryConfig(&quot;Lead Generation&quot;, (&quot;company&quot;, &quot;client_id&quot;), &quot;client criteria&quot;),
+    &quot;recruitment&quot;: IndustryConfig(&quot;Recruitment&quot;, (&quot;company&quot;, &quot;open_roles&quot;), &quot;hiring evidence&quot;),
+    &quot;industrial&quot;: IndustryConfig(&quot;Industrial Sales&quot;, (&quot;company&quot;, &quot;product_category&quot;), &quot;buyer fit&quot;),
+    &quot;logistics&quot;: IndustryConfig(&quot;Logistics&quot;, (&quot;company&quot;, &quot;shipping_need&quot;), &quot;service coverage&quot;),
+}
+
+def validate_profile(industry: str, profile: dict) -&gt; IndustryConfig:
+    if industry not in CONFIGS:
+        raise ValueError(&quot;Unsupported industry&quot;)
+    config = CONFIGS[industry]
+    missing = [field for field in config.required_fields if not profile.get(field)]
+    if missing:
+        raise ValueError(&quot;Missing fields: &quot; + &quot;, &quot;.join(missing))
+    return config
+
+if __name__ == &quot;__main__&quot;:
+    config = validate_profile(&quot;it_services&quot;, {
+        &quot;company&quot;: &quot;Example Tools&quot;, &quot;service_need&quot;: &quot;cloud migration&quot;
+    })
+    print(config.name, config.report_focus)
+    assert len(CONFIGS) == 6
+</code></pre><p lang="bn">python lab_8.py IT Services service fit দেখাবে। এখানে Configuration Selection ও Required Fields Practice হলো। Actual Qualification Criteria, Tenant Access আর Prompt Templates Main Platform-এর Versioned Config-এ integrate করবে।</p></section><section class="build-guide" id="guide-6"><h2>Portfolio documentation structure</h2><h3>documentation.txt</h3><pre><code>README.md
+  Problem and intended users
+  Current implementation status
+  Quick start and demo walkthrough
+  Architecture and design decisions
+  Test and evaluation commands
+  Actual results and limitations
+  Sources and acknowledgements
+
+docs/
+  architecture.md
+  criteria.md
+  data-contract.md
+  workflow.md
+  evaluation.md
+  runbook.md
+  industry-demos.md
+</code></pre><p lang="bn">এই Learning Roadmap-এর Inspiration Ayush Singh-এর “Agentic Engineering Roadmap For Beginners” video-এর User-provided Transcript। নতুন Repo-তে যাচাই করা Original Video URL যোগ করো। Build Evidence হিসেবে নিজের Code, Test Runs আর Design Decisions দেখাবে।</p></section><section class="build-guide" id="guide-7"><h2>Practice &amp; review</h2><ul><li lang="bn">Industry বদলালে শুধু Prompt Title বদলাচ্ছে, নাকি Required Data ও Decision Criteria-ও বদলাচ্ছে? দুই Demo-এর Contract compare করো।</li><li lang="bn">Unknown Industry Key দিলে Clear Error দেখাও। Missing Field Case test করো।</li><li lang="bn">আগের Industry Prompt Version দিয়ে Saved Run Replay করলে একই Config পাওয়া যায় কি না verify করো।</li><li lang="bn">একজন Reviewer-কে Fresh Setup Instructions দাও। কোথায় আটকে যায় দেখে Documentation improve করো।</li></ul><details class="guide-answer"><summary>Review checklist</summary><p lang="bn">প্রতিটি Demo-এর Criteria, Fixtures, Expected Results ও Integration Mapping আলাদা Evidence দেবে। Shared App Code একই থাকলেও Business Rules-এর Differences version করতে হবে। Planned Feature আর Verified Feature-এর Status নিজের Build Progress অনুযায়ী update করো।</p></details></section><section class="build-guide" id="guide-8"><h2>Final handoff</h2><ul><li lang="bn">One Shared Platform আর Six Industry Demos</li><li lang="bn">Evidence-backed Reports ও Version-bound Human Approvals</li><li lang="bn">Persistent Workflows, CRM Integration আর Recovery Evidence</li><li lang="bn">Reproducible Test Set, Evaluation Results আর Cost Notes</li><li lang="bn">Architecture, Setup, Runbook, Demo Video আর Source Attribution</li></ul></section><section class="build-guide" id="guide-9"><h2>Official references</h2><ul><li><a href="https://docs.python.org/3/library/dataclasses.html" target="_blank" rel="noopener noreferrer">Python dataclasses</a></li><li><a href="https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes" target="_blank" rel="noopener noreferrer">GitHub repository README</a></li></ul></section>
+<section class="build-guide" id="system-design-review"><h2>Architecture review &amp; release evidence</h2><p lang="bn">এই Step-এর System Design Review-এ নিচের Decisions লিখবো আর Evidence দিয়ে ব্যাখ্যা করবো।</p><ol><li lang="bn">Functional Requirements-এর সাথে Demo ও Test map করো। Non-functional Targets-এর সাথে Load, Recovery, Security ও Cost Results map করো।</li><li lang="bn">Trust Boundary Diagram-এ Browser, API, Worker, Database, Model Provider আর CRM দেখাও। Credentials কোথায় থাকে আর কোন Data বাইরে যায় label করো।</li><li lang="bn">প্রতিটি ADR-এ Context, Alternatives, Chosen Approach, Consequences আর Revisit Trigger রাখো। Team-facing Handoff-এ Known Limitations ও Operational Decisions explain করো।</li><li lang="bn">Launch Review-এ Actual Pilot Evidence ব্যবহার করো। Missing Evidence-এর পাশে Not measured রাখো আর Planned Work-এর Status আলাদা দেখাও।</li></ol></section>
       <nav class="project-step-nav" aria-label="Step navigation"><a href="agentic-ai-sales-step-7.html">← Previous step</a><a href="agentic-ai-sales-platform.html">All steps</a></nav>
     </div></section>
   </main>

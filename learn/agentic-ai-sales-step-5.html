@@ -37,6 +37,17 @@
     .project-step-content h2 { font-size: 20px; margin-top: 28px; }
     .project-step-nav { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; margin-top: 32px; }
     @media (max-width: 640px) { .project-step-cards { grid-template-columns: 1fr; } }
+
+    .build-guide { margin-top: 32px; padding-top: 20px; border-top: 1px solid currentColor; }
+    .project-step-content { line-height: 1.75; }
+    .project-step-content h3 { font-size: 18px; margin-top: 22px; }
+    .project-step-content pre { max-width: 100%; overflow-x: auto; padding: 18px; border: 1px solid currentColor; border-radius: 8px; font-size: 14px; line-height: 1.6; }
+    .project-step-content pre code { white-space: pre; }
+    .project-step-content li { margin: 10px 0; }
+    .guide-answer { padding: 16px 0; }
+    .guide-answer summary { cursor: pointer; font-weight: 600; }
+    .guide-toc { display: flex; flex-wrap: wrap; gap: 10px 20px; margin: 20px 0; }
+    .build-guide { scroll-margin-top: 100px; }
   </style>
 </head>
 <body translate="no" class="flow flow-inner notranslate">
@@ -85,6 +96,44 @@
               <h2>Step Output</h2><p lang="bn">Lead Record, Evidence আর Draft Database-এ থাকবে। একটি CRM Integration দিয়ে Existing Lead খোঁজা ও Status Sync করা যাবে।</p>
               <h2>Completion Check</h2><p lang="bn">Duplicate Lead, Invalid Tool Arguments, Missing Permissions আর Failed Transaction দিয়ে Test করবো।</p>
             
+      <nav class="guide-toc" aria-label="Step guide contents"><a href="#system-design-review">System Design Review</a><a href="#guide-1">Build Along কীভাবে করবে</a><a href="#guide-2">Before you start</a><a href="#guide-3">Tool boundary &amp; data model</a><a href="#guide-4">Build tasks</a><a href="#guide-5">Worked SQL lab</a><a href="#guide-6">Practice &amp; debugging</a><a href="#guide-7">Step completion</a><a href="#guide-8">Official references</a></nav><section class="build-guide" id="guide-1"><h2>Build Along কীভাবে করবে</h2><p lang="bn">একই Repository-তে Step অনুযায়ী ছোট Changes করবো। প্রতিটি Feature-এর আগে Expected Behaviour লিখবো, Working Example চালাবো, Input বদলাবো, Failure তৈরি করবো আর Test দিয়ে Fix যাচাই করবো। নিচের Local Labs প্রতিটি Step-এর Core Idea আলাদাভাবে Practice করার জন্য। Build Tasks-এ সেই Idea Main Platform-এ Integrate করবো।</p><p lang="bn">Running Example হিসেবে একটি fictional IT consultancy ধরবো, যারা Cloud Migration service দেয়। Customer Profile-এ Industry, Location, Company Size আর Documented Need রাখবো। সব Local Sample Company ও Result synthetic।</p></section><section class="build-guide" id="guide-2"><h2>Before you start</h2><p lang="bn">Source-backed Report তৈরি করতে পারবে। এবার Research Result ও CRM State-এর সম্পর্ক রাখবো। প্রথমে Fake CRM Adapter দিয়ে Tool Loop বুঝবো, তারপর একটি Real CRM Sandbox connect করবো।</p></section><section class="build-guide" id="guide-3"><h2>Tool boundary &amp; data model</h2><ul><li lang="bn">Model একটি Tool Name ও Arguments propose করে। Dispatcher-এ Tool Allowlist, Schema Validation আর Authenticated User Permissions check করে Function চালাবে।</li><li lang="bn">tenant_id Model-এর Arguments থেকে Trusted Value হিসেবে নেবে না। Server Session থেকে Tenant Context resolve করে প্রতিটি Query-তে প্রয়োগ করবে।</li><li lang="bn">Lead, ResearchReport, Evidence, Draft, Approval আর WorkflowRun আলাদা Entities। একটি Company-এর একাধিক Reports ও Draft Versions থাকতে পারে।</li><li lang="bn">Transactions Related Writes একসাথে Commit করে। Unique Constraint একই Tenant-এর CRM Record duplicate হওয়া ঠেকায়।</li><li lang="bn">MCP Tool Exposure-এর একটি Interface। প্রথমে Direct Python Tools দিয়ে Permissions Verify করো। MCP যোগ করলে একই Authorization Checks প্রয়োজন।</li></ul></section><section class="build-guide" id="guide-4"><h2>Build tasks</h2><ol><li lang="bn">app/tools.py-তে lookup_lead, save_research আর create_draft functions বানাও। প্রতিটির Input ও Output Schema define করো।</li><li lang="bn">Fake CRM-এ Pagination, Missing Record, Rate Limit আর Duplicate External ID Cases implement করো।</li><li lang="bn">PostgreSQL Schema Migration-এ tenant_id, Foreign Keys, Created Timestamps আর Unique Keys যোগ করো। Drafts-এ Version রাখো।</li><li lang="bn">CRM Sync-এ External Record ID ও Local ID map করো। Update Failure হলে Sync Status record করো, Silent Success দেখাবে না।</li><li lang="bn">Provider Tool Call validate করে Server-side Registry দিয়ে dispatch করো। Unknown Tool, Excessive Call Count আর Invalid Arguments reject করো।</li><li lang="bn">একটি CRM Sandbox integrate করো। Read-only Lookup থেকে শুরু করে Explicitly Allowed Writes যোগ করো। API Tokens Secret Store-এ রাখো।</li></ol></section><section class="build-guide" id="guide-5"><h2>Worked SQL lab</h2><h3>lab_5.py</h3><pre><code>import sqlite3
+
+def connect() -&gt; sqlite3.Connection:
+    db = sqlite3.connect(&quot;:memory:&quot;)
+    db.execute(&quot;&quot;&quot;CREATE TABLE leads (
+        tenant_id TEXT NOT NULL,
+        external_id TEXT NOT NULL,
+        company TEXT NOT NULL,
+        PRIMARY KEY (tenant_id, external_id)
+    )&quot;&quot;&quot;)
+    return db
+
+def save_lead(db, tenant_id: str, external_id: str, company: str) -&gt; None:
+    if not all(value.strip() for value in (tenant_id, external_id, company)):
+        raise ValueError(&quot;Lead fields must be non-empty&quot;)
+    with db:
+        db.execute(
+            &quot;INSERT INTO leads VALUES (?, ?, ?) &quot;
+            &quot;ON CONFLICT(tenant_id, external_id) DO UPDATE SET company=excluded.company&quot;,
+            (tenant_id, external_id, company),
+        )
+
+def lookup(db, tenant_id: str, external_id: str):
+    return db.execute(
+        &quot;SELECT company FROM leads WHERE tenant_id=? AND external_id=?&quot;,
+        (tenant_id, external_id),
+    ).fetchone()
+
+if __name__ == &quot;__main__&quot;:
+    db = connect()
+    save_lead(db, &quot;tenant-a&quot;, &quot;crm-1&quot;, &quot;Example Tools&quot;)
+    save_lead(db, &quot;tenant-a&quot;, &quot;crm-1&quot;, &quot;Example Tools Updated&quot;)
+    assert lookup(db, &quot;tenant-a&quot;, &quot;crm-1&quot;) == (&quot;Example Tools Updated&quot;,)
+    assert lookup(db, &quot;tenant-b&quot;, &quot;crm-1&quot;) is None
+    assert db.execute(&quot;SELECT COUNT(*) FROM leads&quot;).fetchone()[0] == 1
+    print(&quot;Deduplication and tenant-scoped lookup passed&quot;)
+</code></pre><p lang="bn">python lab_5.py চালালে Deduplication আর Tenant-scoped Lookup Pass করবে। SQLite Local Lab SQL Concepts শেখায়। Main Platform-এর Persistence Target PostgreSQL। Driver Placeholder Syntax, Migrations আর Concurrency Tests সেই Adapter অনুযায়ী লিখবে।</p></section><section class="build-guide" id="guide-6"><h2>Practice &amp; debugging</h2><ul><li lang="bn">এক Tenant-এর External ID অন্য Tenant-এ Save করো। দুটো স্বাধীন Record হওয়া উচিত।</li><li lang="bn">Tool Request-এ tenant-b পাঠিয়ে tenant-a User-এর Data Access-এর Attempt তৈরি করো। Dispatcher-এর Trusted Tenant Context দিয়ে Block করো।</li><li lang="bn">Report Insert সফল কিন্তু Draft Insert ব্যর্থ হলে Related Writes Rollback করার Test লেখো।</li><li lang="bn">Model থেকে delete_all_leads Tool Request এলে Registry কী করবে? Unknown Tool Test যোগ করো।</li></ul><details class="guide-answer"><summary>Design review</summary><p lang="bn">SQL Parameterization Values-এর জন্য ব্যবহার করো। Model-generated SQL বা Table Name সরাসরি Execute করবে না। Tenant-scoped Unique Key Deduplication দেয়, কিন্তু Tenant Authorization Server Context থেকেই enforce করতে হবে।</p></details></section><section class="build-guide" id="guide-7"><h2>Step completion</h2><ul><li lang="bn">Tool Contracts, Registry আর Permission Tests আছে</li><li lang="bn">One CRM Sandbox Lookup ও Controlled Update Trace আছে</li><li lang="bn">Database Migration Fresh Database-এ চলে</li><li lang="bn">Repeated Sync duplicate Record বানায় না আর Partial Failure দৃশ্যমান</li></ul></section><section class="build-guide" id="guide-8"><h2>Official references</h2><ul><li><a href="https://www.postgresql.org/docs/current/ddl-constraints.html" target="_blank" rel="noopener noreferrer">PostgreSQL constraints</a></li><li><a href="https://www.postgresql.org/docs/current/tutorial-transactions.html" target="_blank" rel="noopener noreferrer">PostgreSQL transactions</a></li><li><a href="https://modelcontextprotocol.io/docs/learn/server-concepts" target="_blank" rel="noopener noreferrer">MCP tools</a></li></ul></section>
+<section class="build-guide" id="system-design-review"><h2>Persistence, isolation &amp; integration contracts</h2><p lang="bn">এই Step-এর System Design Review-এ নিচের Decisions লিখবো আর Evidence দিয়ে ব্যাখ্যা করবো।</p><ol><li lang="bn">Entity Relationship লিখো — Tenant → Leads → Reports → Draft Versions → Approvals → Send Attempts। Evidence Report-এর কোন Claim Support করে সেটা link করো।</li><li lang="bn">CRM Update-এর Source of Truth ঠিক করো। Local Record আর CRM একই সময়ে বদলালে Conflict Policy, Revision Check আর Reconciliation Jobs লাগতে পারে।</li><li lang="bn">Tool Boundary-এর Threat Model করো — Model-chosen Recipient, Changed Tenant ID, Unknown Tool, SQL Injection আর Prompt-injected Tool Request পরীক্ষা করো।</li><li lang="bn">ADR-005-এ Database Choice ও Sync Strategy লেখো। Webhook Duplicate বা Out-of-order হলে External Event ID দিয়ে Handling explain করো।</li></ol></section>
       <nav class="project-step-nav" aria-label="Step navigation"><a href="agentic-ai-sales-step-4.html">← Previous step</a><a href="agentic-ai-sales-platform.html">All steps</a><a href="agentic-ai-sales-step-6.html">Next step →</a></nav>
     </div></section>
   </main>

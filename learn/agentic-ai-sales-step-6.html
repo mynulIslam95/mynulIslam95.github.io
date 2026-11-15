@@ -37,6 +37,17 @@
     .project-step-content h2 { font-size: 20px; margin-top: 28px; }
     .project-step-nav { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; margin-top: 32px; }
     @media (max-width: 640px) { .project-step-cards { grid-template-columns: 1fr; } }
+
+    .build-guide { margin-top: 32px; padding-top: 20px; border-top: 1px solid currentColor; }
+    .project-step-content { line-height: 1.75; }
+    .project-step-content h3 { font-size: 18px; margin-top: 22px; }
+    .project-step-content pre { max-width: 100%; overflow-x: auto; padding: 18px; border: 1px solid currentColor; border-radius: 8px; font-size: 14px; line-height: 1.6; }
+    .project-step-content pre code { white-space: pre; }
+    .project-step-content li { margin: 10px 0; }
+    .guide-answer { padding: 16px 0; }
+    .guide-answer summary { cursor: pointer; font-weight: 600; }
+    .guide-toc { display: flex; flex-wrap: wrap; gap: 10px 20px; margin: 20px 0; }
+    .build-guide { scroll-margin-top: 100px; }
   </style>
 </head>
 <body translate="no" class="flow flow-inner notranslate">
@@ -85,6 +96,48 @@
               <h2>Step Output</h2><p lang="bn">Approved Draft Send হবে। Workflow Pause ও Resume করা যাবে। Uncertain Send Result যাচাই করে পরের Action নেওয়া হবে।</p>
               <h2>Completion Check</h2><p lang="bn">Approval-এর আগে Send Block করবো। Draft Edit, Double Click আর Send-এর পরে Timeout দিয়ে Duplicate Handling পরীক্ষা করবো।</p>
             
+      <nav class="guide-toc" aria-label="Step guide contents"><a href="#system-design-review">System Design Review</a><a href="#guide-1">Build Along কীভাবে করবে</a><a href="#guide-2">Before you start</a><a href="#guide-3">State &amp; recovery concepts</a><a href="#guide-4">Build tasks</a><a href="#guide-5">Worked approval lab</a><a href="#guide-6">Crash &amp; concurrency drills</a><a href="#guide-7">Step completion</a><a href="#guide-8">Official references</a></nav><section class="build-guide" id="guide-1"><h2>Build Along কীভাবে করবে</h2><p lang="bn">একই Repository-তে Step অনুযায়ী ছোট Changes করবো। প্রতিটি Feature-এর আগে Expected Behaviour লিখবো, Working Example চালাবো, Input বদলাবো, Failure তৈরি করবো আর Test দিয়ে Fix যাচাই করবো। নিচের Local Labs প্রতিটি Step-এর Core Idea আলাদাভাবে Practice করার জন্য। Build Tasks-এ সেই Idea Main Platform-এ Integrate করবো।</p><p lang="bn">Running Example হিসেবে একটি fictional IT consultancy ধরবো, যারা Cloud Migration service দেয়। Customer Profile-এ Industry, Location, Company Size আর Documented Need রাখবো। সব Local Sample Company ও Result synthetic।</p></section><section class="build-guide" id="guide-2"><h2>Before you start</h2><p lang="bn">Database-এ Lead, Report আর Draft Versions থাকবে। এবার Human Review-কে Workflow-এর Explicit State বানাবো। Research শেষ হলে Approval না পাওয়া পর্যন্ত Send Stage অপেক্ষা করবে।</p></section><section class="build-guide" id="guide-3"><h2>State &amp; recovery concepts</h2><ul><li lang="bn">Possible States লিখো — research_pending, researching, draft_ready, awaiting_approval, approved, sending, sent, failed আর delivery_unknown। প্রতিটি Transition-এর Preconditions থাকবে।</li><li lang="bn">Approval নির্দিষ্ট Draft Version, Recipient আর Content-এর সাথে Bind করো। User Content বা Recipient বদলালে Approval Invalidate হবে।</li><li lang="bn">Checkpoint Computation Progress Save করে। External Email Send-এর Side Effect আলাদাভাবে track করতে হয়। Checkpoint দিয়ে Exactly-once Delivery ধরে নেওয়া যাবে না।</li><li lang="bn">Send Request Timeout হলে Provider Accepted করেছে কি না Uncertain হতে পারে। delivery_unknown রেখে Message ID বা Idempotency Support দিয়ে Reconcile করো।</li><li lang="bn">LangGraph Interrupt-এর Resume-এ Node Code আবার চলতে পারে। Approval Node-এর আগে Irreversible Action বসাবে না। Persistent Checkpointer আর Stable Workflow Identity রাখো।</li></ul></section><section class="build-guide" id="guide-4"><h2>Build tasks</h2><ol><li lang="bn">docs/workflow.md-এ State Transition Table লেখো। কোন User Approval দিতে পারে, কোন State-এ Edit করা যায় আর কোন Failure Retryable define করো।</li><li lang="bn">Database-এ Draft Version, Approval Version, Approved Content Hash আর Workflow Run ID রাখো।</li><li lang="bn">Research, Qualify, Draft, Wait Approval আর Send Nodes আলাদা করো। Model-কে Permission Decision নিতে দেবে না।</li><li lang="bn">একটি Persistent Checkpointer connect করো। একই Run Identity দিয়ে Pause, Process Restart আর Resume test করো।</li><li lang="bn">Send Worker-এর Claim Database Transaction-এ করো। Compare-and-set বা Row Lock দিয়ে Concurrent Workers একই Approved Version claim করা ঠেকাও।</li><li lang="bn">Outbox Record, Stable Send Key ও Provider Result Save করো। Provider Idempotency না থাকলে Unknown Delivery Manual Review/Reconciliation-এ দাও।</li></ol></section><section class="build-guide" id="guide-5"><h2>Worked approval lab</h2><h3>lab_6.py</h3><pre><code>from dataclasses import dataclass
+from hashlib import sha256
+
+def digest(text: str) -&gt; str:
+    return sha256(text.encode(&quot;utf-8&quot;)).hexdigest()
+
+@dataclass
+class Draft:
+    text: str
+    approved_hash: str | None = None
+    status: str = &quot;draft&quot;
+
+    def approve(self) -&gt; None:
+        self.approved_hash = digest(self.text)
+        self.status = &quot;approved&quot;
+
+    def edit(self, text: str) -&gt; None:
+        self.text = text
+        self.approved_hash = None
+        self.status = &quot;draft&quot;
+
+    def claim_send(self) -&gt; str:
+        if self.status != &quot;approved&quot; or self.approved_hash != digest(self.text):
+            raise PermissionError(&quot;This draft version is not approved&quot;)
+        self.status = &quot;sending&quot;
+        return self.approved_hash
+
+if __name__ == &quot;__main__&quot;:
+    draft = Draft(&quot;Hello, here is our relevant service.&quot;)
+    draft.approve()
+    draft.edit(&quot;Changed offer&quot;)
+    try:
+        draft.claim_send()
+    except PermissionError:
+        print(&quot;Edited draft requires new approval&quot;)
+    else:
+        raise AssertionError(&quot;Stale approval accepted&quot;)
+    draft.approve()
+    print(draft.claim_send())
+    assert draft.status == &quot;sending&quot;
+</code></pre><p lang="bn">python lab_6.py চালালে Edit-এর পরে Approval Reject হবে, নতুন Approval-এর পরে sending হবে। এই Local Object Lab Persisted বা Concurrent Worker-safe নয়। Build Tasks-এ একই Check Database Transaction ও Durable Workflow-তে বসাবে।</p></section><section class="build-guide" id="guide-6"><h2>Crash &amp; concurrency drills</h2><ul><li lang="bn">Approval Save-এর পরে Process বন্ধ করো। Restart-এ একই Draft Version দেখিয়ে Resume করো।</li><li lang="bn">দুই Worker একই Send claim করুক। Only One Claim succeeds, এটা Integration Test-এ verify করো।</li><li lang="bn">Provider Accept-এর পরে Local Commit fail করাও। Blind Retry-এর বদলে delivery_unknown ও Reconciliation দেখাও।</li><li lang="bn">User Approval-এর পরে Recipient edit করো। Previous Approval ব্যবহার করে Send Attempt block হওয়া উচিত।</li></ul><details class="guide-answer"><summary>Expected recovery</summary><p lang="bn">Business State, Workflow Checkpoint আর External Provider State মিলিয়ে Resume করো। Draft Edit Approval বাতিল করে। Send Claim transactionally guarded হবে। Unknown Delivery-কে Success বা Safe-to-Retry বলা যাবে না যতক্ষণ Provider Evidence পাওয়া না যায়।</p></details></section><section class="build-guide" id="guide-7"><h2>Step completion</h2><ul><li lang="bn">Durable Pause ও Restart-এর Demo আছে</li><li lang="bn">Edited Draft ও Changed Recipient Approval invalidates</li><li lang="bn">Concurrent Send Claim Test আছে</li><li lang="bn">Unknown Delivery-এর Runbook ও Audit Trail আছে</li></ul></section><section class="build-guide" id="guide-8"><h2>Official references</h2><ul><li><a href="https://docs.langchain.com/oss/python/langgraph/interrupts" target="_blank" rel="noopener noreferrer">LangGraph interrupts</a></li><li><a href="https://docs.langchain.com/oss/python/langgraph/persistence" target="_blank" rel="noopener noreferrer">LangGraph persistence</a></li></ul></section>
+<section class="build-guide" id="system-design-review"><h2>Consistency, side effects &amp; crash recovery</h2><p lang="bn">এই Step-এর System Design Review-এ নিচের Decisions লিখবো আর Evidence দিয়ে ব্যাখ্যা করবো।</p><ol><li lang="bn">State Machine-এ প্রতিটি Transition-এর Actor, Preconditions, Atomic Writes আর Retry Behaviour লিখো। Invalid Transition reject করো।</li><li lang="bn">Crash Matrix বানাও — Send-এর আগে, Provider Accept-এর পরে, Database Commit-এর আগে আর Commit-এর পরে Process Stop। প্রতিটি Case-এর Recovery Evidence রাখো।</li><li lang="bn">Delivery Semantics স্পষ্ট করো। Provider Idempotency Support না থাকলে Duplicate Send পুরোপুরি Eliminate করার Guarantee দেবে না, Unknown Delivery Review Policy রাখো।</li><li lang="bn">ADR-006-এ LangGraph Checkpoint বনাম Durable Business Workflow-এর প্রয়োজন compare করো। Features-এর প্রয়োজন থেকে Tool বেছে নাও।</li></ol></section>
       <nav class="project-step-nav" aria-label="Step navigation"><a href="agentic-ai-sales-step-5.html">← Previous step</a><a href="agentic-ai-sales-platform.html">All steps</a><a href="agentic-ai-sales-step-7.html">Next step →</a></nav>
     </div></section>
   </main>

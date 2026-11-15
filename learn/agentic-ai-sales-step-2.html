@@ -37,6 +37,17 @@
     .project-step-content h2 { font-size: 20px; margin-top: 28px; }
     .project-step-nav { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; margin-top: 32px; }
     @media (max-width: 640px) { .project-step-cards { grid-template-columns: 1fr; } }
+
+    .build-guide { margin-top: 32px; padding-top: 20px; border-top: 1px solid currentColor; }
+    .project-step-content { line-height: 1.75; }
+    .project-step-content h3 { font-size: 18px; margin-top: 22px; }
+    .project-step-content pre { max-width: 100%; overflow-x: auto; padding: 18px; border: 1px solid currentColor; border-radius: 8px; font-size: 14px; line-height: 1.6; }
+    .project-step-content pre code { white-space: pre; }
+    .project-step-content li { margin: 10px 0; }
+    .guide-answer { padding: 16px 0; }
+    .guide-answer summary { cursor: pointer; font-weight: 600; }
+    .guide-toc { display: flex; flex-wrap: wrap; gap: 10px 20px; margin: 20px 0; }
+    .build-guide { scroll-margin-top: 100px; }
   </style>
 </head>
 <body translate="no" class="flow flow-inner notranslate">
@@ -85,6 +96,36 @@
               <h2>Step Output</h2><p lang="bn">Streaming Response-সহ App থাকবে। Failed Request-এ clear message আর sanitized log পাওয়া যাবে।</p>
               <h2>Completion Check</h2><p lang="bn">Mock Timeout, Rate Limit আর Broken Stream দিয়ে Test করবো। Retry Count সীমিত থাকবে আর API Key Logs-এ যাবে না।</p>
             
+      <nav class="guide-toc" aria-label="Step guide contents"><a href="#system-design-review">System Design Review</a><a href="#guide-1">Build Along কীভাবে করবে</a><a href="#guide-2">Before you start</a><a href="#guide-3">Request lifecycle</a><a href="#guide-4">Concepts you will use</a><a href="#guide-5">Build tasks</a><a href="#guide-6">Worked local lab</a><a href="#guide-7">Debugging exercises</a><a href="#guide-8">Step completion</a><a href="#guide-9">Official references</a></nav><section class="build-guide" id="guide-1"><h2>Build Along কীভাবে করবে</h2><p lang="bn">একই Repository-তে Step অনুযায়ী ছোট Changes করবো। প্রতিটি Feature-এর আগে Expected Behaviour লিখবো, Working Example চালাবো, Input বদলাবো, Failure তৈরি করবো আর Test দিয়ে Fix যাচাই করবো। নিচের Local Labs প্রতিটি Step-এর Core Idea আলাদাভাবে Practice করার জন্য। Build Tasks-এ সেই Idea Main Platform-এ Integrate করবো।</p><p lang="bn">Running Example হিসেবে একটি fictional IT consultancy ধরবো, যারা Cloud Migration service দেয়। Customer Profile-এ Industry, Location, Company Size আর Documented Need রাখবো। সব Local Sample Company ও Result synthetic।</p></section><section class="build-guide" id="guide-2"><h2>Before you start</h2><p lang="bn">Step 1-এর CLI, Criteria আর Profile Fixtures থাকবে। Function Arguments, Return Values আর Exceptions বোঝা শুরু করবে। এবার একটি Request-এর Lifetime অনুসরণ করে Failure Handling যোগ করবো।</p></section><section class="build-guide" id="guide-3"><h2>Request lifecycle</h2><ol><li lang="bn">Input Receive — Blank Text reject করো, Input Size Limit নির্ধারণ করো আর একটি Request ID দাও।</li><li lang="bn">Request Build — Model Name, Instructions আর Profile আলাদা fields-এ পাঠাও। Model Parameters Support Provider Documentation দিয়ে মিলিয়ে নাও।</li><li lang="bn">Await Response — Connection Timeout ও Response Timeout-এর Budget রাখো। Concurrent Requests-এর আগে Sequential Flow বুঝে নাও।</li><li lang="bn">Handle Result — Complete, Incomplete, Refused ও Failed Outcome আলাদা করো। Stream শুরু হওয়া আর Response Successfully Complete হওয়া আলাদা Events।</li><li lang="bn">Record — Request ID, Duration, Attempt Count আর Error Category log করো। Sensitive Profile Text logging-এর প্রয়োজন ও retention ঠিক করো।</li></ol></section><section class="build-guide" id="guide-4"><h2>Concepts you will use</h2><ul><li lang="bn">HTTP Status Code Transport Outcome জানায়। HTTP Success পেলেও Output Business Criteria পূরণ করছে কি না Step 3-এ Validate করতে হবে।</li><li lang="bn">JSON দিয়ে Strings, Numbers, Lists, Objects, true/false ও null পাঠানো যায়। Python-এ json.loads আর json.dumps দিয়ে convert করবো।</li><li lang="bn">Timeout বা Rate Limit কখন retry করা যায় সেটার Policy লিখবো। Invalid API Key বা Invalid Input নিজের থেকে বারবার retry করবো না।</li><li lang="bn">SDK Retry আর Application Retry একসাথে থাকলে Attempts বেড়ে যেতে পারে। একটি Layer-এ Policy রাখো আর Total Deadline নির্ধারণ করো।</li><li lang="bn">Async Work-এ Blocking sleep ব্যবহার না করে asynchronous waiting করো। Cancellation Propagate করো যাতে User চলে গেলে Unnecessary Work চলতে না থাকে।</li></ul></section><section class="build-guide" id="guide-5"><h2>Build tasks</h2><ol><li lang="bn">app/model_client.py-এর Model Call-কে Function-এ আনো। Model Name, Timeout ও Retry Budget Configuration হিসেবে নাও।</li><li lang="bn">app/errors.py-তে Retryable ও Permanent Failure define করো। Provider Exceptions boundary-তে নিজের Error Types-এ map করো।</li><li lang="bn">নীচের Lab-এ Fake Operation দিয়ে Transient Failure reproduce করো। Real Network বাদ দিয়ে Policy যাচাই হবে।</li><li lang="bn">Streaming Adapter বানাও যেটা Text Delta ও Terminal Status emit করে। UI-তে Partial Text দেখালেও Completion না পাওয়া পর্যন্ত Result-কে Final হিসেবে Save করবে না।</li><li lang="bn">Production Adapter-এ capped exponential backoff, jitter আর Provider Retry-After-এর উপযুক্ত handling যোগ করো। Maximum Attempts-এর পাশাপাশি Overall Deadline রাখো।</li><li lang="bn">tests/test_reliability.py-তে Success, Exhausted Retry, Permanent Error, Cancel ও Truncated Stream Cases যোগ করো।</li></ol></section><section class="build-guide" id="guide-6"><h2>Worked local lab</h2><h3>lab_2.py</h3><pre><code>import json
+from collections.abc import Callable
+
+class TemporaryFailure(Exception):
+    pass
+
+def bounded_call(operation: Callable[[], str], attempts: int = 3) -&gt; dict:
+    if attempts &lt; 1:
+        raise ValueError(&quot;attempts must be positive&quot;)
+    for attempt in range(1, attempts + 1):
+        try:
+            return {&quot;text&quot;: operation(), &quot;attempts&quot;: attempt}
+        except TemporaryFailure:
+            if attempt == attempts:
+                raise
+    raise AssertionError(&quot;Unreachable&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    calls = {&quot;count&quot;: 0}
+    def fake_model() -&gt; str:
+        calls[&quot;count&quot;] += 1
+        if calls[&quot;count&quot;] &lt; 3:
+            raise TemporaryFailure(&quot;Synthetic timeout&quot;)
+        return &quot;Research complete&quot;
+
+    result = bounded_call(fake_model)
+    assert result[&quot;attempts&quot;] == 3
+    print(json.dumps(result))
+</code></pre><p lang="bn">python lab_2.py চালালে attempts হবে 3। এখানে Waiting বাদ দেওয়া হয়েছে যাতে Deterministic Lab দ্রুত চলে। Actual Provider Adapter-এর Retry Delay ও Deadline আলাদা Implementation Task।</p></section><section class="build-guide" id="guide-7"><h2>Debugging exercises</h2><ul><li lang="bn">Operation সবসময় TemporaryFailure দিলে Exactly কয়বার Call হবে? Counter দিয়ে Verify করো।</li><li lang="bn">একটি ValueError তুললে Retry হবে কি? কোন Exception ধরা হয়েছে সেটা দেখো।</li><li lang="bn">Stream-এর তিনটা Chunk পাওয়ার পর Connection বন্ধ হলো। Saved Report-কে Complete হিসেবে দেখালে Bug হবে কেন?</li><li lang="bn">Retry করার আগে Complete Stream User-কে আবার পাঠালে Duplicate Text হতে পারে। Restart বা Resume Policy লিখো।</li></ul><details class="guide-answer"><summary>Expected diagnosis</summary><p lang="bn">Only TemporaryFailure retry হয়। attempts=0 immediate Validation Error। Exhausted Retry Failure Caller-এর কাছে যায়। Partial Stream-এ failed/incomplete Status রাখো। Resending Entire Stream হলে UI Buffer Reset বা নতুন Attempt Identity প্রয়োজন।</p></details></section><section class="build-guide" id="guide-8"><h2>Step completion</h2><ul><li lang="bn">একই Request ID দিয়ে Input থেকে Final Outcome Trace করা যায়</li><li lang="bn">SDK/App মিলিয়ে Total Attempts ও Deadline বোঝানো যায়</li><li lang="bn">Timeout, Permanent Error আর Interrupted Stream-এর Regression Checks আছে</li><li lang="bn">Successful Request-এ Duration আর Usage পাওয়া গেলে সেটা record হয়</li></ul></section><section class="build-guide" id="guide-9"><h2>Official references</h2><ul><li><a href="https://docs.python.org/3/tutorial/errors.html" target="_blank" rel="noopener noreferrer">Python exceptions</a></li><li><a href="https://github.com/openai/openai-python#handling-errors" target="_blank" rel="noopener noreferrer">OpenAI SDK errors and retries</a></li></ul></section>
+<section class="build-guide" id="system-design-review"><h2>Latency budget &amp; reliability boundaries</h2><p lang="bn">এই Step-এর System Design Review-এ নিচের Decisions লিখবো আর Evidence দিয়ে ব্যাখ্যা করবো।</p><ol><li lang="bn">একটি Request-এর Queue, Retrieval, Model আর Validation Time আলাদা Budget করো। Overall Deadline থেকে প্রতিটি Stage-এর Budget বরাদ্দ করো।</li><li lang="bn">Retry Budget সব Layer মিলিয়ে গুনবে। 3 App Attempts × 3 SDK Attempts হলে 9 Requests হতে পারে। Configuration দিয়ে এই Multiplication ঠেকাও।</li><li lang="bn">Streaming-এর Contract define করো — Run ID, Event Sequence, Partial Output, Final Status আর Disconnect Behaviour। Backpressure ও Max Concurrent Streams-এর Policy লিখো।</li><li lang="bn">ADR-002-এ Sync vs Async ব্যাখ্যা করো। Slow I/O-তে Async সুবিধা দিতে পারে, কিন্তু Provider Quota আর GPU Capacity নিজে বাড়ায় না।</li></ol></section>
       <nav class="project-step-nav" aria-label="Step navigation"><a href="agentic-ai-sales-step-1.html">← Previous step</a><a href="agentic-ai-sales-platform.html">All steps</a><a href="agentic-ai-sales-step-3.html">Next step →</a></nav>
     </div></section>
   </main>

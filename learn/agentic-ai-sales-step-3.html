@@ -37,6 +37,17 @@
     .project-step-content h2 { font-size: 20px; margin-top: 28px; }
     .project-step-nav { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; margin-top: 32px; }
     @media (max-width: 640px) { .project-step-cards { grid-template-columns: 1fr; } }
+
+    .build-guide { margin-top: 32px; padding-top: 20px; border-top: 1px solid currentColor; }
+    .project-step-content { line-height: 1.75; }
+    .project-step-content h3 { font-size: 18px; margin-top: 22px; }
+    .project-step-content pre { max-width: 100%; overflow-x: auto; padding: 18px; border: 1px solid currentColor; border-radius: 8px; font-size: 14px; line-height: 1.6; }
+    .project-step-content pre code { white-space: pre; }
+    .project-step-content li { margin: 10px 0; }
+    .guide-answer { padding: 16px 0; }
+    .guide-answer summary { cursor: pointer; font-weight: 600; }
+    .guide-toc { display: flex; flex-wrap: wrap; gap: 10px 20px; margin: 20px 0; }
+    .build-guide { scroll-margin-top: 100px; }
   </style>
 </head>
 <body translate="no" class="flow flow-inner notranslate">
@@ -85,6 +96,38 @@
               <h2>Step Output</h2><p lang="bn">Validated Report পাওয়া যাবে। Invalid Output-এ Controlled Error বা Limited Recovery হবে।</p>
               <h2>Completion Check</h2><p lang="bn">Missing Field, Wrong Type, Unsupported Decision আর Malformed Response দিয়ে Test করবো।</p>
             
+      <nav class="guide-toc" aria-label="Step guide contents"><a href="#system-design-review">System Design Review</a><a href="#guide-1">Build Along কীভাবে করবে</a><a href="#guide-2">Before you start</a><a href="#guide-3">Understand the contract</a><a href="#guide-4">Build tasks</a><a href="#guide-5">Worked local lab</a><a href="#guide-6">Practice &amp; debugging</a><a href="#guide-7">Step completion</a><a href="#guide-8">Official references</a></nav><section class="build-guide" id="guide-1"><h2>Build Along কীভাবে করবে</h2><p lang="bn">একই Repository-তে Step অনুযায়ী ছোট Changes করবো। প্রতিটি Feature-এর আগে Expected Behaviour লিখবো, Working Example চালাবো, Input বদলাবো, Failure তৈরি করবো আর Test দিয়ে Fix যাচাই করবো। নিচের Local Labs প্রতিটি Step-এর Core Idea আলাদাভাবে Practice করার জন্য। Build Tasks-এ সেই Idea Main Platform-এ Integrate করবো।</p><p lang="bn">Running Example হিসেবে একটি fictional IT consultancy ধরবো, যারা Cloud Migration service দেয়। Customer Profile-এ Industry, Location, Company Size আর Documented Need রাখবো। সব Local Sample Company ও Result synthetic।</p></section><section class="build-guide" id="guide-2"><h2>Before you start</h2><p lang="bn">Request Errors handle করতে পারবে আর Step 1-এর Expected Decisions থাকবে। এবার Text Report-এর বদলে একটি Data Contract তৈরি করবো। Contract-এর Fields UI, Database আর Evaluation-এ একই অর্থ বহন করবে।</p></section><section class="build-guide" id="guide-3"><h2>Understand the contract</h2><ul><li lang="bn">Pydantic Model Data Types ও Constraints Validate করে। Schema ঠিক হলেও Claim সত্য কি না আলাদা Evidence Check লাগে।</li><li lang="bn">Literal দিয়ে Allowed Decisions সীমিত করবো। Unknown Case-এর জন্য insufficient_evidence রাখবো, কারণ সব Company-কে Fit বা Not Fit-এ force করা ঠিক হবে না।</li><li lang="bn">Nested Models-এ Evidence Record রাখলে source_id, quote ও reason আলাদা করা যায়। প্রথম Lab সরল রাখতে Evidence IDs ব্যবহার করছে।</li><li lang="bn">extra=&quot;forbid&quot; Unexpected Field reject করে। strict=True silently Wrong Type Convert হওয়া কমায়। Whitespace-only String-এর জন্য strip বা Validator আলাদাভাবে লাগবে।</li><li lang="bn">Structured Output Support থাকলে Provider-কে Schema পাঠাবে। তার পরেও Refusal, Output Limit ও Parsing Error-এর handling রাখবে।</li></ul></section><section class="build-guide" id="guide-4"><h2>Build tasks</h2><ol><li lang="bn">app/schemas.py-তে Report, EvidenceReference আর InputProfile Models লেখো। Field Meaning docs/data-contract.md-এ রাখো।</li><li lang="bn">Valid, Missing Field, Wrong Decision, Extra Field আর Empty Reasons-এর JSON Fixtures বানাও।</li><li lang="bn">Model Adapter-এ Supported Schema Output Configure করো। SDK Integration থেকে Schema Validation আলাদা Function-এ রাখো।</li><li lang="bn">Validation Failure হলে Raw Output User-কে Final Report হিসেবে দেখাবে না। One Controlled Repair Attempt দরকার হলে total Budget-এর মধ্যে রাখো।</li><li lang="bn">Report-এর সব evidence_id Retrieved Source Set-এ আছে কি না Check করো। List-এ ID থাকা মানেই Claim Supported হয়েছে, এমন অনুমান করবে না।</li><li lang="bn">UI-তে Decision, Reasons ও Missing Information আলাদা দেখাও। JSON Download বা CLI JSON Output যোগ করো।</li></ol></section><section class="build-guide" id="guide-5"><h2>Worked local lab</h2><h3>lab_3.py</h3><pre><code>from typing import Literal
+from pydantic import BaseModel, ConfigDict, Field, ValidationError, model_validator
+
+class Report(BaseModel):
+    model_config = ConfigDict(extra=&quot;forbid&quot;, strict=True)
+    company: str = Field(min_length=1)
+    decision: Literal[&quot;fit&quot;, &quot;not_fit&quot;, &quot;insufficient_evidence&quot;]
+    reasons: list[str] = Field(min_length=1)
+    evidence_ids: list[str]
+    missing_information: list[str]
+
+    @model_validator(mode=&quot;after&quot;)
+    def require_evidence(self):
+        if self.decision != &quot;insufficient_evidence&quot; and not self.evidence_ids:
+            raise ValueError(&quot;A supported decision needs evidence references&quot;)
+        return self
+
+if __name__ == &quot;__main__&quot;:
+    raw = &#x27;{&quot;company&quot;:&quot;Example Tools&quot;,&quot;decision&quot;:&quot;fit&quot;,&#x27; \
+          &#x27;&quot;reasons&quot;:[&quot;Explicit cloud migration project&quot;],&#x27; \
+          &#x27;&quot;evidence_ids&quot;:[&quot;doc-1&quot;],&quot;missing_information&quot;:[]}&#x27;
+    report = Report.model_validate_json(raw)
+    assert report.decision == &quot;fit&quot;
+    print(report.model_dump_json())
+    try:
+        Report.model_validate({&quot;company&quot;: &quot;Example Tools&quot;, &quot;decision&quot;: &quot;maybe&quot;})
+    except ValidationError:
+        print(&quot;Invalid report rejected&quot;)
+    else:
+        raise AssertionError(&quot;Invalid report was accepted&quot;)
+</code></pre><p lang="bn">Dependencies-এ Pydantic লাগবে। python lab_3.py চালালে Valid Report JSON আর Invalid report rejected দেখা যাবে। Report-এর Structure যাচাই হলো, Evidence Text-এর Quality Step 4-এ পরীক্ষা করবো।</p></section><section class="build-guide" id="guide-6"><h2>Practice &amp; debugging</h2><ul><li lang="bn">Whitespace-only Company Name reject করার Validator যোগ করো।</li><li lang="bn">Fit Decision-এ Fake evidence_id দিলে Schema Pass করতে পারে। Known Source IDs দিয়ে Semantic Validation Function লেখো।</li><li lang="bn">Unsupported Claim-সহ Valid JSON বানাও। Structural Pass আর Factual Failure আলাদা Test হিসেবে রাখো।</li><li lang="bn">pytest.parametrize দিয়ে ৫টা Invalid Fixture পরীক্ষা করো। pytest.raises(ValidationError) ব্যবহার করো।</li></ul><details class="guide-answer"><summary>Solution approach</summary><p lang="bn">Model Field Validation-এর পরে Evidence Resolver চালাও। Unknown ID হলে Reject করো। প্রতিটি Claim-এর Quote Source Text-এ আছে কি না Check করে Human-Labeled Cases দিয়ে Meaning Review করো। Generated Text-কে নিজেই Ground Truth বানাবে না।</p></details></section><section class="build-guide" id="guide-7"><h2>Step completion</h2><ul><li lang="bn">Versioned Report Schema আর Synthetic Fixtures আছে</li><li lang="bn">Invalid Model Output Backend Boundary-তে ধরা পড়ে</li><li lang="bn">Unknown Evidence ID-এর Test আছে</li><li lang="bn">CLI/UI একই Validated Report Object থেকে Display করে</li></ul></section><section class="build-guide" id="guide-8"><h2>Official references</h2><ul><li><a href="https://docs.pydantic.dev/latest/concepts/models/" target="_blank" rel="noopener noreferrer">Pydantic models</a></li><li><a href="https://docs.pytest.org/en/stable/getting-started.html" target="_blank" rel="noopener noreferrer">pytest getting started</a></li></ul></section>
+<section class="build-guide" id="system-design-review"><h2>Contract versioning &amp; quality gates</h2><p lang="bn">এই Step-এর System Design Review-এ নিচের Decisions লিখবো আর Evidence দিয়ে ব্যাখ্যা করবো।</p><ol><li lang="bn">Report Schema Version Save করো। Future Field Rename হলে Old Saved Report কীভাবে Read করবে Migration Example দিয়ে দেখাও।</li><li lang="bn">Structural Validity, Citation Validity আর Business Accuracy আলাদা Gates। প্রতিটির Failure User-কে কীভাবে দেখাবে লিখো।</li><li lang="bn">Prompt Version, Criteria Version, Model Configuration আর Evaluation Dataset Revision trace-এ রাখো। Regression হলে কোন Change দায়ী বোঝা যাবে।</li><li lang="bn">Generation Repeatable হবে ধরে নিও না। Same Inputs-এর Repeated Runs করে Variation আর Uncertainty Review করো।</li></ol></section>
       <nav class="project-step-nav" aria-label="Step navigation"><a href="agentic-ai-sales-step-2.html">← Previous step</a><a href="agentic-ai-sales-platform.html">All steps</a><a href="agentic-ai-sales-step-4.html">Next step →</a></nav>
     </div></section>
   </main>

@@ -76,6 +76,21 @@
           <h4>Final Project Output</h4>
           <p lang="bn">একটি Deployed Sales Research &amp; Outreach Platform তৈরি করবো। User Company Name, Profile বা Lead List দিলে System Sources থেকে তথ্য সংগ্রহ করবে, Evidence ও Citations দিয়ে Lead Qualify করবে, CRM-এ Record check করবে আর Personalized Outreach Draft বানাবে। Human Approval-এর পরে Draft পাঠাবে। Database-এ Progress Save থাকবে, Interrupted Workflow Resume হবে আর Dashboard-এ Results, Failures, Latency ও Cost দেখা যাবে। একই Core System-এর ছয়টি Industry Demo থাকবে, সাথে Architecture, Setup Guide, Automated Tests আর Measured Evaluation Results থাকবে।</p>
           <p class="project-status">Status · Planned</p>
+<details class="project-group" id="system-design-blueprint">
+  <summary><h2>System Design Blueprint</h2></summary>
+  <p lang="bn">প্রতিটি Development Step-এ Requirements, Architecture Decisions, Data Contracts আর Failure Behaviour লিখে Build করবো। সব Result Implementation ও Test Evidence দিয়ে Update করবো।</p>
+  <div style="overflow-x:auto"><table><thead><tr><th>Layer</th><th>Responsibilities</th></tr></thead><tbody>
+  <tr><td>Application</td><td>Research UI, FastAPI, authentication, tenant context, draft review and approvals</td></tr>
+  <tr><td>AI</td><td>Model adapter, retrieval, evidence selection, tool proposals, orchestration and evaluations</td></tr>
+  <tr><td>Data</td><td>Source versions, reports, CRM identities, drafts, approvals, checkpoints and audit history</td></tr>
+  <tr><td>Infrastructure</td><td>Web service, workers, bounded queue, database, secrets, deployment, monitoring and recovery</td></tr>
+  </tbody></table></div>
+  <h3>One research request</h3>
+  <ol><li>Authenticated user submits a company and a versioned qualification profile.</li><li>API validates input and ownership, records a run and queues bounded work.</li><li>Worker retrieves permitted evidence and creates a validated report with citations.</li><li>Application checks business rules and creates a versioned outreach draft.</li><li>Authorized user reviews and approves the exact draft and recipient.</li><li>A guarded send attempt records provider status and reconciles uncertain delivery.</li><li>Trace, evaluation outcome, latency and cost remain linked to the run.</li></ol>
+  <h3>Design evidence</h3>
+  <p lang="bn">Requirements, Architecture Diagram, Data Model, API Contracts, Decision Records, Threat Model, Capacity Estimate আর Recovery Runbook তৈরি করবো। Targets আর Actual Measurements আলাদা Record করবো। প্রতিটি Step Page-এ নির্দিষ্ট Design Review Questions আছে।</p>
+</details>
+
           <section class="project-group" id="development-roadmap" aria-labelledby="roadmap-title">
             <h2 id="roadmap-title">Development Roadmap · 8 Steps</h2>
             <p lang="bn">প্রতিটি Step খুলে কী Build করবো, কোন Skills ও Topics শিখবো আর Completion কীভাবে Check করবো দেখো।</p>
