@@ -13,6 +13,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500" rel="stylesheet"/>
   <link rel="stylesheet" href="../assets/css/systemflow.css?v=3"/>
+  <style>
+    #agentic-ai-sales-platform summary { cursor: pointer; }
+    #agentic-ai-sales-platform[open] { grid-column: 1 / -1; }
+    #agentic-ai-sales-platform .project-status { font-size: 13px; }
+    #agentic-ai-sales-platform .project-group { margin-top: 18px; }
+    #agentic-ai-sales-platform .project-group h4 { display: inline; font-size: 18px; }
+    #agentic-ai-sales-platform .project-item { margin-top: 12px; padding: 12px 0; border-top: 1px solid currentColor; }
+    #agentic-ai-sales-platform .project-item summary { font-weight: 600; }
+    #agentic-ai-sales-platform .project-item p { margin: 12px 0 0; }
+  </style>
 </head>
 <body translate="no" class="flow flow-inner notranslate">
   <a class="skip" href="#main">Skip to content</a>
@@ -64,7 +74,71 @@
         </details>
 
         <details class="learning-card" id="agentic-ai-sales-platform">
-          <summary style="cursor:pointer"><span class="mono">PROJECT DOCUMENTATION</span><h3>End-to-End Agentic AI Sales Platform<span>↓</span></h3></summary>
+          <summary><span class="mono">PROJECT DOCUMENTATION</span><h3>End-to-End Agentic AI Sales Platform<span>↓</span></h3></summary>
+          <p lang="bn">একটা Main Platform ধাপে ধাপে Build করবো। ৮টা Development Step-এ Core System তৈরি করে ৬টা Industry Demo-তে আলাদা Business Workflows দেখাবো।</p>
+          <p class="project-status">Status · Planned</p>
+          <details class="project-group" id="development-roadmap">
+            <summary><h4>Development Roadmap · 8 Steps</h4></summary>
+            <details class="project-item" id="development-roadmap-1">
+              <summary>01 / Business Problem &amp; Lead Qualification</summary>
+              <p lang="bn">একটা নির্দিষ্ট Product বা Service-এর জন্য Ideal Customer Profile আর Qualification Criteria ঠিক করবো। Sample Leads হাতে Review করে Expected Results লিখবো।</p>
+            </details>
+            <details class="project-item" id="development-roadmap-2">
+              <summary>02 / Model-Powered Research Assistant</summary>
+              <p lang="bn">Python আর একটি Model SDK দিয়ে Research Report বানাবো। Structured Outputs, Streaming, Timeouts আর Error Handling যোগ করবো।</p>
+            </details>
+            <details class="project-item" id="development-roadmap-3">
+              <summary>03 / Evidence-Based Research &amp; RAG</summary>
+              <p lang="bn">Company Websites আর Documents থেকে relevant তথ্য খুঁজবো। Source URLs, Dates আর Citations দিয়ে Claims verify করবো। Evidence কম হলে সেটা দেখাবো।</p>
+            </details>
+            <details class="project-item" id="development-roadmap-4">
+              <summary>04 / CRM Tools &amp; Outreach Drafting</summary>
+              <p lang="bn">CRM Lookup, Lead Qualification আর Personalized Drafting Tools যোগ করবো। Tool Arguments, Permissions আর Duplicate Leads check করবো।</p>
+            </details>
+            <details class="project-item" id="development-roadmap-5">
+              <summary>05 / Human Approval &amp; Durable Workflows</summary>
+              <p lang="bn">PostgreSQL-এ Progress, Draft Versions আর Approval State রাখবো। Checkpoints থেকে কাজ Resume করবো আর approved draft পাঠানোর সময় Duplicate Sends ঠেকাবো।</p>
+            </details>
+            <details class="project-item" id="development-roadmap-6">
+              <summary>06 / Secure Deployment &amp; User Pilot</summary>
+              <p lang="bn">FastAPI, Authentication, Tenant Isolation, Docker আর CI/CD দিয়ে Service deploy করবো। Test Inbox দিয়ে ছোট User Pilot চালিয়ে Feedback নেবো।</p>
+            </details>
+            <details class="project-item" id="development-roadmap-7">
+              <summary>07 / Evaluation, Reliability &amp; Cost Tracking</summary>
+              <p lang="bn">Qualification, Citation Quality আর Tool Permissions test করবো। API Failure ও Restart simulate করে Recovery যাচাই করবো। Latency আর Cost মাপবো।</p>
+            </details>
+            <details class="project-item" id="development-roadmap-8">
+              <summary>08 / Final Integration &amp; Portfolio Documentation</summary>
+              <p lang="bn">Complete Workflow-এর Demo, Architecture, Setup Guide আর Test Results সাজাবো। User Feedback থেকে করা Improvements আর Measured Limitations document করবো।</p>
+            </details>
+          </details>
+          <details class="project-group" id="industry-demos">
+            <summary><h4>Industry Demos · 6 Use Cases</h4></summary>
+            <details class="project-item" id="industry-demos-1">
+              <summary>01 / IT Services Client Finder</summary>
+              <p lang="bn">Software Agencies ও IT Consultancies-এর Services অনুযায়ী Potential Clients research করবো। Evidence দিয়ে Project Fit বুঝবো আর Proposal বা Outreach Draft বানাবো।</p>
+            </details>
+            <details class="project-item" id="industry-demos-2">
+              <summary>02 / B2B SaaS Sales Assistant</summary>
+              <p lang="bn">Product-এর Ideal Customer Profile অনুযায়ী Companies qualify করবো। Product Fit-এর কারণ দেখাবো আর CRM-এ Lead Status update করবো।</p>
+            </details>
+            <details class="project-item" id="industry-demos-3">
+              <summary>03 / Multi-Client Lead Generation Workspace</summary>
+              <p lang="bn">প্রতিটি Client-এর আলাদা Criteria, Data Access আর Approval Workflow রাখবো। Research ও Outreach Results Client অনুযায়ী দেখাবো।</p>
+            </details>
+            <details class="project-item" id="industry-demos-4">
+              <summary>04 / Recruitment Business Development Assistant</summary>
+              <p lang="bn">Hiring Companies আর Open Roles research করবো। Recruitment Service-এর Fit যাচাই করে Employer Outreach Draft তৈরি করবো।</p>
+            </details>
+            <details class="project-item" id="industry-demos-5">
+              <summary>05 / Industrial Buyer &amp; Distributor Research</summary>
+              <p lang="bn">Product Category, Location আর Distribution Requirements অনুযায়ী Business Buyers ও Distributors research করবো। Relevant Evidence দিয়ে Shortlist বানাবো।</p>
+            </details>
+            <details class="project-item" id="industry-demos-6">
+              <summary>06 / Logistics Customer Research Assistant</summary>
+              <p lang="bn">Shipping-related Public Information থেকে Potential Business Customers research করবো। Service Fit, Evidence আর Missing Information দেখিয়ে Outreach Draft বানাবো।</p>
+            </details>
+          </details>
         </details>
 
       </div>
