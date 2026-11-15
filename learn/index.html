@@ -13,20 +13,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500" rel="stylesheet"/>
   <link rel="stylesheet" href="../assets/css/systemflow.css?v=3"/>
-  <style>
-    #agentic-ai-sales-platform summary { cursor: pointer; }
-    #agentic-ai-sales-platform[open] { grid-column: 1 / -1; }
-    #agentic-ai-sales-platform .project-status { font-size: 13px; }
-    #agentic-ai-sales-platform .project-group { margin-top: 18px; }
-    #agentic-ai-sales-platform .project-group h4 { display: inline; font-size: 18px; }
-    #agentic-ai-sales-platform .project-item { margin-top: 12px; padding: 12px 0; border-top: 1px solid currentColor; }
-    #agentic-ai-sales-platform .project-item summary { font-weight: 600; }
-    #agentic-ai-sales-platform .project-item p { margin: 12px 0 0; }
-    #agentic-ai-sales-platform h5 { font-size: 15px; margin: 20px 0 8px; }
-    #agentic-ai-sales-platform .project-skills { margin: 0; }
-    #agentic-ai-sales-platform .project-skills dt { font-weight: 600; margin-top: 14px; }
-    #agentic-ai-sales-platform .project-skills dd { margin: 6px 0 0; line-height: 1.7; }
-  </style>
 </head>
 <body translate="no" class="flow flow-inner notranslate">
   <a class="skip" href="#main">Skip to content</a>
@@ -77,158 +63,11 @@
           <div class="learning-footer" style="flex-wrap:wrap;gap:16px"><a href="c-os/index.html">01 / C Programming →</a><a href="os/index.html">02 / Operating Systems →</a></div>
         </details>
 
-        <details class="learning-card" id="agentic-ai-sales-platform">
-          <summary><span class="mono">PROJECT DOCUMENTATION</span><h3>End-to-End Agentic AI Sales Platform<span>↓</span></h3></summary>
-          <p lang="bn">Project করতে করতে Python, Model SDK, RAG, Tool Calling, SQL, Durable Workflows আর Deployment শিখবো। ৮টা Development Step-এ একই Platform Build করে ৬টা Industry Demo তৈরি করবো।</p>
-          <h4>Final Project Output</h4>
-          <p lang="bn">একটি Deployed Sales Research &amp; Outreach Platform তৈরি করবো। User Company Name, Profile বা Lead List দিলে System Sources থেকে তথ্য সংগ্রহ করবে, Evidence ও Citations দিয়ে Lead Qualify করবে, CRM-এ Record check করবে আর Personalized Outreach Draft বানাবে। Human Approval-এর পরে Draft পাঠাবে। Database-এ Progress Save থাকবে, Interrupted Workflow Resume হবে আর Dashboard-এ Results, Failures, Latency ও Cost দেখা যাবে। একই Core System-এর ছয়টি Industry Demo থাকবে, সাথে Architecture, Setup Guide, Automated Tests আর Measured Evaluation Results থাকবে।</p>
-          <p class="project-status">Status · Planned</p>
-          <details class="project-group" id="development-roadmap">
-            <summary><h4>Development Roadmap · 8 Steps</h4></summary>
-            <p lang="bn">প্রতিটি Feature Build করতে করতে প্রয়োজনীয় Skills শিখবো। Build → Explain → Modify → Break → Debug → Test এই Cycle follow করবো।</p>
-            <details class="project-item" id="development-roadmap-1">
-              <summary>01 / Working Research Assistant &amp; Foundations</summary>
-              <h5>What we will build</h5><p lang="bn">একটা নির্দিষ্ট Product বা Service বেছে Company Fit-এর Criteria লিখবো। তারপর ছোট Research Assistant চালিয়ে একটি Company Profile থেকে প্রথম Report বানাবো।</p>
-              <h5>Skills &amp; Topics</h5><dl class="project-skills">
-                <dt>Python</dt>
-                <dd lang="bn">Variables ও Data Types; Strings ও f-strings; Lists ও Dictionaries; Conditions; Loops; Functions ও Parameters; Modules ও Imports; venv ও pip</dd>
-                <dt>Model SDK</dt>
-                <dd lang="bn">একটি Provider নির্বাচন; SDK Installation; Client Setup; API Authentication; Model Configuration; Instructions ও User Input; Response Parsing; Token Usage</dd>
-                <dt>Environment &amp; Git</dt>
-                <dd lang="bn">Environment Variables; Local Configuration; API Key Management; .gitignore; Dependency Files; Commits; README Setup Instructions</dd>
-              </dl>
-              <h5>Step Output</h5><p lang="bn">একটা Company Profile দিলে Fit, Not Fit বা Insufficient Evidence-সহ একটি প্রাথমিক Report পাওয়া যাবে।</p>
-              <h5>Completion Check</h5><p lang="bn">Valid Profile, Empty Input আর Missing API Key দিয়ে Run করবো। Request-এর Code Flow নিজের ভাষায় Explain করবো।</p>
-            </details>
-            <details class="project-item" id="development-roadmap-2">
-              <summary>02 / Request Flow, Streaming &amp; Error Handling</summary>
-              <h5>What we will build</h5><p lang="bn">User Input থেকে Backend, Model Request আর Response পর্যন্ত পুরো Flow Trace করবো। Streaming আর Failed Request handle করবো।</p>
-              <h5>Skills &amp; Topics</h5><dl class="project-skills">
-                <dt>Python</dt>
-                <dd lang="bn">Function Arguments ও Return Values; Scope; Type Hints; try/except/finally; Custom Exceptions; Iterators; Logging; async/await-এর Basics</dd>
-                <dt>HTTP &amp; JSON</dt>
-                <dd lang="bn">Request ও Response; Methods; Headers; Status Codes; JSON Objects ও Arrays; Serialization; Timeouts; Connection Errors</dd>
-                <dt>SDK Reliability</dt>
-                <dd lang="bn">Stream Events; Output Limits; Truncated Responses; Rate Limits; Bounded Retries; Exponential Backoff; Cancellation; Request IDs</dd>
-              </dl>
-              <h5>Step Output</h5><p lang="bn">Streaming Response-সহ App থাকবে। Failed Request-এ clear message আর sanitized log পাওয়া যাবে।</p>
-              <h5>Completion Check</h5><p lang="bn">Mock Timeout, Rate Limit আর Broken Stream দিয়ে Test করবো। Retry Count সীমিত থাকবে আর API Key Logs-এ যাবে না।</p>
-            </details>
-            <details class="project-item" id="development-roadmap-3">
-              <summary>03 / Structured Features, Validation &amp; Testing</summary>
-              <h5>What we will build</h5><p lang="bn">Research Report-এ Fit Decision, Reasons, Evidence আর Missing Information-এর নির্দিষ্ট Structure যোগ করবো।</p>
-              <h5>Skills &amp; Topics</h5><dl class="project-skills">
-                <dt>Python &amp; Pydantic</dt>
-                <dd lang="bn">Type Annotations; BaseModel; Required ও Optional Fields; Nested Models; Enums; Field Constraints; Validation Errors</dd>
-                <dt>Model Output</dt>
-                <dd lang="bn">JSON Schema; Supported Structured Output Interface; Prompt Templates; Input Boundaries; Output Parsing; Refusals; Invalid বা Incomplete Output Handling</dd>
-                <dt>pytest</dt>
-                <dd lang="bn">Assertions; Fixtures; Parametrization; Mocking Model Calls; Unit ও Integration Tests; Regression Tests; Valid ও Invalid Input Cases</dd>
-              </dl>
-              <h5>Step Output</h5><p lang="bn">Validated Report পাওয়া যাবে। Invalid Output-এ Controlled Error বা Limited Recovery হবে।</p>
-              <h5>Completion Check</h5><p lang="bn">Missing Field, Wrong Type, Unsupported Decision আর Malformed Response দিয়ে Test করবো।</p>
-            </details>
-            <details class="project-item" id="development-roadmap-4">
-              <summary>04 / Document Evidence, Search &amp; RAG</summary>
-              <h5>What we will build</h5><p lang="bn">Company Websites আর Documents থেকে Relevant Passages খুঁজে Sources-সহ Research Report বানাবো।</p>
-              <h5>Skills &amp; Topics</h5><dl class="project-skills">
-                <dt>Parsing &amp; Ingestion</dt>
-                <dd lang="bn">HTML Text Extraction; PDF Text Extraction; Text Cleaning; Chunking; Metadata; Duplicate Documents; Source Dates; Failed Fetch Handling</dd>
-                <dt>Retrieval</dt>
-                <dd lang="bn">Keyword Search; Embeddings; Similarity; pgvector-এর Basics; Metadata Filters; Hybrid Search; Reranking; Context Selection</dd>
-                <dt>Evidence &amp; Evaluation</dt>
-                <dd lang="bn">Source IDs; Source URLs; Claim-to-Citation Mapping; Conflicting Sources; Stale Information; Insufficient Evidence; Retrieval Recall; Citation Checks</dd>
-              </dl>
-              <h5>Step Output</h5><p lang="bn">Source URL, Date আর Supporting Passage-সহ Company Fit Report থাকবে। Missing Evidence স্পষ্ট দেখা যাবে।</p>
-              <h5>Completion Check</h5><p lang="bn">Known Questions, No-Match Documents আর Conflicting Sources দিয়ে পরীক্ষা করবো। প্রতিটি Citation Retrieved Evidence-এ resolve করবে।</p>
-            </details>
-            <details class="project-item" id="development-roadmap-5">
-              <summary>05 / CRM Integration, Tool Calling &amp; Database</summary>
-              <h5>What we will build</h5><p lang="bn">Agent দিয়ে Lead Lookup, Research Save আর Outreach Draft তৈরি করবো। CRM-এ Duplicate Lead check করবো।</p>
-              <h5>Skills &amp; Topics</h5><dl class="project-skills">
-                <dt>Tool Calling</dt>
-                <dd lang="bn">Tool Schemas; Argument Validation; Tool Dispatch; Result Handling; Allowlisted Tools; Permission Checks; Tool Errors; MCP-এর Optional Introduction</dd>
-                <dt>SQL &amp; PostgreSQL</dt>
-                <dd lang="bn">SELECT; INSERT; UPDATE; JOIN; Primary ও Foreign Keys; Constraints; Indexes; Parameterized Queries; Transactions; Commit ও Rollback</dd>
-                <dt>Data &amp; CRM</dt>
-                <dd lang="bn">Relational Modeling; Database Migrations; Pydantic-to-Database Mapping; CRM Authentication; Pagination; API Rate Limits; External IDs; Deduplication; Tenant IDs</dd>
-              </dl>
-              <h5>Step Output</h5><p lang="bn">Lead Record, Evidence আর Draft Database-এ থাকবে। একটি CRM Integration দিয়ে Existing Lead খোঁজা ও Status Sync করা যাবে।</p>
-              <h5>Completion Check</h5><p lang="bn">Duplicate Lead, Invalid Tool Arguments, Missing Permissions আর Failed Transaction দিয়ে Test করবো।</p>
-            </details>
-            <details class="project-item" id="development-roadmap-6">
-              <summary>06 / Approval, State &amp; Durable Workflows</summary>
-              <h5>What we will build</h5><p lang="bn">Research → Qualify → Draft → Approve → Send Flow বানাবো। Server Restart হলে Saved State থেকে কাজ Resume করবো।</p>
-              <h5>Skills &amp; Topics</h5><dl class="project-skills">
-                <dt>Workflow State</dt>
-                <dd lang="bn">Explicit Statuses; State Transitions; Checkpoints; Persistent Task IDs; Draft Versions; Approval Records; State Validation</dd>
-                <dt>Orchestration</dt>
-                <dd lang="bn">Conditional Routing; Interrupt ও Resume; LangGraph Checkpoints; Retry Policies; Timeouts; Recovery Paths; Temporal-এর Optional Durable Execution</dd>
-                <dt>Safe Actions</dt>
-                <dd lang="bn">Human Approval; Approval Invalidation after Edits; Idempotency Keys; Concurrent Updates; Provider Message IDs; Delivery Status Reconciliation; Audit Logs</dd>
-              </dl>
-              <h5>Step Output</h5><p lang="bn">Approved Draft Send হবে। Workflow Pause ও Resume করা যাবে। Uncertain Send Result যাচাই করে পরের Action নেওয়া হবে।</p>
-              <h5>Completion Check</h5><p lang="bn">Approval-এর আগে Send Block করবো। Draft Edit, Double Click আর Send-এর পরে Timeout দিয়ে Duplicate Handling পরীক্ষা করবো।</p>
-            </details>
-            <details class="project-item" id="development-roadmap-7">
-              <summary>07 / Deployment, Pilot, Monitoring &amp; Evaluation</summary>
-              <h5>What we will build</h5><p lang="bn">Application Deploy করে Test Users দিয়ে Workflow চালাবো। Failures, Quality, Latency আর Running Cost মাপবো।</p>
-              <h5>Skills &amp; Topics</h5><dl class="project-skills">
-                <dt>FastAPI &amp; Security</dt>
-                <dd lang="bn">Endpoints; Request Models; Dependency Injection; Authentication; Authorization; Tenant Isolation; Secret Management; Input Validation; Prompt Injection Tests</dd>
-                <dt>Docker, CI/CD &amp; Cloud</dt>
-                <dd lang="bn">Dockerfile; Images ও Containers; Environment Configuration; Health Checks; GitHub Actions; Automated Tests; Deployment; Rollback; Database Backups</dd>
-                <dt>Observability</dt>
-                <dd lang="bn">Structured Logs; Trace IDs; Model ও Tool Spans; Langfuse-এর মতো Tracing; Error Rates; Latency Percentiles; Token Usage; Cost per Report; Alerts</dd>
-                <dt>Evaluation &amp; Pilot</dt>
-                <dd lang="bn">Labeled Test Cases; Qualification Accuracy; Citation Support; Tool Success; Unauthorized Action Blocking; Dependency Failure Tests; Load Testing; User Feedback; Recovery Runbook</dd>
-              </dl>
-              <h5>Step Output</h5><p lang="bn">Login-সহ Deployed Pilot থাকবে। Research থেকে Approval পর্যন্ত Flow চালানো যাবে, সাথে Test Results, Traces আর Cost Report থাকবে।</p>
-              <h5>Completion Check</h5><p lang="bn">Test Inbox দিয়ে Pilot চালাবো। Cross-Tenant Access, Dependency Failure আর Restart পরীক্ষা করবো। Actual Tested Capacity ও Limitations লিখবো।</p>
-            </details>
-            <details class="project-item" id="development-roadmap-8">
-              <summary>08 / Final Integration &amp; Six Industry Demos</summary>
-              <h5>What we will build</h5><p lang="bn">Core Platform-এর ওপর ছয় ধরনের Business Criteria, Sample Data আর Workflows বসিয়ে Industry Demos বানাবো।</p>
-              <h5>Skills &amp; Topics</h5><dl class="project-skills">
-                <dt>Configurable Product Design</dt>
-                <dd lang="bn">Service ও Product Profiles; Ideal Customer Profiles; Qualification Rules; Industry Configuration; Tenant Settings; CRM Field Mapping</dd>
-                <dt>Demo Preparation</dt>
-                <dd lang="bn">Realistic Sample Data; Expected Results; End-to-End Scenarios; Human Approval Walkthrough; Successful ও Failed Runs; Industry-Specific Evaluation</dd>
-                <dt>Engineering Documentation</dt>
-                <dd lang="bn">Architecture Diagram; Setup Guide; API Documentation; Design Decisions; Test Commands; Evaluation Baseline; Cost ও Capacity Results; Demo Recording; User Feedback</dd>
-              </dl>
-              <h5>Step Output</h5><p lang="bn">একটি Complete Platform-এর সাথে IT Services, B2B SaaS, Lead Generation, Recruitment, Industrial Sales আর Logistics-এর ছয়টি Demo থাকবে।</p>
-              <h5>Completion Check</h5><p lang="bn">প্রতিটি Demo-তে Business Criteria, Research Evidence, Qualification, Draft আর Approval Flow যাচাই করবো। Repository Instructions দিয়ে Fresh Setup চালাবো।</p>
-            </details>
-          </details>
-          <details class="project-group" id="industry-demos">
-            <summary><h4>Industry Demos · 6 Use Cases</h4></summary>
-            <details class="project-item" id="industry-demos-1">
-              <summary>01 / IT Services Client Finder</summary>
-              <p lang="bn">Software Agencies ও IT Consultancies-এর Services অনুযায়ী Potential Clients research করবো। Evidence দিয়ে Project Fit বুঝবো আর Proposal বা Outreach Draft বানাবো।</p>
-            </details>
-            <details class="project-item" id="industry-demos-2">
-              <summary>02 / B2B SaaS Sales Assistant</summary>
-              <p lang="bn">Product-এর Ideal Customer Profile অনুযায়ী Companies qualify করবো। Product Fit-এর কারণ দেখাবো আর CRM-এ Lead Status update করবো।</p>
-            </details>
-            <details class="project-item" id="industry-demos-3">
-              <summary>03 / Multi-Client Lead Generation Workspace</summary>
-              <p lang="bn">প্রতিটি Client-এর আলাদা Criteria, Data Access আর Approval Workflow রাখবো। Research ও Outreach Results Client অনুযায়ী দেখাবো।</p>
-            </details>
-            <details class="project-item" id="industry-demos-4">
-              <summary>04 / Recruitment Business Development Assistant</summary>
-              <p lang="bn">Hiring Companies আর Open Roles research করবো। Recruitment Service-এর Fit যাচাই করে Employer Outreach Draft তৈরি করবো।</p>
-            </details>
-            <details class="project-item" id="industry-demos-5">
-              <summary>05 / Industrial Buyer &amp; Distributor Research</summary>
-              <p lang="bn">Product Category, Location আর Distribution Requirements অনুযায়ী Business Buyers ও Distributors research করবো। Relevant Evidence দিয়ে Shortlist বানাবো।</p>
-            </details>
-            <details class="project-item" id="industry-demos-6">
-              <summary>06 / Logistics Customer Research Assistant</summary>
-              <p lang="bn">Shipping-related Public Information থেকে Potential Business Customers research করবো। Service Fit, Evidence আর Missing Information দেখিয়ে Outreach Draft বানাবো।</p>
-            </details>
-          </details>
-        </details>
+        <a class="learning-card" id="agentic-ai-sales-platform" href="agentic-ai-sales-platform.html">
+          <span class="mono">PROJECT DOCUMENTATION</span>
+          <h3>End-to-End Agentic AI Sales Platform<span>↗</span></h3>
+          <div class="learning-footer"><span>8 Development Steps · 6 Industry Demos</span><span>Open project →</span></div>
+        </a>
 
       </div>
     </div></section>
