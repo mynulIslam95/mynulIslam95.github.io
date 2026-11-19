@@ -6,7 +6,7 @@ const lessons=modules.flatMap((m,i)=>m.topics.map((title,j)=>({title,i,j,id:i+"-
 const storageKey="mynul-forex-academy-v1";
 let done=new Set();try{done=new Set(JSON.parse(localStorage.getItem(storageKey)||"[]"))}catch(e){}
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const isDetailed=(i,j)=>(i===0&&j>=0&&j<16)||(i===1&&j>=0&&j<8);
+const isDetailed=(i,j)=>(i===0&&j>=0&&j<16)||(i===1&&j>=0&&j<9);
 const url=(i,j)=>isDetailed(i,j)?"lesson-"+String(i===1?17+j:j+1).padStart(3,"0")+".html":"#/lesson/"+i+"/"+j;
 function progress(){document.getElementById("counter").textContent=done.size+" / "+lessons.length+" topics marked complete";document.getElementById("bar").style.width=(done.size/lessons.length*100)+"%"}
 function nav(){let q=document.getElementById("search").value.toLowerCase().trim();document.getElementById("nav").innerHTML=modules.map((m,i)=>{let hits=m.topics.map((t,j)=>({t,j})).filter(x=>!q||m.name.toLowerCase().includes(q)||x.t.toLowerCase().includes(q));if(!hits.length)return "";return '<details class="module" '+(q?'open':'')+'><summary>'+String(i+1).padStart(2,"0")+' · '+esc(m.name)+'</summary>'+hits.map(x=>'<a class="topic" href="'+url(i,x.j)+'">'+(done.has(i+"-"+x.j)?"✓ ":"")+esc(x.t)+(isDetailed(i,x.j)?" · FULL LESSON":" · OUTLINE")+'</a>').join("")+'</details>'}).join("")}
