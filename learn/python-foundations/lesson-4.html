@@ -229,20 +229,503 @@ assert notifier.messages == [&quot;Refund&quot;, &quot;Delivery&quot;]</code></p
 </section>
 
 <section class="topic" id="oop-project-drills"><h2>Try the design in a bootcamp project</h2>
-<p>Choose one project. Define what belongs to the object and what belongs behind a replaceable dependency.</p><details><summary>OmniGuard</summary><p>Model a connector and pass a fake health checker to the service. Verify that checking one connector leaves a second connector’s status alone.</p></details><details><summary>AuditMesh</summary><p>Model one review and inject an audit sink. Verify that recording a decision produces exactly one entry with the review ID.</p></details><details><summary>Self-hosted LLM</summary><p>Model a model configuration record with a dataclass. Create two configurations and verify their stop-token lists are independent.</p></details><details><summary>On-device LLM</summary><p>Give the inference runner a replaceable backend. Use a fake backend to verify the prompt reaches it without loading a model.</p></details><details><summary>Multimodal document intelligence</summary><p>Give an ingestion service a parser object. Swap a PDF parser for a fake parser with the same method and compare the returned summary.</p></details><details><summary>Enterprise lead management</summary><p>Model a lead with a controlled state change. Record a contact on one lead and confirm another lead’s state stays unchanged.</p></details><details><summary>AI receptionist</summary><p>Give a booking service a recorder instead of a live calendar. Check that the customer name and time reach it once.</p></details><details><summary>Voice productivity</summary><p>Use a dataclass for a transcript preview. Give each preview its own labels list and test edits to two previews.</p></details>
+<p>Choose a project and try the prompt. Open Worked solution to see the runnable code, what each line does and the output. Run each solution in a fresh file.</p><details><summary>OmniGuard</summary><p>Model a connector and pass a fake health checker to the service. Verify that checking one connector leaves a second connector’s status alone.</p>
+<details class="fde-setup-answer"><summary>Worked solution</summary>
+<h3>Run the code</h3>
+<pre><code data-language="python">from dataclasses import dataclass
+
+@dataclass
+class Connector:
+    name: str
+    status: str = &quot;unchecked&quot;
+
+class FakeHealthChecker:
+    def check(self, name):
+        return name == &quot;CRM&quot;
+
+def refresh(connector, checker):
+    connector.status = &quot;healthy&quot; if checker.check(connector.name) else &quot;down&quot;
+
+crm = Connector(&quot;CRM&quot;)
+billing = Connector(&quot;Billing&quot;)
+refresh(crm, FakeHealthChecker())
+assert (crm.status, billing.status) == (&quot;healthy&quot;, &quot;unchecked&quot;)
+print(crm.status, billing.status)</code></pre>
+<h3>Terminal output</h3>
+<pre><code data-language="text">healthy unchecked</code></pre>
+<h3>Line-by-line explanation</h3>
+<ol><li value="1"><code>from dataclasses import dataclass</code> <p>Import the decorator that builds an initializer from fields.</p></li>
+<li value="3"><code>@dataclass</code> <p>Generate the initializer for the connector record.</p></li>
+<li value="4"><code>class Connector:</code> <p>Define the state of one connector.</p></li>
+<li value="5"><code>name: str</code> <p>Store the connector name that gets sent to the checker.</p></li>
+<li value="6"><code>status: str = &quot;unchecked&quot;</code> <p>Start each connector with its own status.</p></li>
+<li value="8"><code>class FakeHealthChecker:</code> <p>Supply a deterministic checker for this exercise.</p></li>
+<li value="9"><code>def check(self, name):</code> <p>Accept the same name a real checker would accept.</p></li>
+<li value="10"><code>return name == &quot;CRM&quot;</code> <p>Treat CRM as healthy without touching the network.</p></li>
+<li value="12"><code>def refresh(connector, checker):</code> <p>Take both the target and the replaceable checker explicitly.</p></li>
+<li value="13"><code>connector.status = &quot;healthy&quot; if checker.check(connector.name) else &quot;down&quot;</code> <p>Change only the connector passed to this call.</p></li>
+<li value="15"><code>crm = Connector(&quot;CRM&quot;)</code> <p>Create the target connector.</p></li>
+<li value="16"><code>billing = Connector(&quot;Billing&quot;)</code> <p>Create another connector with separate state.</p></li>
+<li value="17"><code>refresh(crm, FakeHealthChecker())</code> <p>Check just CRM using the fake.</p></li>
+<li value="18"><code>assert (crm.status, billing.status) == (&quot;healthy&quot;, &quot;unchecked&quot;)</code> <p>Fail the exercise if Billing was changed.</p></li>
+<li value="19"><code>print(crm.status, billing.status)</code> <p>Display the two states side by side.</p></li></ol></details>
+</details><details><summary>AuditMesh</summary><p>Model one review and inject an audit sink. Verify that recording a decision produces exactly one entry with the review ID.</p>
+<details class="fde-setup-answer"><summary>Worked solution</summary>
+<h3>Run the code</h3>
+<pre><code data-language="python">from dataclasses import dataclass
+
+@dataclass
+class Review:
+    id: str
+    decision: str
+
+class RecordingAuditSink:
+    def __init__(self):
+        self.entries = []
+    def record(self, review_id, decision):
+        self.entries.append((review_id, decision))
+
+def record_decision(review, sink):
+    sink.record(review.id, review.decision)
+
+sink = RecordingAuditSink()
+record_decision(Review(&quot;007&quot;, &quot;approved&quot;), sink)
+assert sink.entries == [(&quot;007&quot;, &quot;approved&quot;)]
+print(sink.entries)</code></pre>
+<h3>Terminal output</h3>
+<pre><code data-language="text">[(&#x27;007&#x27;, &#x27;approved&#x27;)]</code></pre>
+<h3>Line-by-line explanation</h3>
+<ol><li value="1"><code>from dataclasses import dataclass</code> <p>Import the decorator used to declare a review record.</p></li>
+<li value="3"><code>@dataclass</code> <p>Build an initializer for the review fields.</p></li>
+<li value="4"><code>class Review:</code> <p>Group one review ID with its decision.</p></li>
+<li value="5"><code>id: str</code> <p>Keep leading zeros by storing the ID as text.</p></li>
+<li value="6"><code>decision: str</code> <p>Store the result to write to the audit sink.</p></li>
+<li value="8"><code>class RecordingAuditSink:</code> <p>Make a sink that records events in memory.</p></li>
+<li value="9"><code>def __init__(self):</code> <p>Set up each sink when it is created.</p></li>
+<li value="10"><code>self.entries = []</code> <p>Give this sink a fresh event list.</p></li>
+<li value="11"><code>def record(self, review_id, decision):</code> <p>Define the operation the service needs.</p></li>
+<li value="12"><code>self.entries.append((review_id, decision))</code> <p>Save the arguments together as one event.</p></li>
+<li value="14"><code>def record_decision(review, sink):</code> <p>Pass the review and collaborator into the operation.</p></li>
+<li value="15"><code>sink.record(review.id, review.decision)</code> <p>Forward exactly one event through the sink&#x27;s public method.</p></li>
+<li value="17"><code>sink = RecordingAuditSink()</code> <p>Select the recorder as the sink for this run.</p></li>
+<li value="18"><code>record_decision(Review(&quot;007&quot;, &quot;approved&quot;), sink)</code> <p>Record one decision for review 007.</p></li>
+<li value="19"><code>assert sink.entries == [(&quot;007&quot;, &quot;approved&quot;)]</code> <p>Check the event count and both field values.</p></li>
+<li value="20"><code>print(sink.entries)</code> <p>Display the captured event.</p></li></ol></details>
+</details><details><summary>Self-hosted LLM</summary><p>Model a model configuration record with a dataclass. Create two configurations and verify their stop-token lists are independent.</p>
+<details class="fde-setup-answer"><summary>Worked solution</summary>
+<h3>Run the code</h3>
+<pre><code data-language="python">from dataclasses import dataclass, field
+
+@dataclass
+class ModelConfig:
+    name: str
+    stop_tokens: list[str] = field(default_factory=list)
+
+first = ModelConfig(&quot;small&quot;)
+second = ModelConfig(&quot;large&quot;)
+first.stop_tokens.append(&quot;END&quot;)
+assert first.stop_tokens is not second.stop_tokens
+assert second.stop_tokens == []
+print(first.stop_tokens, second.stop_tokens)</code></pre>
+<h3>Terminal output</h3>
+<pre><code data-language="text">[&#x27;END&#x27;] []</code></pre>
+<h3>Line-by-line explanation</h3>
+<ol><li value="1"><code>from dataclasses import dataclass, field</code> <p>Import the record decorator and the helper for mutable defaults.</p></li>
+<li value="3"><code>@dataclass</code> <p>Generate an initializer from the field annotations.</p></li>
+<li value="4"><code>class ModelConfig:</code> <p>Describe one model&#x27;s configuration.</p></li>
+<li value="5"><code>name: str</code> <p>Give the configuration a readable model name.</p></li>
+<li value="6"><code>stop_tokens: list[str] = field(default_factory=list)</code> <p>Create an independent list when no list is supplied.</p></li>
+<li value="8"><code>first = ModelConfig(&quot;small&quot;)</code> <p>Create a configuration with an empty stop-token list.</p></li>
+<li value="9"><code>second = ModelConfig(&quot;large&quot;)</code> <p>Create another configuration with a different list.</p></li>
+<li value="10"><code>first.stop_tokens.append(&quot;END&quot;)</code> <p>Modify only the first model&#x27;s list.</p></li>
+<li value="11"><code>assert first.stop_tokens is not second.stop_tokens</code> <p>Verify the lists are separate objects.</p></li>
+<li value="12"><code>assert second.stop_tokens == []</code> <p>Confirm the second configuration stayed empty.</p></li>
+<li value="13"><code>print(first.stop_tokens, second.stop_tokens)</code> <p>Show the two lists after the edit.</p></li></ol></details>
+</details><details><summary>On-device LLM</summary><p>Give the inference runner a replaceable backend. Use a fake backend to verify the prompt reaches it without loading a model.</p>
+<details class="fde-setup-answer"><summary>Worked solution</summary>
+<h3>Run the code</h3>
+<pre><code data-language="python">class RecordingBackend:
+    def __init__(self):
+        self.prompts = []
+    def generate(self, prompt):
+        self.prompts.append(prompt)
+        return &quot;Draft from fake&quot;
+
+class InferenceRunner:
+    def __init__(self, backend):
+        self.backend = backend
+    def run(self, prompt):
+        return self.backend.generate(prompt)
+
+backend = RecordingBackend()
+runner = InferenceRunner(backend)
+draft = runner.run(&quot;Summarize the note&quot;)
+assert backend.prompts == [&quot;Summarize the note&quot;]
+print(draft)</code></pre>
+<h3>Terminal output</h3>
+<pre><code data-language="text">Draft from fake</code></pre>
+<h3>Line-by-line explanation</h3>
+<ol><li value="1"><code>class RecordingBackend:</code> <p>Create an inference substitute without loading a model.</p></li>
+<li value="2"><code>def __init__(self):</code> <p>Initialize one backend instance.</p></li>
+<li value="3"><code>self.prompts = []</code> <p>Keep a separate record of the prompts it receives.</p></li>
+<li value="4"><code>def generate(self, prompt):</code> <p>Use the method the inference runner expects.</p></li>
+<li value="5"><code>self.prompts.append(prompt)</code> <p>Capture the request for an assertion.</p></li>
+<li value="6"><code>return &quot;Draft from fake&quot;</code> <p>Return a predictable response.</p></li>
+<li value="8"><code>class InferenceRunner:</code> <p>Put the inference entry point behind one class.</p></li>
+<li value="9"><code>def __init__(self, backend):</code> <p>Accept the backend as a dependency.</p></li>
+<li value="10"><code>self.backend = backend</code> <p>Store it for future calls.</p></li>
+<li value="11"><code>def run(self, prompt):</code> <p>Give the caller a method to start inference.</p></li>
+<li value="12"><code>return self.backend.generate(prompt)</code> <p>Forward the prompt and return the backend result.</p></li>
+<li value="14"><code>backend = RecordingBackend()</code> <p>Choose the fake implementation.</p></li>
+<li value="15"><code>runner = InferenceRunner(backend)</code> <p>Inject it into the runner.</p></li>
+<li value="16"><code>draft = runner.run(&quot;Summarize the note&quot;)</code> <p>Send one prompt through the public method.</p></li>
+<li value="17"><code>assert backend.prompts == [&quot;Summarize the note&quot;]</code> <p>Check that the intended prompt reached the backend once.</p></li>
+<li value="18"><code>print(draft)</code> <p>Show the response returned to the caller.</p></li></ol></details>
+</details><details><summary>Multimodal document intelligence</summary><p>Give an ingestion service a parser object. Swap a PDF parser for a fake parser with the same method and compare the returned summary.</p>
+<details class="fde-setup-answer"><summary>Worked solution</summary>
+<h3>Run the code</h3>
+<pre><code data-language="python">class PdfParser:
+    def parse(self, source):
+        assert source.endswith(&quot;.pdf&quot;)
+        return [&quot;Invoice 0042&quot;, &quot;Total 10 EUR&quot;]
+
+class FakeParser:
+    def parse(self, source):
+        return [&quot;Fixture invoice&quot;]
+
+class IngestionService:
+    def __init__(self, parser):
+        self.parser = parser
+    def summarize(self, source):
+        lines = self.parser.parse(source)
+        return f&quot;{len(lines)} lines | {lines[0]}&quot;
+
+pdf_summary = IngestionService(PdfParser()).summarize(&quot;invoice.pdf&quot;)
+fake_summary = IngestionService(FakeParser()).summarize(&quot;invoice.pdf&quot;)
+assert (pdf_summary, fake_summary) == (&quot;2 lines | Invoice 0042&quot;, &quot;1 lines | Fixture invoice&quot;)
+print(pdf_summary)
+print(fake_summary)</code></pre>
+<h3>Terminal output</h3>
+<pre><code data-language="text">2 lines | Invoice 0042
+1 lines | Fixture invoice</code></pre>
+<h3>Line-by-line explanation</h3>
+<ol><li value="1"><code>class PdfParser:</code> <p>Model the interface a real PDF parser adapter might offer.</p></li>
+<li value="2"><code>def parse(self, source):</code> <p>Accept the document path through the common method.</p></li>
+<li value="3"><code>assert source.endswith(&quot;.pdf&quot;)</code> <p>Check the path in this local fixture.</p></li>
+<li value="4"><code>return [&quot;Invoice 0042&quot;, &quot;Total 10 EUR&quot;]</code> <p>Supply sample text for the exercise without opening a PDF.</p></li>
+<li value="6"><code>class FakeParser:</code> <p>Offer a second implementation for the same service.</p></li>
+<li value="7"><code>def parse(self, source):</code> <p>Match the parser call used by the service.</p></li>
+<li value="8"><code>return [&quot;Fixture invoice&quot;]</code> <p>Keep the fake input small and predictable.</p></li>
+<li value="10"><code>class IngestionService:</code> <p>Own the summary rule while delegating parsing.</p></li>
+<li value="11"><code>def __init__(self, parser):</code> <p>Receive the caller&#x27;s choice of parser.</p></li>
+<li value="12"><code>self.parser = parser</code> <p>Store the dependency on this service instance.</p></li>
+<li value="13"><code>def summarize(self, source):</code> <p>Expose one entry point for building a summary.</p></li>
+<li value="14"><code>lines = self.parser.parse(source)</code> <p>Ask the injected parser for text lines.</p></li>
+<li value="15"><code>return f&quot;{len(lines)} lines | {lines[0]}&quot;</code> <p>Summarize the nonempty fixture returned by either parser.</p></li>
+<li value="17"><code>pdf_summary = IngestionService(PdfParser()).summarize(&quot;invoice.pdf&quot;)</code> <p>Run through the sample PDF adapter.</p></li>
+<li value="18"><code>fake_summary = IngestionService(FakeParser()).summarize(&quot;invoice.pdf&quot;)</code> <p>Swap only the parser and run the same operation.</p></li>
+<li value="19"><code>assert (pdf_summary, fake_summary) == (&quot;2 lines | Invoice 0042&quot;, &quot;1 lines | Fixture invoice&quot;)</code> <p>Verify that the summary follows each parser&#x27;s result.</p></li>
+<li value="20"><code>print(pdf_summary)</code> <p>Show the result from the sample adapter.</p></li>
+<li value="21"><code>print(fake_summary)</code> <p>Show the result after swapping in the fake.</p></li></ol></details>
+</details><details><summary>Enterprise lead management</summary><p>Model a lead with a controlled state change. Record a contact on one lead and confirm another lead’s state stays unchanged.</p>
+<details class="fde-setup-answer"><summary>Worked solution</summary>
+<h3>Run the code</h3>
+<pre><code data-language="python">class Lead:
+    def __init__(self, name):
+        self.name = name
+        self._status = &quot;new&quot;
+
+    @property
+    def status(self):
+        return self._status
+
+    def record_contact(self):
+        self._status = &quot;contacted&quot;
+
+first = Lead(&quot;Northwind&quot;)
+second = Lead(&quot;Acme&quot;)
+first.record_contact()
+assert (first.status, second.status) == (&quot;contacted&quot;, &quot;new&quot;)
+print(first.name, first.status)
+print(second.name, second.status)</code></pre>
+<h3>Terminal output</h3>
+<pre><code data-language="text">Northwind contacted
+Acme new</code></pre>
+<h3>Line-by-line explanation</h3>
+<ol><li value="1"><code>class Lead:</code> <p>Define the data and behavior of one lead.</p></li>
+<li value="2"><code>def __init__(self, name):</code> <p>Initialize a lead from its name.</p></li>
+<li value="3"><code>self.name = name</code> <p>Store the caller&#x27;s name on this instance.</p></li>
+<li value="4"><code>self._status = &quot;new&quot;</code> <p>Give every new lead its own starting state.</p></li>
+<li value="6"><code>@property</code> <p>Expose state through a getter callers can read as an attribute.</p></li>
+<li value="7"><code>def status(self):</code> <p>Define the public status field behavior.</p></li>
+<li value="8"><code>return self._status</code> <p>Return the current internal value.</p></li>
+<li value="10"><code>def record_contact(self):</code> <p>Provide the supported way to change the status.</p></li>
+<li value="11"><code>self._status = &quot;contacted&quot;</code> <p>Change the status of the lead supplied as self.</p></li>
+<li value="13"><code>first = Lead(&quot;Northwind&quot;)</code> <p>Create the lead we intend to change.</p></li>
+<li value="14"><code>second = Lead(&quot;Acme&quot;)</code> <p>Create an independent lead.</p></li>
+<li value="15"><code>first.record_contact()</code> <p>Record contact for Northwind only.</p></li>
+<li value="16"><code>assert (first.status, second.status) == (&quot;contacted&quot;, &quot;new&quot;)</code> <p>Check the behavior of both instances.</p></li>
+<li value="17"><code>print(first.name, first.status)</code> <p>Show the updated lead.</p></li>
+<li value="18"><code>print(second.name, second.status)</code> <p>Show the unaffected lead.</p></li></ol></details>
+</details><details><summary>AI receptionist</summary><p>Give a booking service a recorder instead of a live calendar. Check that the customer name and time reach it once.</p>
+<details class="fde-setup-answer"><summary>Worked solution</summary>
+<h3>Run the code</h3>
+<pre><code data-language="python">class RecordingCalendar:
+    def __init__(self):
+        self.bookings = []
+    def add(self, customer, time):
+        self.bookings.append((customer, time))
+
+class BookingService:
+    def __init__(self, calendar):
+        self.calendar = calendar
+    def book(self, customer, time):
+        self.calendar.add(customer, time)
+
+calendar = RecordingCalendar()
+service = BookingService(calendar)
+service.book(&quot;Mia&quot;, &quot;Tuesday 10:00&quot;)
+assert calendar.bookings == [(&quot;Mia&quot;, &quot;Tuesday 10:00&quot;)]
+print(calendar.bookings)</code></pre>
+<h3>Terminal output</h3>
+<pre><code data-language="text">[(&#x27;Mia&#x27;, &#x27;Tuesday 10:00&#x27;)]</code></pre>
+<h3>Line-by-line explanation</h3>
+<ol><li value="1"><code>class RecordingCalendar:</code> <p>Replace calendar writes with an observable local list.</p></li>
+<li value="2"><code>def __init__(self):</code> <p>Initialize the recorder.</p></li>
+<li value="3"><code>self.bookings = []</code> <p>Keep the bookings made through this recorder.</p></li>
+<li value="4"><code>def add(self, customer, time):</code> <p>Define the method the service calls.</p></li>
+<li value="5"><code>self.bookings.append((customer, time))</code> <p>Record both facts without calling a calendar API.</p></li>
+<li value="7"><code>class BookingService:</code> <p>Model the scheduling operation as a service.</p></li>
+<li value="8"><code>def __init__(self, calendar):</code> <p>Accept a calendar with the expected add method.</p></li>
+<li value="9"><code>self.calendar = calendar</code> <p>Hold it for incoming booking requests.</p></li>
+<li value="10"><code>def book(self, customer, time):</code> <p>Take the customer&#x27;s name and chosen time.</p></li>
+<li value="11"><code>self.calendar.add(customer, time)</code> <p>Forward the request once to the calendar.</p></li>
+<li value="13"><code>calendar = RecordingCalendar()</code> <p>Use the in-memory implementation in this exercise.</p></li>
+<li value="14"><code>service = BookingService(calendar)</code> <p>Connect the service to the recorder.</p></li>
+<li value="15"><code>service.book(&quot;Mia&quot;, &quot;Tuesday 10:00&quot;)</code> <p>Submit one booking request.</p></li>
+<li value="16"><code>assert calendar.bookings == [(&quot;Mia&quot;, &quot;Tuesday 10:00&quot;)]</code> <p>Check that the right details were written once.</p></li>
+<li value="17"><code>print(calendar.bookings)</code> <p>Show what the recorder received.</p></li></ol></details>
+</details><details><summary>Voice productivity</summary><p>Use a dataclass for a transcript preview. Give each preview its own labels list and test edits to two previews.</p>
+<details class="fde-setup-answer"><summary>Worked solution</summary>
+<h3>Run the code</h3>
+<pre><code data-language="python">from dataclasses import dataclass, field
+
+@dataclass
+class TranscriptPreview:
+    text: str
+    labels: list[str] = field(default_factory=list)
+
+first = TranscriptPreview(&quot;Schedule a demo&quot;)
+second = TranscriptPreview(&quot;Send the notes&quot;)
+first.labels.append(&quot;action&quot;)
+second.labels.append(&quot;follow-up&quot;)
+assert first.labels == [&quot;action&quot;] and second.labels == [&quot;follow-up&quot;]
+print(first.labels, second.labels)</code></pre>
+<h3>Terminal output</h3>
+<pre><code data-language="text">[&#x27;action&#x27;] [&#x27;follow-up&#x27;]</code></pre>
+<h3>Line-by-line explanation</h3>
+<ol><li value="1"><code>from dataclasses import dataclass, field</code> <p>Import helpers for a record with per-instance mutable data.</p></li>
+<li value="3"><code>@dataclass</code> <p>Generate the initializer so each preview can be created from its text.</p></li>
+<li value="4"><code>class TranscriptPreview:</code> <p>Group displayed text and labels in one record.</p></li>
+<li value="5"><code>text: str</code> <p>Store the text the user will see.</p></li>
+<li value="6"><code>labels: list[str] = field(default_factory=list)</code> <p>Allocate a fresh list whenever labels are omitted.</p></li>
+<li value="8"><code>first = TranscriptPreview(&quot;Schedule a demo&quot;)</code> <p>Build the first preview.</p></li>
+<li value="9"><code>second = TranscriptPreview(&quot;Send the notes&quot;)</code> <p>Build a second preview.</p></li>
+<li value="10"><code>first.labels.append(&quot;action&quot;)</code> <p>Tag only the first preview.</p></li>
+<li value="11"><code>second.labels.append(&quot;follow-up&quot;)</code> <p>Give the second preview a different label.</p></li>
+<li value="12"><code>assert first.labels == [&quot;action&quot;] and second.labels == [&quot;follow-up&quot;]</code> <p>Check both edits stayed attached to their own preview.</p></li>
+<li value="13"><code>print(first.labels, second.labels)</code> <p>Show that the labels did not mix.</p></li></ol></details>
+</details>
 </section>
 
-<section class="topic" id="oop-workplace-cases"><h2>Five workplace design decisions</h2><p>Explain what you would change and what test would prove it.</p>
-<details><summary>A tag appears on unrelated tickets</summary><p>Two new tickets start with the same list. Move allocation into the initializer and check that first.tags is not second.tags before mutating one.</p></details>
-<details><summary>A report can reopen a closed ticket</summary><p>Make status a read-only property and let the caller use an explicit method for state transitions. Test the allowed transition and check that assigning to the property raises AttributeError.</p></details>
-<details><summary>A test tries to send a real email</summary><p>Inject a recording notifier into the service in the test. Assert that it receives the intended title once. Keep real delivery in a separate integration test.</p></details>
-<details><summary>The exported ticket needs fewer fields</summary><p>Create a TicketSummary dataclass with only the report fields. Copy the tags list when building the summary if later edits to the original ticket should stay out of the report.</p></details>
-<details><summary>Two providers expose different method names</summary><p>Wrap one provider in a small adapter that offers send(title) and translates it into the provider’s call. Use composition to swap the adapter into the existing service.</p></details>
+<section class="topic" id="oop-workplace-cases"><h2>Five workplace design decisions</h2><p>Predict how you would fix each problem. Open Worked solution to see a runnable fix with an explanation for every code line.</p>
+<details><summary>A tag appears on unrelated tickets</summary><p>Two new tickets start with the same list. Move allocation into the initializer and check that first.tags is not second.tags before mutating one.</p>
+<details class="fde-setup-answer"><summary>Worked solution</summary>
+<h3>Run the code</h3>
+<pre><code data-language="python">class Ticket:
+    def __init__(self):
+        self.tags = []
+
+first = Ticket()
+second = Ticket()
+assert first.tags is not second.tags
+first.tags.append(&quot;urgent&quot;)
+assert second.tags == []
+print(first.tags, second.tags)</code></pre>
+<h3>Terminal output</h3>
+<pre><code data-language="text">[&#x27;urgent&#x27;] []</code></pre>
+<h3>Line-by-line explanation</h3>
+<ol><li value="1"><code>class Ticket:</code> <p>Define one ticket with its own tags.</p></li>
+<li value="2"><code>def __init__(self):</code> <p>Run once for each new instance.</p></li>
+<li value="3"><code>self.tags = []</code> <p>Allocate the list inside the initializer so instances do not share it.</p></li>
+<li value="5"><code>first = Ticket()</code> <p>Create a ticket that will receive a tag.</p></li>
+<li value="6"><code>second = Ticket()</code> <p>Create a second ticket for the isolation check.</p></li>
+<li value="7"><code>assert first.tags is not second.tags</code> <p>Check identity before either list changes.</p></li>
+<li value="8"><code>first.tags.append(&quot;urgent&quot;)</code> <p>Mutate only the first ticket&#x27;s list.</p></li>
+<li value="9"><code>assert second.tags == []</code> <p>Catch any regression that reintroduces shared state.</p></li>
+<li value="10"><code>print(first.tags, second.tags)</code> <p>Display the isolated lists.</p></li></ol></details>
+</details>
+<details><summary>A report can reopen a closed ticket</summary><p>Make status a read-only property and let the caller use an explicit method for state transitions. Test the allowed transition and check that assigning to the property raises AttributeError.</p>
+<details class="fde-setup-answer"><summary>Worked solution</summary>
+<h3>Run the code</h3>
+<pre><code data-language="python">class Ticket:
+    def __init__(self):
+        self._status = &quot;open&quot;
+    @property
+    def status(self):
+        return self._status
+    def close(self):
+        self._status = &quot;closed&quot;
+
+ticket = Ticket()
+ticket.close()
+assert ticket.status == &quot;closed&quot;
+try:
+    ticket.status = &quot;open&quot;
+except AttributeError:
+    print(&quot;Direct assignment rejected&quot;)
+else:
+    raise AssertionError(&quot;status allowed reassignment&quot;)
+print(ticket.status)</code></pre>
+<h3>Terminal output</h3>
+<pre><code data-language="text">Direct assignment rejected
+closed</code></pre>
+<h3>Line-by-line explanation</h3>
+<ol><li value="1"><code>class Ticket:</code> <p>Put the status and its allowed change together.</p></li>
+<li value="2"><code>def __init__(self):</code> <p>Initialize a new ticket.</p></li>
+<li value="3"><code>self._status = &quot;open&quot;</code> <p>Store the initial state behind the public property.</p></li>
+<li value="4"><code>@property</code> <p>Allow reads of status without exposing a setter.</p></li>
+<li value="5"><code>def status(self):</code> <p>Define the getter used when reports read the status.</p></li>
+<li value="6"><code>return self._status</code> <p>Return the value without changing it.</p></li>
+<li value="7"><code>def close(self):</code> <p>Expose the allowed transition as a method.</p></li>
+<li value="8"><code>self._status = &quot;closed&quot;</code> <p>Update the internal state.</p></li>
+<li value="10"><code>ticket = Ticket()</code> <p>Start with an open ticket.</p></li>
+<li value="11"><code>ticket.close()</code> <p>Take the supported transition.</p></li>
+<li value="12"><code>assert ticket.status == &quot;closed&quot;</code> <p>Verify that the transition succeeded.</p></li>
+<li value="13"><code>try:</code> <p>Attempt the unsupported assignment in a controlled check.</p></li>
+<li value="14"><code>ticket.status = &quot;open&quot;</code> <p>Trigger the property error a faulty report would encounter.</p></li>
+<li value="15"><code>except AttributeError:</code> <p>Catch the specific error because this test expects it.</p></li>
+<li value="16"><code>print(&quot;Direct assignment rejected&quot;)</code> <p>Make the expected failure visible in the terminal.</p></li>
+<li value="17"><code>else:</code> <p>Run only if the unsupported assignment unexpectedly worked.</p></li>
+<li value="18"><code>raise AssertionError(&quot;status allowed reassignment&quot;)</code> <p>Fail the test if the property became writable.</p></li>
+<li value="19"><code>print(ticket.status)</code> <p>Confirm that the attempted assignment left the ticket closed.</p></li></ol></details>
+</details>
+<details><summary>A test tries to send a real email</summary><p>Inject a recording notifier into the service in the test. Assert that it receives the intended title once. Keep real delivery in a separate integration test.</p>
+<details class="fde-setup-answer"><summary>Worked solution</summary>
+<h3>Run the code</h3>
+<pre><code data-language="python">class RecordingNotifier:
+    def __init__(self):
+        self.titles = []
+    def send(self, title):
+        self.titles.append(title)
+
+class TicketService:
+    def __init__(self, notifier):
+        self.notifier = notifier
+    def create(self, title):
+        self.notifier.send(title)
+
+notifier = RecordingNotifier()
+TicketService(notifier).create(&quot;Payment failed&quot;)
+assert notifier.titles == [&quot;Payment failed&quot;]
+print(notifier.titles)</code></pre>
+<h3>Terminal output</h3>
+<pre><code data-language="text">[&#x27;Payment failed&#x27;]</code></pre>
+<h3>Line-by-line explanation</h3>
+<ol><li value="1"><code>class RecordingNotifier:</code> <p>Simulate a notification provider.</p></li>
+<li value="2"><code>def __init__(self):</code> <p>Set up a new recorder.</p></li>
+<li value="3"><code>self.titles = []</code> <p>Keep the sequence of titles it was asked to send.</p></li>
+<li value="4"><code>def send(self, title):</code> <p>Match the behavior the service depends on.</p></li>
+<li value="5"><code>self.titles.append(title)</code> <p>Capture the title without sending an email.</p></li>
+<li value="7"><code>class TicketService:</code> <p>Keep the business action separate from real delivery.</p></li>
+<li value="8"><code>def __init__(self, notifier):</code> <p>Allow the test to pass its own notifier.</p></li>
+<li value="9"><code>self.notifier = notifier</code> <p>Store that dependency for the create operation.</p></li>
+<li value="10"><code>def create(self, title):</code> <p>Run the part of ticket creation we want to test here.</p></li>
+<li value="11"><code>self.notifier.send(title)</code> <p>Announce the ticket through the injected dependency.</p></li>
+<li value="13"><code>notifier = RecordingNotifier()</code> <p>Build a safe local recorder.</p></li>
+<li value="14"><code>TicketService(notifier).create(&quot;Payment failed&quot;)</code> <p>Run one creation through the service.</p></li>
+<li value="15"><code>assert notifier.titles == [&quot;Payment failed&quot;]</code> <p>Check one matching call was recorded.</p></li>
+<li value="16"><code>print(notifier.titles)</code> <p>Show the evidence without sending a real message.</p></li></ol></details>
+</details>
+<details><summary>The exported ticket needs fewer fields</summary><p>Create a TicketSummary dataclass with only the report fields. Copy the tags list when building the summary if later edits to the original ticket should stay out of the report.</p>
+<details class="fde-setup-answer"><summary>Worked solution</summary>
+<h3>Run the code</h3>
+<pre><code data-language="python">from dataclasses import dataclass
+
+@dataclass
+class TicketSummary:
+    title: str
+    tags: list[str]
+
+ticket = {&quot;title&quot;: &quot;Refund&quot;, &quot;tags&quot;: [&quot;billing&quot;], &quot;internal_note&quot;: &quot;Follow up&quot;}
+summary = TicketSummary(ticket[&quot;title&quot;], ticket[&quot;tags&quot;].copy())
+ticket[&quot;tags&quot;].append(&quot;urgent&quot;)
+assert summary.tags == [&quot;billing&quot;]
+assert not hasattr(summary, &quot;internal_note&quot;)
+print(summary)</code></pre>
+<h3>Terminal output</h3>
+<pre><code data-language="text">TicketSummary(title=&#x27;Refund&#x27;, tags=[&#x27;billing&#x27;])</code></pre>
+<h3>Line-by-line explanation</h3>
+<ol><li value="1"><code>from dataclasses import dataclass</code> <p>Import the helper for the export record.</p></li>
+<li value="3"><code>@dataclass</code> <p>Generate an initializer and printable representation.</p></li>
+<li value="4"><code>class TicketSummary:</code> <p>Define the public export shape.</p></li>
+<li value="5"><code>title: str</code> <p>Keep the title in the export.</p></li>
+<li value="6"><code>tags: list[str]</code> <p>Keep a snapshot of the labels in the export.</p></li>
+<li value="8"><code>ticket = {&quot;title&quot;: &quot;Refund&quot;, &quot;tags&quot;: [&quot;billing&quot;], &quot;internal_note&quot;: &quot;Follow up&quot;}</code> <p>Model the full record, including a field the export should omit.</p></li>
+<li value="9"><code>summary = TicketSummary(ticket[&quot;title&quot;], ticket[&quot;tags&quot;].copy())</code> <p>Select only report fields and copy the mutable tags list.</p></li>
+<li value="10"><code>ticket[&quot;tags&quot;].append(&quot;urgent&quot;)</code> <p>Simulate a later edit to the original ticket.</p></li>
+<li value="11"><code>assert summary.tags == [&quot;billing&quot;]</code> <p>Check that the snapshot did not pick up the new tag.</p></li>
+<li value="12"><code>assert not hasattr(summary, &quot;internal_note&quot;)</code> <p>Check that the internal field did not reach the export.</p></li>
+<li value="13"><code>print(summary)</code> <p>Show only the fields the report needs.</p></li></ol></details>
+</details>
+<details><summary>Two providers expose different method names</summary><p>Wrap one provider in a small adapter that offers send(title) and translates it into the provider’s call. Use composition to swap the adapter into the existing service.</p>
+<details class="fde-setup-answer"><summary>Worked solution</summary>
+<h3>Run the code</h3>
+<pre><code data-language="python">class VendorClient:
+    def __init__(self):
+        self.requests = []
+    def publish(self, subject):
+        self.requests.append(subject)
+
+class VendorAdapter:
+    def __init__(self, client):
+        self.client = client
+    def send(self, title):
+        self.client.publish(subject=title)
+
+def announce(notifier, title):
+    notifier.send(title)
+
+vendor = VendorClient()
+announce(VendorAdapter(vendor), &quot;Refund&quot;)
+assert vendor.requests == [&quot;Refund&quot;]
+print(vendor.requests)</code></pre>
+<h3>Terminal output</h3>
+<pre><code data-language="text">[&#x27;Refund&#x27;]</code></pre>
+<h3>Line-by-line explanation</h3>
+<ol><li value="1"><code>class VendorClient:</code> <p>Simulate a provider with a different method name.</p></li>
+<li value="2"><code>def __init__(self):</code> <p>Initialize its request record.</p></li>
+<li value="3"><code>self.requests = []</code> <p>Make the calls observable without a network request.</p></li>
+<li value="4"><code>def publish(self, subject):</code> <p>Stand in for the vendor-specific API.</p></li>
+<li value="5"><code>self.requests.append(subject)</code> <p>Capture the subject the adapter sent.</p></li>
+<li value="7"><code>class VendorAdapter:</code> <p>Translate the provider&#x27;s interface into the service&#x27;s interface.</p></li>
+<li value="8"><code>def __init__(self, client):</code> <p>Accept a vendor client to wrap.</p></li>
+<li value="9"><code>self.client = client</code> <p>Store the wrapped implementation.</p></li>
+<li value="10"><code>def send(self, title):</code> <p>Expose the method the service already expects.</p></li>
+<li value="11"><code>self.client.publish(subject=title)</code> <p>Translate the title to the vendor&#x27;s subject argument.</p></li>
+<li value="13"><code>def announce(notifier, title):</code> <p>Keep the existing service contract.</p></li>
+<li value="14"><code>notifier.send(title)</code> <p>Delegate delivery without knowing which vendor is used.</p></li>
+<li value="16"><code>vendor = VendorClient()</code> <p>Use a local vendor stand-in.</p></li>
+<li value="17"><code>announce(VendorAdapter(vendor), &quot;Refund&quot;)</code> <p>Give the existing service an adapter.</p></li>
+<li value="18"><code>assert vendor.requests == [&quot;Refund&quot;]</code> <p>Verify that the vendor received one correctly translated request.</p></li>
+<li value="19"><code>print(vendor.requests)</code> <p>Show the call recorded by the vendor stand-in.</p></li></ol></details>
+</details>
 </section>
 
 <section class="topic" id="module-check"><h2>Check what you can explain</h2>
-<ul><li>Point to the class, an instance and a bound method in the payment-support example.</li><li>Explain where a mutable class attribute lives and how to give each instance its own list.</li><li>Replace a notifier and explain which contract the replacement must honor.</li></ul>
+<ul><li>Point to the class, an instance and a bound method in the support-ticket example.</li><li>Explain where a mutable class attribute lives and how to give each instance its own list.</li><li>Replace a notifier and explain which contract the replacement must honor.</li></ul>
 <p>Once you can write the two checks with the answers closed, continue with exceptions to learn how to reject invalid data explicitly.</p>
 </section><nav class="lesson-nav" aria-label="Lesson navigation"><a href="lesson-2.html#topic-3">Previous: Memory management fundamentals</a><a href="lesson-5.html#topic-1">Next: Exception handling &amp; debugging</a></nav>
 </main><aside class="fde-outline" hidden></aside></div><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script><script src="../../assets/js/fde-layout.js?v=25" defer></script></body></html>
+
 
