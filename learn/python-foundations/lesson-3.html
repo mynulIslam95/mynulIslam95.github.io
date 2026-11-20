@@ -22,6 +22,16 @@
 
   <section class="topic" id="topic-1">
     <h2>Turn one calculation into a function</h2>
+    <h3>Read the structure before you run it</h3>
+    <p>A function is a block of code you can call. It can take inputs, do some work and send a value back. Here is how to read the payment function.</p>
+    <table>
+      <thead><tr><th scope="col">Part</th><th scope="col">What it does</th></tr></thead>
+      <tbody>
+        <tr><td><code>def remaining_balance(balance, expense):</code></td><td><code>def</code> defines the function and <code>remaining_balance</code> names it. The names inside the parentheses are parameters. The colon ends the header.</td></tr>
+        <tr><td><code>return balance - expense</code></td><td>Indent the body four spaces. <code>return</code> ends the call and gives the calculated value back.</td></tr>
+        <tr><td><code>remaining = remaining_balance(100, 12)</code></td><td>Call the function with arguments <code>100</code> and <code>12</code>. Assign the value it returns to <code>remaining</code>.</td></tr>
+      </tbody>
+    </table>
     <p>Create <code>payment_functions.py</code> in your practice folder. Run it from that folder with <code>py -3 payment_functions.py</code> on Windows or <code>python3 payment_functions.py</code> on macOS or Linux. Predict both results before you run it.</p>
     <pre><code data-language="python">def remaining_balance(balance, expense):
     # Return a new balance for the caller to use.
@@ -34,8 +44,13 @@ print(remaining_balance(expense=8, balance=50))</code></pre>
     <p><strong>Expected output</strong></p>
     <pre><code data-language="text">88
 42</code></pre>
-    <p><code>def</code> defines the function. Python runs the indented body when you call it. <code>balance</code> and <code>expense</code> are <strong>parameters</strong>, the names in the definition. <code>100</code> and <code>12</code> are <strong>arguments</strong>, the values passed by the caller. In the second call, keywords match each value to its parameter by name.</p>
-    <p><code>return</code> ends the call and sends a value back. Here the caller saves it as <code>remaining</code> and decides when to print it. Replace <code>return balance - expense</code> with <code>print(balance - expense)</code>, then predict the first two lines again.</p>
+    <h3>Follow the first call</h3>
+    <ol>
+      <li>Python reaches <code>def</code> and creates the function. Its body waits for a call.</li>
+      <li>The call puts <code>100</code> in the local parameter <code>balance</code> and <code>12</code> in <code>expense</code>. The body subtracts them and returns <code>88</code>.</li>
+      <li>The caller assigns <code>88</code> to <code>remaining</code> and prints it. In the second call, <code>expense=8</code> and <code>balance=50</code> match the parameters by name.</li>
+    </ol>
+    <p>Replace <code>return balance - expense</code> with <code>print(balance - expense)</code>. Predict the first two lines. A function that reaches the end without returning a value gives the caller <code>None</code>.</p>
     <details class="fde-setup-answer">
       <summary>Check your prediction</summary>
       <p>The first line is <code>88</code> from inside the function. The second is <code>None</code> from <code>print(remaining)</code>. Restore the <code>return</code> so the caller can use the number.</p>
@@ -136,6 +151,35 @@ print(f&quot;With 3 included: {billable_minutes(5, included=3)}&quot;)</code></p
 With 3 included: 2</code></pre>
     </details>
     <p>Before moving on, explain where the total lives and why a clip exactly at the allowance returns zero.</p>
+  </section>
+
+  <section class="topic" id="lambda-functions">
+    <h2>Built-in functions, named functions and lambda</h2>
+    <table>
+      <thead><tr><th scope="col">Kind</th><th scope="col">Structure and when to reach for it</th></tr></thead>
+      <tbody>
+        <tr><td>Built-in</td><td>Call a function Python already provides, such as <code>abs(-8)</code> for the distance from zero.</td></tr>
+        <tr><td>Named function</td><td>Use <code>def</code>, a named header and an indented body when you want a readable name, multiple steps or a reusable rule.</td></tr>
+        <tr><td>Lambda</td><td>Use <code>lambda parameter: expression</code> when you need to pass a short function to another function. The expression’s value is returned automatically.</td></tr>
+      </tbody>
+    </table>
+    <p>Suppose a reviewer wants the largest adjustments first, including refunds. <code>key=</code> tells <code>sorted()</code> which value to use for each item. Both versions here use <code>abs(amount)</code> as that value. <code>reverse=True</code> puts the largest first.</p>
+    <pre><code data-language="python">def review_size(amount):
+    # Use the size of the adjustment, whether it is positive or negative.
+    return abs(amount)
+
+
+adjustments = [-8, 20, 3]
+print(sorted(adjustments, key=review_size, reverse=True))
+print(sorted(adjustments, key=lambda amount: abs(amount), reverse=True))</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">[20, -8, 3]
+[20, -8, 3]</code></pre>
+    <p>In <code>lambda amount: abs(amount)</code>, <code>amount</code> is the parameter and <code>abs(amount)</code> is the single expression. When <code>sorted()</code> passes <code>-8</code> to it, the result is <code>8</code>. The list still contains <code>-8</code> because the key decides its position.</p>
+    <details class="fde-setup-answer">
+      <summary>Predict what changes when you remove the key</summary>
+      <p><code>sorted(adjustments, reverse=True)</code> gives <code>[20, 3, -8]</code>. It orders the signed numbers themselves.</p>
+    </details>
   </section>
 
   <section class="topic" id="functions-practice">
