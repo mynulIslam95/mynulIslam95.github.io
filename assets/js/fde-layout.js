@@ -94,16 +94,23 @@
   }
 
   let frame;
+  let currentMilestone;
   function updatePosition() {
     frame = undefined;
-    const roadmapMarker = innerHeight * 0.68;
-    const roadmapVisible = Boolean(roadmap?.getClientRects().length);
-    const entered = (element) => roadmapVisible && element.getBoundingClientRect().top <= roadmapMarker;
-    const current = milestones.findLastIndex(entered);
-    milestones.forEach((milestone, index) => {
-      milestone.classList.toggle('is-reached', index <= current);
-      milestone.classList.toggle('is-current', index === current);
-    });
+    let nextMilestone;
+    if (roadmap?.getClientRects().length) {
+      const scrollRoot = document.scrollingElement;
+      const atBottom = scrollRoot.scrollTop > 0 &&
+        scrollRoot.scrollHeight - scrollRoot.clientHeight - scrollRoot.scrollTop <= 2;
+      const marker = innerHeight * 0.54;
+      nextMilestone = atBottom ? milestones.at(-1) :
+        milestones.findLast((milestone) => milestone.getBoundingClientRect().top <= marker);
+    }
+    if (nextMilestone !== currentMilestone) {
+      currentMilestone?.classList.remove('is-current');
+      nextMilestone?.classList.add('is-current');
+      currentMilestone = nextMilestone;
+    }
 
     const active = sections.findLastIndex((section) => section.getBoundingClientRect().top <= 150);
     links.forEach((link, index) => {
