@@ -50,7 +50,37 @@ print(Path(sys.executable).is_absolute())
 print(&quot;Python&quot;, sys.version_info.major)
 </code></pre><h4>Output</h4><pre><code data-language="text">True
 Python 3
-</code></pre><h3>কীভাবে এই result হলো?</h3><ol><li>sys.executable currently-running Python-এর location দেয়।</li><li>এখানে True বলছে absolute interpreter path পাওয়া যাচ্ছে।</li><li>sys.version_info.major দিয়ে major version দেখা যায়। Editor ও terminal একই environment ব্যবহার করছে কি না compare করতে real path print করো।</li></ol><div class="concept-check"><strong>এখানে যেটা ভুল হতে পারে</strong><p>pip install কোথায় যাচ্ছে সেটা না জেনে run করলে অন্য interpreter-এ package install হতে পারে। python -m pip ব্যবহার করলে সেই python-এর pip run হয়।</p></div><p>Terminal commands: <code>python3 -m venv .venv</code>, Linux/macOS-এ <code>source .venv/bin/activate</code>। Windows PowerShell-এ <code>.venv\Scripts\Activate.ps1</code>। Activate না করেও .venv-এর interpreter সরাসরি ব্যবহার করা যায়। Code .venv-এর ভিতরে রাখবে না, Git-এ environment commit করবে না।</p><section class="try-change"><h3>এবার তুমি বদলে দেখো</h3><p>venv activate করার আগে ও পরে <code>python -c "import sys; print(sys.executable)"</code> run করো। কী বদলানোর কথা?</p><details><summary>Reasoning মিলিয়ে দেখো</summary><div><p>Activated environment-এর bin/python বা Scripts/python.exe path দেখা উচিত। Editor-এও সেই interpreter select করবে।</p></div></details></section></section><section class="topic" id="topic-5"><h2>1.7.5 pyproject.toml and formatting</h2><p>Project-এর supported Python version আর formatting settings এক জায়গায় রাখবো। pyproject.toml হচ্ছে TOML configuration file। এটা Python code না। নিচের Python example TOML text read করে setting দেখাচ্ছে; tomllib Python 3.11+ standard library।</p><h3>Code-টা run করি</h3><pre><code data-language="python">import tomllib
+</code></pre><h3>কীভাবে এই result হলো?</h3><ol><li>sys.executable currently-running Python-এর location দেয়।</li><li>এখানে True বলছে absolute interpreter path পাওয়া যাচ্ছে।</li><li>sys.version_info.major দিয়ে major version দেখা যায়। Editor ও terminal একই environment ব্যবহার করছে কি না compare করতে real path print করো।</li></ol><div class="concept-check"><strong>এখানে যেটা ভুল হতে পারে</strong><p>pip install কোথায় যাচ্ছে সেটা না জেনে run করলে অন্য interpreter-এ package install হতে পারে। python -m pip ব্যবহার করলে সেই python-এর pip run হয়।</p></div><p>Terminal commands: <code>python3 -m venv .venv</code>, Linux/macOS-এ <code>source .venv/bin/activate</code>। Windows PowerShell-এ <code>.venv\Scripts\Activate.ps1</code>। Activate না করেও .venv-এর interpreter সরাসরি ব্যবহার করা যায়। Code .venv-এর ভিতরে রাখবে না, Git-এ environment commit করবে না।</p><section class="try-change"><h3>এবার তুমি বদলে দেখো</h3><p>venv activate করার আগে ও পরে <code>python -c "import sys; print(sys.executable)"</code> run করো। কী বদলানোর কথা?</p><details><summary>Reasoning মিলিয়ে দেখো</summary><div><p>Activated environment-এর bin/python বা Scripts/python.exe path দেখা উচিত। Editor-এও সেই interpreter select করবে।</p></div></details></section></section>  <section class="topic" id="uv-project-lab" lang="en">
+    <h2>Run a project with uv</h2>
+
+    <p>A virtual environment gives a project its own Python environment and installed packages. A project-local <code>.venv</code> lives inside the project folder. An environment stored elsewhere can still be isolated. For a shared repository, use a project-local environment so each teammate can recreate it.</p>
+    <p><a href="https://docs.astral.sh/uv/getting-started/installation/">Install uv with Astral’s instructions</a>, then open a fresh terminal in your practice folder. Create a new project and check which Python runs.</p>
+    <pre><code>uv --version
+uv init --bare --python 3.12 fde-uv-demo
+cd fde-uv-demo</code></pre>
+    <p>Inside <code>fde-uv-demo</code>, save this file as <code>main.py</code>.</p>
+    <pre><code data-language="python">print(&quot;Hello from the uv project!&quot;)</code></pre>
+    <p>From the same folder, run the script and check which Python it used.</p>
+    <pre><code>uv run python main.py
+uv run python -c &quot;import sys; print(sys.executable)&quot;</code></pre>
+    <p>The script prints <code>Hello from the uv project!</code>. The last command should show an executable inside <code>fde-uv-demo/.venv</code>. <code>uv run</code> can prepare the project’s environment and run the command without manual activation. The Python version here matches the lecture example.</p>
+    <p>To use this project in a notebook, add the kernel package and then select the project’s <code>.venv</code> in VS Code.</p>
+    <pre><code>uv add --dev ipykernel
+uv run python -c &quot;import ipykernel; print(ipykernel.__version__)&quot;</code></pre>
+    <p><code>pyproject.toml</code> declares the project dependencies. <code>uv.lock</code> records the resolved versions. Commit both files and let teammates run <code>uv sync --locked</code> from the project folder. Each teammate gets their own <code>.venv</code>.</p>
+    <details>
+      <summary>Following the Conda commands from class?</summary>
+      <p>With Conda already installed, create a named environment and activate it. Run these commands from the folder containing <code>hello.py</code>. If activation is unavailable, use the shell that Conda has already configured.</p>
+      <pre><code>conda create -n fde-practice python=3.12 ipykernel
+conda activate fde-practice
+python hello.py
+python -c &quot;import sys; print(sys.executable)&quot;</code></pre>
+      <p>Pick the same environment in the notebook kernel picker. Use <a href="setup.html#notebook-setup">the setup lab</a> to compare paths.</p>
+    </details>
+    <p><a href="https://docs.astral.sh/uv/guides/projects/">uv project guide</a> · <a href="https://docs.astral.sh/uv/guides/integration/jupyter/">uv and Jupyter</a></p>
+
+  </section>
+<section class="topic" id="topic-5"><h2>1.7.5 pyproject.toml and formatting</h2><p>Project-এর supported Python version আর formatting settings এক জায়গায় রাখবো। pyproject.toml হচ্ছে TOML configuration file। এটা Python code না। নিচের Python example TOML text read করে setting দেখাচ্ছে; tomllib Python 3.11+ standard library।</p><h3>Code-টা run করি</h3><pre><code data-language="python">import tomllib
 
 text = &quot;&quot;&quot;[project]
 name = &quot;transaction-tracker&quot;

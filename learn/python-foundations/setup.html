@@ -58,5 +58,63 @@ python3 hello.py</code></pre></div>
     <p>Change the message to <code>Hello, future coder!</code>. Save the file and run it again. You should see your new message.</p>
     <p><strong>Stuck?</strong> If the command isn’t found, close and reopen VS Code after installing Python. If Python can’t find the file, check that you opened <code>python-practice</code> and saved the file as <code>hello.py</code>.</p>
   </section>
+  <section class="topic" id="terminal-reference" lang="en">
+    <h2>Find your project in the terminal</h2>
+
+    <p>The editor displays files. The terminal starts commands from a current folder. If Python says it can’t open <code>hello.py</code>, first check that the terminal is in the folder that contains it.</p>
+    <table>
+      <thead><tr><th scope="col">Task</th><th scope="col">Windows PowerShell</th><th scope="col">macOS / Linux</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Show current folder</th><td><code>Get-Location</code></td><td><code>pwd</code></td></tr>
+        <tr><th scope="row">List files</th><td><code>Get-ChildItem</code></td><td><code>ls</code></td></tr>
+        <tr><th scope="row">Create a folder</th><td><code>mkdir python-practice</code></td><td><code>mkdir python-practice</code></td></tr>
+        <tr><th scope="row">Enter that folder</th><td><code>Set-Location python-practice</code></td><td><code>cd python-practice</code></td></tr>
+        <tr><th scope="row">Go up one level</th><td><code>Set-Location ..</code></td><td><code>cd ..</code></td></tr>
+      </tbody>
+    </table>
+    <p>If you’ve already created the folder, skip <code>mkdir</code>. List the files again after you enter it. Once <code>hello.py</code> appears, rerun the command from <a href="#run-program">Run your program</a>.</p>
+
+  </section>
+  <section class="topic" id="notebook-setup" lang="en">
+    <h2>Run the same Python in VS Code and Jupyter</h2>
+
+    <p>A <code>.py</code> file runs as a script. A <code>.ipynb</code> notebook runs one cell at a time. Its <strong>kernel</strong> is the running Python process that executes the cells and keeps their variables in memory. The terminal and notebook can choose different Python environments, even when both show the same version.</p>
+    <ol>
+      <li>Open <code>python-practice</code> in VS Code. Install the Microsoft <strong>Python</strong> and <strong>Jupyter</strong> extensions. In the folder’s terminal, create a project-local <code>.venv</code>, install <code>ipykernel</code> and run the script with that environment’s Python. If you already created this environment for this folder, skip the first command.</li>
+    </ol>
+    <div class="fde-setup-commands">
+      <div><strong>Windows PowerShell</strong><pre><code>py -3 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install ipykernel
+.\.venv\Scripts\python.exe hello.py
+.\.venv\Scripts\python.exe -c &quot;import sys; print(sys.executable)&quot;</code></pre></div>
+      <div><strong>macOS / Linux</strong><pre><code>python3 -m venv .venv
+.venv/bin/python -m pip install ipykernel
+.venv/bin/python hello.py
+.venv/bin/python -c &quot;import sys; print(sys.executable)&quot;</code></pre></div>
+    </div>
+    <ol start="2">
+      <li>Open the Command Palette and choose <strong>Create: New Jupyter Notebook</strong>. Save it as <code>check_python.ipynb</code>. Choose <strong>Select Kernel</strong>, then <strong>Python Environments</strong> and the project’s <code>.venv</code>. If VS Code shows recent kernels first, choose <strong>Select Another Kernel</strong>.</li>
+      <li>Run the following cell. Compare its first line with the terminal path. Both should point to the project’s <code>.venv</code>.</li>
+    </ol>
+    <pre><code data-language="python">import sys
+
+print(sys.executable)
+print(&quot;Hello, world!&quot;)</code></pre>
+    <figure>
+      <img src="assets/python-kernel-paths.png" width="1000" height="520" alt="Two panels show a terminal and a notebook both reporting the interpreter path ending in .venv/bin/python.">
+      <figcaption>Example on macOS or Linux. On Windows, the path usually ends in <code>.venv\Scripts\python.exe</code>.</figcaption>
+    </figure>
+    <details class="fde-setup-answer">
+      <summary>Missing kernel or stuck on detection?</summary>
+      <p>Check that the folder containing <code>.venv</code> is open. Rerun the terminal install command above so <code>ipykernel</code> goes into that exact environment. Use <strong>Python: Select Interpreter</strong> to point VS Code at the executable if the environment is missing, reload the window and select the notebook kernel again. Rerun the cell to verify the path.</p>
+      <p>For an environment stored elsewhere, run <code>python -m ipykernel install --user --name fde-practice --display-name "Python (FDE practice)"</code> after activating that environment and installing <code>ipykernel</code> in it. Select the named kernel under <strong>Jupyter Kernels</strong>.</p>
+    </details>
+    <details class="fde-setup-answer">
+      <summary>Following the lecture in Google Colab?</summary>
+      <p>Run the same cell in a Colab notebook. It reports the Python used by that notebook’s runtime. It will show a different path in a hosted runtime. Restart the kernel and run all cells in order when you want to check that your notebook works from a clean start.</p>
+    </details>
+    <p><a href="https://code.visualstudio.com/docs/datascience/jupyter-kernel-management">VS Code’s kernel picker guide</a></p>
+
+  </section>
   <nav class="lesson-nav" aria-label="Lesson navigation"><a href="variables.html">Next: Variables, data types &amp; strings</a></nav>
 </main><aside class="fde-outline" hidden></aside></div><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script><script src="../../assets/js/fde-layout.js?v=25" defer></script></body></html>
