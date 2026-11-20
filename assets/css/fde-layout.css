@@ -185,7 +185,10 @@
   from { opacity: 0; transform: translateY(14px) scale(.97); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
-.fde-home .fde-roadmap { scroll-margin-top: 70px; padding: clamp(42px, 7vw, 90px) 0 !important; }
+html:has(.fde-home .fde-cover[hidden]) { overscroll-behavior-y: none; }
+.fde-home #main:has(> .fde-roadmap:not([hidden])) { padding-top: 4.5rem; }
+.fde-home .fde-roadmap { padding: clamp(20px, 3vw, 32px) 0 64px !important; }
+.fde-home #roadmap-title { margin-top: 0 !important; }
 .fde-home main .fde-roadmap .wrap { max-width: 1000px !important; }
 .fde-home main .fde-roadmap h2 { font-weight: 700 !important; }
 .fde-home #role-tracks { margin-top: 54px !important; }
@@ -286,8 +289,4 @@
 @media print {
   .fde-docs-grid { display: block; }
   .fde-docs .reading .fde-lesson-menu, .fde-outline { display: none; }
-}
-@media (prefers-reduced-motion: no-preference) {
-  .fde-milestones li > * { transition: transform .35s ease; }
-  .fde-milestones li.is-reached > * { transform: translateY(-4px); }
 }
