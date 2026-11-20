@@ -201,34 +201,34 @@ html:has(.fde-home .fde-cover[hidden]) { overscroll-behavior-y: none; }
 .fde-home main .fde-milestones {
   list-style: none;
   padding: 0;
-  margin: 28px 0 0;
+  margin: 26px 0 0;
 }
 .fde-home main .fde-milestones > li {
   position: relative;
-  padding: 0 0 10px !important;
+  padding: 0 !important;
+  margin-bottom: clamp(10px, 1.5vw, 15px);
   scroll-margin-top: 12px;
 }
-.fde-milestones > li:not(:last-child)::before {
-  content: '';
-  position: absolute;
-  inset: 0 auto 0 21px;
-  width: 2px;
-  background: var(--th-line);
-  transition: background-color .25s ease;
-}
-.fde-milestones > li.is-reached::before { background: var(--th-green); }
 .fde-roadmap-anchor { position: absolute; top: 0; }
-.fde-milestones details { position: relative; }
+.fde-milestones details {
+  border: 1px solid var(--th-line);
+  border-radius: 12px;
+  background: linear-gradient(145deg, color-mix(in srgb, var(--th-title) 4%, transparent), transparent 62%),
+              color-mix(in srgb, var(--th-panel) 85%, var(--th-bg));
+  box-shadow: 0 4px 12px color-mix(in srgb, #000 10%, transparent);
+}
 .fde-milestones summary {
   display: grid;
-  grid-template-columns: 44px minmax(0, 1fr) 10px;
+  grid-template-columns: 38px minmax(0, 1fr) 12px;
   align-items: center;
-  gap: clamp(10px, 2vw, 22px);
-  min-height: 48px;
-  padding-right: 10px;
+  gap: clamp(10px, 2vw, 18px);
+  min-height: 62px;
+  padding: 8px clamp(12px, 2vw, 20px);
+  border-radius: 11px;
   cursor: pointer;
   list-style: none;
 }
+.fde-milestones summary:hover { background: color-mix(in srgb, var(--th-title) 4%, transparent); }
 .fde-milestones summary::-webkit-details-marker { display: none; }
 .fde-milestones summary::after {
   content: '';
@@ -242,38 +242,44 @@ html:has(.fde-home .fde-cover[hidden]) { overscroll-behavior-y: none; }
 .fde-step-number {
   display: grid;
   place-items: center;
-  min-height: 38px;
+  width: 38px;
+  height: 38px;
+  box-sizing: border-box;
+  border: 1px solid var(--th-line);
+  border-radius: 50%;
   background: var(--th-bg);
   color: var(--fde-muted);
-  font: 700 .95rem/1 Inter, sans-serif;
+  font: 700 .875rem/1 Inter, sans-serif;
   font-variant-numeric: tabular-nums;
 }
-.fde-step-name { color: var(--th-title); font-size: clamp(1rem, 2vw, 1.16rem); font-weight: 650; line-height: 1.35; }
-.fde-step-copy { margin: 0 0 8px 54px; padding: 4px 12px; color: var(--fde-muted); font-size: 1rem; }
-.fde-home main .fde-milestones .fde-project-step { padding: 8px 0 14px 54px !important; }
-.fde-project-step details {
-  padding: 10px 14px;
-  border: 1px solid var(--th-line);
-  border-radius: 8px;
-  background: var(--th-panel);
+.fde-step-name { color: var(--th-title); font-size: clamp(1rem, 2vw, 1.12rem); font-weight: 600; line-height: 1.4; }
+.fde-step-copy {
+  margin: 0 clamp(12px, 2vw, 20px) 10px;
+  padding: 12px 0 0;
+  border-top: 1px solid var(--th-line);
+  color: var(--fde-muted);
+  font-size: 1rem;
 }
-.fde-project-step summary { grid-template-columns: minmax(0, 1fr) 10px; gap: 4px 16px; }
+.fde-project-step summary { grid-template-columns: minmax(0, 1fr) 12px; gap: 3px 16px; padding-block: 12px; }
 .fde-project-step .fde-step-name { grid-column: 1; }
 .fde-project-step summary::after { grid-column: 2; grid-row: 1 / 3; }
-.fde-project-step .fde-step-copy { margin-left: 0; padding-inline: 0; }
-.fde-project-label { color: var(--th-teal); font-size: .85rem; font-weight: 750; }
-.fde-milestones summary:hover .fde-step-name,
-.fde-milestones .is-reached .fde-step-number,
-.fde-milestones .is-current .fde-step-name { color: var(--th-green); }
-.fde-project-step.is-current details { border-color: var(--th-green); }
-.fde-milestones .is-current .fde-step-name {
-  text-shadow: 0 0 14px color-mix(in srgb, var(--th-green) 48%, transparent);
+.fde-project-label { color: var(--fde-muted); font-size: .85rem; font-weight: 750; }
+.fde-milestones .is-current details {
+  border-color: color-mix(in srgb, var(--th-green) 65%, var(--th-line));
+  box-shadow: 0 0 16px color-mix(in srgb, var(--th-green) 17%, transparent);
+}
+.fde-milestones .is-current .fde-step-name,
+.fde-milestones .is-current .fde-project-label,
+.fde-milestones .is-current .fde-step-number { color: var(--th-green); }
+.fde-milestones .is-current .fde-step-number {
+  border-color: var(--th-green);
+  background: var(--fde-active);
 }
 @media (prefers-reduced-motion: no-preference) {
-  .fde-milestones .is-current .fde-step-name { animation: fde-step-glow .65s ease-out; }
+  .fde-milestones .is-current .fde-step-name { animation: fde-step-glow .25s ease-out; }
 }
 @keyframes fde-step-glow {
-  40% { text-shadow: 0 0 24px color-mix(in srgb, var(--th-green) 82%, transparent); }
+  from { text-shadow: 0 0 14px color-mix(in srgb, var(--th-green) 65%, transparent); }
 }
 
 .fde-docs .reading.shell { max-width: 1480px; padding: 0 clamp(18px, 4vw, 56px); }
