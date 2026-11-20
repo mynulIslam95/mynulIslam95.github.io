@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>Functions &amp; scope | Learn with Mynul</title><meta name="description" content="Practice Python functions, return values, local scope and default parameters with payment and billing examples."><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=2"><link rel="stylesheet" href="../../assets/css/fde-layout.css?v=19"></head><body class="bootcamp-thesis fde-docs"><div class="reading shell"><a class="fde-skip" href="#main">Skip to content</a><header class="fde-docs-header"><a class="fde-back-button" href="../python-engineering-module-1.html">Go back</a><button class="theme-button" id="reading-theme" type="button" aria-label="Toggle light and dark theme">Light / Dark</button></header><div class="fde-docs-grid">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>Functions &amp; scope | Learn with Mynul</title><meta name="description" content="Practice Python functions, return values, local scope and default parameters with payment and billing examples."><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=2"><link rel="stylesheet" href="../../assets/css/fde-layout.css?v=26"></head><body class="bootcamp-thesis fde-docs"><div class="reading shell"><a class="fde-skip" href="#main">Skip to content</a><header class="fde-docs-header"><a class="fde-back-button" href="../python-engineering-module-1.html">Go back</a><button class="theme-button" id="reading-theme" type="button" aria-label="Toggle light and dark theme">Light / Dark</button></header><div class="fde-docs-grid">
 <aside class="fde-lesson-menu">
 <p class="fde-lesson-menu-title">Python lessons</p>
 <nav id="lessons" aria-label="Python lessons" data-python-course>
@@ -39,43 +39,49 @@
 <main id="main" class="fde-setup-lesson">
   <p class="breadcrumbs"><a href="../python-engineering-module-1.html">Course overview</a> / Core Python</p>
   <h1>Functions &amp; scope</h1>
-  <p>In the previous lesson, you checked one payment and then processed a batch. This time, move the decision into a function so the same rule can be reused. You’ll see what goes in, what comes back and which variables the function can change.</p>
+  <p>Reuse the payment rules from the <a href="lesson-1.html#topic-1">control flow lesson</a> without copying the decision for each request. Start with one calculation, then trace the value back to the caller before adding defaults or a loop.</p>
+
+  <p><a href="#function-code-puzzles">Jump to the runnable tricky questions</a>.</p>
 
   <section class="topic" id="topic-1">
     <h2>Turn one calculation into a function</h2>
     <h3>Read the structure before you run it</h3>
     <p>A function is a block of code you can call. It can take inputs, do some work and send a value back. Here is how to read the payment function.</p>
-    <table>
+    <div class="table-scroll"><table>
       <thead><tr><th scope="col">Part</th><th scope="col">What it does</th></tr></thead>
       <tbody>
         <tr><td><code>def remaining_balance(balance, expense):</code></td><td><code>def</code> defines the function and <code>remaining_balance</code> names it. The names inside the parentheses are parameters. The colon ends the header.</td></tr>
         <tr><td><code>return balance - expense</code></td><td>Indent the body four spaces. <code>return</code> ends the call and gives the calculated value back.</td></tr>
         <tr><td><code>remaining = remaining_balance(100, 12)</code></td><td>Call the function with arguments <code>100</code> and <code>12</code>. Assign the value it returns to <code>remaining</code>.</td></tr>
       </tbody>
-    </table>
-    <p>Create <code>payment_functions.py</code> in your practice folder. Run it from that folder with <code>py -3 payment_functions.py</code> on Windows or <code>python3 payment_functions.py</code> on macOS or Linux. Predict both results before you run it.</p>
+    </table></div>
+    <p>In the <code>python-practice</code> folder from <a href="setup.html">the setup lesson</a>, create <code>payment_functions.py</code>. Paste the code, save and run it with the command below. Predict the result first.</p>
+    <pre><code data-language="bash">uv run python payment_functions.py</code></pre>
+    <details class="fde-setup-answer"><summary>Run without uv</summary><p>On Windows use <code>py -3 payment_functions.py</code>. On macOS or Linux use <code>python3 payment_functions.py</code>. If <code>python</code> was the command you used in setup, keep using it.</p></details>
     <pre><code data-language="python">def remaining_balance(balance, expense):
     # Return a new balance for the caller to use.
     return balance - expense
 
 
 remaining = remaining_balance(100, 12)
-print(remaining)
-print(remaining_balance(expense=8, balance=50))</code></pre>
+print(remaining)</code></pre>
     <p><strong>Expected output</strong></p>
-    <pre><code data-language="text">88
-42</code></pre>
+    <pre><code data-language="text">88</code></pre>
     <h3>Follow the first call</h3>
     <ol>
       <li>Python reaches <code>def</code> and creates the function. Its body waits for a call.</li>
       <li>The call puts <code>100</code> in the local parameter <code>balance</code> and <code>12</code> in <code>expense</code>. The body subtracts them and returns <code>88</code>.</li>
-      <li>The caller assigns <code>88</code> to <code>remaining</code> and prints it. In the second call, <code>expense=8</code> and <code>balance=50</code> match the parameters by name.</li>
+      <li>The caller assigns <code>88</code> to <code>remaining</code> and prints it.</li>
     </ol>
-    <p>Replace <code>return balance - expense</code> with <code>print(balance - expense)</code>. Predict the first two lines. A function that reaches the end without returning a value gives the caller <code>None</code>.</p>
-    <details class="fde-setup-answer">
-      <summary>Check your prediction</summary>
-      <p>The first line is <code>88</code> from inside the function. The second is <code>None</code> from <code>print(remaining)</code>. Restore the <code>return</code> so the caller can use the number.</p>
-    </details>
+    <p><strong>Checkpoint.</strong> Change the call to <code>remaining_balance(50, 8)</code> and predict the result.</p>
+  </section>
+
+  <section class="topic" id="return-versus-print">
+    <h2>Return a value the caller can use</h2>
+    <p>Change the function body to <code>print(balance - expense)</code>, then run the original call with <code>100</code> and <code>12</code>. Why are there two lines?</p>
+    <pre><code data-language="text">88
+None</code></pre>
+    <p>The function prints <code>88</code>. It then reaches the end and gives <code>None</code> back to the caller. The caller’s <code>print(remaining)</code> displays that <code>None</code>. Restore <code>return balance - expense</code> if the caller needs the result for another calculation.</p>
   </section>
 
   <section class="topic" id="topic-3">
@@ -95,10 +101,30 @@ print(updated)</code></pre>
     <pre><code data-language="text">100
 88</code></pre>
     <p>Inside the function, the parameter <code>balance</code> is a local name. Assigning a new integer to it leaves the caller’s <code>balance</code> at 100. The returned 88 is now in <code>updated</code>. To keep 88 in the caller’s <code>balance</code>, write <code>balance = remaining_balance(balance, 12)</code>.</p>
+    <figure>
+      <img src="assets/function-call-scope.png" width="960" height="426" alt="The caller's balance is 100. The function receives 100 and 12, computes 88 locally and returns it. The caller saves 88 in updated while balance stays 100." loading="lazy">
+      <figcaption>Follow <code>100</code> into the call and <code>88</code> back out. The caller saves <code>88</code> in <code>updated</code>. Its own <code>balance</code> still holds <code>100</code>.</figcaption>
+    </figure>
     <p>Local scope applies to names. If you pass in a list and the function calls <code>append()</code> on it, the caller can see that change. You’ll explore this further in memory management.</p>
   </section>
 
-  <section class="topic" id="topic-5">
+  <section class="topic" id="topic-2">
+    <h2>Choose a default the caller can override</h2>
+    <p>A customer kickoff usually takes five minutes per data source. Put the usual value in the definition. Try both calls so you can see when Python uses the default.</p>
+    <pre><code data-language="python">def estimated_minutes(source_count, minutes_per_source=5):
+    # The caller can override the usual five minutes per source.
+    return source_count * minutes_per_source
+
+
+print(estimated_minutes(3))
+print(estimated_minutes(3, minutes_per_source=2))</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">15
+6</code></pre>
+    <p>The first call passes only the source count, so Python uses <code>5</code>. The second passes <code>2</code> for <code>minutes_per_source</code>. Put the required parameter before the one with a default in this definition. Positional arguments fill parameters in order. Keyword arguments choose a parameter by name, so <code>estimated_minutes(minutes_per_source=2, source_count=3)</code> also gives <code>6</code>.</p>
+  </section>
+
+    <section class="topic" id="topic-5">
     <h2>Reuse the payment rules in a loop</h2>
     <p>Now separate the decision from the report. The function decides the status of one payment. The loop updates the balance and prints the results. Before running this version, predict what happens to the balance after the EUR 120 request.</p>
     <pre><code data-language="python">def payment_status(balance, amount):
@@ -128,23 +154,7 @@ Balance: EUR 80</code></pre>
     <p>After EUR 12 is paid, the next call gets a balance of EUR 88. The EUR 120 request returns early with <code>Not enough balance</code>. The caller only subtracts approved amounts, so EUR 88 is still available for the next request. The docstring under <code>def</code> describes what the function returns and the unit it expects.</p>
   </section>
 
-  <section class="topic" id="topic-2">
-    <h2>Choose a default the caller can override</h2>
-    <p>A customer kickoff usually takes five minutes per data source. Put the usual value in the definition. Try both calls so you can see when Python uses the default.</p>
-    <pre><code data-language="python">def estimated_minutes(source_count, minutes_per_source=5):
-    # The caller can override the usual five minutes per source.
-    return source_count * minutes_per_source
-
-
-print(estimated_minutes(3))
-print(estimated_minutes(3, minutes_per_source=2))</code></pre>
-    <p><strong>Expected output</strong></p>
-    <pre><code data-language="text">15
-6</code></pre>
-    <p>The first call passes only the source count, so Python uses <code>5</code>. The second passes <code>2</code> for <code>minutes_per_source</code>. Put required parameters before ones with defaults.</p>
-  </section>
-
-  <section class="topic" id="module-check">
+<section class="topic" id="module-check">
     <h2>Build a voice clip billing function</h2>
     <p>In this practice app, each voice clip includes two free minutes. Write <code>billable_minutes(duration, included=2)</code> to return the chargeable minutes for one clip. Assume both values are non-negative whole minutes. Use a loop outside the function to total the results for <code>[1, 5, 2, 8]</code>.</p>
     <ul>
@@ -174,16 +184,67 @@ With 3 included: 2</code></pre>
     <p>Before moving on, explain where the total lives and why a clip exactly at the allowance returns zero.</p>
   </section>
 
+  <section class="topic" id="function-code-puzzles">
+    <h2>Tricky function questions you can run</h2>
+    <p>Predict the exact output or error before you run each short example. Then change one line and explain what changed.</p>
+    <h3>What prints when Python reaches def?</h3>
+    <pre><code data-language="python">def send():
+    print("Sent")
+
+print("Ready")
+send()</code></pre>
+    <details class="fde-setup-answer"><summary>Show answer</summary><p><code>Ready</code> prints before <code>Sent</code>. Defining the function makes it available. Its body runs at <code>send()</code>.</p></details>
+    <h3>What did the caller actually receive?</h3>
+    <pre><code data-language="python">def double(number):
+    print(number * 2)
+
+result = double(4)
+print(result)</code></pre>
+    <details class="fde-setup-answer"><summary>Show answer</summary><p>The two lines are <code>8</code> and <code>None</code>. The first comes from inside the function. The second is the return value because the function reached its end. Return <code>number * 2</code> if the caller needs the result.</p></details>
+    <h3>Which request has no decision?</h3>
+    <pre><code data-language="python">def payment_status(amount):
+    if amount &gt; 0:
+        return "Ready"
+
+print(payment_status(0), payment_status(3))</code></pre>
+    <details class="fde-setup-answer"><summary>Show answer</summary><p>It prints <code>None Ready</code>. Zero reaches the end without a return. Add an explicit <code>return "Invalid amount"</code> below the branch so every input gets a status.</p></details>
+    <h3>Why did only one caller’s value change?</h3>
+    <pre><code data-language="python">def adjust(balance, history):
+    balance -= 5
+    history.append(balance)
+    return balance
+
+balance = 100
+history = []
+print(adjust(balance, history))
+print(balance, history)</code></pre>
+    <details class="fde-setup-answer"><summary>Show answer</summary><p>It prints <code>95</code> and then <code>100 [95]</code>. The assignment binds a new integer to the local name. <code>append()</code> changes the list the caller and function both refer to.</p></details>
+    <h3>Why did the second ticket inherit the first?</h3>
+    <pre><code data-language="python">def record(ticket, history=[]):
+    history.append(ticket)
+    return history
+
+print(record("A"))
+print(record("B"))</code></pre>
+    <details class="fde-setup-answer"><summary>Show answer</summary><p>It prints <code>['A']</code> and then <code>['A', 'B']</code>. The default list is created when Python defines the function, then shared across omitted-argument calls. Use <code>history=None</code> and create a list inside the function when <code>history is None</code>.</p></details>
+    <h3>Which parameter gets two values?</h3>
+    <pre><code data-language="python">def estimate(count, minutes_per_source=5):
+    return count * minutes_per_source
+
+print(estimate(3, count=4))</code></pre>
+    <details class="fde-setup-answer"><summary>Show answer</summary><p>The call raises <code>TypeError</code> before it enters the body. Both <code>3</code> and <code>count=4</code> target <code>count</code>. Use <code>estimate(3, minutes_per_source=4)</code> to get <code>12</code>.</p></details>
+  </section>
+
   <section class="topic" id="lambda-functions">
     <h2>Built-in functions, named functions and lambda</h2>
-    <table>
+    <div class="table-scroll"><table>
       <thead><tr><th scope="col">Kind</th><th scope="col">Structure and when to reach for it</th></tr></thead>
       <tbody>
         <tr><td>Built-in</td><td>Call a function Python already provides, such as <code>abs(-8)</code> for the distance from zero.</td></tr>
         <tr><td>Named function</td><td>Use <code>def</code>, a named header and an indented body when you want a readable name, multiple steps or a reusable rule.</td></tr>
         <tr><td>Lambda</td><td>Use <code>lambda parameter: expression</code> when you need to pass a short function to another function. The expression’s value is returned automatically.</td></tr>
       </tbody>
-    </table>
+    </table></div>
     <p>Suppose a reviewer wants the largest adjustments first, including refunds. <code>key=</code> tells <code>sorted()</code> which value to use for each item. Both versions here use <code>abs(amount)</code> as that value. <code>reverse=True</code> puts the largest first.</p>
     <pre><code data-language="python">def review_size(amount):
     # Use the size of the adjustment, whether it is positive or negative.
@@ -441,7 +502,7 @@ print(append_event(&quot;new&quot;))</code></pre>
     </details>
     </details>
     <details class="fde-setup-answer">
-      <summary>Eight tricky interview questions</summary>
+      <summary>Eight quick interview checks</summary>
       <details class="fde-setup-answer">
       <summary>In <code>def charge(minutes):</code> and <code>charge(5)</code>, which is the parameter?</summary>
       <p><code>minutes</code> is the parameter. <code>5</code> is the argument passed to it.</p>
