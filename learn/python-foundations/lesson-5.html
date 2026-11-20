@@ -26,7 +26,49 @@ print(parse_amount(&quot;12&quot;))
 print(parse_amount(&quot;oops&quot;))
 </code></pre><h4>Output</h4><pre><code data-language="text">12
 invalid input
-</code></pre><h3>কীভাবে এই result হলো?</h3><ol><li>"12" conversion succeeds, except চলে না, amount 12 return হয়।</li><li>"oops"-এ int ValueError দেয়; execution matched handler-এ যায়।</li><li>Function এই ছোট UI example-এ error label return করছে। Reusable calculation API-তে mixed return এড়িয়ে ValueError raise করা ভালো হতে পারে।</li></ol><div class="concept-check"><strong>এখানে যেটা ভুল হতে পারে</strong><p>সব error-এ 0 return করলে genuine zero ও malformed data মিশে যায়। <code>except Exception: pass</code> unexpected bug-ও লুকাতে পারে।</p></div><p><code>raise ValueError("Positive amount required")</code> caller-কে invalid value জানায়। <code>finally</code> cleanup code success/failure দুই অবস্থাতেই চালাতে পারে। <code>except ValueError as error</code> caught error bind করে; নতুন error raise ... from error করলে original cause preserve হয়। <code>try</code>-এর else block শুধু exception না হলে চলে।</p><section class="try-change"><h3>এবার তুমি বদলে দেখো</h3><p>Function-এ int-এর পরে amount <= 0 হলে ValueError raise করো। Existing try block-এর ভিতরে রাখলে কী হবে?</p><details><summary>Reasoning মিলিয়ে দেখো</summary><div><p>একই ValueError handler catch করবে। যদি invalid value-এর reason caller-কে আলাদা দিতে চাও, parse ও business validation আলাদা করো বা specific messageসহ raise করো।</p></div></details></section></section><p>When Python shows a traceback, read the last line for the error type and message. Then look for the line from your own file just above it. <a href="lesson-8.html#topic-4">See a traceback example</a>.</p><p>Next: <a href="lesson-5.html#topic-2">File I/O operations</a></p><section class="topic" id="topic-2"><h2>1.5.2 pathlib and context managers</h2><p>Receipt save করে পরে read করবো। Path file-এর location represent করে, open actual resource খুলে দেয়। নিচের temporary folder code শেষ হলে clean হয়, তাই নিজের files overwrite করবে না।</p><h3>Code-টা run করি</h3><pre><code data-language="python">from pathlib import Path
+</code></pre><h3>কীভাবে এই result হলো?</h3><ol><li>"12" conversion succeeds, except চলে না, amount 12 return হয়।</li><li>"oops"-এ int ValueError দেয়; execution matched handler-এ যায়।</li><li>Function এই ছোট UI example-এ error label return করছে। Reusable calculation API-তে mixed return এড়িয়ে ValueError raise করা ভালো হতে পারে।</li></ol><div class="concept-check"><strong>এখানে যেটা ভুল হতে পারে</strong><p>সব error-এ 0 return করলে genuine zero ও malformed data মিশে যায়। <code>except Exception: pass</code> unexpected bug-ও লুকাতে পারে।</p></div><p><code>raise ValueError("Positive amount required")</code> caller-কে invalid value জানায়। <code>finally</code> cleanup code success/failure দুই অবস্থাতেই চালাতে পারে। <code>except ValueError as error</code> caught error bind করে; নতুন error raise ... from error করলে original cause preserve হয়। <code>try</code>-এর else block শুধু exception না হলে চলে।</p><section class="try-change"><h3>এবার তুমি বদলে দেখো</h3><p>Function-এ int-এর পরে amount <= 0 হলে ValueError raise করো। Existing try block-এর ভিতরে রাখলে কী হবে?</p><details><summary>Reasoning মিলিয়ে দেখো</summary><div><p>একই ValueError handler catch করবে। যদি invalid value-এর reason caller-কে আলাদা দিতে চাও, parse ও business validation আলাদা করো বা specific messageসহ raise করো।</p></div></details></section></section><p>When Python shows a traceback, read the last line for the error type and message. Then look for the line from your own file just above it. <a href="lesson-8.html#topic-4">See a traceback example</a>.</p><p>Next: <a href="lesson-5.html#topic-2">File I/O operations</a></p>
+  <section class="topic" id="inspection-exceptions" lang="en">
+    <h2>Raise an error when an inspection rule fails</h2>
+
+    <p>The site needs at least two completed inspections before publishing an average. A count like <code>"oops"</code> is invalid input. A count of <code>1</code> is valid input that falls below the site’s minimum. Give the caller a different error for each case.</p>
+    <pre><code data-language="python">class InspectionMinimumError(Exception):
+    pass
+
+
+def average_score(total_score, raw_count):
+    try:
+        count = int(raw_count)
+    except ValueError as error:
+        # Keep the original conversion error available for debugging.
+        raise ValueError(&quot;Enter a whole inspection count.&quot;) from error
+
+    if count &lt; 0:
+        raise ValueError(&quot;Inspection count cannot be negative.&quot;)
+    if count &lt; 2:
+        raise InspectionMinimumError(&quot;At least two inspections are required.&quot;)
+
+    return total_score / count
+
+
+for raw_count in [&quot;oops&quot;, &quot;1&quot;, &quot;2&quot;]:
+    try:
+        average = average_score(170, raw_count)
+    except (ValueError, InspectionMinimumError) as error:
+        print(error)
+    else:
+        print(f&quot;Average: {average:.1f}&quot;)</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">Enter a whole inspection count.
+At least two inspections are required.
+Average: 85.0</code></pre>
+
+    <p><code>raise</code> stops the current call and sends the exception to a handler. <code>raise ... from error</code> preserves the cause in a traceback. The <code>else</code> block reports success only if the call completes without an exception. An unexpected programming error can still reach the caller.</p>
+    <details class="fde-setup-answer">
+      <summary>Predict what happens with zero and negative counts</summary>
+      <p><code>"0"</code> raises <code>InspectionMinimumError</code> before any division. <code>"-1"</code> raises <code>ValueError</code> because a negative count is invalid.</p>
+    </details>
+  </section>
+<section class="topic" id="topic-2"><h2>1.5.2 pathlib and context managers</h2><p>Receipt save করে পরে read করবো। Path file-এর location represent করে, open actual resource খুলে দেয়। নিচের temporary folder code শেষ হলে clean হয়, তাই নিজের files overwrite করবে না।</p><h3>Code-টা run করি</h3><pre><code data-language="python">from pathlib import Path
 from tempfile import TemporaryDirectory
 
 with TemporaryDirectory() as folder:
@@ -61,6 +103,42 @@ ready</code></pre>
 
   </section>
 
+
+  <section class="topic" id="inspection-file-cursor" lang="en">
+    <h2>Read, rewind and append to an inspection file</h2>
+
+    <p>A file has a current read position. After <code>read()</code> reaches the end, another <code>read()</code> returns an empty string. Use <code>seek(0)</code> to go back to the start. Run this example in a temporary folder so your own report files stay safe.</p>
+    <pre><code data-language="python">from pathlib import Path
+from tempfile import TemporaryDirectory
+
+with TemporaryDirectory() as folder:
+    path = Path(folder) / &quot;inspection.txt&quot;
+
+    with path.open(&quot;x&quot;, encoding=&quot;utf-8&quot;) as report:
+        report.write(&quot;Status: open\n&quot;)
+
+    with path.open(&quot;a&quot;, encoding=&quot;utf-8&quot;) as report:
+        report.write(&quot;Review: pending\n&quot;)
+
+    with path.open(&quot;r&quot;, encoding=&quot;utf-8&quot;) as report:
+        print(report.readline().strip())
+        saved_position = report.tell()
+        print(report.read().strip())
+        print(&quot;At end:&quot;, repr(report.read()))
+        report.seek(saved_position)
+        print(&quot;Read again:&quot;, report.readline().strip())
+        report.seek(0)
+        print(&quot;From start:&quot;, report.readline().strip())</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">Status: open
+Review: pending
+At end: &#x27;&#x27;
+Read again: Review: pending
+From start: Status: open</code></pre>
+
+    <p><code>x</code> creates a new file and raises <code>FileExistsError</code> if it already exists. <code>a</code> appends, <code>r</code> reads and <code>w</code> clears an existing file when it opens it for writing. Each <code>with</code> closes the file when its block ends.</p>
+    <p>In text mode, treat the result of <code>tell()</code> as a saved position you can give back to <code>seek()</code>. To change a field in a short report, read and edit the text, then write a separate revised file. A character index from <code>find()</code> may differ from the position required by <code>seek()</code>.</p>
+  </section>
 <section class="topic" id="topic-3"><h2>1.5.3 CSV parsing</h2><p>CSV-এর একটি merchant name-এ comma আছে: "Shop, Berlin"। Manual split(",") করলে field ভেঙে যাবে। DictReader header names দিয়ে প্রতিটি row-এর dict দেয়। এখানে disk file-এর বদলে StringIO দিয়ে text-কে file-like stream বানাচ্ছি।</p><h3>Code-টা run করি</h3><pre><code data-language="python">import csv
 from io import StringIO
 
