@@ -1,4 +1,4 @@
-<!doctype html><html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>1.3 Functions, Scope &amp; Modules | Learn with Mynul</title><meta name="description" content="Python শিখি transaction, customer data আর service workflow দিয়ে। Explanations, runnable examples ও practice solutions।"><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=2"><link rel="stylesheet" href="../../assets/css/fde-layout.css?v=19"></head><body class="bootcamp-thesis fde-docs"><div class="reading shell"><a class="fde-skip" href="#main">Skip to content</a><header class="fde-docs-header"><a class="fde-back-button" href="../python-engineering-module-1.html">Go back</a><button class="theme-button" id="reading-theme" type="button" aria-label="Toggle light and dark theme">Light / Dark</button></header><div class="fde-docs-grid">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>Functions &amp; scope | Learn with Mynul</title><meta name="description" content="Practice Python functions, return values, local scope and default parameters with payment and billing examples."><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=2"><link rel="stylesheet" href="../../assets/css/fde-layout.css?v=19"></head><body class="bootcamp-thesis fde-docs"><div class="reading shell"><a class="fde-skip" href="#main">Skip to content</a><header class="fde-docs-header"><a class="fde-back-button" href="../python-engineering-module-1.html">Go back</a><button class="theme-button" id="reading-theme" type="button" aria-label="Toggle light and dark theme">Light / Dark</button></header><div class="fde-docs-grid">
 <aside class="fde-lesson-menu">
 <p class="fde-lesson-menu-title">Python lessons</p>
 <nav aria-label="Python lessons" data-python-course>
@@ -15,69 +15,419 @@
     <li><a href="lesson-5.html#topic-2">File I/O operations</a></li>
   </ol>
 </nav></aside>
-<main id="main"><p class="breadcrumbs"><a href="../python-engineering-module-1.html">Module 1</a> / Lesson 1.3</p><p class="chapter-kicker">LESSON 1.3</p><h1>1.3 Functions, Scope &amp; Modules</h1><div class="scenario"><p>একই balance calculation বারবার copy করতে হচ্ছে। এবার একটা reusable function বানাবো। তুমি input দেবে, function result ফেরত দেবে। তারপর scope, defaults আর imports-এর tricky parts দেখবো।</p></div><p><strong>এই Lesson শেষে:</strong> Reusable functions লিখতে, mutable default bug এড়াতে আর script-কে modules-এ ভাগ করতে পারবে।</p><nav class="topic-nav" aria-label="Lesson topics"><ol type="i"><li><a href="#topic-1">1.3.1 Parameters and returns</a></li><li><a href="#topic-2">1.3.2 Default arguments</a></li><li><a href="#topic-3">1.3.3 Scope and pure functions</a></li><li><a href="#topic-4">1.3.4 Imports and modules</a></li><li><a href="#topic-5">1.3.5 Docstrings and decomposition</a></li></ol></nav><section class="topic" id="topic-1"><h2>1.3.1 Parameters and returns</h2><p>একই balance calculation তিন জায়গায় copy হয়েছে। Function-এ rule রাখলে caller input দেয় আর result নেয়। প্রথমে সাধারণ function, তারপর validation। এখানে <code>def</code> function define করে; body call করার সময় execute হয়।</p><h3>Code-টা run করি</h3><pre><code data-language="python">def remaining_balance(balance, expense):
-    result = balance - expense
-    return result
+<main id="main" class="fde-setup-lesson">
+  <p class="breadcrumbs"><a href="../python-engineering-module-1.html">Python overview</a> / Core Python</p>
+  <h1>Functions &amp; scope</h1>
+  <p>In the previous lesson, you checked one payment and then processed a batch. This time, move the decision into a function so the same rule can be reused. You’ll see what goes in, what comes back and which variables the function can change.</p>
+
+  <section class="topic" id="topic-1">
+    <h2>Turn one calculation into a function</h2>
+    <p>Create <code>payment_functions.py</code> in your practice folder. Run it from that folder with <code>py -3 payment_functions.py</code> on Windows or <code>python3 payment_functions.py</code> on macOS or Linux. Predict both results before you run it.</p>
+    <pre><code data-language="python">def remaining_balance(balance, expense):
+    # Return a new balance for the caller to use.
+    return balance - expense
+
 
 remaining = remaining_balance(100, 12)
 print(remaining)
-</code></pre><h4>Output</h4><pre><code data-language="text">88
-</code></pre><h3>কীভাবে এই result হলো?</h3><ol><li>Definition পড়ে Python function তৈরি করে, body তখনো চালায় না।</li><li>Call-এর 100 ও 12 function-এর balance ও expense parameters-এ যায়।</li><li>return 88 caller-কে দেয়। Caller সেটা remaining-এ রেখে print করে।</li></ol><div class="concept-check"><strong>এখানে যেটা ভুল হতে পারে</strong><p>ভেতরে শুধু print(result) লিখলে screen-এ দেখা যাবে, কিন্তু function default None return করবে। Return-এর পরে একই call-এর body আর execute হয় না।</p></div><p>Amount-এর unit নামের মধ্যে রাখো যখন cents ব্যবহার করবে। Function parameter হচ্ছে definition-এর নাম; argument হচ্ছে call-এর actual input। Keyword দিয়ে <code>remaining_balance(expense=12, balance=100)</code>-ও call করা যায়।</p><section class="try-change"><h3>এবার তুমি বদলে দেখো</h3><p>Function-এর return result-এর বদলে print(result) দাও। বাইরের print(remaining) কী দেখাবে?</p><details><summary>Reasoning মিলিয়ে দেখো</summary><div><p>ভেতরের print 88 দেখাবে, বাইরের print None দেখাবে। Display করা আর caller-কে data দেওয়া আলাদা।</p></div></details></section></section><section class="topic" id="topic-2"><h2>1.3.2 Default arguments</h2><p>অনেক calls-এ একই fee লাগলে default parameter useful। কিন্তু mutable default-এর lifetime বুঝতে হবে। এখানে None দিয়ে “কোনো tags দেওয়া হয়নি” represent করছি।</p><h3>Code-টা run করি</h3><pre><code data-language="python">def add_tag(tag, tags=None):
-    if tags is None:
-        result = []
-    else:
-        result = tags.copy()
-    result.append(tag)
-    return result
+print(remaining_balance(expense=8, balance=50))</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">88
+42</code></pre>
+    <p><code>def</code> defines the function. Python runs the indented body when you call it. <code>balance</code> and <code>expense</code> are <strong>parameters</strong>, the names in the definition. <code>100</code> and <code>12</code> are <strong>arguments</strong>, the values passed by the caller. In the second call, keywords match each value to its parameter by name.</p>
+    <p><code>return</code> ends the call and sends a value back. Here the caller saves it as <code>remaining</code> and decides when to print it. Replace <code>return balance - expense</code> with <code>print(balance - expense)</code>, then predict the first two lines again.</p>
+    <details class="fde-setup-answer">
+      <summary>Check your prediction</summary>
+      <p>The first line is <code>88</code> from inside the function. The second is <code>None</code> from <code>print(remaining)</code>. Restore the <code>return</code> so the caller can use the number.</p>
+    </details>
+  </section>
 
-print(add_tag(&quot;billing&quot;))
-print(add_tag(&quot;urgent&quot;))
-</code></pre><h4>Output</h4><pre><code data-language="text">[&#x27;billing&#x27;]
-[&#x27;urgent&#x27;]
-</code></pre><h3>কীভাবে এই result হলো?</h3><ol><li>Caller tags দেয়নি, তাই default None।</li><li>প্রতিবার function body-তে নতুন result list বানানো হচ্ছে।</li><li>দ্বিতীয় call আগের billing list reuse করছে না।</li></ol><div class="concept-check"><strong>এখানে যেটা ভুল হতে পারে</strong><p><code>def add_tag(tag, tags=[])</code>-এর default list definition-এর সময় একবার তৈরি হয়। সেটা mutate করলে consecutive calls data share করবে।</p></div><p>সাধারণ numeric default যেমন <code>fee=2</code> mutable-list problem তৈরি করে না। Default থাকলেও caller explicit value দিয়ে override করতে পারে।</p><section class="try-change"><h3>এবার তুমি বদলে দেখো</h3><p>original = ["open"] দিয়ে add_tag("review", original) call করো। original বদলাবে কি?</p><details><summary>Reasoning মিলিয়ে দেখো</summary><div><p>এই implementation passed list copy করে। Returned list open/review, original শুধু open থাকবে।</p></div></details></section></section><section class="topic" id="topic-3"><h2>1.3.3 Scope and pure functions</h2><p>Calculation function-এর বাইরের balance বদলাবে, নাকি নতুন value ফেরত দেবে? Contract আগে ঠিক করি। এখানে pure calculation রাখবো: input থেকে result, বাইরের state edit নয়।</p><h3>Code-টা run করি</h3><pre><code data-language="python">balance = 100
-def after_expense(current, amount):
-    current = current - amount
-    return current
+  <section class="topic" id="topic-3">
+    <h2>See which balance changes</h2>
+    <p>Replace the file with this version. The caller and the function both use the name <code>balance</code>. Predict which line prints 100.</p>
+    <pre><code data-language="python">def remaining_balance(balance, expense):
+    # This assignment changes the local name inside the function.
+    balance = balance - expense
+    return balance
 
-updated = after_expense(balance, 12)
+
+balance = 100
+updated = remaining_balance(balance, 12)
 print(balance)
-print(updated)
-</code></pre><h4>Output</h4><pre><code data-language="text">100
-88
-</code></pre><h3>কীভাবে এই result হলো?</h3><ol><li>Function-এর current local name call-এর value refer করছে।</li><li>Local reassignment বাইরের balance নামকে reassign করে না।</li><li>Caller নতুন result updated-এ রেখেছে, তাই original balance 100।</li></ol><div class="concept-check"><strong>এখানে যেটা ভুল হতে পারে</strong><p>Global variable silently বদলালে call order ও tests একে অপরকে affect করতে পারে। Mutable object pass করলে ভিতরে mutate করা সম্ভব; local name হওয়া deep copy নয়।</p></div><p>Scope lookup সাধারণভাবে local, enclosing function, module global, তারপর built-ins-এর দিকে যায়। এই stage-এ global/nonlocal দিয়ে business state ছড়ানোর বদলে explicit input ও return রাখো।</p><section class="try-change"><h3>এবার তুমি বদলে দেখো</h3><p>ব্যবহার শেষে balance-ই update করতে চাইলে caller কী লিখবে?</p><details><summary>Reasoning মিলিয়ে দেখো</summary><div><p><code>balance = after_expense(balance, 12)</code>। Side effect লুকানো নয়, assignment caller-এর কাছে visible।</p></div></details></section></section><section class="topic" id="topic-4"><h2>1.3.4 Imports and modules</h2><p>Module হলো একটা Python file। Function import করে reuse করতে চাই, কিন্তু import করলেই CLI prompt শুরু হোক সেটা চাই না। নিচের file <code>report.py</code> নামে save করো।</p><h3>Code-টা run করি</h3><pre><code data-language="python">def total_expenses(amounts):
-    return sum(amounts)
+print(updated)</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">100
+88</code></pre>
+    <p>Inside the function, the parameter <code>balance</code> is a local name. Assigning a new integer to it leaves the caller’s <code>balance</code> at 100. The returned 88 is now in <code>updated</code>. To keep 88 in the caller’s <code>balance</code>, write <code>balance = remaining_balance(balance, 12)</code>.</p>
+    <p>Local scope applies to names. If you pass in a list and the function calls <code>append()</code> on it, the caller can see that change. You’ll explore this further in memory management.</p>
+  </section>
 
-def main():
-    print(total_expenses([12, 8]))
+  <section class="topic" id="topic-5">
+    <h2>Reuse the payment rules in a loop</h2>
+    <p>Now separate the decision from the report. The function decides the status of one payment. The loop updates the balance and prints the results. Before running this version, predict what happens to the balance after the EUR 120 request.</p>
+    <pre><code data-language="python">def payment_status(balance, amount):
+    &quot;&quot;&quot;Return the decision for one payment in whole euros.&quot;&quot;&quot;
+    if amount &lt;= 0:
+        return &quot;Invalid amount&quot;
+    if amount &gt; balance:
+        return &quot;Not enough balance&quot;
+    return &quot;Approved&quot;
 
-if __name__ == &quot;__main__&quot;:
-    main()
-</code></pre><h4>Output</h4><pre><code data-language="text">20
-</code></pre><h3>কীভাবে এই result হলো?</h3><ol><li>python report.py দিয়ে run করলে special name __name__ হয় __main__, তাই main call হয়।</li><li>অন্য file থেকে import report করলে __name__ হয় report; guard-এর condition false।</li><li>তখন report.total_expenses([12, 8]) call করা যাবে, কিন্তু CLI print automatically হবে না।</li></ol><div class="concept-check"><strong>এখানে যেটা ভুল হতে পারে</strong><p>Import top-level statements execute করতে পারে। Guard ছাড়া input(), file write বা network call থাকলে import-এ unexpected work হবে। নিজের file json.py রাখলে standard library shadow করতে পারে।</p></div><p>ছোট project-এ fees.py calculation, io_helpers.py file handling আর main.py CLI entry point হতে পারে। প্রতিটি ছোট expression-এর জন্য আলাদা file বানানো প্রয়োজন নেই।</p><section class="try-change"><h3>এবার তুমি বদলে দেখো</h3><p>একই folder-এ অন্য file থেকে <code>from report import total_expenses</code> করো। Import নিজে 20 print করবে কি?</p><details><summary>Reasoning মিলিয়ে দেখো</summary><div><p>না, এই guard থাকার কারণে print হবে শুধু explicitly function call করলে। পরে print(total_expenses([5, 6])) দিলে 11।</p></div></details></section></section><section class="topic" id="topic-5"><h2>1.3.5 Docstrings and decomposition</h2><p>একটা function raw input parse, fee calculate, file save ও receipt print সব করলে failure-এর জায়গা খুঁজে পাওয়া কঠিন। Small responsibility বেছে readable নাম ও contract লিখি।</p><h3>Code-টা run করি</h3><pre><code data-language="python">def total_positive_expenses(amounts):
-    &quot;&quot;&quot;Return the total of positive whole-euro expenses.&quot;&quot;&quot;
-    total = 0
-    for amount in amounts:
-        if amount &gt; 0:
-            total += amount
-    return total
 
-print(total_positive_expenses([12, -5, 8]))
-</code></pre><h4>Output</h4><pre><code data-language="text">20
-</code></pre><h3>কীভাবে এই result হলো?</h3><ol><li>Docstring function-এর input unit ও selection rule বলছে।</li><li>Loop-এ -5 বাদ যায়। 12 ও 8 total হয়।</li><li>Return value নিয়ে caller display, save বা আরও calculation করতে পারে।</li></ol><div class="concept-check"><strong>এখানে যেটা ভুল হতে পারে</strong><p>Docstring-এ code-এর প্রতিটি line repeat করার দরকার নেই। Unit, surprising rule আর invalid-input behavior বেশি useful। Naming সুন্দর হলেও wrong business rule tests ছাড়া ধরা নাও পড়তে পারে।</p></div><section class="try-change"><h3>এবার তুমি বদলে দেখো</h3><p>Zero include করলে এই total বদলাবে কি? Count-ও return করলে কী difference হবে?</p><details><summary>Reasoning মিলিয়ে দেখো</summary><div><p>Zero যোগ করলে total বদলায় না। কিন্তু accepted expense count রাখলে zero valid কি না policy গুরুত্বপূর্ণ। Output contract অনুযায়ী test বদলাবে।</p></div></details></section></section><section class="debug-box"><h2>Debugging: কোথা থেকে শুরু করবে?</h2><p>Caller None পাচ্ছে? Function-এ return আছে কি না দেখো। Calls-এর মধ্যে আগের values থাকছে? Mutable default আছে কি না দেখো। Import-এর সময় CLI শুরু হচ্ছে? Entry-point guard check করো।</p></section><section class="practice" id="practice-1"><h3>Practice 1: একই Calculation Reuse করো</h3><p>remaining(balance, expense) function লিখো। (100,12) আর (50,8) input-এ result return করবে। Function-এর মধ্যে print করবে না।</p><details><summary>Hint</summary><div><p>আগের example-এর return pattern follow করো।</p></div></details><details><summary>See Solution</summary><div><p>Caller result display করবে, function calculation own করবে।</p><h4>Solution-টা বুঝে নিই</h4><p>Function-এর ভিতরের return result caller-কে দেয়। দুই call আলাদা inputs পেয়েছে, তাই result 88 ও 42। ভেতরে print থাকলে বাইরে reuse করার value পাওয়া যেত না।</p><pre><code data-language="python">def remaining(balance, expense):
-    return balance - expense
-print(remaining(100, 12))
-print(remaining(50, 8))
-</code></pre><h4>Output</h4><pre><code data-language="text">88
-42
-</code></pre></div></details><h4>নিজের কাজ মিলিয়ে দেখো</h4><p>Output 88 ও 42। print ব্যবহার করে return বাদ দিলে caller কেন None পায় explain করো।</p></section><section class="practice" id="practice-2"><h3>Practice 2: Request History মিশবে না</h3><p>append_event(event, history=None) লিখো। নতুন result list return করবে; passed history change করবে না।</p><details><summary>Hint</summary><div><p>None হলে fresh list, অন্যথায় copy।</p></div></details><details><summary>See Solution</summary><div><p>State function-এর বাইরে লুকিয়ে রাখার দরকার নেই।</p><h4>Solution-টা বুঝে নিই</h4><p>None হলে fresh result, history থাকলে copy। Caller-এর old list edit না করে returned result-এ নতুন event append হয়েছে।</p><pre><code data-language="python">def append_event(event, history=None):
+balance = 100
+for amount in [12, 120, 0, 8]:
+    # Reuse the decision with the balance for this turn.
+    status = payment_status(balance, amount)
+    if status == &quot;Approved&quot;:
+        balance -= amount
+    print(f&quot;EUR {amount}: {status}&quot;)
+
+print(f&quot;Balance: EUR {balance}&quot;)</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">EUR 12: Approved
+EUR 120: Not enough balance
+EUR 0: Invalid amount
+EUR 8: Approved
+Balance: EUR 80</code></pre>
+    <p>After EUR 12 is paid, the next call gets a balance of EUR 88. The EUR 120 request returns early with <code>Not enough balance</code>. The caller only subtracts approved amounts, so EUR 88 is still available for the next request. The docstring under <code>def</code> describes what the function returns and the unit it expects.</p>
+  </section>
+
+  <section class="topic" id="topic-2">
+    <h2>Choose a default the caller can override</h2>
+    <p>A customer kickoff usually takes five minutes per data source. Put the usual value in the definition. Try both calls so you can see when Python uses the default.</p>
+    <pre><code data-language="python">def estimated_minutes(source_count, minutes_per_source=5):
+    # The caller can override the usual five minutes per source.
+    return source_count * minutes_per_source
+
+
+print(estimated_minutes(3))
+print(estimated_minutes(3, minutes_per_source=2))</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">15
+6</code></pre>
+    <p>The first call passes only the source count, so Python uses <code>5</code>. The second passes <code>2</code> for <code>minutes_per_source</code>. Put required parameters before ones with defaults.</p>
+  </section>
+
+  <section class="topic" id="module-check">
+    <h2>Build a voice clip billing function</h2>
+    <p>In this practice app, each voice clip includes two free minutes. Write <code>billable_minutes(duration, included=2)</code> to return the chargeable minutes for one clip. Assume both values are non-negative whole minutes. Use a loop outside the function to total the results for <code>[1, 5, 2, 8]</code>.</p>
+    <ul>
+      <li>A clip at or below its allowance returns <code>0</code>. A longer clip returns the difference.</li>
+      <li>The batch should print <code>Billable minutes: 9</code>. An empty batch should print <code>Billable minutes: 0</code>.</li>
+      <li>Call the function with <code>duration=5</code> and <code>included=3</code>. The caller should print <code>With 3 included: 2</code>.</li>
+    </ul>
+    <details class="fde-setup-answer">
+      <summary>Reveal the commented solution</summary>
+      <pre><code data-language="python">def billable_minutes(duration, included=2):
+    &quot;&quot;&quot;Return the minutes to charge for one voice clip.&quot;&quot;&quot;
+    # Charge zero when the clip fits in the included time.
+    if duration &lt;= included:
+        return 0
+    return duration - included
+
+
+total = 0
+for duration in [1, 5, 2, 8]:
+    total += billable_minutes(duration)
+print(f&quot;Billable minutes: {total}&quot;)
+print(f&quot;With 3 included: {billable_minutes(5, included=3)}&quot;)</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">Billable minutes: 9
+With 3 included: 2</code></pre>
+    </details>
+    <p>Before moving on, explain where the total lives and why a clip exactly at the allowance returns zero.</p>
+  </section>
+
+  <section class="topic" id="functions-practice">
+    <h2>Project and workplace practice</h2>
+    <p>Choose a scenario, write the function and call it with the sample inputs before checking the solution.</p>
+    <details class="fde-setup-answer">
+      <summary>Eight bootcamp project walkthroughs</summary>
+      <details class="fde-setup-answer">
+      <summary>Capstone 01 · OmniGuard</summary>
+      <p>Use one function to check a connector's approval in the dashboard and the launch command.</p><pre><code data-language="python">def can_launch(owner_approved, review_passed):
+    # Require both approvals for every caller.
+    return owner_approved and review_passed
+
+
+print(can_launch(True, False))
+print(can_launch(True, True))</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">False
+True</code></pre>
+    </details>
+<details class="fde-setup-answer">
+      <summary>Capstone 02 · AuditMesh</summary>
+      <p>Build a close-or-review status that depends on the checks left and the reviewer ID.</p><pre><code data-language="python">def audit_status(checks_left, review_id):
+    # A missing ID means the review is still pending.
+    if checks_left == 0 and review_id is not None:
+        return &quot;Ready to close&quot;
+    return &quot;Keep open&quot;
+
+
+print(audit_status(0, None))
+print(audit_status(0, &quot;007&quot;))</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">Keep open
+Ready to close</code></pre>
+    </details>
+<details class="fde-setup-answer">
+      <summary>Project 03 · Self-host an LLM</summary>
+      <p>Compute memory left after loading a model. Allow callers to supply a different runtime overhead.</p><pre><code data-language="python">def memory_left(available_gb, model_gb, runtime_gb=2):
+    # Subtract both requirements from the available memory.
+    return available_gb - model_gb - runtime_gb
+
+
+print(memory_left(8, 6))
+print(memory_left(8, 6, runtime_gb=1))</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">0
+1</code></pre>
+    </details>
+<details class="fde-setup-answer">
+      <summary>Project 04 · Run an LLM on mobile devices</summary>
+      <p>Use a function to keep the battery cutoff in one place.</p><pre><code data-language="python">def can_run_locally(battery_percent, minimum_percent=20):
+    # The exact cutoff is allowed.
+    return battery_percent &gt;= minimum_percent
+
+
+print(can_run_locally(20))
+print(can_run_locally(20, minimum_percent=25))</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">True
+False</code></pre>
+    </details>
+<details class="fde-setup-answer">
+      <summary>Project 05 · Multimodal document intelligence</summary>
+      <p>Let two parts of an app reuse the same extraction review decision.</p><pre><code data-language="python">def needs_review(confidence_percent, extraction_failed):
+    # A failed extraction needs review regardless of confidence.
+    return extraction_failed or confidence_percent &lt; 80
+
+
+print(needs_review(92, True))
+print(needs_review(80, False))</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">True
+False</code></pre>
+    </details>
+<details class="fde-setup-answer">
+      <summary>Project 06 · Enterprise lead management</summary>
+      <p>Return the follow-up decision and let the caller choose how to display it.</p><pre><code data-language="python">def follow_up_allowed(score, consent):
+    # The score matters only when the lead has consented.
+    return consent and score &gt;= 70
+
+
+print(follow_up_allowed(90, False))
+print(follow_up_allowed(70, True))</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">False
+True</code></pre>
+    </details>
+<details class="fde-setup-answer">
+      <summary>Project 07 · AI receptionist</summary>
+      <p>Return a booking message without printing from the function. Treat the booking ID as text.</p><pre><code data-language="python">def booking_message(booking_id):
+    # Keep identifiers like 0042 intact in the message.
+    if booking_id is None:
+        return &quot;Send to booking team&quot;
+    return f&quot;Confirm booking {booking_id}&quot;
+
+
+print(booking_message(None))
+print(booking_message(&quot;0042&quot;))</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">Send to booking team
+Confirm booking 0042</code></pre>
+    </details>
+<details class="fde-setup-answer">
+      <summary>Project 08 · AI Voice Productivity SaaS</summary>
+      <p>Reuse a per-clip file size estimate for a batch of clips.</p><pre><code data-language="python">def estimated_size_mb(seconds, mb_per_second=2):
+    return seconds * mb_per_second
+
+
+total_mb = 0
+for seconds in [3, 7]:
+    # Add each returned estimate to the batch total.
+    total_mb += estimated_size_mb(seconds)
+print(f&quot;Estimated size: {total_mb} MB&quot;)</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">Estimated size: 20 MB</code></pre>
+    </details>
+    </details>
+    <details class="fde-setup-answer" id="practice-1">
+      <summary>Five workplace exercises</summary>
+      <details class="fde-setup-answer">
+      <summary>Calculate missing rows</summary>
+      <p>Return how many rows are missing. If an export contains extra rows, return zero.</p><details class="fde-setup-answer">
+      <summary>Show commented solution and output</summary>
+      <pre><code data-language="python">def missing_rows(expected, received):
+    # Extra rows do not count as missing rows.
+    if received &gt;= expected:
+        return 0
+    return expected - received
+
+
+print(missing_rows(80, 79))
+print(missing_rows(80, 81))</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">1
+0</code></pre>
+    </details>
+    </details>
+<details class="fde-setup-answer">
+      <summary>Estimate review time</summary>
+      <p>Return the total time for two queues. Use four minutes per item unless the caller overrides it.</p><details class="fde-setup-answer">
+      <summary>Show commented solution and output</summary>
+      <pre><code data-language="python">def review_minutes(items, minutes_per_item=4):
+    return items * minutes_per_item
+
+
+# Store the first result so it can be added to the second.
+morning = review_minutes(3)
+afternoon = review_minutes(2, minutes_per_item=5)
+print(morning + afternoon)</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">22</code></pre>
+    </details>
+    </details>
+<details class="fde-setup-answer">
+      <summary>Count blocked tickets</summary>
+      <p>Return the number of blocked tickets. Each entry in the list is a Boolean flag.</p><details class="fde-setup-answer">
+      <summary>Show commented solution and output</summary>
+      <pre><code data-language="python">def count_blocked(blocked_flags):
+    # Start fresh for each queue.
+    count = 0
+    for blocked in blocked_flags:
+        if blocked:
+            count += 1
+    return count
+
+
+print(count_blocked([True, False, True]))
+print(count_blocked([]))</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">2
+0</code></pre>
+    </details>
+    </details>
+<details class="fde-setup-answer">
+      <summary>Route a support ticket</summary>
+      <p>Return the first matching route. An outage comes before a billing request.</p><details class="fde-setup-answer">
+      <summary>Show commented solution and output</summary>
+      <pre><code data-language="python">def choose_queue(outage, billing):
+    # Returning early leaves the function immediately.
+    if outage:
+        return &quot;incident&quot;
+    if billing:
+        return &quot;billing&quot;
+    return &quot;general&quot;
+
+
+print(choose_queue(True, True))
+print(choose_queue(False, True))</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">incident
+billing</code></pre>
+    </details>
+    </details>
+<details class="fde-setup-answer">
+      <summary>Keep ticket histories independent</summary>
+      <p>Return a history with one new event. Preserve any history the caller passes in.</p><details class="fde-setup-answer">
+      <summary>Show commented solution and output</summary>
+      <pre><code data-language="python">def append_event(event, history=None):
+    # Copy the existing list before updating it.
     result = [] if history is None else history.copy()
     result.append(event)
     return result
-old = [&#x27;received&#x27;]
-print(append_event(&#x27;validated&#x27;, old))
+
+
+old = [&quot;received&quot;]
+print(append_event(&quot;validated&quot;, old))
 print(old)
-print(append_event(&#x27;new&#x27;))
-</code></pre><h4>Output</h4><pre><code data-language="text">[&#x27;received&#x27;, &#x27;validated&#x27;]
+print(append_event(&quot;new&quot;))</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">[&#x27;received&#x27;, &#x27;validated&#x27;]
 [&#x27;received&#x27;]
-[&#x27;new&#x27;]
-</code></pre></div></details><h4>নিজের কাজ মিলিয়ে দেখো</h4><p>প্রথম result received/validated, old শুধু received, শেষ result শুধু new।</p></section><section class="completion" id="module-check"><h2>পরের Lesson-এ যাওয়ার আগে</h2><ul><li>নিজের ভাষায় main concept explain করো।</li><li>দুই practice-এর solution বন্ধ করে একটা changed-input version solve করো।</li><li>একটা failing case দেখিয়ে কেন fail করে এবং fix কী হবে বলো।</li></ul></section><details><summary>আরও পড়তে চাইলে</summary><div><ul><li><a href="https://docs.python.org/3/tutorial/controlflow.html#defining-functions">Python: functions</a></li><li><a href="https://docs.python.org/3/tutorial/modules.html">Python: modules</a></li></ul></div></details><nav class="lesson-nav" aria-label="Lesson navigation"><a href="lesson-1.html#topic-2">Previous: Loops</a><a href="lesson-2.html#topic-1">Next: Core data structures</a></nav></main><aside class="fde-outline" hidden></aside></div><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script><script src="../../assets/js/fde-layout.js?v=25" defer></script></body></html>
+[&#x27;new&#x27;]</code></pre>
+    </details>
+    </details>
+    </details>
+    <details class="fde-setup-answer">
+      <summary>Eight tricky interview questions</summary>
+      <details class="fde-setup-answer">
+      <summary>In <code>def charge(minutes):</code> and <code>charge(5)</code>, which is the parameter?</summary>
+      <p><code>minutes</code> is the parameter. <code>5</code> is the argument passed to it.</p>
+    </details>
+<details class="fde-setup-answer">
+      <summary>What does <code>print()</code> inside a function give back to its caller?</summary>
+      <p>Printing writes to the screen. If the function reaches its end without a <code>return</code>, the caller gets <code>None</code>.</p>
+    </details>
+<details class="fde-setup-answer">
+      <summary>What happens to code after an executed <code>return</code>?</summary>
+      <p>The current call ends immediately. Python resumes at the caller.</p>
+    </details>
+<details class="fde-setup-answer">
+      <summary>Does reassigning an integer parameter update the caller’s variable?</summary>
+      <p>The function changes its local name. The caller updates its own variable by assigning the returned value.</p>
+    </details>
+<details class="fde-setup-answer">
+      <summary>Can a function change a list passed in by the caller?</summary>
+      <p>Yes. Calling <code>append()</code> on that list changes the shared object. Make a copy first when you need to preserve the original.</p>
+    </details>
+<details class="fde-setup-answer">
+      <summary>When does Python create the list in <code>def record(event, history=[]):</code>?</summary>
+      <p>Python creates it when it evaluates the definition. Later calls that omit <code>history</code> reuse it.</p>
+    </details>
+<details class="fde-setup-answer">
+      <summary>Can you call <code>estimated_minutes(3, source_count=4)</code>?</summary>
+      <p>Python raises <code>TypeError</code>. The positional and keyword arguments both fill <code>source_count</code>.</p>
+    </details>
+<details class="fde-setup-answer">
+      <summary>What does the <code>if __name__ == "__main__":</code> guard protect?</summary>
+      <p>It runs its body when the file is executed directly. Code outside the guard can still run during import.</p>
+    </details>
+    </details>
+  </section>
+
+  <section class="topic" id="topic-4">
+    <h2>Further practice with imports and list defaults</h2>
+    <details class="fde-setup-answer">
+      <summary>Reuse a function from another file</summary>
+      
+      <p>Save this as <code>report.py</code>. Running it directly prints <code>20</code>.</p>
+      <pre><code data-language="python" data-file="report.py">def total_expenses(amounts):
+    &quot;&quot;&quot;Return the sum of the expenses in whole euros.&quot;&quot;&quot;
+    return sum(amounts)
+
+
+if __name__ == &quot;__main__&quot;:
+    print(total_expenses([12, 8]))</code></pre>
+      <p>In the same folder, save the following as <code>run_report.py</code>. Run <code>py -3 run_report.py</code> on Windows or <code>python3 run_report.py</code> on macOS or Linux. You should see only <code>11</code>. The guard in <code>report.py</code> runs its demo only when you execute that file directly.</p>
+      <pre><code data-language="python" data-file="run_report.py">from report import total_expenses
+
+# Import the calculation, then choose the values to pass.
+print(total_expenses([5, 6]))</code></pre><pre><code data-language="text">11</code></pre>
+    </details>
+    <details class="fde-setup-answer" id="practice-2">
+      <summary>Give each call its own list</summary>
+      
+      <p>A default list such as <code>tags=[]</code> is created once when Python defines the function. If the function appends to it, later calls can inherit previous tags. Use <code>None</code> as the default and make a new list inside the function. Copy an existing list before adding a tag if it should stay intact.</p>
+      <pre><code data-language="python">def add_tag(tag, tags=None):
+    # Give this call its own list before adding the tag.
+    result = [] if tags is None else tags.copy()
+    result.append(tag)
+    return result
+
+
+original = [&quot;open&quot;]
+print(add_tag(&quot;review&quot;, original))
+print(original)
+print(add_tag(&quot;urgent&quot;))</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">[&#x27;open&#x27;, &#x27;review&#x27;]
+[&#x27;open&#x27;]
+[&#x27;urgent&#x27;]</code></pre>
+    </details>
+  </section>
+
+  <nav class="lesson-nav" aria-label="Lesson navigation"><a href="lesson-1.html#topic-1">Previous: Operators, conditions &amp; loops</a><a href="lesson-2.html#topic-1">Next: Core data structures</a></nav>
+</main><aside class="fde-outline" hidden></aside></div><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script><script src="../../assets/js/fde-layout.js?v=25" defer></script></body></html>
