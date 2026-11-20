@@ -54,11 +54,16 @@ unit_price = float(input("Price per apple: "))
 total = quantity * unit_price
 print(f"{name}: {quantity} apples")
 print(f"Total: €{total:.2f}")</code></pre>
-    <p>An <strong>f-string</strong> starts with <code>f</code> before the opening quote. Python fills in the braces with values. In <code>{total:.2f}</code>, <code>.2f</code> shows two digits after the decimal point.</p>
     <figure>
       <img src="assets/receipt-terminal.png" width="760" height="284" alt="Receipt program run with Mia, 3 apples and a price of 2.50. The program prints Mia: 3 apples and Total: €7.50.">
       <figcaption>Type <code>Mia</code>, <code>3</code> and <code>2.50</code> when asked. The total should be <code>€7.50</code>.</figcaption>
     </figure>
+    <h3>How the code gets the answer</h3>
+    <ol>
+      <li><code>input()</code> reads <code>Mia</code>, <code>"3"</code> and <code>"2.50"</code> as text. The name stays text.</li>
+      <li><code>int()</code> turns <code>"3"</code> into <code>3</code>. <code>float()</code> turns <code>"2.50"</code> into <code>2.5</code>. Multiplying them gives <code>7.5</code>.</li>
+      <li>The <code>f</code> before the quote tells Python to fill in the braces. <code>{name}</code> becomes <code>Mia</code>, and <code>{total:.2f}</code> displays <code>7.50</code> with two decimal places.</li>
+    </ol>
   </section>
 
   <section class="topic" id="practice-and-debug">
