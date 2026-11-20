@@ -102,7 +102,19 @@ print(open_ids)</code></pre>
   <section class="topic" id="practice-1">
     <h2>Build a ticket intake summary</h2>
     <p>Write a function that returns two results. First return customer IDs in the order they first appeared. Then return the number of tickets per status. Use a list for order, a set for membership and a dictionary for counts. Count every ticket, including tickets from repeat customers. Keep IDs as strings so <code>"0042"</code> stays intact.</p>
-    <p>Try three tickets in order. Give customer <code>"0042"</code> an open ticket, customer <code>"0007"</code> a closed ticket and <code>"0042"</code> another open one. The summary should show the two customers and two open tickets. An empty input should return <code>([], {})</code>.</p>
+    <p>Try three tickets in order. Customer <code>"0042"</code> opens a ticket, customer <code>"0007"</code> has a closed ticket and <code>"0042"</code> opens another. Before writing the loop, predict which results change on the third ticket. An empty input should return <code>([], {})</code>.</p>
+    <details class="fde-setup-answer" id="ticket-intake-trace">
+      <summary>Check your prediction with a ticket-by-ticket trace</summary>
+      <table>
+        <thead><tr><th scope="col">Ticket processed</th><th scope="col">Customer list</th><th scope="col">Counts by status</th></tr></thead>
+        <tbody>
+          <tr><th scope="row"><code>0042</code> · open</th><td><code>["0042"]</code></td><td><code>{"open": 1}</code></td></tr>
+          <tr><th scope="row"><code>0007</code> · closed</th><td><code>["0042", "0007"]</code></td><td><code>{"open": 1, "closed": 1}</code></td></tr>
+          <tr><th scope="row"><code>0042</code> · open again</th><td><code>["0042", "0007"]</code></td><td><code>{"open": 2, "closed": 1}</code></td></tr>
+        </tbody>
+      </table>
+      <p>On the third ticket, <code>seen</code> already contains <code>"0042"</code>, so the customer list stays the same. The ticket still increases the <code>"open"</code> count. Keep that update outside the new-customer <code>if</code> block so it runs on every turn.</p>
+    </details>
     <details class="fde-setup-answer">
       <summary>Reveal the commented solution</summary>
       <pre><code data-language="python">def summarize_tickets(tickets):
@@ -136,6 +148,10 @@ print(counts)</code></pre>
 {&#x27;open&#x27;: 2, &#x27;closed&#x27;: 1}</code></pre>
     </details>
     <p>Try adding a closed ticket for <code>"0042"</code>. Predict which result stays the same and which count changes.</p>
+    <details class="fde-setup-answer">
+      <summary>Check the fourth ticket</summary>
+      <p>The customer list is still <code>["0042", "0007"]</code>. The counts are now <code>{"open": 2, "closed": 2}</code>.</p>
+    </details>
   </section>
 
   <section class="topic" id="data-structures-practice">
