@@ -40,6 +40,11 @@
     }
 
     function navigateCourseView() {
+      if (location.hash === '#fde-1-topic-1') {
+        const pythonLink = document.querySelector('#fde-1-topic-1 .fde-step-link');
+        location.replace(pythonLink.href);
+        return;
+      }
       const target = syncCourseView();
       returnedCard = undefined;
 
@@ -73,7 +78,7 @@
 
     roadmap.addEventListener('click', (event) => {
       const link = event.target.closest('.fde-step-link');
-      if (!link || !isPlainClick(event)) return;
+      if (!link?.hash || !isPlainClick(event)) return;
       event.preventDefault();
       history.replaceState({
         ...history.state,
