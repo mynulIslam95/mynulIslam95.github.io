@@ -117,6 +117,32 @@ T1
     </details>
 
   </section>
+  <section class="topic" id="queue-search-and-insert">
+    <h2>Find and insert tickets</h2>
+    <p>Predict how many times <code>T3</code> appears, where its first occurrence sits and where an urgent ticket will land.</p>
+    <pre><code data-language="python">queue = [&quot;T3&quot;, &quot;T1&quot;, &quot;T3&quot;]
+
+print(queue.count(&quot;T3&quot;))
+print(queue.index(&quot;T3&quot;))
+
+# Put the urgent ticket second, shifting the later items right.
+queue.insert(1, &quot;T9&quot;)
+print(queue)</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">2
+0
+[&#x27;T3&#x27;, &#x27;T9&#x27;, &#x27;T1&#x27;, &#x27;T3&#x27;]</code></pre>
+    <p><code>count()</code> returns zero for a missing value. <code>index()</code> raises <code>ValueError</code> if it can’t find a match. <code>insert()</code> adds the new item before the specified position and changes the list in place.</p>
+    <h3>Clear a ticket that might already be gone</h3>
+    <p>A set of pending IDs only cares which tickets are still pending. If a duplicate completion notice arrives, <code>discard()</code> can run again safely.</p>
+    <pre><code data-language="python">pending = {&quot;T3&quot;, &quot;T9&quot;}
+pending.discard(&quot;T3&quot;)
+pending.discard(&quot;T3&quot;)  # A repeated notification can arrive.
+print(sorted(pending))</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">[&#x27;T9&#x27;]</code></pre>
+    <p><code>discard()</code> leaves the set alone if the item is absent. <code>set.remove()</code> raises <code>KeyError</code> in that case.</p>
+  </section>
   <section class="topic" id="topic-5">
     <h2>Read nested records and filter lists</h2>
     <p>A list can hold several dictionaries. Each dictionary can contain another dictionary. Follow one step at a time. <code>tickets[0]</code> finds the first record, <code>["customer"]</code> finds its customer field and <code>["id"]</code> reads the ID inside it.</p>
