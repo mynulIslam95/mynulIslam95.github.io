@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>Core data structures &amp; memory | Learn with Mynul</title><meta name="description" content="Learn Python lists, tuples, dictionaries, sets and nested records through a ticket intake exercise."><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=2"><link rel="stylesheet" href="../../assets/css/fde-layout.css?v=19"></head><body class="bootcamp-thesis fde-docs"><div class="reading shell"><a class="fde-skip" href="#main">Skip to content</a><header class="fde-docs-header"><a class="fde-back-button" href="../python-engineering-module-1.html">Go back</a><button class="theme-button" id="reading-theme" type="button" aria-label="Toggle light and dark theme">Light / Dark</button></header><div class="fde-docs-grid">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>Core data structures &amp; memory | Learn with Mynul</title><meta name="description" content="Learn Python lists, tuples, dictionaries, sets and nested records through a ticket intake exercise."><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=2"><link rel="stylesheet" href="../../assets/css/fde-layout.css?v=26"></head><body class="bootcamp-thesis fde-docs"><div class="reading shell"><a class="fde-skip" href="#main">Skip to content</a><header class="fde-docs-header"><a class="fde-back-button" href="../python-engineering-module-1.html">Go back</a><button class="theme-button" id="reading-theme" type="button" aria-label="Toggle light and dark theme">Light / Dark</button></header><div class="fde-docs-grid">
 <aside class="fde-lesson-menu">
 <p class="fde-lesson-menu-title">Python lessons</p>
 <nav id="lessons" aria-label="Python lessons" data-python-course>
@@ -39,12 +39,14 @@
 <main id="main" class="fde-setup-lesson">
   <p class="breadcrumbs"><a href="../python-engineering-module-1.html">Course overview</a> / Core Python</p>
   <h1>Core data structures &amp; memory</h1>
-  <p>A support team needs to keep tickets in arrival order, look up ticket fields and count repeat customers. Start by choosing a structure for each job.</p>
+  <p>A support team needs to keep tickets in arrival order, look up ticket fields and count repeat customers. Start by choosing a structure for each job. Then follow one ticket as you assign it to another name or make a copy.</p>
+
 
   <section class="topic" id="topic-1">
     <h2>Lists, tuples and slicing</h2>
+  <p><a href="#topic-3">Understand references and copies</a> · <a href="#data-structure-puzzles">Runnable tricky questions</a> · <a href="#practice-1">Build the intake summary</a></p>
     <p>A data structure holds several values so you can work with them together. Choose one based on what you need to do with the values.</p>
-    <table>
+    <div class="table-scroll"><table>
       <thead><tr><th scope="col">Structure</th><th scope="col">Write it</th><th scope="col">Use it for</th></tr></thead>
       <tbody>
         <tr><th scope="row">List</th><td><code>["T1", "T2"]</code></td><td>An ordered sequence you can change. Duplicates are allowed.</td></tr>
@@ -52,25 +54,17 @@
         <tr><th scope="row">Dictionary</th><td><code>{"id": "T1"}</code></td><td>Values you look up by a unique key.</td></tr>
         <tr><th scope="row">Set</th><td><code>{"T1", "T2"}</code></td><td>Unique items and membership checks. A set does not promise insertion order.</td></tr>
       </tbody>
-    </table>
-    <p>Save this as <code>support_queue.py</code>. Run <code>py -3 support_queue.py</code> on Windows or <code>python3 support_queue.py</code> on macOS or Linux. Predict the first ticket and the two-ticket preview.</p>
-    <pre><code data-language="python">queue = [&quot;T1&quot;, &quot;T2&quot;, &quot;T3&quot;]
-queue.append(&quot;T4&quot;)
-
-# Indexing starts at 0. In a slice, the stop is excluded.
+    </table></div>
+    <p>In your <code>python-practice</code> folder, save this as <code>support_queue.py</code>. Run <code>uv run python support_queue.py</code>, or use the same plain Python command you used in <a href="setup.html">setup</a>. Predict the first and last ticket.</p>
+    <pre><code data-language="python">queue = ["T1", "T2", "T3"]
 print(queue[0])
 print(queue[-1])
-print(queue[1:3])
-
-# A tuple can keep two related values together.
-ticket_id, status = (&quot;T2&quot;, &quot;open&quot;)
-print(f&quot;{ticket_id}: {status}&quot;)</code></pre>
-    <p><strong>Expected output</strong></p>
+print(queue[1:3])</code></pre>
     <pre><code data-language="text">T1
-T4
-[&#x27;T2&#x27;, &#x27;T3&#x27;]
-T2: open</code></pre>
-    <p><code>queue[1:3]</code> starts at index 1 and stops before index 3. The slice creates a new outer list. A tuple can contain a mutable object, but you cannot assign a new value to one of the tuple’s positions. Write <code>("T2",)</code> for a one-item tuple.</p>
+T3
+['T2', 'T3']</code></pre>
+    <p>Index <code>0</code> selects the first item and <code>-1</code> selects the last. The slice <code>[1:3]</code> includes indexes 1 and 2 because it stops before index 3. It creates a new outer list.</p>
+    <p>Use <code>queue.append("T4")</code> to edit the queue. For a pair whose positions should stay fixed, use a tuple such as <code>("T2", "open")</code>. You can unpack it with <code>ticket_id, status = ("T2", "open")</code>. A tuple’s positions can still refer to mutable objects. For a one-item tuple, keep the comma, as in <code>("T2",)</code>.</p>
     <details class="fde-setup-answer">
       <summary>Predict what changes with a shorter queue</summary>
       <p>With only <code>["T1"]</code>, <code>queue[1:3]</code> gives <code>[]</code>. Directly reading <code>queue[1]</code> raises <code>IndexError</code>.</p>
@@ -95,6 +89,12 @@ closed
 True
 2</code></pre>
     <p>Braces with <code>key: value</code> pairs make a dictionary. Braces with values alone make a set. Use <code>{}</code> for an empty dictionary and <code>set()</code> for an empty set. Adding <code>"T2"</code> twice still keeps one copy. For two sets, <code>a &amp; b</code> gives the items in both and <code>a - b</code> gives the items only in <code>a</code>.</p>
+  </section>
+
+  <section class="topic" id="hashable-keys">
+    <h2>How dictionaries and sets find a match</h2>
+    <p>Dictionary keys and set members must be <strong>hashable</strong>. Python uses their hash and equality to find a matching entry. A ticket ID like <code>"0042"</code> works as a key. A list is unhashable. A tuple can be hashable if all its items are hashable. The pair <code>("north", "0042")</code> works as a key, while <code>("north", ["0042"])</code> raises <code>TypeError</code> when used as one.</p>
+    <p>Assigning to an existing key replaces its value. A dictionary keeps keys in insertion order. If you want to produce a first-seen list of unique customers, append to a list and use a set to check whether each customer is new.</p>
   </section>
 
   <section class="topic" id="dictionary-methods">
@@ -148,7 +148,7 @@ T1
 [&#x27;T2&#x27;, &#x27;T3&#x27;]
 [&#x27;T3&#x27;, &#x27;T2&#x27;]
 [&#x27;T2&#x27;, &#x27;T3&#x27;]</code></pre>
-    <table>
+    <div class="table-scroll"><table>
       <thead><tr><th scope="col">Call</th><th scope="col">Changes the list?</th><th scope="col">Returns</th></tr></thead>
       <tbody>
         <tr><th scope="row"><code>queue.remove(value)</code></th><td>Yes, removes the first match</td><td><code>None</code></td></tr>
@@ -156,7 +156,7 @@ T1
         <tr><th scope="row"><code>sorted(queue)</code></th><td>No</td><td>A new sorted list</td></tr>
         <tr><th scope="row"><code>queue.sort()</code></th><td>Yes, reorders it</td><td><code>None</code></td></tr>
       </tbody>
-    </table>
+    </table></div>
     <details class="fde-setup-answer">
       <summary>Predict and check two common mistakes</summary>
       <p><code>queue = queue.sort()</code> reorders the original list, then assigns <code>None</code> to <code>queue</code>. Use <code>queue.sort()</code> on its own. <code>queue.remove("T9")</code> raises <code>ValueError</code> if <code>"T9"</code> is absent. <code>pop(0)</code> on an empty list raises <code>IndexError</code>.</p>
@@ -212,20 +212,156 @@ print(open_ids)</code></pre>
     </details>
   </section>
 
+  <section class="topic" id="topic-3">
+    <h2>Names, references and mutation</h2>
+    <p>Assignment lets two names refer to one object. A mutation edits that object. Reassignment points a name at a different object. Predict what the original queue shows after each step.</p>
+    <pre><code data-language="python">original = [&quot;T1&quot;]
+alias = original
+
+alias.append(&quot;T2&quot;)
+print(original)
+print(alias is original)
+
+alias = [&quot;T1&quot;, &quot;T2&quot;]
+print(alias == original)
+print(alias is original)</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">[&#x27;T1&#x27;, &#x27;T2&#x27;]
+True
+True
+False</code></pre>
+    <p><code>==</code> compares values and <code>is</code> checks whether two names refer to the same object. Integers and strings are immutable. Appending to a list is a mutation because the same list changes.</p>
+  </section>
+
+  <section class="topic" id="topic-4">
+    <h2>Compare assignment, shallow copy and deep copy</h2>
+    <p>You’re preparing a draft of a ticket with a list of tags. Predict which versions will show <code>"urgent"</code> after the original changes.</p>
+    <pre><code data-language="python">from copy import deepcopy
+
+original = {&quot;id&quot;: &quot;T1&quot;, &quot;tags&quot;: [&quot;billing&quot;]}
+alias = original
+shallow = original.copy()
+deep = deepcopy(original)
+
+# Change the nested list in the original ticket.
+original[&quot;tags&quot;].append(&quot;urgent&quot;)
+
+print(&quot;Assignment:&quot;, alias[&quot;tags&quot;])
+print(&quot;Shallow copy:&quot;, shallow[&quot;tags&quot;])
+print(&quot;Deep copy:&quot;, deep[&quot;tags&quot;])</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">Assignment: [&#x27;billing&#x27;, &#x27;urgent&#x27;]
+Shallow copy: [&#x27;billing&#x27;, &#x27;urgent&#x27;]
+Deep copy: [&#x27;billing&#x27;]</code></pre>
+    <div class="table-scroll"><table>
+      <thead><tr><th scope="col">Version</th><th scope="col">Shares the original dictionary?</th><th scope="col">Shares its tags list?</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Assignment</th><td>Yes</td><td>Yes</td></tr>
+        <tr><th scope="row">Shallow copy</th><td>No</td><td>Yes</td></tr>
+        <tr><th scope="row">Deep copy</th><td>No</td><td>No</td></tr>
+      </tbody>
+    </table></div>
+    <figure>
+      <img src="assets/ticket-copy-trace.png" width="960" height="382" alt="Assignment shares the original ticket and tags. Shallow copy has a new ticket with shared tags. Deep copy has a new ticket with independent tags." loading="lazy">
+      <figcaption>After the original changes, the alias and shallow copy show <code>urgent</code>. The deep copy still shows <code>billing</code> only.</figcaption>
+    </figure>
+    <p>For this ticket, <code>deepcopy()</code> copies the dictionary and its nested list. If only the tags need an independent copy, make the outer copy first with <code>draft = original.copy()</code>, then use <code>draft["tags"] = original["tags"].copy()</code>. Replacing a value in the new dictionary edits that dictionary. Appending to a list both dictionaries refer to edits the shared list. If an object is still reachable through another name or container, reassigning one variable doesn’t make that object disappear.</p>
+  </section>
+
+
+      <section class="topic" id="object-lifetime" lang="en">
+        <h2>See what del actually removes</h2>
+        <p>Imagine a batch of embeddings is taking up memory. Before deleting a variable, ask whether another name or container still refers to the batch. Predict whether the last line can still read it.</p>
+    <pre><code data-language="python">embeddings = [[0.12, -0.45, 0.87]]
+pending = [embeddings]
+del embeddings
+
+# The outer list still keeps the batch reachable.
+print(pending[0])</code></pre><p><strong>Expected output</strong></p><pre><code data-language="text">[[0.12, -0.45, 0.87]]</code></pre>
+    <p><code>del embeddings</code> removes the name. The batch can still be reached through <code>pending</code>. In CPython, reference counting usually frees an object when its last reference goes away. A separate garbage collector handles unreachable reference cycles. <code>gc.collect()</code> can run a collection explicitly, but it cannot free this reachable batch or guarantee a drop in the process’s reported memory.</p>
+    <p>If you only need one batch at a time, process it and pass the result onward instead of keeping every batch in a list. Try the <a href="lesson-6.html#stream-document-pages">document page example</a>.</p>
+    <p><a href="https://docs.python.org/3/library/gc.html">Python garbage collection reference</a></p>
+      </section>
+  <section class="topic" id="practice-2">
+    <h2>Give each ticket its own tags</h2>
+    <p>Two tickets start with the same <code>shared_tags</code> list. Predict both outputs, then run the example. Change the setup so only the first ticket gains <code>"urgent"</code>.</p>
+    <pre><code data-language="python">shared_tags = []
+tickets = [{"id": "T1", "tags": shared_tags}, {"id": "T2", "tags": shared_tags}]
+tickets[0]["tags"].append("urgent")
+print(tickets[0]["tags"])
+print(tickets[1]["tags"])</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">['urgent']
+['urgent']</code></pre>
+    <details class="fde-setup-answer">
+      <summary>Reveal the commented solution</summary>
+      <pre><code data-language="python"># Each [] creates a separate list.
+tickets = [{&quot;id&quot;: &quot;T1&quot;, &quot;tags&quot;: []}, {&quot;id&quot;: &quot;T2&quot;, &quot;tags&quot;: []}]
+tickets[0][&quot;tags&quot;].append(&quot;urgent&quot;)
+print(tickets[0][&quot;tags&quot;])
+print(tickets[1][&quot;tags&quot;])</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">[&#x27;urgent&#x27;]
+[]</code></pre>
+    </details>
+  </section>
+
+  <section class="topic" id="data-structure-puzzles">
+    <h2>Tricky data structure questions you can run</h2>
+    <p>Predict the output or error before running each example. Then name the rule that explains it.</p>
+    <h3>Why does one lookup fail?</h3>
+    <pre><code data-language="python">queue = ["T1"]
+print(queue[1:3])
+print(queue[1])</code></pre>
+    <details class="fde-setup-answer"><summary>Show answer</summary><p>It prints <code>[]</code>, then raises <code>IndexError</code>. The slice returns the available range. Direct indexing asks for an item that must exist.</p></details>
+    <h3>Is the ticket ID a key or a value?</h3>
+    <pre><code data-language="python">ticket = {"id": "T1", "owner": None}
+print("T1" in ticket)
+print(ticket.get("owner", "unassigned"))
+print(ticket.get("status", "unknown"))</code></pre>
+    <details class="fde-setup-answer"><summary>Show answer</summary><p>It prints <code>False</code>, <code>None</code> and <code>unknown</code>. Membership checks keys. <code>get()</code> only uses its fallback when the key is absent. A key with the value <code>None</code> is still present.</p></details>
+    <h3>Is every tuple hashable?</h3>
+    <pre><code data-language="python">keys = {("north", "T1")}
+print(("north", "T1") in keys)
+keys.add(("north", ["T1"]))</code></pre>
+    <details class="fde-setup-answer"><summary>Show answer</summary><p>The membership check prints <code>True</code>. Adding the second tuple raises <code>TypeError</code> because it contains a list. A tuple can be a set member only when all its items are hashable.</p></details>
+    <h3>Which update reached the original?</h3>
+    <pre><code data-language="python">original = {"status": "open", "tags": ["billing"]}
+draft = original.copy()
+draft["status"] = "closed"
+draft["tags"].append("urgent")
+print(original["status"], original["tags"])</code></pre>
+    <details class="fde-setup-answer"><summary>Show answer</summary><p>It prints <code>open ['billing', 'urgent']</code>. The draft owns its outer dictionary but shares the tags list. Replacing the status changes only the draft. Appending changes the shared list.</p></details>
+    <h3>Why do both tickets become urgent?</h3>
+    <pre><code data-language="python">tags = []
+tickets = [tags] * 2
+tickets[0].append("urgent")
+print(tickets)</code></pre>
+    <details class="fde-setup-answer"><summary>Show answer</summary><p>It prints <code>[['urgent'], ['urgent']]</code>. Repetition copies the reference to one list. Use <code>[[] for _ in range(2)]</code> to create a new list on each turn.</p></details>
+    <h3>Which update changes the shared queue?</h3>
+    <pre><code data-language="python">queue = ["T1"]
+alias = queue
+queue += ["T2"]
+queue = queue + ["T3"]
+print(alias)
+print(queue)</code></pre>
+    <details class="fde-setup-answer"><summary>Show answer</summary><p>It prints <code>['T1', 'T2']</code> and <code>['T1', 'T2', 'T3']</code>. For lists, <code>+=</code> extends the existing list. The <code>+</code> expression creates a new list, and the assignment changes only what <code>queue</code> refers to.</p></details>
+  </section>
+
   <section class="topic" id="practice-1">
     <h2>Build a ticket intake summary</h2>
     <p>Write a function that returns two results. First return customer IDs in the order they first appeared. Then return the number of tickets per status. Use a list for order, a set for membership and a dictionary for counts. Count every ticket, including tickets from repeat customers. Keep IDs as strings so <code>"0042"</code> stays intact.</p>
     <p>Try three tickets in order. Customer <code>"0042"</code> opens a ticket, customer <code>"0007"</code> has a closed ticket and <code>"0042"</code> opens another. Before writing the loop, predict which results change on the third ticket. An empty input should return <code>([], {})</code>.</p>
     <details class="fde-setup-answer" id="ticket-intake-trace">
       <summary>Check your prediction with a ticket-by-ticket trace</summary>
-      <table>
+      <div class="table-scroll"><table>
         <thead><tr><th scope="col">Ticket processed</th><th scope="col">Customer list</th><th scope="col">Counts by status</th></tr></thead>
         <tbody>
           <tr><th scope="row"><code>0042</code> · open</th><td><code>["0042"]</code></td><td><code>{"open": 1}</code></td></tr>
           <tr><th scope="row"><code>0007</code> · closed</th><td><code>["0042", "0007"]</code></td><td><code>{"open": 1, "closed": 1}</code></td></tr>
           <tr><th scope="row"><code>0042</code> · open again</th><td><code>["0042", "0007"]</code></td><td><code>{"open": 2, "closed": 1}</code></td></tr>
         </tbody>
-      </table>
+      </table></div>
       <p>On the third ticket, <code>seen</code> already contains <code>"0042"</code>, so the customer list stays the same. The ticket still increases the <code>"open"</code> count. Keep that update outside the new-customer <code>if</code> block so it runs on every turn.</p>
     </details>
     <details class="fde-setup-answer">
@@ -426,7 +562,7 @@ print(invoice[&quot;currency&quot;][&quot;code&quot;])</code></pre>
     </details>
     </details>
     <details class="fde-setup-answer">
-      <summary>Eight tricky interview questions</summary>
+      <summary>Eight quick interview checks</summary>
       <details class="fde-setup-answer">
       <summary>What does <code>items[-1]</code> select?</summary>
       <p>The last item. For an empty list, direct indexing raises <code>IndexError</code>.</p>
@@ -460,97 +596,7 @@ print(invoice[&quot;currency&quot;][&quot;code&quot;])</code></pre>
       <p>It creates a new outer list. Nested objects can still be shared. The memory section shows how to inspect this.</p>
     </details>
     </details>
-    <p>Continue with <a href="#topic-3">Memory management fundamentals</a> to see what happens when two names refer to the same list.</p>
-  </section>
-
-  <section class="topic" id="topic-3">
-    <h2>Names, references and mutation</h2>
-    <p>Assignment lets two names refer to one object. A mutation edits that object. Reassignment points a name at a different object. Predict what the original queue shows after each step.</p>
-    <pre><code data-language="python">original = [&quot;T1&quot;]
-alias = original
-
-alias.append(&quot;T2&quot;)
-print(original)
-print(alias is original)
-
-alias = [&quot;T1&quot;, &quot;T2&quot;]
-print(alias == original)
-print(alias is original)</code></pre>
-    <p><strong>Expected output</strong></p>
-    <pre><code data-language="text">[&#x27;T1&#x27;, &#x27;T2&#x27;]
-True
-True
-False</code></pre>
-    <p><code>==</code> compares values and <code>is</code> checks whether two names refer to the same object. Integers and strings are immutable. Appending to a list is a mutation because the same list changes.</p>
-  </section>
-
-  <section class="topic" id="topic-4">
-    <h2>Compare assignment, shallow copy and deep copy</h2>
-    <p>You’re preparing a draft of a ticket with a list of tags. Predict which versions will show <code>"urgent"</code> after the original changes.</p>
-    <pre><code data-language="python">from copy import deepcopy
-
-original = {&quot;id&quot;: &quot;T1&quot;, &quot;tags&quot;: [&quot;billing&quot;]}
-alias = original
-shallow = original.copy()
-deep = deepcopy(original)
-
-# Change the nested list in the original ticket.
-original[&quot;tags&quot;].append(&quot;urgent&quot;)
-
-print(&quot;Assignment:&quot;, alias[&quot;tags&quot;])
-print(&quot;Shallow copy:&quot;, shallow[&quot;tags&quot;])
-print(&quot;Deep copy:&quot;, deep[&quot;tags&quot;])</code></pre>
-    <p><strong>Expected output</strong></p>
-    <pre><code data-language="text">Assignment: [&#x27;billing&#x27;, &#x27;urgent&#x27;]
-Shallow copy: [&#x27;billing&#x27;, &#x27;urgent&#x27;]
-Deep copy: [&#x27;billing&#x27;]</code></pre>
-    <table>
-      <thead><tr><th scope="col">Version</th><th scope="col">Shares the original dictionary?</th><th scope="col">Shares its tags list?</th></tr></thead>
-      <tbody>
-        <tr><th scope="row">Assignment</th><td>Yes</td><td>Yes</td></tr>
-        <tr><th scope="row">Shallow copy</th><td>No</td><td>Yes</td></tr>
-        <tr><th scope="row">Deep copy</th><td>No</td><td>No</td></tr>
-      </tbody>
-    </table>
-    <p>For this ticket, <code>deepcopy()</code> copies the dictionary and its nested list. If only the tags need an independent copy, copy that list directly. If an object is still reachable through another name or container, reassigning one variable doesn’t make that object disappear.</p>
-  </section>
-
-
-      <section class="topic" id="object-lifetime" lang="en">
-        <h2>See what del actually removes</h2>
-        <p>Imagine a batch of embeddings is taking up memory. Before deleting a variable, ask whether another name or container still refers to the batch. Predict whether the last line can still read it.</p>
-    <pre><code data-language="python">embeddings = [[0.12, -0.45, 0.87]]
-pending = [embeddings]
-del embeddings
-
-# The outer list still keeps the batch reachable.
-print(pending[0])</code></pre><p><strong>Expected output</strong></p><pre><code data-language="text">[[0.12, -0.45, 0.87]]</code></pre>
-    <p><code>del embeddings</code> removes the name. The batch can still be reached through <code>pending</code>. In CPython, reference counting usually frees an object when its last reference goes away. A separate garbage collector handles unreachable reference cycles. <code>gc.collect()</code> can run a collection explicitly, but it cannot free this reachable batch or guarantee a drop in the process’s reported memory.</p>
-    <p>If you only need one batch at a time, process it and pass the result onward instead of keeping every batch in a list. Try the <a href="lesson-6.html#stream-document-pages">document page example</a>.</p>
-    <p><a href="https://docs.python.org/3/library/gc.html">Python garbage collection reference</a></p>
-      </section>
-  <section class="topic" id="practice-2">
-    <h2>Give each ticket its own tags</h2>
-    <p>Two tickets start with the same <code>shared_tags</code> list. Predict both outputs, then run the example. Change the setup so only the first ticket gains <code>"urgent"</code>.</p>
-    <pre><code data-language="python">shared_tags = []
-tickets = [{"id": "T1", "tags": shared_tags}, {"id": "T2", "tags": shared_tags}]
-tickets[0]["tags"].append("urgent")
-print(tickets[0]["tags"])
-print(tickets[1]["tags"])</code></pre>
-    <p><strong>Expected output</strong></p>
-    <pre><code data-language="text">['urgent']
-['urgent']</code></pre>
-    <details class="fde-setup-answer">
-      <summary>Reveal the commented solution</summary>
-      <pre><code data-language="python"># Each [] creates a separate list.
-tickets = [{&quot;id&quot;: &quot;T1&quot;, &quot;tags&quot;: []}, {&quot;id&quot;: &quot;T2&quot;, &quot;tags&quot;: []}]
-tickets[0][&quot;tags&quot;].append(&quot;urgent&quot;)
-print(tickets[0][&quot;tags&quot;])
-print(tickets[1][&quot;tags&quot;])</code></pre>
-    <p><strong>Expected output</strong></p>
-    <pre><code data-language="text">[&#x27;urgent&#x27;]
-[]</code></pre>
-    </details>
+    <p>Return to <a href="#topic-3">Memory management fundamentals</a> to see what happens when two names refer to the same list.</p>
   </section>
 
   <section class="topic" id="module-check">
