@@ -1,4 +1,4 @@
-<!doctype html><html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>1.2 Data Structures &amp; Memory | Learn with Mynul</title><meta name="description" content="Python শিখি transaction, customer data আর service workflow দিয়ে। Explanations, runnable examples ও practice solutions।"><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=2"><link rel="stylesheet" href="../../assets/css/fde-layout.css?v=19"></head><body class="bootcamp-thesis fde-docs"><div class="reading shell"><a class="fde-skip" href="#main">Skip to content</a><header class="fde-docs-header"><a class="fde-back-button" href="../python-engineering-module-1.html">Go back</a><button class="theme-button" id="reading-theme" type="button" aria-label="Toggle light and dark theme">Light / Dark</button></header><div class="fde-docs-grid">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>Core data structures &amp; memory | Learn with Mynul</title><meta name="description" content="Learn Python lists, tuples, dictionaries, sets and nested records through a ticket intake exercise."><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=2"><link rel="stylesheet" href="../../assets/css/fde-layout.css?v=19"></head><body class="bootcamp-thesis fde-docs"><div class="reading shell"><a class="fde-skip" href="#main">Skip to content</a><header class="fde-docs-header"><a class="fde-back-button" href="../python-engineering-module-1.html">Go back</a><button class="theme-button" id="reading-theme" type="button" aria-label="Toggle light and dark theme">Light / Dark</button></header><div class="fde-docs-grid">
 <aside class="fde-lesson-menu">
 <p class="fde-lesson-menu-title">Python lessons</p>
 <nav aria-label="Python lessons" data-python-course>
@@ -15,28 +15,326 @@
     <li><a href="lesson-5.html#topic-2">File I/O operations</a></li>
   </ol>
 </nav></aside>
-<main id="main"><p class="breadcrumbs"><a href="../python-engineering-module-1.html">Module 1</a> / Lesson 1.2</p><p class="chapter-kicker">LESSON 1.2</p><h1>1.2 Data Structures &amp; Memory</h1><div class="scenario"><p>Support team-এর কাছে customer IDs আর ticket records এসেছে। Duplicate IDs সরাতে হবে, original order রাখতে হবে আর এক customer-এর ticket update করলে অন্য customer-এর data বদলানো চলবে না। Data structure বেছে নেওয়া এখানে correctness-এর অংশ।</p></div><p><strong>এই Lesson শেষে:</strong> List, tuple, dict ও set বেছে নিতে পারবে এবং shared-reference bug explain ও fix করতে পারবে।</p><nav class="topic-nav" aria-label="Lesson topics"><ol type="i"><li><a href="#topic-1">1.2.1 Lists, tuples and slicing</a></li><li><a href="#topic-2">1.2.2 Dictionaries and sets</a></li><li><a href="#topic-3">1.2.3 Mutability and references</a></li><li><a href="#topic-4">1.2.4 Shallow copying</a></li><li><a href="#topic-5">1.2.5 Membership and complexity</a></li></ol></nav><section class="topic" id="topic-1"><h2>1.2.1 Lists, tuples and slicing</h2><p>একজন customer-এর তিনটা ticket ID আছে। আলাদা variable না বানিয়ে ordered list রাখি। Square brackets দিয়ে list বানাই, index 0 থেকে শুরু। Tuple-ও ordered, কিন্তু তার item reassign করা যায় না।</p><h3>Code-টা run করি</h3><pre><code data-language="python">ids = [101, 102, 103]
-print(ids[0])
-print(ids[-1])
-print(ids[:2])
-ids.append(104)
-print(ids)
-</code></pre><h4>Output</h4><pre><code data-language="text">101
-103
-[101, 102]
-[101, 102, 103, 104]
-</code></pre><h3>কীভাবে এই result হলো?</h3><ol><li>[0] প্রথম item, [-1] শেষ item।</li><li>[:2] index 0 ও 1 নেয়; stop index 2 excluded।</li><li>append list-কে in place বদলায়, তাই final print-এ 104 আছে।</li></ol><div class="concept-check"><strong>এখানে যেটা ভুল হতে পারে</strong><p>append-এর result assign করবে না: <code>ids = ids.append(104)</code> লিখলে ids None হবে। Method-এর return আর side effect আলাদা। Empty list-এ [0] IndexError দেয়।</p></div><p>Fixed coordinate-এর জন্য <code>region = (101, "EU")</code> tuple useful। Tuple-এর ভিতরে list থাকলে সেই list mutable-ই থাকে। শুধু outer structure fixed।</p><section class="try-change"><h3>এবার তুমি বদলে দেখো</h3><p>ids[:1] আর ids[1:] predict করে run করো।</p><details><summary>Reasoning মিলিয়ে দেখো</summary><div><p>[:1] থেকে [101], [1:] থেকে [102, 103, 104]। Slice নতুন outer list দেয়।</p></div></details></section></section><section class="topic" id="topic-2"><h2>1.2.2 Dictionaries and sets</h2><p>Ticket-এর ID, status আর owner position মনে রেখে ব্যবহার করা কঠিন। Dict-এ meaningful key দিয়ে field খুঁজবো। Set রাখবো repeated IDs বাদ দিতে।</p><h3>Code-টা run করি</h3><pre><code data-language="python">ticket = {&quot;id&quot;: 101, &quot;status&quot;: &quot;open&quot;}
-print(ticket[&quot;status&quot;])
-ticket[&quot;status&quot;] = &quot;closed&quot;
+<main id="main" class="fde-setup-lesson">
+  <p class="breadcrumbs"><a href="../python-engineering-module-1.html">Python overview</a> / Core Python</p>
+  <h1>Core data structures &amp; memory</h1>
+  <p>A support team needs to keep tickets in arrival order, look up ticket fields and count repeat customers. Start by choosing a structure for each job.</p>
+
+  <section class="topic" id="topic-1">
+    <h2>Lists, tuples and slicing</h2>
+    <p>A data structure holds several values so you can work with them together. Choose one based on what you need to do with the values.</p>
+    <table>
+      <thead><tr><th scope="col">Structure</th><th scope="col">Write it</th><th scope="col">Use it for</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">List</th><td><code>["T1", "T2"]</code></td><td>An ordered sequence you can change. Duplicates are allowed.</td></tr>
+        <tr><th scope="row">Tuple</th><td><code>("T1", "open")</code></td><td>An ordered sequence whose positions you cannot replace after creation.</td></tr>
+        <tr><th scope="row">Dictionary</th><td><code>{"id": "T1"}</code></td><td>Values you look up by a unique key.</td></tr>
+        <tr><th scope="row">Set</th><td><code>{"T1", "T2"}</code></td><td>Unique items and membership checks. A set does not promise insertion order.</td></tr>
+      </tbody>
+    </table>
+    <p>Save this as <code>support_queue.py</code>. Run <code>py -3 support_queue.py</code> on Windows or <code>python3 support_queue.py</code> on macOS or Linux. Predict the first ticket and the two-ticket preview.</p>
+    <pre><code data-language="python">queue = [&quot;T1&quot;, &quot;T2&quot;, &quot;T3&quot;]
+queue.append(&quot;T4&quot;)
+
+# Indexing starts at 0. In a slice, the stop is excluded.
+print(queue[0])
+print(queue[-1])
+print(queue[1:3])
+
+# A tuple can keep two related values together.
+ticket_id, status = (&quot;T2&quot;, &quot;open&quot;)
+print(f&quot;{ticket_id}: {status}&quot;)</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">T1
+T4
+[&#x27;T2&#x27;, &#x27;T3&#x27;]
+T2: open</code></pre>
+    <p><code>queue[1:3]</code> starts at index 1 and stops before index 3. The slice creates a new outer list. A tuple can contain a mutable object, but you cannot assign a new value to one of the tuple’s positions. Write <code>("T2",)</code> for a one-item tuple.</p>
+    <details class="fde-setup-answer">
+      <summary>Predict what changes with a shorter queue</summary>
+      <p>With only <code>["T1"]</code>, <code>queue[1:3]</code> gives <code>[]</code>. Directly reading <code>queue[1]</code> raises <code>IndexError</code>.</p>
+    </details>
+  </section>
+
+  <section class="topic" id="topic-2">
+    <h2>Dictionaries and sets</h2>
+    <p>A ticket has named fields. Use <code>ticket["status"]</code> for a required field and <code>ticket.get("owner", "unassigned")</code> for an optional one. Direct lookup of a missing key raises <code>KeyError</code>. A set answers whether you have seen a value before.</p>
+    <pre><code data-language="python">ticket = {&quot;id&quot;: &quot;T2&quot;, &quot;status&quot;: &quot;open&quot;}
+seen = {&quot;T1&quot;, &quot;T2&quot;}
+
 print(ticket.get(&quot;owner&quot;, &quot;unassigned&quot;))
-seen = {101, 102, 101}
-print(len(seen))
-print(102 in seen)
-</code></pre><h4>Output</h4><pre><code data-language="text">open
-unassigned
-2
+ticket[&quot;status&quot;] = &quot;closed&quot;
+print(ticket[&quot;status&quot;])
+print(&quot;T2&quot; in seen)
+seen.add(&quot;T2&quot;)
+print(len(seen))</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">unassigned
+closed
 True
-</code></pre><h3>কীভাবে এই result হলো?</h3><ol><li>status key দিয়ে open পাওয়া যায়, তারপর assignment-এ status closed হয়।</li><li>owner missing, তাই get default unassigned দেয়।</li><li>Set-এ 101 একবার থাকে; len 2। Membership result True।</li></ol><div class="concept-check"><strong>এখানে যেটা ভুল হতে পারে</strong><p>Required field missing হলে default দিয়ে error লুকাবে না। ticket["owner"] missing হলে KeyError দেয়। আর set iteration order-এর উপর output depend করাবে না।</p></div><p>Dict insertion order রাখে। List যদি sorted sequence দরকার হয়, set তার replacement না। Unique membership আর ordered result দুইটা লাগলে আলাদা set ও list রাখো।</p><section class="try-change"><h3>এবার তুমি বদলে দেখো</h3><p>ticket["owner"] = "Mynul" যোগ করে get আবার run করো।</p><details><summary>Reasoning মিলিয়ে দেখো</summary><div><p>এবার key আছে, তাই Mynul return করবে; default ব্যবহার হবে না।</p></div></details></section></section><p>Next: <a href="lesson-2.html#topic-3">Memory management fundamentals</a></p><section class="topic" id="topic-3"><h2>1.2.3 Mutability and references</h2><p>একটা list অন্য variable-এ assign করলেই কি independent copy হবে? আগে output predict করো। Assignment আসলে আরেকটা name দিয়ে একই object refer করতে পারে।</p><h3>Code-টা run করি</h3><pre><code data-language="python">first = [&quot;T1&quot;]
+2</code></pre>
+    <p>Braces with <code>key: value</code> pairs make a dictionary. Braces with values alone make a set. Use <code>{}</code> for an empty dictionary and <code>set()</code> for an empty set. Adding <code>"T2"</code> twice still keeps one copy. For two sets, <code>a &amp; b</code> gives the items in both and <code>a - b</code> gives the items only in <code>a</code>.</p>
+  </section>
+
+  <section class="topic" id="topic-5">
+    <h2>Read nested records and filter lists</h2>
+    <p>A list can hold several dictionaries. Each dictionary can contain another dictionary. Follow one step at a time. <code>tickets[0]</code> finds the first record, <code>["customer"]</code> finds its customer field and <code>["id"]</code> reads the ID inside it.</p>
+    <pre><code data-language="python">tickets = [
+    {&quot;id&quot;: &quot;T1&quot;, &quot;status&quot;: &quot;open&quot;, &quot;customer&quot;: {&quot;id&quot;: &quot;0042&quot;}},
+    {&quot;id&quot;: &quot;T2&quot;, &quot;status&quot;: &quot;closed&quot;, &quot;customer&quot;: {&quot;id&quot;: &quot;0007&quot;}},
+    {&quot;id&quot;: &quot;T3&quot;, &quot;status&quot;: &quot;open&quot;, &quot;customer&quot;: {&quot;id&quot;: &quot;0042&quot;}},
+]
+print(tickets[0][&quot;customer&quot;][&quot;id&quot;])
+
+# Keep the IDs from records whose status is open.
+open_ids = [ticket[&quot;id&quot;] for ticket in tickets if ticket[&quot;status&quot;] == &quot;open&quot;]
+print(open_ids)</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">0042
+[&#x27;T1&#x27;, &#x27;T3&#x27;]</code></pre>
+    <p>Read the list comprehension as a loop. Take each <code>ticket</code> from <code>tickets</code>, keep it if the condition passes and put <code>ticket["id"]</code> in the new list. Use a regular loop when the work takes several steps.</p>
+    <details class="fde-setup-answer">
+      <summary>How membership checks scale</summary>
+      <p>A list may scan every item to find a match. This takes linear time, written <code>O(n)</code>. Dictionary key and set membership checks take roughly constant time on average, written <code>O(1)</code>. If you only need one check on a short list, keep the structure simple.</p>
+    </details>
+  </section>
+
+  <section class="topic" id="practice-1">
+    <h2>Build a ticket intake summary</h2>
+    <p>Write a function that returns two results. First return customer IDs in the order they first appeared. Then return the number of tickets per status. Use a list for order, a set for membership and a dictionary for counts. Count every ticket, including tickets from repeat customers. Keep IDs as strings so <code>"0042"</code> stays intact.</p>
+    <p>Try three tickets in order. Give customer <code>"0042"</code> an open ticket, customer <code>"0007"</code> a closed ticket and <code>"0042"</code> another open one. The summary should show the two customers and two open tickets. An empty input should return <code>([], {})</code>.</p>
+    <details class="fde-setup-answer">
+      <summary>Reveal the commented solution</summary>
+      <pre><code data-language="python">def summarize_tickets(tickets):
+    &quot;&quot;&quot;Return customer IDs in first-seen order and counts by status.&quot;&quot;&quot;
+    customers = []
+    seen = set()
+    counts = {}
+
+    for ticket in tickets:
+        customer = ticket[&quot;customer&quot;]
+        status = ticket[&quot;status&quot;]
+        # Keep customer order and count every ticket, even for repeat customers.
+        if customer not in seen:
+            seen.add(customer)
+            customers.append(customer)
+        counts[status] = counts.get(status, 0) + 1
+
+    return customers, counts
+
+
+tickets = [
+    {&quot;customer&quot;: &quot;0042&quot;, &quot;status&quot;: &quot;open&quot;},
+    {&quot;customer&quot;: &quot;0007&quot;, &quot;status&quot;: &quot;closed&quot;},
+    {&quot;customer&quot;: &quot;0042&quot;, &quot;status&quot;: &quot;open&quot;},
+]
+customers, counts = summarize_tickets(tickets)
+print(customers)
+print(counts)</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">[&#x27;0042&#x27;, &#x27;0007&#x27;]
+{&#x27;open&#x27;: 2, &#x27;closed&#x27;: 1}</code></pre>
+    </details>
+    <p>Try adding a closed ticket for <code>"0042"</code>. Predict which result stays the same and which count changes.</p>
+  </section>
+
+  <section class="topic" id="data-structures-practice">
+    <h2>Project and interview practice</h2>
+    <p>Choose a problem, say why you’d use a particular structure and run your version before opening the answer.</p>
+    <details class="fde-setup-answer">
+      <summary>Eight bootcamp project walkthroughs</summary>
+      <details class="fde-setup-answer">
+      <summary>Capstone 01 · OmniGuard</summary>
+      <p>Check whether a connector is approved for launch.</p>
+<pre><code data-language="python"># Check whether a connector is approved for launch.
+approved = {&quot;crm&quot;, &quot;docs&quot;}
+print(&quot;crm&quot; in approved)
+print(&quot;billing&quot; in approved)</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">True
+False</code></pre>
+    </details>
+<details class="fde-setup-answer">
+      <summary>Capstone 02 · AuditMesh</summary>
+      <p>Use a tuple to unpack the case ID and its check count.</p>
+<pre><code data-language="python"># Use a tuple to unpack the case ID and its check count.
+case_id, checks_left = (&quot;007&quot;, 2)
+print(f&quot;{case_id} | {checks_left} checks left&quot;)</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">007 | 2 checks left</code></pre>
+    </details>
+<details class="fde-setup-answer">
+      <summary>Project 03 · Self-host an LLM</summary>
+      <p>Store memory limits by model name and use a fallback for an unknown model.</p>
+<pre><code data-language="python"># Store memory limits by model name and use a fallback for an unknown model.
+limits_gb = {&quot;small&quot;: 8, &quot;medium&quot;: 16}
+print(limits_gb.get(&quot;medium&quot;, 0))
+print(limits_gb.get(&quot;large&quot;, 0))</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">16
+0</code></pre>
+    </details>
+<details class="fde-setup-answer">
+      <summary>Project 04 · Run an LLM on mobile devices</summary>
+      <p>Keep battery samples in arrival order and inspect the last two.</p>
+<pre><code data-language="python"># Keep battery samples in arrival order and inspect the last two.
+battery = [90, 85, 80, 75]
+print(battery[-2:])</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">[80, 75]</code></pre>
+    </details>
+<details class="fde-setup-answer">
+      <summary>Project 05 · Multimodal document intelligence</summary>
+      <p>Read a field inside a file’s nested metadata.</p>
+<pre><code data-language="python"># Read a field inside a file’s nested metadata.
+file = {&quot;id&quot;: &quot;D7&quot;, &quot;metadata&quot;: {&quot;pages&quot;: 12}}
+print(file[&quot;metadata&quot;][&quot;pages&quot;])</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">12</code></pre>
+    </details>
+<details class="fde-setup-answer">
+      <summary>Project 06 · Enterprise lead management</summary>
+      <p>Keep IDs as text and find the leads both teams have seen.</p>
+<pre><code data-language="python"># Keep IDs as text and find the leads both teams have seen.
+sales = {&quot;0042&quot;, &quot;0060&quot;}
+support = {&quot;0042&quot;, &quot;0091&quot;}
+print(sorted(sales &amp; support))</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">[&#x27;0042&#x27;]</code></pre>
+    </details>
+<details class="fde-setup-answer">
+      <summary>Project 07 · AI receptionist</summary>
+      <p>Take the oldest callback off a small queue.</p>
+<pre><code data-language="python"># Take the oldest callback off a small queue.
+callbacks = [&quot;C1&quot;, &quot;C2&quot;, &quot;C3&quot;]
+next_call = callbacks.pop(0)
+print(next_call)
+print(callbacks)</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">C1
+[&#x27;C2&#x27;, &#x27;C3&#x27;]</code></pre>
+    </details>
+<details class="fde-setup-answer">
+      <summary>Project 08 · AI Voice Productivity SaaS</summary>
+      <p>Keep only clips long enough to transcribe.</p>
+<pre><code data-language="python"># Keep only clips long enough to transcribe.
+durations = [1, 4, 2, 7]
+ready = [seconds for seconds in durations if seconds &gt;= 3]
+print(ready)</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">[4, 7]</code></pre>
+    </details>
+    </details>
+    <details class="fde-setup-answer">
+      <summary>Five workplace exercises</summary>
+      <details class="fde-setup-answer">
+      <summary>Assign a ticket owner</summary>
+      <p>Update the owner field and keep the ticket ID intact.</p>
+<details class="fde-setup-answer">
+      <summary>Reveal the commented solution</summary>
+      <pre><code data-language="python"># Update the owner field and keep the ticket ID intact.
+ticket = {&quot;id&quot;: &quot;T7&quot;, &quot;owner&quot;: &quot;unassigned&quot;}
+ticket[&quot;owner&quot;] = &quot;Mia&quot;
+print(f&quot;{ticket[&#x27;id&#x27;]}: {ticket[&#x27;owner&#x27;]}&quot;)</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">T7: Mia</code></pre>
+    </details>
+    </details>
+<details class="fde-setup-answer">
+      <summary>Preview a deployment queue</summary>
+      <p>Show up to two jobs without removing either from the queue.</p>
+<details class="fde-setup-answer">
+      <summary>Reveal the commented solution</summary>
+      <pre><code data-language="python"># Show up to two jobs without removing either from the queue.
+jobs = [&quot;sync&quot;, &quot;audit&quot;, &quot;report&quot;]
+print(jobs[:2])
+print(len(jobs))</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">[&#x27;sync&#x27;, &#x27;audit&#x27;]
+3</code></pre>
+    </details>
+    </details>
+<details class="fde-setup-answer">
+      <summary>Reconcile scheduled exports</summary>
+      <p>Find the expected jobs that did not complete.</p>
+<details class="fde-setup-answer">
+      <summary>Reveal the commented solution</summary>
+      <pre><code data-language="python"># Find the expected jobs that did not complete.
+expected = {&quot;users&quot;, &quot;payments&quot;, &quot;tickets&quot;}
+completed = {&quot;users&quot;, &quot;tickets&quot;}
+print(sorted(expected - completed))</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">[&#x27;payments&#x27;]</code></pre>
+    </details>
+    </details>
+<details class="fde-setup-answer">
+      <summary>Count support tickets by status</summary>
+      <p>Return the count for each status, including an unseen status.</p>
+<details class="fde-setup-answer">
+      <summary>Reveal the commented solution</summary>
+      <pre><code data-language="python"># Return the count for each status, including an unseen status.
+counts = {}
+for status in [&quot;open&quot;, &quot;done&quot;, &quot;open&quot;]:
+    counts[status] = counts.get(status, 0) + 1
+print(counts[&quot;open&quot;])
+print(counts.get(&quot;waiting&quot;, 0))</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">2
+0</code></pre>
+    </details>
+    </details>
+<details class="fde-setup-answer">
+      <summary>Read a nested invoice field</summary>
+      <p>Look up the currency code without relying on the order of the fields.</p>
+<details class="fde-setup-answer">
+      <summary>Reveal the commented solution</summary>
+      <pre><code data-language="python"># Look up the currency code without relying on the order of the fields.
+invoice = {&quot;amount&quot;: 30, &quot;currency&quot;: {&quot;code&quot;: &quot;EUR&quot;}}
+print(invoice[&quot;currency&quot;][&quot;code&quot;])</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">EUR</code></pre>
+    </details>
+    </details>
+    </details>
+    <details class="fde-setup-answer">
+      <summary>Eight tricky interview questions</summary>
+      <details class="fde-setup-answer">
+      <summary>What does <code>items[-1]</code> select?</summary>
+      <p>The last item. For an empty list, direct indexing raises <code>IndexError</code>.</p>
+    </details>
+<details class="fde-setup-answer">
+      <summary>Does <code>items[1:3]</code> include index 3?</summary>
+      <p>The stop is excluded. This slice includes indices 1 and 2 when they exist.</p>
+    </details>
+<details class="fde-setup-answer">
+      <summary>Why does <code>(42)</code> give an integer?</summary>
+      <p><code>(42,)</code> has a trailing comma and makes a one-item tuple.</p>
+    </details>
+<details class="fde-setup-answer">
+      <summary>What happens when you assign a value to an existing dictionary key?</summary>
+      <p>The new value replaces the previous value for that key.</p>
+    </details>
+<details class="fde-setup-answer">
+      <summary>How do you make an empty set?</summary>
+      <p>Use <code>set()</code>. Empty braces create a dictionary.</p>
+    </details>
+<details class="fde-setup-answer">
+      <summary>What does <code>x in records</code> check when <code>records</code> is a dictionary?</summary>
+      <p>It checks keys. Use <code>records.values()</code> when you need to search the values.</p>
+    </details>
+<details class="fde-setup-answer">
+      <summary>Why use a list and a set together to remove duplicates?</summary>
+      <p>The list keeps first-seen order. The set remembers which items have already appeared.</p>
+    </details>
+<details class="fde-setup-answer">
+      <summary>Does a list slice make nested items independent?</summary>
+      <p>It creates a new outer list. Nested objects can still be shared. The memory section shows how to inspect this.</p>
+    </details>
+    </details>
+    <p>Continue with <a href="#topic-3">Memory management fundamentals</a> to see what happens when two names refer to the same list.</p>
+  </section>
+
+<section lang="bn" class="topic" id="topic-3"><h2>1.2.3 Mutability and references</h2><p>একটা list অন্য variable-এ assign করলেই কি independent copy হবে? আগে output predict করো। Assignment আসলে আরেকটা name দিয়ে একই object refer করতে পারে।</p><h3>Code-টা run করি</h3><pre><code data-language="python">first = [&quot;T1&quot;]
 second = first
 second.append(&quot;T2&quot;)
 print(first)
@@ -45,7 +343,7 @@ print(first == [&quot;T1&quot;, &quot;T2&quot;])
 </code></pre><h4>Output</h4><pre><code data-language="text">[&#x27;T1&#x27;, &#x27;T2&#x27;]
 True
 True
-</code></pre><h3>কীভাবে এই result হলো?</h3><ol><li>first ও second একই list object refer করে।</li><li>append সেই shared list বদলায়। তাই first দিয়েও T2 দেখা যায়।</li><li>is same object check করে; == values compare করে। দুই question এক না।</li></ol><div class="concept-check"><strong>এখানে যেটা ভুল হতে পারে</strong><p>String/number value compare করতে is ব্যবহার করবে না। <code>is None</code> absent value check করার conventional form। Shared mutable data customer records মিশিয়ে দিতে পারে।</p></div><p>Object জীবিত থাকতে পারে যতক্ষণ অন্য references আছে। <code>del first</code> শুধু সেই name-এর binding সরায়। এতে process memory সঙ্গে সঙ্গে OS-এ ফিরে যাবে, এমন guarantee নেই।</p><section class="try-change"><h3>এবার তুমি বদলে দেখো</h3><p>second = first.copy() দিয়ে আবার প্রথম থেকে run করো।</p><details><summary>Reasoning মিলিয়ে দেখো</summary><div><p>এবার first ["T1"] থাকবে, second ["T1", "T2"] হবে। first is second False।</p></div></details></section></section><section class="topic" id="topic-4"><h2>1.2.4 Shallow copying</h2><p>Outer dict copy করলাম, কিন্তু তার tags list-ও copy হয়েছে কি? Nested data-এর bug ধরতে outer object আর inner object আলাদাভাবে ভাবতে হবে।</p><h3>Code-টা run করি</h3><pre><code data-language="python">original = {&quot;tags&quot;: [&quot;billing&quot;]}
+</code></pre><h3>কীভাবে এই result হলো?</h3><ol><li>first ও second একই list object refer করে।</li><li>append সেই shared list বদলায়। তাই first দিয়েও T2 দেখা যায়।</li><li>is same object check করে; == values compare করে। দুই question এক না।</li></ol><div class="concept-check"><strong>এখানে যেটা ভুল হতে পারে</strong><p>String/number value compare করতে is ব্যবহার করবে না। <code>is None</code> absent value check করার conventional form। Shared mutable data customer records মিশিয়ে দিতে পারে।</p></div><p>Object জীবিত থাকতে পারে যতক্ষণ অন্য references আছে। <code>del first</code> শুধু সেই name-এর binding সরায়। এতে process memory সঙ্গে সঙ্গে OS-এ ফিরে যাবে, এমন guarantee নেই।</p><section lang="bn" class="try-change"><h3>এবার তুমি বদলে দেখো</h3><p>second = first.copy() দিয়ে আবার প্রথম থেকে run করো।</p><details><summary>Reasoning মিলিয়ে দেখো</summary><div><p>এবার first ["T1"] থাকবে, second ["T1", "T2"] হবে। first is second False।</p></div></details></section></section><section lang="bn" class="topic" id="topic-4"><h2>1.2.4 Shallow copying</h2><p>Outer dict copy করলাম, কিন্তু তার tags list-ও copy হয়েছে কি? Nested data-এর bug ধরতে outer object আর inner object আলাদাভাবে ভাবতে হবে।</p><h3>Code-টা run করি</h3><pre><code data-language="python">original = {&quot;tags&quot;: [&quot;billing&quot;]}
 draft = original.copy()
 draft[&quot;tags&quot;].append(&quot;urgent&quot;)
 print(original[&quot;tags&quot;])
@@ -54,28 +352,12 @@ print(original[&quot;tags&quot;] is draft[&quot;tags&quot;])
 </code></pre><h4>Output</h4><pre><code data-language="text">[&#x27;billing&#x27;, &#x27;urgent&#x27;]
 False
 True
-</code></pre><h3>কীভাবে এই result হলো?</h3><ol><li>Dict.copy নতুন outer dict বানায়, তাই original is draft False।</li><li>কিন্তু inner tags value এখনো একই list-এর reference।</li><li>draft দিয়ে append করায় original-এর tags-এও urgent দেখা যায়।</li></ol><div class="concept-check"><strong>এখানে যেটা ভুল হতে পারে</strong><p>Shallow copy-কে পুরো nested structure-এর independence ভাবলে bug থাকবে। শুধু edited field copy করো, অথবা প্রয়োজন অনুযায়ী deepcopy ব্যবহার করো।</p></div><p>deepcopy recursive data copy করতে পারে, কিন্তু বড় shared structure অকারণে copy করলে time ও memory খরচ বাড়ে। File handles/network connections-কে সাধারণ data-এর মতো copy করে independent resource পাওয়া যায় না।</p><section class="try-change"><h3>এবার তুমি বদলে দেখো</h3><p>append-এর আগে draft["tags"] = original["tags"].copy() বসাও।</p><details><summary>Reasoning মিলিয়ে দেখো</summary><div><p>এবার original tags শুধু billing, draft tags billing ও urgent। Inner references আর একই না।</p></div></details></section></section><section class="topic" id="topic-5"><h2>1.2.5 Membership and complexity</h2><p>প্রতিটি request-এর status allowed কি না check করবো। Allowed values বারবার lookup হলে set useful। Complexity বোঝার উদ্দেশ্য হলো growing input-এ work কীভাবে বাড়ে দেখা।</p><h3>Code-টা run করি</h3><pre><code data-language="python">allowed = {&quot;open&quot;, &quot;pending&quot;, &quot;closed&quot;}
-incoming = [&quot;open&quot;, &quot;deleted&quot;, &quot;closed&quot;]
-for status in incoming:
-    print(status, status in allowed)
-</code></pre><h4>Output</h4><pre><code data-language="text">open True
-deleted False
-closed True
-</code></pre><h3>কীভাবে এই result হলো?</h3><ol><li>for প্রতিটি incoming status নেয়।</li><li>in set membership check করে।</li><li>deleted allowed set-এ নেই, তাই False।</li></ol><div class="concept-check"><strong>এখানে যেটা ভুল হতে পারে</strong><p>List membership সাধারণত O(n), set/dict lookup average O(1)। Average মানে every input-এ fixed cost guarantee না। Set বানানোর কাজ ও memory-ও count করতে হবে।</p></div><p>Memory বাড়লে unbounded results/cache-এ পুরোনো objects জমছে কি না দেখো। পরে Lesson 1.6-এ streaming দিয়ে বড় input process করবো।</p><section class="try-change"><h3>এবার তুমি বদলে দেখো</h3><p>একবার lookup বনাম এক লাখবার lookup হলে list থেকে set conversion কোন ক্ষেত্রে বেশি justified?</p><details><summary>Reasoning মিলিয়ে দেখো</summary><div><p>Repeated lookups-এ upfront conversion cost amortize হতে পারে। একবার ছোট lookup হলে নতুন set বানানোর benefit নাও থাকতে পারে।</p></div></details></section></section><section class="debug-box"><h2>Debugging: কোথা থেকে শুরু করবে?</h2><p>দুই record একসাথে বদলালে values দেখার পাশাপাশি <code>a is b</code> দিয়ে shared object check করো। Nested field-এর reference-ও দেখবে। Garbage collector tune করার আগে নিজের retained references আর collection growth investigate করো।</p></section><section class="practice" id="practice-1"><h3>Practice 1: Unique Customers, Same Order</h3><p>[42, 7, 42, 9, 7] থেকে [42, 7, 9] বানাও। Input list change করবে না।</p><details><summary>Hint</summary><div><p>Seen set আর output list একসাথে ব্যবহার করো।</p></div></details><details><summary>See Solution</summary><div><p>Set membership দিয়ে duplicate detect করো, first appearance output-এ append করো।</p><h4>Solution-টা বুঝে নিই</h4><p>Seen set duplicate চেনে, output list first-seen order রাখে। আগে membership check, পরে append করা হয়েছে। তাই repeated 42 output-এ দ্বিতীয়বার নেই।</p><pre><code data-language="python">incoming = [42, 7, 42, 9, 7]
-seen = set()
-unique = []
-for customer_id in incoming:
-    if customer_id not in seen:
-        seen.add(customer_id)
-        unique.append(customer_id)
-print(&#x27;Check:&#x27;, unique == [42, 7, 9])
-print(&#x27;Check:&#x27;, incoming == [42, 7, 42, 9, 7])
-</code></pre><h4>Output</h4><pre><code data-language="text">Check: True
-Check: True
-</code></pre></div></details><h4>নিজের কাজ মিলিয়ে দেখো</h4><p>Empty list ও all-duplicate list test করো। কেন শুধু list(set(incoming)) যথেষ্ট না explain করো।</p></section><section class="practice" id="practice-2"><h3>Practice 2: Independent Customer Tags</h3><p>দুই customer-এর tags list যেন independent থাকে। একজনকে urgent tag দিলে অন্যজন unchanged থাকবে।</p><details><summary>Hint</summary><div><p>একটা common empty list assign না করে প্রতিবার নতুন list তৈরি করো।</p></div></details><details><summary>See Solution</summary><div><p>প্রতিটি record-এর mutable field আলাদাভাবে initialize করো।</p><h4>Solution-টা বুঝে নিই</h4><p>প্রতি customer-এর tags আলাদা list। প্রথমটির append দ্বিতীয়টির reference touch করছে না। নিচের checks True হলে expected invariant মিলেছে।</p><pre><code data-language="python">customers = [{&#x27;id&#x27;: 1, &#x27;tags&#x27;: []}, {&#x27;id&#x27;: 2, &#x27;tags&#x27;: []}]
+</code></pre><h3>কীভাবে এই result হলো?</h3><ol><li>Dict.copy নতুন outer dict বানায়, তাই original is draft False।</li><li>কিন্তু inner tags value এখনো একই list-এর reference।</li><li>draft দিয়ে append করায় original-এর tags-এও urgent দেখা যায়।</li></ol><div class="concept-check"><strong>এখানে যেটা ভুল হতে পারে</strong><p>Shallow copy-কে পুরো nested structure-এর independence ভাবলে bug থাকবে। শুধু edited field copy করো, অথবা প্রয়োজন অনুযায়ী deepcopy ব্যবহার করো।</p></div><p>deepcopy recursive data copy করতে পারে, কিন্তু বড় shared structure অকারণে copy করলে time ও memory খরচ বাড়ে। File handles/network connections-কে সাধারণ data-এর মতো copy করে independent resource পাওয়া যায় না।</p><section lang="bn" class="try-change"><h3>এবার তুমি বদলে দেখো</h3><p>append-এর আগে draft["tags"] = original["tags"].copy() বসাও।</p><details><summary>Reasoning মিলিয়ে দেখো</summary><div><p>এবার original tags শুধু billing, draft tags billing ও urgent। Inner references আর একই না।</p></div></details></section></section>
+<section lang="bn" class="debug-box"><h2>Debugging: কোথা থেকে শুরু করবে?</h2><p>দুই record একসাথে বদলালে values দেখার পাশাপাশি <code>a is b</code> দিয়ে shared object check করো। Nested field-এর reference-ও দেখবে। Garbage collector tune করার আগে নিজের retained references আর collection growth investigate করো।</p></section>
+<section lang="bn" class="practice" id="practice-2"><h3>Practice 2: Independent Customer Tags</h3><p>দুই customer-এর tags list যেন independent থাকে। একজনকে urgent tag দিলে অন্যজন unchanged থাকবে।</p><details><summary>Hint</summary><div><p>একটা common empty list assign না করে প্রতিবার নতুন list তৈরি করো।</p></div></details><details><summary>See Solution</summary><div><p>প্রতিটি record-এর mutable field আলাদাভাবে initialize করো।</p><h4>Solution-টা বুঝে নিই</h4><p>প্রতি customer-এর tags আলাদা list। প্রথমটির append দ্বিতীয়টির reference touch করছে না। নিচের checks True হলে expected invariant মিলেছে।</p><pre><code data-language="python">customers = [{&#x27;id&#x27;: 1, &#x27;tags&#x27;: []}, {&#x27;id&#x27;: 2, &#x27;tags&#x27;: []}]
 customers[0][&#x27;tags&#x27;].append(&#x27;urgent&#x27;)
 print(&#x27;Check:&#x27;, customers[1][&#x27;tags&#x27;] == [])
 print(&#x27;Check:&#x27;, customers[0][&#x27;tags&#x27;] is not customers[1][&#x27;tags&#x27;])
 </code></pre><h4>Output</h4><pre><code data-language="text">Check: True
 Check: True
-</code></pre></div></details><h4>নিজের কাজ মিলিয়ে দেখো</h4><p>আগে একই shared list দিয়ে bug reproduce করো। তারপর fresh list দিয়ে fix verify করো।</p></section><section class="completion" id="module-check"><h2>পরের Lesson-এ যাওয়ার আগে</h2><ul><li>নিজের ভাষায় main concept explain করো।</li><li>দুই practice-এর solution বন্ধ করে একটা changed-input version solve করো।</li><li>একটা failing case দেখিয়ে কেন fail করে এবং fix কী হবে বলো।</li></ul></section><details><summary>আরও পড়তে চাইলে</summary><div><ul><li><a href="https://docs.python.org/3/library/copy.html">Python: references ও copying</a></li></ul></div></details><nav class="lesson-nav" aria-label="Lesson navigation"><a href="lesson-3.html">Previous: Functions &amp; scope</a><a href="lesson-4.html">Next: Object-oriented programming basics</a></nav></main><aside class="fde-outline" hidden></aside></div><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script><script src="../../assets/js/fde-layout.js?v=25" defer></script></body></html>
+</code></pre></div></details><h4>নিজের কাজ মিলিয়ে দেখো</h4><p>আগে একই shared list দিয়ে bug reproduce করো। তারপর fresh list দিয়ে fix verify করো।</p></section><section lang="bn" class="completion" id="module-check"><h2>পরের Lesson-এ যাওয়ার আগে</h2><ul><li>নিজের ভাষায় main concept explain করো।</li><li>দুই practice-এর solution বন্ধ করে একটা changed-input version solve করো।</li><li>একটা failing case দেখিয়ে কেন fail করে এবং fix কী হবে বলো।</li></ul></section><details lang="bn"><summary>আরও পড়তে চাইলে</summary><div><ul><li><a href="https://docs.python.org/3/library/copy.html">Python: references ও copying</a></li></ul></div></details><nav class="lesson-nav" aria-label="Lesson navigation"><a href="lesson-3.html">Previous: Functions &amp; scope</a><a href="lesson-4.html">Next: Object-oriented programming basics</a></nav></main><aside class="fde-outline" hidden></aside></div><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script><script src="../../assets/js/fde-layout.js?v=25" defer></script></body></html>
