@@ -28,6 +28,30 @@
     <main id="main">
       <h1>Linux for Engineers</h1>
       <p lang="bn">Linux for Engineers নিয়ে Step by Step শিখবো। নিচের Concepts আর Tools হাতে-কলমে Practice করবো।</p><p>Navigating the file system, Permission and user management, Process monitoring, Shell scripting basics, Environment variable configurations</p>
+
+      <section class="topic" id="multipass-lab" lang="en">
+        <h2>Run Ubuntu with Multipass</h2>
+        <p>In this lab you’ll open an Ubuntu shell and confirm that it can read a file from your computer. Your computer is the <strong>host</strong>. Ubuntu runs as the <strong>guest</strong> inside the virtual machine.</p>
+    <h3>Start the guest from your host terminal</h3>
+    <p>Install Multipass using <a href="https://canonical.com/multipass/install">Canonical’s instructions for your operating system</a>. Use a fresh terminal and list the available images. The lecture uses Ubuntu 24.04 and allocates two CPU cores, 2 GB of memory and 15 GB of guest disk space. Check your host’s available resources before launching.</p>
+    <pre><code data-language="text">multipass version
+multipass find
+multipass launch --name linuxbox --cpus 2 --memory 2G --disk 15G 24.04
+multipass info linuxbox</code></pre>
+    <h3>Share a practice folder</h3>
+    <p>On the host, create a <code>linux-class</code> folder in your home directory and save a file named <code>hello.txt</code> inside. Use the mount command for your host shell.</p>
+    <p><strong>Windows PowerShell</strong></p>
+    <pre><code data-language="text">multipass mount &quot;$HOME\linux-class&quot; linuxbox:/home/ubuntu/class-files</code></pre>
+    <p><strong>macOS or Linux</strong></p>
+    <pre><code data-language="text">multipass mount &quot;$HOME/linux-class&quot; linuxbox:/home/ubuntu/class-files</code></pre>
+    <p>From the host, run <code>multipass shell linuxbox</code>. At the Ubuntu prompt, run the following commands.</p>
+    <pre><code data-language="text">cd /home/ubuntu/class-files
+ls
+cat hello.txt
+exit</code></pre>
+    <p>The listing should include <code>hello.txt</code> and <code>cat</code> should show what you saved. Files edited through this mount change in the host folder too. When finished, run <code>multipass unmount linuxbox:/home/ubuntu/class-files</code> and <code>multipass stop linuxbox</code> from the host.</p>
+    <p><a href="https://canonical.com/multipass/docs/latest/reference/command-line-interface/launch/">Launch reference</a> · <a href="https://canonical.com/multipass/docs/latest/reference/command-line-interface/mount/">Mount reference</a></p>
+      </section>
     </main>
   </div>
   <footer>Directed by - Mynul Islam</footer>

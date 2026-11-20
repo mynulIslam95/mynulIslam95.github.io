@@ -92,6 +92,29 @@ print(list(filter(None, cleaned)))</code></pre>
 
   </section>
 
+
+      <section class="topic" id="stream-document-pages" lang="en">
+        <h2>Process document pages one at a time</h2>
+        <p>A document pipeline may need to label each page before sending its text onward. This simulation uses strings so you can test the loop without a PDF library. Predict whether page 2 is read when you call <code>next()</code> for the first time.</p>
+    <pre><code data-language="python">def read_pages():
+    for number, text in enumerate([&quot;Intro&quot;, &quot;&quot;, &quot;Summary&quot;], start=1):
+        print(f&quot;Reading page {number}&quot;)
+        yield number, text
+
+
+pages = read_pages()
+print(next(pages))
+
+for number, text in pages:
+    print(f&quot;Page {number}: {text or &#x27;[no text]&#x27;}&quot;)</code></pre><p><strong>Expected output</strong></p><pre><code data-language="text">Reading page 1
+(1, &#x27;Intro&#x27;)
+Reading page 2
+Page 2: [no text]
+Reading page 3
+Page 3: Summary</code></pre>
+    <p><code>yield</code> hands one result to the caller and pauses the function. The next request resumes at the following page. Once the generator finishes, <code>next()</code> raises <code>StopIteration</code>. The source in this simulation is a list. With a real reader, memory use depends on how the reader loads pages and what the caller retains. Collecting the output with <code>list(pages)</code> keeps all remaining results in memory.</p>
+    <p>On a real PDF, an empty result can mean a blank page or an image with no text layer. Use an OCR tool for scanned text when the page needs it. Keep the source document open until its generator has finished.</p>
+      </section>
 <section class="debug-box"><h2>Debugging: কোথা থেকে শুরু করবে?</h2><p>Total ঠিক কিন্তু count zero? একই exhausted iterator twice ব্যবহার করেছ কি না দেখো। Memory high? Pipeline-এর মাঝে list(), sorted(), unbounded cache বা accumulating results আছে কি না খুঁজো।</p></section><section class="practice" id="practice-1"><h3>Practice 1: One-pass Summary</h3><p>একটা iterator থেকে count ও total এক pass-এ বের করো। Empty input-ও support করবে।</p><details><summary>Hint</summary><div><p>প্রথমে sum করে পরে len বা loop করলে source already consumed হতে পারে।</p></div></details><details><summary>See Solution</summary><div><p>দুই accumulators একই loop-এ update করো।</p><h4>Solution-টা বুঝে নিই</h4><p>Source একবার iterate হচ্ছে। Count ও total একই loop-এ update হওয়ায় exhausted iterator দ্বিতীয়বার দরকার হয়নি।</p><pre><code data-language="python">def summarize(stream):
     count = 0
     total = 0

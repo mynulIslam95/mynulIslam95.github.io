@@ -32,6 +32,27 @@
         <h2>4. FastAPI &amp; REST APIs</h2>
         <p lang="bn">FastAPI &amp; REST APIs নিয়ে Step by Step শিখবো। নিচের Concepts আর Tools হাতে-কলমে Practice করবো।</p><p>Path and query parameters, Pydantic data validation, Dependency injection, CORS middleware, Building scalable CRUD endpoints</p>
       </section>
+
+      <section class="topic" id="first-http-request" lang="en">
+        <h2>Read a paginated API response with Python</h2>
+        <p>Your teammate needs to inspect one product without downloading the whole catalogue. In a <a href="../python-foundations/lesson-7.html#uv-project-lab">uv project</a>, run <code>uv add requests</code>, save this as <code>read_catalogue.py</code> and run <code>uv run python read_catalogue.py</code>.</p>
+    <pre><code data-language="python">import requests
+
+url = &quot;https://dummyjson.com/products&quot;
+try:
+    response = requests.get(url, params={&quot;limit&quot;: 1, &quot;skip&quot;: 5}, timeout=5)
+    response.raise_for_status()
+    data = response.json()
+except requests.RequestException as error:
+    raise SystemExit(f&quot;Could not read the catalogue: {error}&quot;)
+
+print(&quot;HTTP status:&quot;, response.status_code)
+for product in data[&quot;products&quot;]:
+    print(product[&quot;id&quot;], product[&quot;title&quot;])</code></pre>
+    <p>On success, expect <code>HTTP status: 200</code> and one product row. The product can change as the demo catalogue changes. <code>params</code> encodes the query string. <code>skip=5</code> skips five records and <code>limit=1</code> asks for one. Try <code>skip=0</code> and predict which row changes.</p>
+    <p>Check the HTTP status before using the JSON. <code>raise_for_status()</code> raises on 4xx and 5xx responses. A timeout limits how long Requests waits during connection or while receiving data. It does not impose a deadline on the entire download. For a large collection, request one page at a time and process it before fetching the next one. Wrapping a fully downloaded JSON list in a generator still leaves that list in memory.</p>
+    <p><a href="https://requests.readthedocs.io/en/stable/user/quickstart/">Requests quickstart</a></p>
+      </section>
       <section id="fde-2-topic-2" class="topic">
         <h2>5. GraphQL Basics &amp; API Versioning</h2>
         <p lang="bn">GraphQL Basics &amp; API Versioning নিয়ে Step by Step শিখবো। নিচের Concepts আর Tools হাতে-কলমে Practice করবো।</p><p>Designing GraphQL schemas and object types using Python frameworks like Strawberry or Graphene, Writing efficient data resolvers, Handling N+1 query problems, Executing queries vs mutations, Implementing URL-based vs Header-based API versioning</p>

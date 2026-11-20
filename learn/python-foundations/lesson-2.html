@@ -494,6 +494,20 @@ Deep copy: [&#x27;billing&#x27;]</code></pre>
     <p>For this ticket, <code>deepcopy()</code> copies the dictionary and its nested list. If only the tags need an independent copy, copy that list directly. If an object is still reachable through another name or container, reassigning one variable doesn’t make that object disappear.</p>
   </section>
 
+
+      <section class="topic" id="object-lifetime" lang="en">
+        <h2>See what del actually removes</h2>
+        <p>Imagine a batch of embeddings is taking up memory. Before deleting a variable, ask whether another name or container still refers to the batch. Predict whether the last line can still read it.</p>
+    <pre><code data-language="python">embeddings = [[0.12, -0.45, 0.87]]
+pending = [embeddings]
+del embeddings
+
+# The outer list still keeps the batch reachable.
+print(pending[0])</code></pre><p><strong>Expected output</strong></p><pre><code data-language="text">[[0.12, -0.45, 0.87]]</code></pre>
+    <p><code>del embeddings</code> removes the name. The batch can still be reached through <code>pending</code>. In CPython, reference counting usually frees an object when its last reference goes away. A separate garbage collector handles unreachable reference cycles. <code>gc.collect()</code> can run a collection explicitly, but it cannot free this reachable batch or guarantee a drop in the process’s reported memory.</p>
+    <p>If you only need one batch at a time, process it and pass the result onward instead of keeping every batch in a list. Try the <a href="lesson-6.html#stream-document-pages">document page example</a>.</p>
+    <p><a href="https://docs.python.org/3/library/gc.html">Python garbage collection reference</a></p>
+      </section>
   <section class="topic" id="practice-2">
     <h2>Give each ticket its own tags</h2>
     <p>Two tickets start with the same <code>shared_tags</code> list. Predict both outputs, then run the example. Change the setup so only the first ticket gains <code>"urgent"</code>.</p>
