@@ -194,7 +194,10 @@ html:has(.fde-home .fde-cover:not([hidden])) {
 }
 html:has(.fde-home .fde-cover[hidden]) { overscroll-behavior-y: none; }
 .fde-home #main:has(> .fde-roadmap:not([hidden])) { padding-top: 4.5rem; }
-.fde-home .fde-roadmap { padding: clamp(20px, 3vw, 32px) 0 64px !important; }
+.fde-home #main { padding-bottom: 0; }
+.fde-home .fde-roadmap { padding: clamp(20px, 3vw, 32px) 0 14px !important; }
+.fde-home footer { margin: 0; padding: 14px 0; }
+.fde-home footer p { margin: 0; }
 .fde-home #roadmap-title { margin-top: 0 !important; }
 .fde-home main .fde-roadmap .wrap { max-width: 1000px !important; }
 .fde-home main .fde-roadmap h2 { font-weight: 700 !important; }
@@ -209,6 +212,7 @@ html:has(.fde-home .fde-cover[hidden]) { overscroll-behavior-y: none; }
   margin-bottom: clamp(10px, 1.5vw, 15px);
   scroll-margin-top: 12px;
 }
+.fde-home main .fde-milestones > li:last-child { margin-bottom: 0; }
 .fde-roadmap-anchor { position: absolute; top: 0; }
 .fde-milestones details {
   border: 1px solid var(--th-line);
