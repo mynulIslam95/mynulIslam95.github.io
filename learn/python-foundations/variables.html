@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>Variables, data types &amp; strings | Learn with Mynul</title><meta name="description" content="Learn Python variables, input, conversion and f-strings with an OmniGuard kickoff tool and eight project drills."><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=2"><link rel="stylesheet" href="../../assets/css/fde-layout.css?v=19"><style>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>Variables, data types &amp; strings | Learn with Mynul</title><meta name="description" content="Learn Python variables, input, conversion and f-strings with an OmniGuard kickoff tool and eight project drills."><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=2"><link rel="stylesheet" href="../../assets/css/fde-layout.css?v=26"><style>
 .fde-setup-lesson .topic { margin-top: 1.25rem; padding-top: 0; }
 .fde-setup-lesson .topic h2 { margin-top: .9rem !important; }
 .fde-setup-lesson .topic pre { margin: .55rem 0 !important; }
@@ -47,62 +47,86 @@
 <main id="main" class="fde-setup-lesson">
   <p class="breadcrumbs"><a href="../python-engineering-module-1.html">Course overview</a> / Core Python</p>
   <h1>Variables, data types &amp; strings</h1>
-  <p>Picture your first OmniGuard kickoff call. The customer says, “We’re Northwind. We have three data sources to connect. Each one should take about two and a half minutes.” Your teammate needs a short update for the next call. By the end, you’ll be able to choose a type for each field, calculate an estimate and print a summary someone else can use.</p>
+  <p>Northwind needs to connect three data sources. Each one takes about two and a half minutes. You’ll write a small kickoff tool that turns that note into a <strong>7.5-minute estimate</strong> your teammate can read.</p>
+  <p><strong>Start here.</strong> In the same <code>python-practice</code> folder from <a href="setup.html">the setup lesson</a>, create <code>kickoff.py</code>. Paste one example at a time, save it and run the same file. The examples replace each other until you build the complete tool.</p>
+  <pre><code data-language="bash">uv run python kickoff.py</code></pre>
+  <details class="fde-setup-answer">
+    <summary>Run without uv</summary>
+    <p>On Windows, use <code>py -3 kickoff.py</code> or <code>python kickoff.py</code> if that’s the command that worked during setup. On macOS or Linux, use <code>python3 kickoff.py</code>.</p>
+  </details>
+  <nav class="topic-nav" aria-label="Lesson sections"><ul>
+    <li><a href="#variables-and-types">Name and update a value</a></li>
+    <li><a href="#input-and-conversion">Read input and convert it</a></li>
+    <li><a href="#format-the-estimate">Format a one-line estimate</a></li>
+    <li><a href="#build-a-receipt">Build the kickoff tool</a></li>
+    <li><a href="#practice-and-debug">Change it and debug it</a></li>
+    <li><a href="#project-drills">Practice in a bootcamp project</a></li>
+    <li><a href="#mastery-check">Try the AuditMesh challenge</a></li>
+  </ul></nav>
 
   <section class="topic" id="variables-and-types">
-    <h2>Turn a kickoff note into Python values</h2>
-    <p><strong>Variable.</strong> A variable is a name you give to a value so you can use it again. In <code>source_count = 3</code>, <code>source_count</code> is the name and <code>3</code> is the value. If the customer adds a source, you can give that same name an updated value.</p>
-    <p><strong>Data type.</strong> A type tells Python what kind of value it’s working with and what you can do with it. <code>3</code> is an integer, so you can add <code>1</code> to get <code>4</code>. <code>"3"</code> is text. Join it to <code>"1"</code> and you get <code>"31"</code>.</p>
-    <p><strong>String.</strong> A string is a piece of text. In <code>customer = "Northwind"</code>, the quotes tell Python that <code>Northwind</code> is text. A job ID like <code>"007"</code> is also a string. Those zeros are part of the ID.</p>
-    <p>In your <code>python-practice</code> folder, create <code>kickoff.py</code> and type this with me. Save it, then open the terminal in that folder. Run <code>py -3 kickoff.py</code> on Windows or <code>python3 kickoff.py</code> on Mac or Linux. Before you press Enter, predict the final count.</p>
-    <pre><code data-language="python"># Record what we know at the start of the kickoff call.
-customer = "Northwind"
+    <h2>Name and update a value</h2>
+    <p>A <strong>variable</strong> is a name you can use to refer to a value. In <code>source_count = 3</code>, <code>source_count</code> is the name and <code>3</code> is the value. <code>=</code> assigns the value on the right to the name on the left.</p>
+    <p>Northwind adds a data source during the call. What will the last line print?</p>
+    <pre><code data-language="python">customer = "Northwind"
 source_count = 3
-
-# The customer just added one more data source.
 source_count = source_count + 1
-
 print(customer, "has", source_count, "data sources.")</code></pre>
     <pre><code data-language="text">Northwind has 4 data sources.</code></pre>
-    <p>Did you get <code>4</code>? In <code>source_count = source_count + 1</code>, Python reads the old count on the right of <code>=</code>, adds one and saves the new count on the left.</p>
-    <p>Now decide how to store the rest of the kickoff note.</p>
+    <p>Python uses the old value of <code>source_count</code> on the right, adds one and assigns <code>4</code> to the same name. <code>print()</code> puts spaces between the pieces you give it.</p>
+    <p>A <strong>type</strong> describes the kind of value Python has. The quotes in <code>"Northwind"</code> make it a string. Quotes around <code>"007"</code> keep its leading zeros as part of an ID.</p>
     <div class="table-scroll"><table>
-      <thead><tr><th scope="col">Type</th><th scope="col">Why we use it on this job</th></tr></thead>
+      <thead><tr><th scope="col">Kind of value</th><th scope="col">Example from the kickoff</th></tr></thead>
       <tbody>
-        <tr><th scope="row"><code>str</code></th><td><code>customer = "Northwind"</code> keeps the customer’s name ready for the report.</td></tr>
-        <tr><th scope="row"><code>int</code></th><td><code>source_count = 3</code> lets us count complete data sources and add more.</td></tr>
-        <tr><th scope="row"><code>float</code></th><td><code>minutes_per_source = 2.5</code> keeps the half minute in our estimate.</td></tr>
-        <tr><th scope="row"><code>bool</code></th><td><code>approved = False</code> records that approval hasn’t arrived.</td></tr>
-        <tr><th scope="row"><code>NoneType</code></th><td><code>review_id = None</code> records that a review ID hasn’t been assigned.</td></tr>
+        <tr><th scope="row"><code>str</code> · Text</th><td><code>customer = "Northwind"</code></td></tr>
+        <tr><th scope="row"><code>int</code> · Whole number</th><td><code>source_count = 3</code></td></tr>
+        <tr><th scope="row"><code>float</code> · Number with a decimal part</th><td><code>minutes_per_source = 2.5</code></td></tr>
+        <tr><th scope="row"><code>bool</code> · True or false</th><td><code>approved = False</code> records that approval has yet to be received.</td></tr>
+        <tr><th scope="row"><code>NoneType</code> · Missing value</th><td><code>review_id = None</code> records that no review ID has been assigned.</td></tr>
       </tbody>
     </table></div>
+    <p><strong>Checkpoint.</strong> Explain why <code>3 + 1</code> gives <code>4</code> and <code>"3" + "1"</code> gives <code>"31"</code>.</p>
   </section>
 
   <section class="topic" id="variable-names">
-    <h2>Choose names Python can read</h2>
-    <p>Which of <code>ticket_count</code>, <code>ticket2</code> and <code>2tickets</code> can you use as a variable name? Predict before opening the answer.</p>
+    <h2>Choose names your teammate can read</h2>
+    <p>Use names that say what the value represents, such as <code>source_count</code> or <code>minutes_per_source</code>.</p>
     <details class="fde-setup-answer">
-      <summary>Check your choices</summary>
-      <p><code>ticket_count</code> and <code>ticket2</code> are valid. A name can start with a letter or an underscore and can have digits after that. <code>2tickets</code> raises <code>SyntaxError</code> because it starts with a digit. Python keywords such as <code>if</code> are reserved.</p>
-      <p>For names with several words, use <strong>snake_case</strong>. The underscores in <code>open_ticket_count</code> help a teammate see what the number counts.</p>
+      <summary>Which names work? ticket_count, ticket2 or 2tickets</summary>
+      <p><code>ticket_count</code> and <code>ticket2</code> work. A name can start with a letter or underscore and contain digits after that. <code>2tickets</code> starts with a digit, so Python raises <code>SyntaxError</code>. Keywords such as <code>if</code> are reserved. Joining lowercase words with underscores is called <strong>snake_case</strong>.</p>
     </details>
   </section>
 
   <section class="topic" id="input-and-conversion">
-    <h2>Watch what happens when you type 3</h2>
-    <p>Replace your first example with this code. Save it and run the same command. When the terminal asks for the count, type <code>3</code>. Pause and guess the type.</p>
-    <pre><code data-language="python"># Check the type before converting the count.
-raw_count = input("Data sources: ")
-print(type(raw_count))</code></pre>
-    <pre><code data-language="text">Data sources: 3
-&lt;class 'str'&gt;</code></pre>
-    <p>See <code>str</code> on the second line? Even though you typed a digit, <code>input()</code> gave Python text. Use <code>int(raw_count)</code> to get a number you can calculate with. <code>float("2.5")</code> gives the number <code>2.5</code> and <code>str(3)</code> gives the text <code>"3"</code>.</p>
-    <p>Here’s a common bug you can spot by reading the types. <code>"2" + "3"</code> gives <code>"23"</code>. <code>int("2") + int("3")</code> gives <code>5</code>.</p>
+    <h2>Read input and convert it</h2>
+    <p>Replace the previous example with this one and run the file. When you see <code>Data sources:</code>, type <code>3</code> and press Enter. Predict which line reports <code>str</code> and which reports <code>int</code>.</p>
+    <pre><code data-language="python">raw_count = input("Data sources: ")
+source_count = int(raw_count)
+
+print(type(raw_count))
+print(type(source_count))
+print(source_count + 1)</code></pre>
+    <figure>
+      <img src="assets/variables-input-trace.png" width="960" height="300" alt="For input 3, Python prints class str, then class int, then 4." loading="lazy">
+      <figcaption>The first two rows show what <code>type()</code> printed before and after conversion. The last row shows the result of adding one.</figcaption>
+    </figure>
+    <p><code>input()</code> gives you text. Use <code>int()</code> for a whole-number count and <code>float()</code> for an estimate like <code>2.5</code>. Use <code>str()</code> if you want to turn a number into text. The text <code>"007"</code> should stay text when it’s an ID.</p>
+    <p><strong>Checkpoint.</strong> When you enter <code>3</code>, the last line prints <code>4</code>. Point to the line that makes the arithmetic possible.</p>
+  </section>
+
+  <section class="topic" id="format-the-estimate">
+    <h2>Format a one-line estimate</h2>
+    <p>Now practice printing the result with fixed values. The <code>f</code> before the quote lets Python put a value into each pair of braces.</p>
+    <pre><code data-language="python">customer = "Northwind"
+estimated_minutes = 3 * 2.5
+print(f"{customer} | {estimated_minutes:.1f} minutes")</code></pre>
+    <pre><code data-language="text">Northwind | 7.5 minutes</code></pre>
+    <p><code>:.1f</code> displays one decimal place. Change it to <code>:.2f</code> and predict the output before running it. The displayed result becomes <code>7.50</code>. The value stored in <code>estimated_minutes</code> remains <code>7.5</code>.</p>
   </section>
 
   <section class="topic" id="build-a-receipt">
-    <h2>Build it with me</h2>
-    <p>Replace those two lines with the program below. Save and run the same command. When it asks, type <code>Northwind</code>, <code>3</code> and <code>2.5</code>. Before pressing Enter on the last input, guess the total.</p>
+    <h2>Build the kickoff tool</h2>
+    <p>Put the steps together in <code>kickoff.py</code>. Save and run the same command. At each prompt, type one value and press Enter. Use <code>Northwind</code>, then <code>3</code>, then <code>2.5</code>. Predict the total before the last Enter.</p>
     <pre><code data-language="python"># Ask for the customer name and trim spaces from the ends.
 customer = input("Customer: ").strip()
 # input() gives text. Convert the source count to a whole number.
@@ -131,7 +155,7 @@ print(f"Approved: {approved} | Review ID: {review_id}")</code></pre>
   </section>
 
   <section class="topic" id="practice-and-debug">
-    <h2>Change it, break it, fix it</h2>
+    <h2>Change it and debug it</h2>
     <p>Run it for <code>Acme</code> with <code>4</code> sources at <code>7.5</code> minutes each. Now add a line that shows <code>Estimate: 0.50 hours</code>. Use the value you already calculated.</p>
     <details class="fde-setup-answer">
       <summary>Check your answer</summary>
@@ -144,6 +168,8 @@ print(f"Estimate: {estimated_minutes / 60:.2f} hours")</code></pre>
 
   <section class="topic" id="string-cleanup">
     <h2>Clean a support message</h2>
+    <p>Optional extension. Open this once you can run the kickoff tool.</p>
+    <details class="fde-setup-answer"><summary>Show the string-cleanup exercise</summary>
     <p>A teammate enters <code>"  Ticket_0042   OPEN  "</code>. The report needs <code>ticket-0042 | open</code>. Save this as <code>clean_message.py</code> and run it like the earlier examples. Predict how many pieces <code>split()</code> will return.</p>
     <pre><code data-language="python">raw = &quot;  Ticket_0042   OPEN  &quot;
 
@@ -173,11 +199,12 @@ print(f&quot;{status} | {count}&quot;)</code></pre>
 open | 2</code></pre>
     </details>
     <p>Triple quotes let a string span several lines. Use <code>#</code> for comments. A string at the start of a function can serve as its docstring.</p>
+      </details>
   </section>
 
   <section class="topic" id="project-drills">
-    <h2>Use these skills in the eight projects</h2>
-    <p>Open a project and picture the request coming from a teammate. Read the situation, follow the code and check what your terminal prints.</p>
+    <h2>Practice in the eight bootcamp projects</h2>
+    <p>Once your kickoff tool works, choose one project to practice transferring the skill. The examples below each start with a different request from a teammate.</p>
     <details class="fde-setup-answer">
       <summary>Capstone 01 · OmniGuard</summary>
       <p>A customer asks how long it will take to connect four data sources. Each one takes about 7.5 minutes. You need one short estimate you can read back on the kickoff call. Use an integer for the number of sources and a float for the time per source.</p>
