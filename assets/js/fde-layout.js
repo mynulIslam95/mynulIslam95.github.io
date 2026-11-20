@@ -10,7 +10,29 @@
 
   if (launch && launchScreen) {
     const cover = launch.closest('.fde-cover');
+    const course = document.getElementById('roadmap');
     const roadmapTitle = document.getElementById('roadmap-title');
+
+    function syncCourseView() {
+      const target = document.getElementById(location.hash.slice(1));
+      const showCourse = Boolean(target && course.contains(target));
+      const changed = cover.hidden !== showCourse;
+      cover.hidden = showCourse;
+      course.hidden = !showCourse;
+      return changed ? target : null;
+    }
+
+    function navigateCourseView() {
+      const target = syncCourseView();
+      if (target && !course.hidden) {
+        const heading = target === course ? roadmapTitle : target;
+        heading.scrollIntoView({ block: 'start', behavior: 'instant' });
+      }
+    }
+
+    navigateCourseView();
+    addEventListener('hashchange', navigateCourseView);
+
 
     launch.addEventListener('click', async (event) => {
       if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
@@ -26,8 +48,10 @@
       await pause(reducedMotion ? 1050 : 1450);
 
       if (location.hash !== launch.hash) history.pushState(null, '', launch.hash);
+      syncCourseView();
       roadmapTitle.scrollIntoView({ block: 'start', behavior: 'instant' });
       roadmapTitle.focus({ preventScroll: true });
+      scheduleUpdate();
       launchScreen.classList.add('is-leaving');
       if (!reducedMotion) await pause(400);
       launchScreen.hidden = true;
@@ -77,7 +101,8 @@
   function updatePosition() {
     frame = undefined;
     const roadmapMarker = innerHeight * 0.68;
-    const entered = (element) => element.getBoundingClientRect().top <= roadmapMarker;
+    const roadmapVisible = Boolean(roadmap?.getClientRects().length);
+    const entered = (element) => roadmapVisible && element.getBoundingClientRect().top <= roadmapMarker;
     milestones.forEach((milestone) => milestone.classList.toggle('is-reached', entered(milestone)));
 
     const active = sections.findLastIndex((section) => section.getBoundingClientRect().top <= 150);
