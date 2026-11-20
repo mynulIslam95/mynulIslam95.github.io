@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>Python setup &amp; first program | Learn with Mynul</title><meta name="description" content="Install Python, create hello.py in VS Code and run your first program."><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=2"><link rel="stylesheet" href="../../assets/css/fde-layout.css?v=19"><style>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>Python setup &amp; first program | Learn with Mynul</title><meta name="description" content="Run your first Python script, set up a project with uv and connect a Jupyter notebook in VS Code."><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=2"><link rel="stylesheet" href="../../assets/css/fde-layout.css?v=26"><style>
 .fde-setup-lesson .topic { margin-top: 1.25rem; padding-top: 0; }
 .fde-setup-lesson .topic h2 { margin-top: .9rem !important; }
 .fde-setup-lesson .topic pre { margin: .55rem 0 !important; }
@@ -48,94 +48,146 @@
 <main id="main" class="fde-setup-lesson">
   <p class="breadcrumbs"><a href="../python-engineering-module-1.html">Course overview</a> / Getting started</p>
   <h1>Python setup &amp; first program</h1>
-  <p>Write one line of code and make Python show a message on your screen.</p>
+  <p>Start with one line of Python. Once it runs, you’ll use <code>uv</code> to set up a project and run a small Jupyter notebook with that project’s Python.</p>
+  <nav class="topic-nav" aria-label="On this page">
+    <ul>
+      <li><a href="#install-python">Install and check Python</a></li>
+      <li><a href="#create-file">Create your first file</a></li>
+      <li><a href="#run-program">Run your program</a></li>
+      <li><a href="#try-it">Change the message</a></li>
+      <li><a href="#uv-setup">Set up the project with uv</a></li>
+      <li><a href="#notebook-setup">Use the same Python in Jupyter</a></li>
+    </ul>
+  </nav>
+
   <section class="topic" id="install-python">
-    <h2>Install Python and VS Code</h2>
-    <p><strong>Python</strong> runs your code. <strong>VS Code</strong> is the editor where you write it.</p>
-    <p>On Windows or Mac, get Python 3 from <a href="https://www.python.org/downloads/">python.org</a>. On Linux, Python may already be installed. If <code>python3 --version</code> fails in your terminal, install <code>python3</code> using your system’s software manager. Then <a href="https://code.visualstudio.com/download">install VS Code</a>.</p>
+    <h2>Install and check Python</h2>
+    <p><strong>Python</strong> runs your code. <strong>VS Code</strong> is the editor where you write it. A <strong>terminal</strong> is where you type commands to start Python.</p>
+    <ol>
+      <li>On Windows or macOS, choose your operating system at <a href="https://www.python.org/downloads/">Python downloads</a> and install Python 3. On Linux, check for Python first. If the command below fails, install <code>python3</code> using your distribution’s package manager.</li>
+      <li>Install and open <a href="https://code.visualstudio.com/download">VS Code</a>. From the top menu, choose <strong>Terminal → New Terminal</strong>. The terminal opens below the editor.</li>
+      <li>In the terminal, type the command for your system and press Enter.</li>
+    </ol>
+    <div class="fde-setup-commands">
+      <div><strong>Windows</strong><pre><code>py -3 --version</code></pre></div>
+      <div><strong>macOS or Linux</strong><pre><code>python3 --version</code></pre></div>
+    </div>
+    <p><strong>Checkpoint.</strong> The output begins with <code>Python 3.</code> If the command is missing after installation, close and reopen VS Code. On Windows, if <code>python --version</code> is the command that prints Python 3, use <code>python</code> in place of <code>py -3</code> for the plain Python steps.</p>
   </section>
+
   <section class="topic" id="create-file">
-    <h2>Create <code>hello.py</code></h2>
-    <p>Create a folder named <code>python-practice</code>. In VS Code, use <strong>File → Open Folder</strong> to open it. In the left panel, click <strong>New File</strong> and name it <code>hello.py</code>.</p>
-    <pre><code data-language="python">print("Hello, world!")</code></pre>
-    <p>Save the file. <code>print()</code> shows the words inside the quotes. The <code>.py</code> ending tells you it’s a Python file.</p>
+    <h2>Create your first file</h2>
+    <ol>
+      <li>In your file manager, create a folder named <code>python-practice</code>. In VS Code, choose <strong>File → Open Folder</strong> and open that folder.</li>
+      <li>In the Explorer panel on the left, select <strong>New File</strong>. Type <code>hello.py</code> and press Enter. The <code>.py</code> ending marks it as a Python file.</li>
+      <li>Click inside the editor and type the code below. Save with <strong>Ctrl+S</strong> on Windows or Linux or <strong>Cmd+S</strong> on macOS.</li>
+    </ol>
+    <pre><code class="language-python">print("Hello, world!")</code></pre>
+    <p><code>print()</code> displays the text inside the quotes. This line belongs in <code>hello.py</code>.</p>
+    <figure>
+      <img src="https://code.visualstudio.com/assets/docs/python/tutorial/toolbar-new-file.png" width="834" height="337" alt="VS Code Explorer toolbar with the New File button highlighted." loading="lazy">
+      <figcaption>Find the New File button beside the folder name. The example folder is named <code>hello</code>. Yours should say <code>python-practice</code>. <a href="https://code.visualstudio.com/docs/python/python-tutorial#create-a-python-source-code-file">Screenshot from the VS Code Python tutorial</a></figcaption>
+    </figure>
+    <p><strong>Checkpoint.</strong> You can see <code>hello.py</code> in Explorer and the <code>print()</code> line in the editor.</p>
   </section>
+
   <section class="topic" id="run-program">
     <h2>Run your program</h2>
-    <p>In VS Code, choose <strong>Terminal → New Terminal</strong>. A terminal is where you type commands. Run the first command to check Python, then the second to run your file.</p>
+    <p>With <code>python-practice</code> open, choose <strong>Terminal → New Terminal</strong>. Type your system’s command there and press Enter. Python reads the saved file and prints the message on the next line.</p>
     <div class="fde-setup-commands">
-      <div><strong>Windows</strong><pre><code>py -3 --version
-py -3 hello.py</code></pre></div>
-      <div><strong>Mac / Linux</strong><pre><code>python3 --version
-python3 hello.py</code></pre></div>
+      <div><strong>Windows</strong><pre><code>py -3 hello.py</code></pre></div>
+      <div><strong>macOS or Linux</strong><pre><code>python3 hello.py</code></pre></div>
     </div>
     <figure>
-      <img src="assets/first-program-terminal.png" width="760" height="184" alt="Terminal example showing python3 hello.py followed by the output Hello, world!">
-      <figcaption>The message under the command is your program’s output.</figcaption>
+      <img src="assets/first-program-terminal.png" width="760" height="184" alt="A terminal command runs hello.py and prints Hello, world!" loading="lazy">
+      <figcaption>The first line is the command you type. <code>Hello, world!</code> is the result you look for.</figcaption>
     </figure>
+    <p><strong>Checkpoint.</strong> You see <code>Hello, world!</code> below the command.</p>
   </section>
+
   <section class="topic" id="try-it">
-    <h2>Try one change</h2>
-    <p>Change the message to <code>Hello, future coder!</code>. Save the file and run it again. You should see your new message.</p>
-    <p><strong>Stuck?</strong> If the command isn’t found, close and reopen VS Code after installing Python. If Python can’t find the file, check that you opened <code>python-practice</code> and saved the file as <code>hello.py</code>.</p>
+    <h2>Change the message</h2>
+    <p>In the editor, change the text inside the quotes to <code>Hello from my first program!</code>. Save and run the same terminal command again.</p>
+    <p><strong>Checkpoint.</strong> You see the new message. You’ve finished your first script. The next steps prepare the folder for projects with dependencies and notebooks.</p>
   </section>
-  <section class="topic" id="terminal-reference" lang="en">
-    <h2>Find your project in the terminal</h2>
 
-    <p>The editor displays files. The terminal starts commands from a current folder. If Python says it can’t open <code>hello.py</code>, first check that the terminal is in the folder that contains it.</p>
-    <table>
-      <thead><tr><th scope="col">Task</th><th scope="col">Windows PowerShell</th><th scope="col">macOS / Linux</th></tr></thead>
-      <tbody>
-        <tr><th scope="row">Show current folder</th><td><code>Get-Location</code></td><td><code>pwd</code></td></tr>
-        <tr><th scope="row">List files</th><td><code>Get-ChildItem</code></td><td><code>ls</code></td></tr>
-        <tr><th scope="row">Create a folder</th><td><code>mkdir python-practice</code></td><td><code>mkdir python-practice</code></td></tr>
-        <tr><th scope="row">Enter that folder</th><td><code>Set-Location python-practice</code></td><td><code>cd python-practice</code></td></tr>
-        <tr><th scope="row">Go up one level</th><td><code>Set-Location ..</code></td><td><code>cd ..</code></td></tr>
-      </tbody>
-    </table>
-    <p>If you’ve already created the folder, skip <code>mkdir</code>. List the files again after you enter it. Once <code>hello.py</code> appears, rerun the command from <a href="#run-program">Run your program</a>.</p>
-
-  </section>
-  <section class="topic" id="notebook-setup" lang="en">
-    <h2>Run the same Python in VS Code and Jupyter</h2>
-
-    <p>A <code>.py</code> file runs as a script. A <code>.ipynb</code> notebook runs one cell at a time. Its <strong>kernel</strong> is the running Python process that executes the cells and keeps their variables in memory. The terminal and notebook can choose different Python environments, even when both show the same version.</p>
+  <section class="topic" id="uv-setup">
+    <h2>Set up the project with uv</h2>
+    <p>As projects grow, they need extra Python libraries. A customer integration might need a library to call an API, while another project needs a different version. <strong>uv</strong> is a command-line tool that can manage Python versions, install libraries and keep each project’s libraries in its own <strong>virtual environment</strong>.</p>
     <ol>
-      <li>Open <code>python-practice</code> in VS Code. Install the Microsoft <strong>Python</strong> and <strong>Jupyter</strong> extensions. In the folder’s terminal, create a project-local <code>.venv</code>, install <code>ipykernel</code> and run the script with that environment’s Python. If you already created this environment for this folder, skip the first command.</li>
+      <li>Find your operating system in the <a href="https://docs.astral.sh/uv/getting-started/installation/">official uv installation guide</a>. Install it once, then open a new VS Code terminal. Run <code>uv --version</code>. Seeing a version means the terminal can find it.</li>
+      <li>In the same <code>python-practice</code> folder, run the commands below one at a time. If there is already a <code>pyproject.toml</code> in that folder, skip <code>uv init --bare</code>.</li>
     </ol>
-    <div class="fde-setup-commands">
-      <div><strong>Windows PowerShell</strong><pre><code>py -3 -m venv .venv
-.\.venv\Scripts\python.exe -m pip install ipykernel
-.\.venv\Scripts\python.exe hello.py
-.\.venv\Scripts\python.exe -c &quot;import sys; print(sys.executable)&quot;</code></pre></div>
-      <div><strong>macOS / Linux</strong><pre><code>python3 -m venv .venv
-.venv/bin/python -m pip install ipykernel
-.venv/bin/python hello.py
-.venv/bin/python -c &quot;import sys; print(sys.executable)&quot;</code></pre></div>
-    </div>
-    <ol start="2">
-      <li>Open the Command Palette and choose <strong>Create: New Jupyter Notebook</strong>. Save it as <code>check_python.ipynb</code>. Choose <strong>Select Kernel</strong>, then <strong>Python Environments</strong> and the project’s <code>.venv</code>. If VS Code shows recent kernels first, choose <strong>Select Another Kernel</strong>.</li>
-      <li>Run the following cell. Compare its first line with the terminal path. Both should point to the project’s <code>.venv</code>.</li>
+    <pre><code class="language-bash">uv init --bare
+uv run python hello.py</code></pre>
+    <p><code>uv init --bare</code> creates the project settings without adding another example file. <code>uv run</code> prepares the environment and runs your existing script with the project’s Python. Your last edited message should appear again.</p>
+    <figure>
+      <img src="assets/setup-uv-result.png" width="960" height="290" alt="A verified uv run prints the edited greeting. The practice folder has hello.py, pyproject.toml, uv.lock and .venv." loading="lazy">
+      <figcaption>The same edited file runs through <code>uv</code>. Your greeting should match what you saved in <code>hello.py</code>.</figcaption>
+    </figure>
+    <ul>
+      <li><code>pyproject.toml</code> describes the project and which libraries it asks for.</li>
+      <li><code>uv.lock</code> records the resolved library versions so another machine can reproduce the setup.</li>
+      <li><code>.venv</code> is the local environment that actually contains the project’s Python and installed libraries.</li>
+    </ul>
+    <p><strong>Checkpoint.</strong> Your script runs through <code>uv</code>. You’ll use <code>uv add httpx</code> when you add an API dependency to a project. For the next step, you’ll add a library specifically for working on the notebook.</p>
+    <details>
+      <summary>When would I use uv pip install?</summary>
+      <p><code>uv add</code> records a dependency for this project. <code>uv pip install</code> installs into an environment without recording it in the project files. Use <code>uv add</code> for this managed project.</p>
+    </details>
+  </section>
+
+  <section class="topic" id="notebook-setup">
+    <h2>Use the same Python in Jupyter</h2>
+    <p>A notebook is an <code>.ipynb</code> file with <strong>cells</strong> you can run one at a time. Use it to try a data transformation, inspect API results or leave notes beside your experiment. A <strong>kernel</strong> is the running Python process that executes the cells and remembers values between runs.</p>
+    <ol>
+      <li>Open <strong>Extensions</strong> in VS Code and install the <strong>Python</strong> and <strong>Jupyter</strong> extensions published by Microsoft.</li>
+      <li>In the project terminal, run the two commands below. The first adds the notebook kernel as a development dependency. The second prints the Python executable path that you’ll compare with the notebook.</li>
     </ol>
-    <pre><code data-language="python">import sys
+    <pre><code class="language-bash">uv add --dev ipykernel
+uv run python -c "import sys; print(sys.executable)"</code></pre>
+    <ol start="3">
+      <li>Open the Command Palette with <strong>Ctrl+Shift+P</strong> or <strong>Cmd+Shift+P</strong>. Choose <strong>Create: New Jupyter Notebook</strong> and save the notebook as <code>check_python.ipynb</code> in <code>python-practice</code>.</li>
+      <li>At the top right of the notebook, choose <strong>Select Kernel</strong>. If needed, choose <strong>Select Another Kernel</strong>, then <strong>Python Environments</strong> and the project’s <code>.venv</code>. <a href="https://code.visualstudio.com/docs/datascience/jupyter-kernel-management">See the kernel picker in the VS Code guide</a>.</li>
+      <li>Put the code below in the first cell. Click its Run button or press <strong>Shift+Enter</strong>.</li>
+    </ol>
+    <pre><code class="language-python">import sys
 
 print(sys.executable)
-print(&quot;Hello, world!&quot;)</code></pre>
+print("Hello from Jupyter!")</code></pre>
     <figure>
-      <img src="assets/python-kernel-paths.png" width="1000" height="520" alt="Two panels show a terminal and a notebook both reporting the interpreter path ending in .venv/bin/python.">
-      <figcaption>Example on macOS or Linux. On Windows, the path usually ends in <code>.venv\Scripts\python.exe</code>.</figcaption>
+      <img src="assets/setup-jupyter-result.png" width="960" height="329" alt="The terminal and notebook report the same project Python path. The notebook prints Hello from Jupyter!" loading="lazy">
+      <figcaption>Compare the two paths. On Windows, expect the project path to end in <code>.venv\Scripts\python.exe</code>. On macOS or Linux, expect <code>.venv/bin/python</code>. The path should match the one from your terminal on the same machine.</figcaption>
     </figure>
-    <details class="fde-setup-answer">
-      <summary>Missing kernel or stuck on detection?</summary>
-      <p>Check that the folder containing <code>.venv</code> is open. Rerun the terminal install command above so <code>ipykernel</code> goes into that exact environment. Use <strong>Python: Select Interpreter</strong> to point VS Code at the executable if the environment is missing, reload the window and select the notebook kernel again. Rerun the cell to verify the path.</p>
-      <p>For an environment stored elsewhere, run <code>python -m ipykernel install --user --name fde-practice --display-name "Python (FDE practice)"</code> after activating that environment and installing <code>ipykernel</code> in it. Select the named kernel under <strong>Jupyter Kernels</strong>.</p>
+    <p><strong>Checkpoint.</strong> The paths match and you see <code>Hello from Jupyter!</code>. Try changing the message in the cell and running it again. If you’re unsure whether earlier cells affected the result, restart the kernel and run the cells from the top.</p>
+    <details>
+      <summary>What if the notebook uses a different Python?</summary>
+      <p>Check that the folder containing <code>.venv</code> is open. Rerun <code>uv add --dev ipykernel</code> in that folder, then reopen the kernel picker and select the project environment. Run the cell again and compare the full paths.</p>
     </details>
-    <details class="fde-setup-answer">
-      <summary>Following the lecture in Google Colab?</summary>
-      <p>Run the same cell in a Colab notebook. It reports the Python used by that notebook’s runtime. It will show a different path in a hosted runtime. Restart the kernel and run all cells in order when you want to check that your notebook works from a clean start.</p>
+    <details>
+      <summary>What if the lecture uses Google Colab?</summary>
+      <p>Paste the same Python cell into a Colab notebook and run it. Colab runs Python on a hosted machine, so its path will differ from your local <code>.venv</code>. Use the matching-path check when you work locally in VS Code.</p>
     </details>
-    <p><a href="https://code.visualstudio.com/docs/datascience/jupyter-kernel-management">VS Code’s kernel picker guide</a></p>
-
   </section>
+
+  <section class="topic" id="terminal-reference">
+    <h2>Fix a missing file or stale output</h2>
+    <details>
+      <summary>Python can’t find hello.py</summary>
+      <p>In VS Code, reopen <code>python-practice</code> with <strong>File → Open Folder</strong>. Open a new terminal and list the files.</p>
+      <div class="fde-setup-commands">
+        <div><strong>Windows PowerShell</strong><pre><code>Get-Location
+Get-ChildItem</code></pre></div>
+        <div><strong>macOS or Linux</strong><pre><code>pwd
+ls</code></pre></div>
+      </div>
+      <p>The first command shows your current folder and the second lists its files. Confirm that the name is exactly <code>hello.py</code> and run the script again.</p>
+    </details>
+    <details>
+      <summary>The terminal still prints the old message</summary>
+      <p>Save <code>hello.py</code> in the editor, then rerun the command. Check Explorer if you have more than one copy of the file.</p>
+    </details>
+  </section>
+
   <nav class="lesson-nav" aria-label="Lesson navigation"><a href="variables.html">Next: Variables, data types &amp; strings</a></nav>
 </main><aside class="fde-outline" hidden></aside></div><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script><script src="../../assets/js/fde-layout.js?v=25" defer></script></body></html>
