@@ -224,10 +224,10 @@ html:has(.fde-home .fde-cover[hidden]),
 }
 .fde-home .fde-roadmap .fde-launchpad-link {
   padding: 8px clamp(8px, 1.5vw, 14px);
-  border: 1px solid var(--th-line);
+  border: 1px solid #2358b7;
   border-radius: 7px;
-  background: var(--th-panel);
-  color: var(--th-title);
+  background: #2358b7;
+  color: #fff;
   font-size: clamp(.75rem, 1.5vw, .9rem);
   font-weight: 650;
   line-height: 1.35;
