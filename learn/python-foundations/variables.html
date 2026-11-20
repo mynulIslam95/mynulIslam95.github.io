@@ -96,18 +96,119 @@ print(f"Approved: {approved} | Review ID: {review_id}")</code></pre>
   </section>
 
   <section class="topic" id="project-drills">
-    <h2>5. Reuse it in the eight projects</h2>
-    <p>Pick one drill. Write a new file without copying the kickoff code. Predict the output, then run it and compare.</p>
+    <h2>5. Use these skills in the eight projects</h2>
+    <p>Open a project and picture the request coming from a teammate. Read the situation, follow the code and check what your terminal prints.</p>
     <details class="fde-setup-answer">
-      <summary>Show all eight project drills</summary>
-      <ol><li><a href="../fde-textbook/fde-module-15.html">Capstone Project 01: OmniGuard: Secure AI Integration</a><br>Change the customer to <code>Acme</code>, sources to <code>4</code> and minutes per source to <code>7.5</code>. Predict <code>30.0 minutes</code> before running it.</li>
-      <li><a href="../fde-textbook/fde-module-16.html">Capstone Project 02: AuditMesh: Multi-Agent Compliance System</a><br>Store a case ID as <code>"007"</code>, a check count as <code>3</code> and a review ID as <code>None</code>. Print <code>007 | 3 checks | None</code>.</li>
-      <li><a href="../fde-textbook/system-design-module-5.html">Project 03: Self-Host and Fine-Tune an LLM on Company Infrastructure</a><br>Read requests per second as a decimal. Enter <code>12.5</code> and print <code>12.5 requests/sec</code>.</li>
-      <li><a href="../fde-textbook/system-design-module-6.html">Project 04: Run an LLM on Mobile Devices</a><br>Read battery use as a decimal. Enter <code>2.5</code> and print <code>Battery used: 2.5%</code>.</li>
-      <li><a href="../fde-textbook/system-design-module-7.html">Project 05: Multimodal Company Artefact Intelligence at Scale</a><br>Read a document count as a whole number. Enter <code>4</code> and print <code>4 documents</code>.</li>
-      <li><a href="../fde-textbook/system-design-module-8.html">Project 06: Enterprise Lead Management System</a><br>Keep lead ID <code>"0042"</code> as text. Read <code>2</code> as an integer and print <code>0042 | 2 follow-ups</code>.</li>
-      <li><a href="../fde-textbook/system-design-module-9.html">Project 07: AI Receptionist System</a><br>Set <code>call_answered = False</code> and <code>booking_id = None</code>. Print both values with an f-string.</li>
-      <li><a href="../fde-textbook/system-design-module-10.html">Project 08: AI Voice Productivity SaaS: From Desktop App to Paid Product</a><br>Multiply <code>3</code> voice clips by <code>12.5</code> seconds per clip. Print <code>Total: 37.5 seconds</code>.</li></ol>
+      <summary>Capstone 01 · OmniGuard</summary>
+      <p>A customer asks how long it will take to connect four data sources. Each one takes about 7.5 minutes. You need one short estimate you can read back on the kickoff call. Use an integer for the number of sources and a float for the time per source.</p>
+      <h3>Write and run the code</h3>
+      <pre><code data-language="python"># Give each part of the estimate a name.
+customer = "Acme"
+source_count = 4
+minutes_per_source = 7.5
+
+# Multiply the count by the time for one source.
+estimated_minutes = source_count * minutes_per_source
+print(f"{customer} | {source_count} sources | {estimated_minutes:.1f} minutes")</code></pre>
+      <h3>Expected terminal output</h3>
+      <pre><code data-language="text">Acme | 4 sources | 30.0 minutes</code></pre>
+    </details>
+    <details class="fde-setup-answer">
+      <summary>Capstone 02 · AuditMesh</summary>
+      <p>A compliance case goes to the next reviewer. The case is called <code>007</code>, three checks have been completed and a review ID hasn’t been assigned. Keep the case ID as text so its zeros survive. Use <code>None</code> for the missing review ID.</p>
+      <h3>Write and run the code</h3>
+      <pre><code data-language="python"># This is an identifier, so keep the leading zeros.
+case_id = "007"
+checks_completed = 3
+
+# No one has assigned a review ID yet.
+review_id = None
+print(f"{case_id} | {checks_completed} checks | Review ID: {review_id}")</code></pre>
+      <h3>Expected terminal output</h3>
+      <pre><code data-language="text">007 | 3 checks | Review ID: None</code></pre>
+    </details>
+    <details class="fde-setup-answer">
+      <summary>Project 03 · Self-host an LLM</summary>
+      <p>You run a speed test after deploying a model. The tool reports an average of 12.5 requests per second. Save it as a number so you can compare it with another run later.</p>
+      <h3>Write and run the code</h3>
+      <pre><code data-language="python"># input() gives text. A rate can include a decimal part.
+requests_per_second = float(input("Requests per second: "))
+
+# Use one decimal place in the benchmark note.
+print(f"Throughput: {requests_per_second:.1f} requests/sec")</code></pre>
+      <h3>Expected terminal output</h3>
+      <pre><code data-language="text">Requests per second: 12.5
+Throughput: 12.5 requests/sec</code></pre>
+    </details>
+    <details class="fde-setup-answer">
+      <summary>Project 04 · Run an LLM on mobile devices</summary>
+      <p>Before a phone test, the battery is at 80.0%. After the test, it’s at 77.5%. Tell the team how many percentage points the test used. Use floats because both readings can include decimals.</p>
+      <h3>Write and run the code</h3>
+      <pre><code data-language="python"># Store the two battery readings from the same phone.
+battery_before = 80.0
+battery_after = 77.5
+
+# Subtract the after reading from the before reading.
+battery_drop = battery_before - battery_after
+print(f"Battery drop: {battery_drop:.1f} percentage points")</code></pre>
+      <h3>Expected terminal output</h3>
+      <pre><code data-language="text">Battery drop: 2.5 percentage points</code></pre>
+    </details>
+    <details class="fde-setup-answer">
+      <summary>Project 05 · Multimodal document intelligence</summary>
+      <p>You’re preparing an upload that contains four documents. The import tool needs the count for its status line. A document count is a whole number, so convert the typed text with <code>int()</code>.</p>
+      <h3>Write and run the code</h3>
+      <pre><code data-language="python"># Convert the typed count before storing it in the import record.
+document_count = int(input("Documents in this upload: "))
+
+# Show the count so the operator can check it before importing.
+print(f"Ready to import {document_count} documents")</code></pre>
+      <h3>Expected terminal output</h3>
+      <pre><code data-language="text">Documents in this upload: 4
+Ready to import 4 documents</code></pre>
+    </details>
+    <details class="fde-setup-answer">
+      <summary>Project 06 · Enterprise lead management</summary>
+      <p>A salesperson pastes the lead ID <code> 0042 </code> from the CRM and types that two follow-ups are due. Remove the extra spaces from the ID. Convert the follow-up count so it can also be used in a team total.</p>
+      <h3>Write and run the code</h3>
+      <pre><code data-language="python"># Trim spaces without removing the zeros from the ID.
+lead_id = input("Lead ID: ").strip()
+
+# The follow-up count is a number we can add.
+follow_ups = int(input("Follow-ups due: "))
+print(f"{lead_id} | {follow_ups} follow-ups")</code></pre>
+      <h3>Expected terminal output</h3>
+      <pre><code data-language="text">Lead ID:  0042 
+Follow-ups due: 2
+0042 | 2 follow-ups</code></pre>
+    </details>
+    <details class="fde-setup-answer">
+      <summary>Project 07 · AI receptionist</summary>
+      <p>The receptionist is setting up a new call record. The call hasn’t been answered and there’s no booking ID. Use <code>False</code> for the known no and <code>None</code> for the value you don’t have yet.</p>
+      <h3>Write and run the code</h3>
+      <pre><code data-language="python"># A Boolean records whether the call was answered.
+call_answered = False
+
+# A booking ID appears only after a booking is created.
+booking_id = None
+
+print(f"Answered: {call_answered} | Booking ID: {booking_id}")</code></pre>
+      <h3>Expected terminal output</h3>
+      <pre><code data-language="text">Answered: False | Booking ID: None</code></pre>
+    </details>
+    <details class="fde-setup-answer">
+      <summary>Project 08 · AI Voice Productivity SaaS</summary>
+      <p>A user is about to process three clips for a demo. Each clip is 12.5 seconds long. Show the expected total duration before they start the job. The number of clips is an integer, but the length is a float.</p>
+      <h3>Write and run the code</h3>
+      <pre><code data-language="python"># Keep the count and time per clip separate.
+clip_count = 3
+seconds_per_clip = 12.5
+
+# Multiply to get the combined duration for this batch.
+total_seconds = clip_count * seconds_per_clip
+print(f"Total: {total_seconds:.1f} seconds")</code></pre>
+      <h3>Expected terminal output</h3>
+      <pre><code data-language="text">Total: 37.5 seconds</code></pre>
     </details>
   </section>
 
