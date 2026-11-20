@@ -8,24 +8,52 @@
   const launch = document.querySelector('[data-fde-launch]');
   const launchScreen = document.querySelector('[data-fde-launch-screen]');
 
+  let returnedCard;
+
   if (launch && launchScreen) {
     const cover = launch.closest('.fde-cover');
     const course = document.getElementById('roadmap');
     const roadmapTitle = document.getElementById('roadmap-title');
+    const topicView = document.querySelector('.fde-topic-view');
+    const topicTitle = document.getElementById('fde-topic-title');
+    const topicLabel = topicView.querySelector('[data-fde-topic-label]');
+    const topicContent = topicView.querySelector('[data-fde-topic-content]');
+    const returnLink = topicView.querySelector('[data-fde-return]');
 
     function syncCourseView() {
       const target = document.getElementById(location.hash.slice(1));
-      const showCourse = Boolean(target && course.contains(target));
-      const changed = cover.hidden !== showCourse;
-      cover.hidden = showCourse;
-      course.hidden = !showCourse;
-      return changed ? target : null;
+      const inCourse = Boolean(target && course.contains(target));
+      const topic = inCourse && target.matches('.fde-milestones article') ? target : null;
+      cover.hidden = inCourse;
+      course.hidden = !inCourse || Boolean(topic);
+      topicView.hidden = !topic;
+
+      if (topic) {
+        topicTitle.textContent = topic.querySelector('.fde-step-name').textContent;
+        topicLabel.textContent = topic.querySelector('.fde-project-label')?.textContent ??
+          'Topic ' + topic.querySelector('.fde-step-number').textContent;
+        const copy = topic.querySelector('.fde-step-copy').cloneNode(true);
+        copy.hidden = false;
+        topicContent.replaceChildren(...copy.childNodes);
+      }
+      return inCourse ? target : null;
     }
 
     function navigateCourseView() {
       const target = syncCourseView();
-      if (target && !course.hidden) {
-        if (target === course || target === roadmapTitle) {
+      returnedCard = undefined;
+
+      if (!topicView.hidden) {
+        window.scrollTo({ top: 0, behavior: 'instant' });
+        topicTitle.focus({ preventScroll: true });
+      } else if (!course.hidden) {
+        const saved = history.state?.fdeRoadmapReturn;
+        const link = saved && document.getElementById(saved.id)?.querySelector('.fde-step-link');
+        if (link) {
+          window.scrollTo({ top: saved.y, behavior: 'instant' });
+          returnedCard = { row: link.closest('li'), y: window.scrollY };
+          link.focus({ preventScroll: true });
+        } else if (target === course || target === roadmapTitle) {
           window.scrollTo({ top: 0, behavior: 'instant' });
         } else {
           target.scrollIntoView({ block: 'start', behavior: 'instant' });
@@ -33,12 +61,37 @@
       }
     }
 
-    navigateCourseView();
-    addEventListener('hashchange', navigateCourseView);
+    function isPlainClick(event) {
+      return event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
+    }
 
+    navigateCourseView();
+    addEventListener('hashchange', () => {
+      navigateCourseView();
+      scheduleUpdate();
+    });
+
+    roadmap.addEventListener('click', (event) => {
+      const link = event.target.closest('.fde-step-link');
+      if (!link || !isPlainClick(event)) return;
+      event.preventDefault();
+      history.replaceState({
+        ...history.state,
+        fdeRoadmapReturn: { id: link.hash.slice(1), y: window.scrollY }
+      }, '');
+      history.pushState({ fdeTopicFromRoadmap: true }, '', link.hash);
+      navigateCourseView();
+      scheduleUpdate();
+    });
+
+    returnLink.addEventListener('click', (event) => {
+      if (!isPlainClick(event) || !history.state?.fdeTopicFromRoadmap) return;
+      event.preventDefault();
+      history.back();
+    });
 
     launch.addEventListener('click', async (event) => {
-      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      if (!isPlainClick(event)) return;
       event.preventDefault();
       if (cover.classList.contains('is-launching')) return;
 
@@ -103,8 +156,9 @@
       const atBottom = scrollRoot.scrollTop > 0 &&
         scrollRoot.scrollHeight - scrollRoot.clientHeight - scrollRoot.scrollTop <= 2;
       const marker = innerHeight * 0.54;
-      nextMilestone = atBottom ? milestones.at(-1) :
-        milestones.findLast((milestone) => milestone.getBoundingClientRect().top <= marker);
+      if (returnedCard && Math.abs(scrollRoot.scrollTop - returnedCard.y) > 2) returnedCard = undefined;
+      nextMilestone = returnedCard?.row ?? (atBottom ? milestones.at(-1) :
+        milestones.findLast((milestone) => milestone.getBoundingClientRect().top <= marker));
     }
     if (nextMilestone !== currentMilestone) {
       currentMilestone?.classList.remove('is-current');
@@ -124,7 +178,6 @@
   }
 
   if (milestones.length || sections.length) {
-    roadmap?.addEventListener('toggle', scheduleUpdate, true);
     addEventListener('scroll', scheduleUpdate, { passive: true });
     addEventListener('resize', scheduleUpdate);
     addEventListener('pageshow', scheduleUpdate);
