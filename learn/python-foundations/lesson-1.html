@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>Operators, conditions &amp; loops | Learn with Mynul</title><meta name="description" content="Learn Python conditions, loops and input checks by building a simple payment report."><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=2"><link rel="stylesheet" href="../../assets/css/fde-layout.css?v=19"><style>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>Operators, conditions &amp; loops | Learn with Mynul</title><meta name="description" content="Learn Python conditions, loops and input checks by building a simple payment report."><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=2"><link rel="stylesheet" href="../../assets/css/fde-layout.css?v=26"><style>
 .fde-setup-lesson .topic { margin-top: 1.25rem; padding-top: 0; }
 .fde-setup-lesson .topic h2 { margin-top: .9rem !important; }
 .fde-setup-lesson .topic pre { margin: .55rem 0 !important; }
@@ -44,13 +44,23 @@
 <main id="main" class="fde-setup-lesson">
   <p class="breadcrumbs"><a href="../python-engineering-module-1.html">Course overview</a> / Core Python</p>
   <h1>Operators, conditions &amp; loops</h1>
-  <p>Start with one payment. Use operators to calculate the balance and conditions to decide whether it goes through. Then put that decision inside a loop to process a batch.</p>
+  <p>Give a customer with EUR 100 one trustworthy answer for each payment request. Start with one calculation, decide whether a single payment can go through, then repeat the decision for a batch.</p>
 
   <section class="topic" id="topic-1">
     <h2>Operators &amp; conditions</h2>
+    <nav class="topic-nav" aria-label="Lesson path"><ul>
+      <li><a href="#topic-1">Make one decision</a></li>
+      <li><a href="#first-loop">Trace a short loop</a></li>
+      <li><a href="#topic-2">Process the payment batch</a></li>
+      <li><a href="#condition-interview-checks">Tricky questions with answers</a></li>
+      <li><a href="#control-flow-practice">Project and workplace practice</a></li>
+    </ul></nav>
+    <p>If you’re new, follow one example at a time. Predict the result, run the code and explain which line produced it.</p>
     <p>You’re building a payment check for a customer. They have EUR 100. Try EUR 20 first. How much will be left? Then try a payment of exactly EUR 100. Should it go through?</p>
     <h3>Start with a calculation and a question</h3>
-    <p>In your practice folder, create <code>payment_check.py</code>. Save the code below. From that folder, run <code>py -3 payment_check.py</code> on Windows or <code>python3 payment_check.py</code> on Mac or Linux.</p>
+    <p>In the same <code>python-practice</code> folder from <a href="setup.html">the setup lesson</a>, create <code>payment_check.py</code>. Paste the Python below into the file, save it and run this command in the terminal.</p>
+    <pre><code data-language="bash">uv run python payment_check.py</code></pre>
+    <details class="fde-setup-answer"><summary>Run without uv</summary><p>Use <code>py -3 payment_check.py</code> on Windows or <code>python3 payment_check.py</code> on macOS or Linux. If you used <code>python</code> successfully in setup, keep using it.</p></details>
     <pre><code data-language="python">balance = 100
 amount = 20
 
@@ -63,20 +73,20 @@ Uses the full balance: False</code></pre>
     <p>The minus sign calculates a new value. The double equals asks whether two values are equal. Change <code>amount</code> to <code>100</code>, save and run again. You should see EUR 0 and <code>True</code>.</p>
     <details class="fde-setup-answer">
       <summary>Operator reference for your next exercises</summary>
-      <table>
+      <div class="table-scroll"><table>
         <thead><tr><th scope="col">Use</th><th scope="col">Operators and examples</th></tr></thead>
         <tbody>
           <tr><th scope="row">Calculate</th><td><code>+</code> add, <code>-</code> subtract, <code>*</code> multiply, <code>/</code> divide. <code>**</code> raises a number to a power. <code>2 ** 3</code> gives <code>8</code>. For counts, <code>10 // 3</code> gives 3 whole groups and <code>10 % 3</code> gives 1 left over.</td></tr>
           <tr><th scope="row">Compare</th><td><code>==</code> equal, <code>!=</code> different, <code>&lt;</code> below, <code>&gt;</code> above, <code>&lt;=</code> at most, <code>&gt;=</code> at least.</td></tr>
           <tr><th scope="row">Combine checks</th><td><code>and</code> requires both checks, <code>or</code> requires at least one and <code>not</code> flips a Boolean result.</td></tr>
         </tbody>
-      </table>
+      </table></div>
       <p>Use parentheses when order matters. <code>5 + 2 * 3</code> gives 11. <code>(5 + 2) * 3</code> gives 21.</p>
     </details>
     <details class="fde-setup-answer" id="logical-truth-table">
       <summary>Check all four Boolean combinations</summary>
       <p>Let <code>a</code> mean “the amount is positive” and <code>b</code> mean “the balance covers it.” A payment passes both checks when <code>a and b</code> is true. Use <code>not a</code> to check whether the amount is zero or negative.</p>
-      <table>
+      <div class="table-scroll"><table>
         <thead><tr><th scope="col"><code>a</code></th><th scope="col"><code>b</code></th><th scope="col"><code>a and b</code></th><th scope="col"><code>a or b</code></th><th scope="col"><code>not a</code></th></tr></thead>
         <tbody>
           <tr><td>False</td><td>False</td><td>False</td><td>False</td><td>True</td></tr>
@@ -84,8 +94,20 @@ Uses the full balance: False</code></pre>
           <tr><td>True</td><td>False</td><td>False</td><td>True</td><td>False</td></tr>
           <tr><td>True</td><td>True</td><td>True</td><td>True</td><td>False</td></tr>
         </tbody>
-      </table>
+      </table></div>
     </details>
+    <h3>Check one rule with <code>if</code></h3>
+    <p>Before handling every outcome, print a warning only when the requested amount is above the balance. Copy this short example into <code>payment_check.py</code>.</p>
+    <pre><code data-language="python">balance = 100
+amount = 120
+
+if amount &gt; balance:
+    print("Not enough balance")
+
+print("Check finished")</code></pre>
+    <pre><code data-language="text">Not enough balance
+Check finished</code></pre>
+    <p>Change <code>amount</code> to <code>100</code>. Only <code>Check finished</code> prints. The first <code>print()</code> is indented by four spaces, so it belongs to the <code>if</code>. The last line runs either way.</p>
     <h3>Choose which code runs</h3>
     <p>Replace the file contents with the code below. Before running it, read down the checks. <code>if</code> starts the decision. <code>elif</code> means “otherwise, try this check.” <code>else</code> runs when the earlier checks are false. End each branch header with a colon and use four spaces for the lines inside it.</p>
     <pre><code data-language="python">balance = 100
@@ -103,6 +125,11 @@ else:
     <pre><code data-language="text">Payment approved. Balance: EUR 0</code></pre>
     <p>Watch why the exact balance works. <code>100 &lt;= 0</code> is false, and so is <code>100 &gt; 100</code>. Python reaches <code>else</code> and subtracts EUR 100. Try <code>120</code>, <code>0</code> and <code>-1</code> one at a time. Predict the message before each run.</p>
     <details class="fde-setup-answer"><summary>Check your predictions</summary><ul><li><code>120</code> prints <code>Not enough balance</code>.</li><li><code>0</code> and <code>-1</code> print <code>Amount must be positive</code>.</li></ul></details>
+    <figure>
+      <img src="assets/payment-decision-branches.png" width="960" height="470" loading="lazy" alt="The payment decision first rejects non-positive amounts, then rejects amounts above the balance. Otherwise it approves the payment.">
+      <figcaption>Trace <code>amount = 100</code> and <code>balance = 100</code>. Both questions are false, so the payment reaches <code>else</code>.</figcaption>
+    </figure>
+    <p><strong>Checkpoint.</strong> Predict the branch for <code>-1</code>, <code>0</code>, <code>100</code> and <code>101</code> before you run them.</p>
     <h3>Combine rules</h3>
     <p>With a balance of 100, <code>amount &gt; 0 and amount &lt;= balance</code> allows 20 and 100. Add <code>or</code> when either of two reasons is enough, like a low battery or battery saver pausing a model. Use <code>not</code> to ask whether a flag is off. Next, keep the payment rules and repeat them for a batch.</p>
   </section>
@@ -111,28 +138,39 @@ else:
     <h2>Check whether a value is present</h2>
 
     <p>In an <code>if</code>, Python treats <code>None</code>, zero and empty built-in containers or strings as false. A non-empty string such as <code>"False"</code> is true in a condition. This is called <strong>truthiness</strong>.</p>
-    <pre><code data-language="python">owner = &quot;&quot;
-label = owner if owner else &quot;unassigned&quot;
-print(label)
+    <p>In a report, <code>0</code> can be a recorded count and <code>None</code> means the count is missing. Use <code>count is None</code> when that difference matters.</p>
+    <pre><code data-language="python">count = 0
 
-# Zero is a recorded value. None means no count was supplied.
-for count in [0, None]:
-    if count is None:
-        print(&quot;Count missing&quot;)
-    else:
-        print(f&quot;Count recorded: {count}&quot;)</code></pre>
-    <p><strong>Expected output</strong></p>
-    <pre><code data-language="text">unassigned
-Count recorded: 0
-Count missing</code></pre>
-    <p>Read <code>owner if owner else "unassigned"</code> as “use the owner when it’s true in a condition, otherwise use the fallback.” This conditional expression chooses a value. Use a full <code>if</code> block when a branch needs several steps.</p>
+if count is None:
+    print("Count missing")
+else:
+    print(f"Count recorded: {count}")</code></pre>
+    <pre><code data-language="text">Count recorded: 0</code></pre>
+    <p>Try <code>count = None</code> next. Then try replacing the check with <code>if not count:</code>. What information does the new check lose?</p>
 
+  </section>
+
+  <section class="topic" id="first-loop">
+    <h2>Trace a short loop</h2>
+    <p>Two known payments arrive. Before checking any rules, practice reading the list and updating a total. Replace your code with the following and run it.</p>
+    <pre><code data-language="python">spent = 0
+
+for amount in [12, 8]:
+    spent += amount
+    print(f"Running total: {spent}")
+
+print(f"Final total: {spent}")</code></pre>
+    <pre><code data-language="text">Running total: 12
+Running total: 20
+Final total: 20</code></pre>
+    <p>On the first turn <code>amount</code> is <code>12</code>. On the second it’s <code>8</code>. <code>spent += amount</code> adds to what’s already stored. The indented <code>print()</code> runs each turn. The last <code>print()</code> runs once.</p>
+    <p><strong>Checkpoint.</strong> Change the list to <code>[]</code>. Predict which line still prints and what value it shows.</p>
   </section>
 
   <section class="topic" id="topic-2">
     <h2>Apply the payment rules in a loop</h2>
     <p>Now five payment requests arrive. The square brackets hold a list of requests. <code>for raw in requests:</code> picks one request, runs the indented code and repeats for the next request. Each accepted payment changes the balance available for the next turn.</p>
-    <p>Create <code>payments.py</code> in your practice folder. Save the code and run <code>py -3 payments.py</code> on Windows or <code>python3 payments.py</code> on Mac or Linux.</p>
+    <p>Create <code>payments.py</code> in your practice folder. Save the code and run <code>uv run python payments.py</code>. If you’re running plain Python, use the same command you used earlier with <code>payments.py</code> as the file name.</p>
     <p>Before you run it, predict the balance after the first payment and at the end. The requests arrive as text. <code>strip()</code> trims the ends, the digit check protects <code>int()</code> and <code>continue</code> skips the rest of the current turn when a request fails that check.</p>
     <pre><code data-language="python">balance = 100
 requests = [" 12 ", "oops", "120", "8", "0"]
@@ -172,7 +210,7 @@ Balance: EUR 80</code></pre>
   <section class="topic" id="topic-3">
     <h2>Trace the loop</h2>
     <p>Follow the balance one request at a time. The balance only changes when a payment is accepted.</p>
-    <table>
+    <div class="table-scroll"><table>
       <thead><tr><th scope="col">Request</th><th scope="col">Decision</th><th scope="col">Balance after</th></tr></thead>
       <tbody>
         <tr><td><code>" 12 "</code></td><td>Trim, convert and pay EUR 12</td><td>EUR 88</td></tr>
@@ -181,7 +219,7 @@ Balance: EUR 80</code></pre>
         <tr><td><code>"8"</code></td><td>Pay EUR 8</td><td>EUR 80</td></tr>
         <tr><td><code>"0"</code></td><td>Reject zero</td><td>EUR 80</td></tr>
       </tbody>
-    </table>
+    </table></div>
     <p><code>balance -= amount</code> means <code>balance = balance - amount</code>. The two unindented <code>print()</code> calls run after the loop, once each.</p>
     <h3>Use a <code>while</code> loop with a stopping rule</h3>
     <p>Use <code>for</code> when you have items to process or know how many times to repeat. <code>range(3)</code> gives three turns numbered <code>0</code>, <code>1</code> and <code>2</code>. Use <code>while</code> when the next turn depends on a condition. In this simulated retry, you can try up to three times. The second attempt succeeds.</p>
@@ -271,8 +309,52 @@ print(f"Minutes left: {minutes_left}")</code></pre>
       <p>Yes. <code>8 &gt; 8</code> is false, so EUR 8 is accepted. The last EUR 1 payment is declined. The report ends with <code>Spent: EUR 100</code> and <code>Balance: EUR 0</code>.</p>
     </details>
   </section>
+  <section class="topic" id="condition-interview-checks">
+    <h2>Tricky questions you can run</h2>
+    <p>Read the code and predict the exact output before running it. Then change one line and explain why the result changes. The answer shows the condition or loop rule that decides it.</p>
+    <h3>What changes if you reverse these checks?</h3>
+    <pre><code data-language="python">completed = 0
+seconds = 45
+print(completed &gt; 0 and seconds / completed &gt; 10)</code></pre>
+    <details class="fde-setup-answer"><summary>Show answer</summary><p>It prints <code>False</code>. The left side of <code>and</code> is false, so Python skips the division. Reverse the checks and the program raises <code>ZeroDivisionError</code> before it reaches the guard.</p></details>
+    <h3>Why does an unrelated status pass?</h3>
+    <pre><code data-language="python">status = "failed"
+if status == "ready" or "queued":
+    print("Send it")</code></pre>
+    <details class="fde-setup-answer"><summary>Show answer</summary><p>It prints <code>Send it</code>. Python reads this as <code>(status == "ready") or "queued"</code>. A nonempty string is truthy. Compare <code>status</code> with both values or use <code>status in ("ready", "queued")</code>.</p></details>
+    <h3>How many messages print?</h3>
+    <pre><code data-language="python">amount = 100
+balance = 100
+if amount &lt;= balance:
+    print("Allowed")
+if amount == balance:
+    print("Exact fit")</code></pre>
+    <details class="fde-setup-answer"><summary>Show answer</summary><p>Both lines print. With <code>elif</code> in place of the second <code>if</code>, Python would skip the exact-fit branch because the first branch already matched.</p></details>
+    <h3>Does the invalid row end the batch?</h3>
+    <pre><code data-language="python">for status in ["ready", "bad", "queued"]:
+    if status == "bad":
+        continue
+    print(status)</code></pre>
+    <details class="fde-setup-answer"><summary>Show answer</summary><p>It prints <code>ready</code> and <code>queued</code>. With <code>break</code>, only <code>ready</code> prints. Use <code>continue</code> when the later rows still need to be checked.</p></details>
+    <h3>Can the third attempt run?</h3>
+    <pre><code data-language="python">for attempt in range(1, 3):
+    print(attempt)</code></pre>
+    <details class="fde-setup-answer"><summary>Show answer</summary><p>It prints <code>1</code> and <code>2</code>. The stop value is excluded. Use <code>range(1, 4)</code> for three attempts.</p></details>
+    <h3>Why is the daily total only 8?</h3>
+    <pre><code data-language="python">for amount in [12, 8]:
+    total = 0
+    total += amount
+print(total)</code></pre>
+    <details class="fde-setup-answer"><summary>Show answer</summary><p>The loop resets <code>total</code> on each turn, so it prints <code>8</code>. Move <code>total = 0</code> above the loop to get <code>20</code>. The fixed version also defines <code>total</code> when the list is empty.</p></details>
+    <details class="fde-setup-answer"><summary>More quick interview checks</summary>
+<details class="fde-setup-answer"><summary>Which is true when the payment and balance are both 100, <code>amount &lt; balance</code> or <code>amount &lt;= balance</code>?</summary><p>Only <code>&lt;=</code> is true. Its <code>=</code> includes an exact match.</p></details><details class="fde-setup-answer"><summary>When should you use <code>=</code> or <code>==</code>?</summary><p>Use <code>balance = 100</code> to assign a value. Use <code>balance == 100</code> to ask a question. <code>if balance = 100:</code> raises a syntax error.</p></details><details class="fde-setup-answer"><summary>Why does <code>amount == 10 or 20</code> pass even if <code>amount</code> is <code>5</code>?</summary><p>Python gets <code>False or 20</code>. The number <code>20</code> is treated as true in a condition. Write <code>amount == 10 or amount == 20</code>.</p></details><details class="fde-setup-answer"><summary>What happens when two conditions in one <code>if</code>/<code>elif</code> chain are true?</summary><p>The first matching branch runs. Two separate <code>if</code> statements can both run.</p></details><details class="fde-setup-answer"><summary>What does <code>not (False or True)</code> return?</summary><p><code>False</code>. Work inside the parentheses first. <code>False or True</code> gives <code>True</code> and <code>not</code> flips it.</p></details><details class="fde-setup-answer"><summary>Why can <code>runs &gt; 0 and seconds / runs &gt; 10</code> safely check <code>runs = 0</code>?</summary><p>The left check is false, so Python skips the right side. This is called short-circuiting. Put the guard before the division.</p></details><details class="fde-setup-answer"><summary>What does <code>10 % 3</code> give and how is it useful at work?</summary><p><code>1</code>. Three full batches of three use nine records, leaving one for the final batch.</p></details><details class="fde-setup-answer"><summary>Why does <code>input()</code> give a different result from the number you typed in your code?</summary><p>Input <code>100</code> arrives as the string <code>"100"</code>. <code>"100" == 100</code> is false. Convert the input before comparing numeric amounts.</p></details>
+      <details class="fde-setup-answer"><summary>Why is a running total initialized above a loop?</summary><p>Each turn needs the total from the previous turn. Setting it to zero inside the loop resets it every time.</p></details>
+      <details class="fde-setup-answer"><summary>When should an invalid request use <code>continue</code> instead of <code>break</code>?</summary><p>Use <code>continue</code> when you should still check the later requests. <code>break</code> ends the whole loop.</p></details>
+    </details>
+  </section>
+
   <section class="topic" id="control-flow-practice">
-    <h2>Project and interview practice</h2>
+    <h2>Project and workplace practice</h2>
     <p>Pick a scenario closest to your project or job. Predict what happens before you open the answer or run the code.</p>
     <details class="fde-setup-answer" id="condition-project-drills">
       <summary>Eight bootcamp project walkthroughs</summary>
@@ -459,12 +541,6 @@ else:
 <pre><code data-language="text">No successful runs yet</code></pre></details>
       </details>
 
-    </details>
-    <details class="fde-setup-answer" id="condition-interview-checks">
-      <summary>Tricky interview questions</summary>
-<details class="fde-setup-answer"><summary>Which is true when the payment and balance are both 100, <code>amount &lt; balance</code> or <code>amount &lt;= balance</code>?</summary><p>Only <code>&lt;=</code> is true. Its <code>=</code> includes an exact match.</p></details><details class="fde-setup-answer"><summary>When should you use <code>=</code> or <code>==</code>?</summary><p>Use <code>balance = 100</code> to assign a value. Use <code>balance == 100</code> to ask a question. <code>if balance = 100:</code> raises a syntax error.</p></details><details class="fde-setup-answer"><summary>Why does <code>amount == 10 or 20</code> pass even if <code>amount</code> is <code>5</code>?</summary><p>Python gets <code>False or 20</code>. The number <code>20</code> is treated as true in a condition. Write <code>amount == 10 or amount == 20</code>.</p></details><details class="fde-setup-answer"><summary>What happens when two conditions in one <code>if</code>/<code>elif</code> chain are true?</summary><p>The first matching branch runs. Two separate <code>if</code> statements can both run.</p></details><details class="fde-setup-answer"><summary>What does <code>not (False or True)</code> return?</summary><p><code>False</code>. Work inside the parentheses first. <code>False or True</code> gives <code>True</code> and <code>not</code> flips it.</p></details><details class="fde-setup-answer"><summary>Why can <code>runs &gt; 0 and seconds / runs &gt; 10</code> safely check <code>runs = 0</code>?</summary><p>The left check is false, so Python skips the right side. This is called short-circuiting. Put the guard before the division.</p></details><details class="fde-setup-answer"><summary>What does <code>10 % 3</code> give and how is it useful at work?</summary><p><code>1</code>. Three full batches of three use nine records, leaving one for the final batch.</p></details><details class="fde-setup-answer"><summary>Why does <code>input()</code> give a different result from the number you typed in your code?</summary><p>Input <code>100</code> arrives as the string <code>"100"</code>. <code>"100" == 100</code> is false. Convert the input before comparing numeric amounts.</p></details>
-      <details class="fde-setup-answer"><summary>Why is a running total initialized above a loop?</summary><p>Each turn needs the total from the previous turn. Setting it to zero inside the loop resets it every time.</p></details>
-      <details class="fde-setup-answer"><summary>When should an invalid request use <code>continue</code> instead of <code>break</code>?</summary><p>Use <code>continue</code> when you should still check the later requests. <code>break</code> ends the whole loop.</p></details>
     </details>
     <details class="fde-setup-answer" id="condition-mastery">
       <summary>Extra challenge. Check one voice upload</summary>
