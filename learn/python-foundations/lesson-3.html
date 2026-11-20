@@ -452,24 +452,46 @@ if __name__ == &quot;__main__&quot;:
 print(total_expenses([5, 6]))</code></pre><pre><code data-language="text">11</code></pre>
     </details>
     <details class="fde-setup-answer" id="practice-2">
-      <summary>Give each call its own list</summary>
-      
-      <p>A default list such as <code>tags=[]</code> is created once when Python defines the function. If the function appends to it, later calls can inherit previous tags. Use <code>None</code> as the default and make a new list inside the function. Copy an existing list before adding a tag if it should stay intact.</p>
+      <summary>Debug a shared default list</summary>
+      <p>Two support tickets arrive. The first needs a <code>billing</code> tag and the second needs an <code>urgent</code> tag. Save the first example as <code>ticket_tags.py</code>. Before running it, predict whether the first ticket will still have just one tag after the second call.</p>
+      <h3>Reproduce the bug</h3>
+      <p>Run <code>py -3 ticket_tags.py</code> on Windows or <code>python3 ticket_tags.py</code> on macOS or Linux.</p>
+      <pre><code data-language="python">def add_tag(tag, tags=[]):
+    # This default list is shared by calls that omit tags.
+    tags.append(tag)
+    return tags
+
+
+first_ticket = add_tag(&quot;billing&quot;)
+second_ticket = add_tag(&quot;urgent&quot;)
+print(&quot;First ticket:&quot;, first_ticket)
+print(&quot;Second ticket:&quot;, second_ticket)</code></pre>
+      <p><strong>Expected output</strong></p>
+      <pre><code data-language="text">First ticket: [&#x27;billing&#x27;, &#x27;urgent&#x27;]
+Second ticket: [&#x27;billing&#x27;, &#x27;urgent&#x27;]</code></pre>
+      <p>Python creates the default list when it defines <code>add_tag</code>. Both calls omit <code>tags</code>, so both append to that same list and return it. <code>first_ticket</code> and <code>second_ticket</code> refer to the same object. That’s why the first ticket shows <code>urgent</code> when you print it after the second call.</p>
+      <h3>Fix the function and rerun the same calls</h3>
+      <p>Replace the file with this version. Use <code>None</code> to mean no list was supplied. The function creates the new list inside the call, so each ticket gets its own.</p>
       <pre><code data-language="python">def add_tag(tag, tags=None):
-    # Give this call its own list before adding the tag.
+    # Start fresh, or copy the list the caller supplied.
     result = [] if tags is None else tags.copy()
     result.append(tag)
     return result
 
 
-original = [&quot;open&quot;]
-print(add_tag(&quot;review&quot;, original))
-print(original)
-print(add_tag(&quot;urgent&quot;))</code></pre>
-    <p><strong>Expected output</strong></p>
-    <pre><code data-language="text">[&#x27;open&#x27;, &#x27;review&#x27;]
-[&#x27;open&#x27;]
-[&#x27;urgent&#x27;]</code></pre>
+first_ticket = add_tag(&quot;billing&quot;)
+second_ticket = add_tag(&quot;urgent&quot;)
+print(&quot;First ticket:&quot;, first_ticket)
+print(&quot;Second ticket:&quot;, second_ticket)</code></pre>
+      <p><strong>Expected output</strong></p>
+      <pre><code data-language="text">First ticket: [&#x27;billing&#x27;]
+Second ticket: [&#x27;urgent&#x27;]</code></pre>
+      <p>The two calls now return separate lists. If a caller supplies a list, <code>copy()</code> keeps the original tag list intact when the function adds the new tag.</p>
+      <p>Try this before moving on. Add <code>original = ["open"]</code> at the end of the file, then print <code>add_tag("review", original)</code> and <code>original</code>. Predict both lists.</p>
+      <details class="fde-setup-answer">
+        <summary>Check the supplied-list case</summary>
+        <p>The returned list is <code>['open', 'review']</code>. The original still contains only <code>['open']</code>.</p>
+      </details>
     </details>
   </section>
 
