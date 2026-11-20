@@ -87,7 +87,7 @@ html:has(.fde-home .fde-cover:not([hidden])) {
   letter-spacing: .012em;
   margin: 0 0 clamp(10px, min(4vw, 4dvh), 48px) !important;
 }
-.fde-wordmark span { text-shadow: 0 0 28px color-mix(in srgb, currentColor 48%, transparent); }
+
 .fde-wordmark em {
   color: var(--th-title);
   font: italic 600 .32em/1 Georgia, serif;
@@ -113,14 +113,11 @@ html:has(.fde-home .fde-cover:not([hidden])) {
 .fde-title-bootcamp { margin-top: .32em; font-size: .66em; letter-spacing: .11em; }
 @media (prefers-reduced-motion: no-preference) {
   .fde-wordmark { animation: fde-cover-arrive .8s ease-out both; }
-  .fde-wordmark span { animation: fde-glow 2s ease-in-out 2; }
+
 }
 @keyframes fde-cover-arrive {
   from { opacity: .6; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
-}
-@keyframes fde-glow {
-  50% { text-shadow: 0 0 18px currentColor, 0 0 48px color-mix(in srgb, currentColor 62%, transparent); }
 }
 .fde-actions { display: flex; justify-content: center; margin-top: clamp(14px, min(6vw, 7dvh), 76px); }
 .fde-actions .fde-primary { padding-inline: 1.65rem; }
