@@ -50,6 +50,7 @@
   border-bottom: 1px solid var(--th-line);
 }
 .fde-home .site-header a, .fde-home .site-header button { color: var(--th-text); }
+.fde-cover[hidden], .fde-roadmap[hidden] { display: none; }
 .fde-cover {
   display: grid;
   place-items: center;
