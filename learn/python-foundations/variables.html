@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>Variables, data types &amp; strings | Learn with Mynul</title><meta name="description" content="Learn Python variables, basic types, input, conversion and f-strings by building a receipt."><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=2"><link rel="stylesheet" href="../../assets/css/fde-layout.css?v=16"><style>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>Variables, data types &amp; strings | Learn with Mynul</title><meta name="description" content="Learn Python variables, input, conversion and f-strings with an OmniGuard kickoff tool and eight project drills."><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=2"><link rel="stylesheet" href="../../assets/css/fde-layout.css?v=16"><style>
 .fde-setup-lesson .topic { margin-top: 1.25rem; padding-top: 0; }
 .fde-setup-lesson .topic h2 { margin-top: .9rem !important; }
 .fde-setup-lesson .topic pre { margin: .55rem 0 !important; }
@@ -27,66 +27,92 @@
 <main id="main" class="fde-setup-lesson">
   <p class="breadcrumbs"><a href="../python-engineering-module-1.html">Python overview</a> / Core Python</p>
   <h1>Variables, data types &amp; strings</h1>
-  <p>Build a tiny shop receipt. Your program will ask for a name, a quantity and a price, then calculate the total.</p>
+  <p>Open your <code>python-practice</code> folder. Imagine our first OmniGuard customer has handed us three data sources to connect. We need a quick estimate and a record of whether the work is approved. Let’s build the little tool that prints that summary.</p>
 
   <section class="topic" id="variables-and-types">
-    <h2>1. Give each value a name</h2>
-    <p>In <code>quantity = 3</code>, <code>quantity</code> is a <strong>variable</strong>. Think of it as a name for a value. The <code>=</code> assigns the value on the right to the name on the left.</p>
-    <div class="table-scroll">
-    <table>
-      <thead><tr><th scope="col">Type</th><th scope="col">Example and meaning</th></tr></thead>
+    <h2>1. Start with five values</h2>
+    <p>Create <code>kickoff.py</code>. Before we ask anyone to type anything, decide what kind of value each field should hold.</p>
+    <div class="table-scroll"><table>
+      <thead><tr><th scope="col">Type</th><th scope="col">What goes in the kickoff note</th></tr></thead>
       <tbody>
-        <tr><th scope="row"><code>int</code></th><td><code>quantity = 3</code> • A whole number</td></tr>
-        <tr><th scope="row"><code>float</code></th><td><code>unit_price = 2.50</code> • A number that can have a decimal part</td></tr>
-        <tr><th scope="row"><code>str</code></th><td><code>name = "Mia"</code> • Text inside quotes</td></tr>
-        <tr><th scope="row"><code>bool</code></th><td><code>needs_bag = False</code> • A yes/no value, written <code>True</code> or <code>False</code></td></tr>
-        <tr><th scope="row"><code>NoneType</code></th><td><code>coupon_code = None</code> • No value has been supplied</td></tr>
+        <tr><th scope="row"><code>str</code></th><td><code>customer = "Northwind"</code> is text.</td></tr>
+        <tr><th scope="row"><code>int</code></th><td><code>source_count = 3</code> is a whole-number count.</td></tr>
+        <tr><th scope="row"><code>float</code></th><td><code>minutes_per_source = 2.5</code> can hold half a minute.</td></tr>
+        <tr><th scope="row"><code>bool</code></th><td><code>approved = False</code> records a yes-or-no decision.</td></tr>
+        <tr><th scope="row"><code>NoneType</code></th><td><code>review_id = None</code> means a review ID hasn’t been assigned yet.</td></tr>
       </tbody>
-    </table>
-    </div>
-    <p>Try <code>print(type(3))</code> and <code>print(type("3"))</code>. The first shows <code>int</code>. The second shows <code>str</code>.</p>
+    </table></div>
+    <p>Read <code>source_count = 3</code> from right to left. Take the value <code>3</code> and give it the name <code>source_count</code>. Put quotes around the customer name. Leave <code>False</code> and <code>None</code> unquoted.</p>
   </section>
 
   <section class="topic" id="input-and-conversion">
-    <h2>2. Turn typed text into numbers</h2>
-    <p><code>input()</code> always gives you text, even when you type digits. Use <code>int("3")</code> for a whole number, <code>float("2.50")</code> for a decimal and <code>str(3)</code> to turn a number into text.</p>
-    <p><strong>Quick check.</strong> <code>"2" + "3"</code> joins text and gives <code>"23"</code>. <code>int("2") + int("3")</code> adds numbers and gives <code>5</code>.</p>
+    <h2>2. Watch what happens when you type 3</h2>
+    <p>Drop these two lines into <code>kickoff.py</code> and save. Run <code>py -3 kickoff.py</code> on Windows or <code>python3 kickoff.py</code> on Mac or Linux.</p>
+    <pre><code data-language="python">raw_count = input("Data sources: ")
+print(type(raw_count).__name__)</code></pre>
+    <p>At the prompt, type <code>3</code>. Pause and guess the output. The terminal prints <code>str</code>. <code>input()</code> gives us text, so we use <code>int(raw_count)</code> before doing maths. Similarly, <code>float("2.5")</code> gives the number <code>2.5</code> and <code>str(3)</code> gives the text <code>"3"</code>.</p>
+    <p>Here’s a common bug you can spot by reading the types. <code>"2" + "3"</code> gives <code>"23"</code>. <code>int("2") + int("3")</code> gives <code>5</code>.</p>
   </section>
 
   <section class="topic" id="build-a-receipt">
-    <h2>3. Build and run the receipt</h2>
-    <p>In your <code>python-practice</code> folder, create <code>receipt.py</code>. Copy the code, save it and run <code>py -3 receipt.py</code> on Windows or <code>python3 receipt.py</code> on Mac or Linux.</p>
-    <pre><code data-language="python">name = input("Name: ")
-quantity = int(input("How many apples? "))
-unit_price = float(input("Price per apple: "))
+    <h2>3. Build it with me</h2>
+    <p>Replace those two lines with the program below. Save and run the same command. When it asks, type <code>Northwind</code>, <code>3</code> and <code>2.5</code>. Before pressing Enter on the last input, guess the total.</p>
+    <pre><code data-language="python">customer = input("Customer: ").strip()
+source_count = int(input("Data sources: "))
+minutes_per_source = float(input("Minutes per source: "))
 
-total = quantity * unit_price
-print(f"{name}: {quantity} apples")
-print(f"Total: €{total:.2f}")</code></pre>
+approved = False
+review_id = None
+estimated_minutes = source_count * minutes_per_source
+
+print(f"{customer} | {source_count} sources | {estimated_minutes:.1f} minutes")
+print(f"Approved: {approved} | Review ID: {review_id}")</code></pre>
     <figure>
-      <img src="assets/receipt-terminal.png" width="760" height="284" alt="Receipt program run with Mia, 3 apples and a price of 2.50. The program prints Mia: 3 apples and Total: €7.50.">
-      <figcaption>Type <code>Mia</code>, <code>3</code> and <code>2.50</code> when asked. The total should be <code>€7.50</code>.</figcaption>
+      <img src="assets/kickoff-terminal.png" width="920" height="282" alt="Running kickoff.py with Northwind, 3 data sources and 2.5 minutes per source prints an estimate of 7.5 minutes, Approved: False and Review ID: None.">
+      <figcaption>Compare your terminal with this run. The last two lines are the kickoff summary.</figcaption>
     </figure>
-    <h3>How the code gets the answer</h3>
     <ol>
-      <li><code>input()</code> reads <code>Mia</code>, <code>"3"</code> and <code>"2.50"</code> as text. The name stays text.</li>
-      <li><code>int()</code> turns <code>"3"</code> into <code>3</code>. <code>float()</code> turns <code>"2.50"</code> into <code>2.5</code>. Multiplying them gives <code>7.5</code>.</li>
-      <li>The <code>f</code> before the quote tells Python to fill in the braces. <code>{name}</code> becomes <code>Mia</code>, and <code>{total:.2f}</code> displays <code>7.50</code> with two decimal places.</li>
+      <li><code>.strip()</code> trims extra spaces from the customer name. <code>int()</code> and <code>float()</code> turn the other two inputs into numbers.</li>
+      <li>Python calculates <code>3 * 2.5</code> before printing. The <code>f</code> tells Python to fill each pair of braces with a value. <code>:.1f</code> displays one decimal place.</li>
+      <li><code>False</code> records that approval hasn’t been received. <code>None</code> records that there’s no review ID. Changing the estimate doesn’t change either field.</li>
     </ol>
   </section>
 
   <section class="topic" id="practice-and-debug">
-    <h2>4. Practice and debug</h2>
-    <p>Run it with <code>Leo</code>, <code>4</code> and <code>1.25</code>. You should see <code>Total: €5.00</code>. Then add a line that shows <code>Each apple: €1.25</code>.</p>
+    <h2>4. Change it, break it, fix it</h2>
+    <p>Run it for <code>Acme</code> with <code>4</code> sources at <code>7.5</code> minutes each. Now add a line that shows <code>Estimate in hours: 0.50</code>. Use the value you already calculated.</p>
     <details class="fde-setup-answer">
       <summary>Check your answer</summary>
-      <pre><code data-language="python">print(f"Each apple: €{unit_price:.2f}")</code></pre>
+      <pre><code data-language="python">print(f"Estimate in hours: {estimated_minutes / 60:.2f}")</code></pre>
     </details>
-    <ul>
-      <li><strong>Quantity error?</strong> Type <code>3</code> for quantity. <code>int("3.0")</code> raises an error. Use a decimal point for the price.</li>
-      <li><strong>Seeing <code>{name}</code> on screen?</strong> Check for the <code>f</code> before the quote.</li>
-      <li><strong>Testing yes/no input?</strong> <code>bool("False")</code> gives <code>True</code> because the text isn’t empty. Write <code>False</code> without quotes when you mean the Boolean value.</li>
-    </ul>
+    <p>Now type <code>3.0</code> at <strong>Data sources</strong>. Look for <code>ValueError</code> at the start of the last line. That input is decimal text, so <code>int()</code> rejects it. Run again with <code>3</code>. We’ll handle invalid input in a later lesson.</p>
+    <p><strong>Two quick checks.</strong> If your output shows <code>{customer}</code>, check the <code>f</code> before the quote. If you try <code>bool("False")</code>, it returns <code>True</code> because the text isn’t empty.</p>
+  </section>
+
+  <section class="topic" id="project-drills">
+    <h2>5. Reuse it in the eight projects</h2>
+    <p>Pick one drill. Write a new file without copying the kickoff code. Predict the output, then run it and compare.</p>
+    <details class="fde-setup-answer">
+      <summary>Show all eight project drills</summary>
+      <ol><li><a href="../fde-textbook/fde-module-15.html">Capstone Project 01: OmniGuard: Secure AI Integration</a><br>Change the customer to <code>Acme</code>, sources to <code>4</code> and minutes per source to <code>7.5</code>. Predict <code>30.0 minutes</code> before running it.</li>
+      <li><a href="../fde-textbook/fde-module-16.html">Capstone Project 02: AuditMesh: Multi-Agent Compliance System</a><br>Store a case ID as <code>"007"</code>, a check count as <code>3</code> and a review ID as <code>None</code>. Print <code>007 | 3 checks | None</code>.</li>
+      <li><a href="../fde-textbook/system-design-module-5.html">Project 03: Self-Host and Fine-Tune an LLM on Company Infrastructure</a><br>Read requests per second as a decimal. Enter <code>12.5</code> and print <code>12.5 requests/sec</code>.</li>
+      <li><a href="../fde-textbook/system-design-module-6.html">Project 04: Run an LLM on Mobile Devices</a><br>Read battery use as a decimal. Enter <code>2.5</code> and print <code>Battery used: 2.5%</code>.</li>
+      <li><a href="../fde-textbook/system-design-module-7.html">Project 05: Multimodal Company Artefact Intelligence at Scale</a><br>Read a document count as a whole number. Enter <code>4</code> and print <code>4 documents</code>.</li>
+      <li><a href="../fde-textbook/system-design-module-8.html">Project 06: Enterprise Lead Management System</a><br>Keep lead ID <code>"0042"</code> as text. Read <code>2</code> as an integer and print <code>0042 | 2 follow-ups</code>.</li>
+      <li><a href="../fde-textbook/system-design-module-9.html">Project 07: AI Receptionist System</a><br>Set <code>call_answered = False</code> and <code>booking_id = None</code>. Print both values with an f-string.</li>
+      <li><a href="../fde-textbook/system-design-module-10.html">Project 08: AI Voice Productivity SaaS: From Desktop App to Paid Product</a><br>Multiply <code>3</code> voice clips by <code>12.5</code> seconds per clip. Print <code>Total: 37.5 seconds</code>.</li></ol>
+    </details>
+  </section>
+
+  <section class="topic" id="interview-practice">
+    <h2>6. Say it out loud</h2>
+    <p>Imagine an interviewer hands you <code>"007"</code> and calls it a case ID. Which type would you use and why? Then explain what happens when someone types <code>0</code> or <code>oops</code> as the source count.</p>
+    <details class="fde-setup-answer">
+      <summary>Compare your reasoning</summary>
+      <p>Keep the ID as text. Converting it to an integer drops the leading zeros. <code>0</code> converts successfully, so ask whether zero sources is allowed. <code>oops</code> fails at conversion. Test a normal input, zero and invalid text.</p>
+    </details>
+    <p><a href="https://www.youtube.com/watch?v=Ti5vfu9arXQ">Google’s mock coding interview</a> demonstrates explaining your thinking. <a href="https://www.amazon.jobs/content/en-gb/how-we-hire/sde-iii-interview-prep">Amazon’s interview guide</a> includes testing edge cases.</p>
   </section>
 
   <nav class="lesson-nav" aria-label="Lesson navigation"><a href="setup.html">Previous: Python setup &amp; first program</a><a href="lesson-1.html#topic-1">Next: Operators &amp; conditions</a></nav>
