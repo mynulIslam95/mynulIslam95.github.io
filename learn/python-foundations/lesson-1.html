@@ -70,7 +70,129 @@ else:
     <p>Watch why the exact balance works. <code>100 &lt;= 0</code> is false, and so is <code>100 &gt; 100</code>. Python reaches <code>else</code> and subtracts EUR 100. Try <code>120</code>, <code>0</code> and <code>-1</code> one at a time. Predict the message before each run.</p>
     <details class="fde-setup-answer"><summary>Check your predictions</summary><ul><li><code>120</code> prints <code>Not enough balance</code>.</li><li><code>0</code> and <code>-1</code> print <code>Amount must be positive</code>.</li></ul></details>
     <h3>3. Combine rules</h3>
-    <p>With a balance of 100, <code>amount &gt; 0 and amount &lt;= balance</code> allows 20 and 100. Add <code>or</code> when either of two reasons is enough, like a low battery or battery saver pausing a model. Use <code>not</code> to ask whether a flag is off. The project drills put each rule to work.</p>
+    <p>With a balance of 100, <code>amount &gt; 0 and amount &lt;= balance</code> allows 20 and 100. Add <code>or</code> when either of two reasons is enough, like a low battery or battery saver pausing a model. Use <code>not</code> to ask whether a flag is off. Next, keep the payment rules and repeat them for a batch.</p>
+  </section>
+
+  <section class="topic" id="topic-2">
+    <h2>Apply the payment rules in a loop</h2>
+    <p>Now five payment requests arrive. The square brackets hold a list of requests. <code>for raw in requests:</code> picks one request, runs the indented code and repeats for the next request. Each accepted payment changes the balance available for the next turn.</p>
+    <p>Create <code>payments.py</code> in your practice folder. Save the code and run <code>py -3 payments.py</code> on Windows or <code>python3 payments.py</code> on Mac or Linux.</p>
+    <p>Before you run it, predict the balance after the first payment and at the end. The requests arrive as text. <code>strip()</code> trims the ends, the digit check protects <code>int()</code> and <code>continue</code> skips the rest of the current turn when a request fails that check.</p>
+    <pre><code data-language="python">balance = 100
+requests = [" 12 ", "oops", "120", "8", "0"]
+spent = 0
+
+for raw in requests:
+    # Skip invalid text before converting it to a number.
+    text = raw.strip()
+    if not (text.isascii() and text.isdigit()):
+        print("Enter a whole number")
+        continue
+
+    amount = int(text)
+    # Apply the same decision to the current balance.
+    if amount &lt;= 0:
+        print("Amount must be positive")
+    elif amount &gt; balance:
+        print("Not enough balance")
+    else:
+        balance -= amount
+        spent += amount
+        print(f"Paid: EUR {amount}")
+
+# Print the totals once, after every request has been checked.
+print(f"Spent: EUR {spent}")
+print(f"Balance: EUR {balance}")</code></pre>
+    <h3>Expected output</h3>
+    <pre><code data-language="text">Paid: EUR 12
+Enter a whole number
+Not enough balance
+Paid: EUR 8
+Amount must be positive
+Spent: EUR 20
+Balance: EUR 80</code></pre>
+  </section>
+
+  <section class="topic" id="topic-3">
+    <h2>Trace the loop</h2>
+    <p>Follow the balance one request at a time. The balance only changes when a payment is accepted.</p>
+    <table>
+      <thead><tr><th scope="col">Request</th><th scope="col">Decision</th><th scope="col">Balance after</th></tr></thead>
+      <tbody>
+        <tr><td><code>" 12 "</code></td><td>Trim, convert and pay EUR 12</td><td>EUR 88</td></tr>
+        <tr><td><code>"oops"</code></td><td>Skip invalid text</td><td>EUR 88</td></tr>
+        <tr><td><code>"120"</code></td><td>Decline because EUR 120 exceeds EUR 88</td><td>EUR 88</td></tr>
+        <tr><td><code>"8"</code></td><td>Pay EUR 8</td><td>EUR 80</td></tr>
+        <tr><td><code>"0"</code></td><td>Reject zero</td><td>EUR 80</td></tr>
+      </tbody>
+    </table>
+    <p><code>balance -= amount</code> means <code>balance = balance - amount</code>. The two unindented <code>print()</code> calls run after the loop, once each.</p>
+    <h3>Use a <code>while</code> loop with a stopping rule</h3>
+    <p>Use <code>for</code> when you have items to process or know how many times to repeat. <code>range(3)</code> gives three turns numbered <code>0</code>, <code>1</code> and <code>2</code>. Use <code>while</code> when the next turn depends on a condition. In this simulated retry, you can try up to three times. The second attempt succeeds.</p>
+    <pre><code data-language="python">attempts = 0
+successful_attempt = 2
+
+while attempts &lt; 3:
+    # Updating the counter lets the loop reach the limit.
+    attempts += 1
+    print(f"Attempt {attempts}")
+    if attempts == successful_attempt:
+        print("Connected")
+        break</code></pre>
+    <pre><code data-language="text">Attempt 1
+Attempt 2
+Connected</code></pre>
+    <p><code>break</code> exits the loop. <code>continue</code> skips only the current turn. Set <code>successful_attempt</code> to <code>4</code> and predict how many attempts are printed.</p>
+  </section>
+
+  <section class="topic" id="topic-4">
+    <h2>Check input before converting it</h2>
+    <p><code>strip()</code> removes spaces at the ends. <code>isascii()</code> and <code>isdigit()</code> together accept digit-only text such as <code>"12"</code>. This example rejects blanks, negative amounts and prices with a decimal point. A second check rejects zero.</p>
+    <p><strong>Common mistake.</strong> Keep <code>spent = 0</code> above the loop. Put it inside and you’ll reset the total on every turn.</p>
+    <p id="topic-5">If you need a reminder about <code>input()</code>, <code>int()</code> or f-strings, see <a href="variables.html">Variables, data types &amp; strings</a>.</p>
+  </section>
+
+  <section class="topic" id="practice-2">
+    <h2 id="module-check">Build a batch upload checker</h2>
+    <p>You’re checking requests for the AI Voice Productivity app. Start with 10 minutes available and the requests <code>[0, 4, 8, 6, 1]</code>. Write the program before opening the solution.</p>
+    <ol>
+      <li>Use a <code>for</code> loop to check each request in order.</li>
+      <li>Print <code>Invalid</code> for zero or negative durations. Print <code>Over quota</code> if the request exceeds the minutes left. Include the duration in either message.</li>
+      <li>For an approved request, subtract its duration and print <code>Approved</code> with the duration. After the loop, print the minutes left once.</li>
+    </ol>
+    <pre><code data-language="text">Invalid: 0
+Approved: 4
+Over quota: 8
+Approved: 6
+Over quota: 1
+Minutes left: 0</code></pre>
+    <details class="fde-setup-answer">
+      <summary>Show the commented solution</summary>
+      <pre><code data-language="python">minutes_left = 10
+requests = [0, 4, 8, 6, 1]
+
+for duration in requests:
+    if duration &lt;= 0:
+        print(f"Invalid: {duration}")
+    elif duration &gt; minutes_left:
+        print(f"Over quota: {duration}")
+    else:
+        # Update the quota only after approving a request.
+        minutes_left -= duration
+        print(f"Approved: {duration}")
+
+print(f"Minutes left: {minutes_left}")</code></pre>
+    </details>
+    <p>Run it again with <code>[]</code>. You should get only <code>Minutes left: 10</code>. Then explain why rejecting the 8-minute request still lets the next 6-minute request through.</p>
+    <p id="practice-1">For extra payment practice, use <code>requests = ["12", "0", "-5", "80", "8", "1"]</code> in <code>payments.py</code>. Predict which payments pass. Can an EUR 8 payment pass when the balance is exactly EUR 8?</p>
+    <details class="fde-setup-answer">
+      <summary>Check your payment prediction</summary>
+      <p>Yes. <code>8 &gt; 8</code> is false, so EUR 8 is accepted. The last EUR 1 payment is declined. The report ends with <code>Spent: EUR 100</code> and <code>Balance: EUR 0</code>.</p>
+    </details>
+  </section>
+  <section class="topic" id="control-flow-practice">
+    <h2>Project and interview practice</h2>
+    <p>Pick a scenario closest to your project or job. Predict what happens before you open the answer or run the code.</p>
     <details class="fde-setup-answer" id="condition-project-drills">
       <summary>Eight bootcamp project walkthroughs</summary>
       <p>Read one scenario, predict the result and change one value after running it.</p>
@@ -258,10 +380,13 @@ else:
 
     </details>
     <details class="fde-setup-answer" id="condition-interview-checks">
-      <summary>Eight tricky questions</summary>
+      <summary>Tricky interview questions</summary>
 <details class="fde-setup-answer"><summary>Which is true when the payment and balance are both 100, <code>amount &lt; balance</code> or <code>amount &lt;= balance</code>?</summary><p>Only <code>&lt;=</code> is true. Its <code>=</code> includes an exact match.</p></details><details class="fde-setup-answer"><summary>When should you use <code>=</code> or <code>==</code>?</summary><p>Use <code>balance = 100</code> to assign a value. Use <code>balance == 100</code> to ask a question. <code>if balance = 100:</code> raises a syntax error.</p></details><details class="fde-setup-answer"><summary>Why does <code>amount == 10 or 20</code> pass even if <code>amount</code> is <code>5</code>?</summary><p>Python gets <code>False or 20</code>. The number <code>20</code> is treated as true in a condition. Write <code>amount == 10 or amount == 20</code>.</p></details><details class="fde-setup-answer"><summary>What happens when two conditions in one <code>if</code>/<code>elif</code> chain are true?</summary><p>The first matching branch runs. Two separate <code>if</code> statements can both run.</p></details><details class="fde-setup-answer"><summary>What does <code>not (False or True)</code> return?</summary><p><code>False</code>. Work inside the parentheses first. <code>False or True</code> gives <code>True</code> and <code>not</code> flips it.</p></details><details class="fde-setup-answer"><summary>Why can <code>runs &gt; 0 and seconds / runs &gt; 10</code> safely check <code>runs = 0</code>?</summary><p>The left check is false, so Python skips the right side. This is called short-circuiting. Put the guard before the division.</p></details><details class="fde-setup-answer"><summary>What does <code>10 % 3</code> give and how is it useful at work?</summary><p><code>1</code>. Three full batches of three use nine records, leaving one for the final batch.</p></details><details class="fde-setup-answer"><summary>Why does <code>input()</code> give a different result from the number you typed in your code?</summary><p>Input <code>100</code> arrives as the string <code>"100"</code>. <code>"100" == 100</code> is false. Convert the input before comparing numeric amounts.</p></details>
+      <details class="fde-setup-answer"><summary>Why is a running total initialized above a loop?</summary><p>Each turn needs the total from the previous turn. Setting it to zero inside the loop resets it every time.</p></details>
+      <details class="fde-setup-answer"><summary>When should an invalid request use <code>continue</code> instead of <code>break</code>?</summary><p>Use <code>continue</code> when you should still check the later requests. <code>break</code> ends the whole loop.</p></details>
     </details>
-    <h3 id="condition-mastery">4. Build a voice upload quota check</h3>
+    <details class="fde-setup-answer" id="condition-mastery">
+      <summary>Extra challenge. Check one voice upload</summary>
     <p>A teammate needs one message per upload. Use a 60-minute budget and 55 minutes already used. Start with a 5-minute request and an active account. A paused account takes priority, then reject zero or negative requests, then reject requests over the remaining quota. For an approved upload, show the minutes left.</p>
     <ul>
       <li><strong>Exact fit.</strong> A 5-minute request prints <code>Upload approved. Minutes remaining: 0</code>.</li>
@@ -286,75 +411,6 @@ else:
     remaining_minutes = budget_minutes - used_minutes - requested_minutes
     print(f&quot;Upload approved. Minutes remaining: {remaining_minutes}&quot;)</code></pre><pre><code data-language="text">Upload approved. Minutes remaining: 0</code></pre>
     </details>
-    <p>Once your program passes all four checks, explain why a 5-minute request is approved. Now use <a href="#topic-2">a loop</a> to make the same kind of decision for several requests.</p>
-  </section>
-
-  <section class="topic" id="topic-2">
-    <h2>Apply the payment rules in a loop</h2>
-    <p>A <code>for</code> loop repeats an action for each item. If you need a set number of turns, <code>for turn in range(3):</code> gives you the values <code>0</code>, <code>1</code> and <code>2</code>. The report below loops through payment requests instead.</p>
-    <p>Create <code>payments.py</code> in your practice folder. Save the code and run <code>py -3 payments.py</code> on Windows or <code>python3 payments.py</code> on Mac or Linux.</p>
-    <pre><code data-language="python">balance = 100
-requests = [" 12 ", "oops", "120", "8", "0"]
-spent = 0
-
-for raw in requests:
-    text = raw.strip()
-    if not (text.isascii() and text.isdigit()):
-        print("Enter a whole number")
-        continue
-
-    amount = int(text)
-    if amount &lt;= 0:
-        print("Amount must be positive")
-    elif amount &gt; balance:
-        print("Not enough balance")
-    else:
-        balance -= amount
-        spent += amount
-        print(f"Paid: EUR {amount}")
-
-print(f"Spent: EUR {spent}")
-print(f"Balance: EUR {balance}")</code></pre>
-    <h3>Expected output</h3>
-    <pre><code data-language="text">Paid: EUR 12
-Enter a whole number
-Not enough balance
-Paid: EUR 8
-Amount must be positive
-Spent: EUR 20
-Balance: EUR 80</code></pre>
-  </section>
-
-  <section class="topic" id="topic-3">
-    <h2>Trace the loop</h2>
-    <ol>
-      <li><code>for raw in requests</code> takes one item at a time. The square brackets hold a list. The indented lines belong to the loop.</li>
-      <li><code>" 12 "</code> becomes <code>"12"</code>, then the number <code>12</code>. It passes both checks, so the <code>else</code> block reduces the balance from EUR 100 to EUR 88. <code>balance -= amount</code> means <code>balance = balance - amount</code>.</li>
-      <li><code>"oops"</code> fails the text check. <code>continue</code> skips the rest of this turn. Next, <code>120</code> is larger than EUR 88, so that payment is declined.</li>
-      <li><code>8</code> is approved and leaves EUR 80. <code>0</code> fails the positive-amount check. The two unindented <code>print()</code> lines run once after the loop.</li>
-    </ol>
-    <p><code>if</code> checks the first rule. <code>elif</code> checks the next rule if the first one fails. <code>else</code> runs if both rules fail. Keep the indents consistent, using four spaces per level.</p>
-    <p>Use <code>for</code> when you have a list of items. Use <code>while</code> when you need to repeat until a condition changes. This example prints <code>1</code>, <code>2</code> and <code>3</code>.</p>
-    <pre><code data-language="python">attempts = 0
-while attempts &lt; 3:
-    attempts += 1
-    print(attempts)</code></pre>
-    <p>Without <code>attempts += 1</code>, the condition would stay true. <code>break</code> stops the entire loop when you need to exit early.</p>
-  </section>
-
-  <section class="topic" id="topic-4">
-    <h2>Check input before converting it</h2>
-    <p><code>strip()</code> removes spaces at the ends. <code>isascii()</code> and <code>isdigit()</code> together accept digit-only text such as <code>"12"</code>. This example rejects blanks, negative amounts and prices with a decimal point. A second check rejects zero.</p>
-    <p><strong>Common mistake.</strong> Keep <code>spent = 0</code> above the loop. Put it inside and you’ll reset the total on every turn.</p>
-    <p id="topic-5">If you need a reminder about <code>input()</code>, <code>int()</code> or f-strings, see <a href="variables.html">Variables, data types &amp; strings</a>.</p>
-  </section>
-
-  <section class="topic" id="practice-2">
-    <h2 id="module-check">Try a new set of payments</h2>
-    <p id="practice-1">Set <code>requests = ["12", "0", "-5", "80", "8", "1"]</code>. Predict which payments will pass, then run the code. Can an EUR 8 payment pass when the balance is exactly EUR 8?</p>
-    <details class="fde-setup-answer">
-      <summary>Check your answer</summary>
-      <p>Yes. <code>8 &gt; 8</code> is false, so EUR 8 is accepted. The last EUR 1 payment is declined. The report ends with <code>Spent: EUR 100</code> and <code>Balance: EUR 0</code>.</p>
     </details>
   </section>
   <nav class="lesson-nav" aria-label="Lesson navigation"><a href="variables.html">Previous: Variables, data types &amp; strings</a><a href="lesson-3.html">Next: Functions &amp; scope</a></nav>
