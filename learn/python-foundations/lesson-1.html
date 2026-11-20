@@ -28,20 +28,266 @@
 
   <section class="topic" id="topic-1">
     <h2>Operators &amp; conditions</h2>
-    <p><code>balance - amount</code> gives the money left. <code>amount &gt; balance</code> asks whether the payment is too large. A comparison gives <code>True</code> or <code>False</code>.</p>
-    <p>Use <code>=</code> to assign a value and <code>==</code> to compare two values. <code>amount &lt;= balance</code> allows a payment equal to the balance.</p>
-    <p><code>and</code> needs both checks to be true. <code>or</code> needs at least one to be true. <code>not</code> reverses a result.</p>
-    <p>To decide whether a single payment can go through, use <code>if</code>, <code>elif</code> and <code>else</code>. Python runs the first branch whose condition is true.</p>
+    <p>You’re building a payment check for a customer. They have EUR 100. Try EUR 20 first. How much will be left? Then try a payment of exactly EUR 100. Should it go through?</p>
+    <h3>1. Start with a calculation and a question</h3>
+    <p>In your practice folder, create <code>payment_check.py</code>. Save the code below. From that folder, run <code>py -3 payment_check.py</code> on Windows or <code>python3 payment_check.py</code> on Mac or Linux.</p>
     <pre><code data-language="python">balance = 100
-amount = 120
+amount = 20
+
+# Calculate a new value and check whether the payment uses the full balance.
+print(f&quot;Left after payment: EUR {balance - amount}&quot;)
+print(f&quot;Uses the full balance: {amount == balance}&quot;)</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">Left after payment: EUR 80
+Uses the full balance: False</code></pre>
+    <p>The minus sign calculates a new value. The double equals asks whether two values are equal. Change <code>amount</code> to <code>100</code>, save and run again. You should see EUR 0 and <code>True</code>.</p>
+    <details class="fde-setup-answer">
+      <summary>Operator reference for your next exercises</summary>
+      <table>
+        <thead><tr><th scope="col">Use</th><th scope="col">Operators and examples</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Calculate</th><td><code>+</code> add, <code>-</code> subtract, <code>*</code> multiply, <code>/</code> divide. For counts, <code>10 // 3</code> gives 3 whole groups and <code>10 % 3</code> gives 1 left over.</td></tr>
+          <tr><th scope="row">Compare</th><td><code>==</code> equal, <code>!=</code> different, <code>&lt;</code> below, <code>&gt;</code> above, <code>&lt;=</code> at most, <code>&gt;=</code> at least.</td></tr>
+          <tr><th scope="row">Combine checks</th><td><code>and</code> requires both checks, <code>or</code> requires at least one and <code>not</code> flips a Boolean result.</td></tr>
+        </tbody>
+      </table>
+      <p>Use parentheses when order matters. <code>5 + 2 * 3</code> gives 11. <code>(5 + 2) * 3</code> gives 21.</p>
+    </details>
+    <h3>2. Choose which code runs</h3>
+    <p>Replace the file contents with the code below. Before running it, read down the checks. <code>if</code> starts the decision. <code>elif</code> means “otherwise, try this check.” <code>else</code> runs when the earlier checks are false. End each branch header with a colon and use four spaces for the lines inside it.</p>
+    <pre><code data-language="python">balance = 100
+amount = 100
+
+# Reject invalid amounts before checking what the customer can afford.
 if amount &lt;= 0:
-    print("Amount must be positive")
+    print(&quot;Amount must be positive&quot;)
 elif amount &gt; balance:
-    print("Not enough balance")
+    print(&quot;Not enough balance&quot;)
 else:
-    print("Payment approved")</code></pre>
-    <p>This prints <code>Not enough balance</code>. Change <code>amount</code> to <code>100</code> and predict what happens.</p>
-    <p>Next: <a href="lesson-1.html#topic-2">Loops</a></p>
+    balance = balance - amount
+    print(f&quot;Payment approved. Balance: EUR {balance}&quot;)</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">Payment approved. Balance: EUR 0</code></pre>
+    <p>Watch why the exact balance works. <code>100 &lt;= 0</code> is false, and so is <code>100 &gt; 100</code>. Python reaches <code>else</code> and subtracts EUR 100. Try <code>120</code>, <code>0</code> and <code>-1</code> one at a time. Predict the message before each run.</p>
+    <details class="fde-setup-answer"><summary>Check your predictions</summary><ul><li><code>120</code> prints <code>Not enough balance</code>.</li><li><code>0</code> and <code>-1</code> print <code>Amount must be positive</code>.</li></ul></details>
+    <h3>3. Combine rules</h3>
+    <p>With a balance of 100, <code>amount &gt; 0 and amount &lt;= balance</code> allows 20 and 100. Add <code>or</code> when either of two reasons is enough, like a low battery or battery saver pausing a model. Use <code>not</code> to ask whether a flag is off. The project drills put each rule to work.</p>
+    <details class="fde-setup-answer" id="condition-project-drills">
+      <summary>Eight bootcamp project walkthroughs</summary>
+      <p>Read one scenario, predict the result and change one value after running it.</p>
+      <details class="fde-setup-answer">
+        <summary>Capstone 01 · OmniGuard</summary>
+        <p>A teammate asks if a connector can go live. Both owner approval and a passing data review are required. Predict the result when only the owner has approved.</p>
+<pre><code data-language="python"># Both approvals are required for launch.
+owner_approved = True
+data_review_passed = False
+if owner_approved and data_review_passed:
+    print(&quot;Ready to launch&quot;)
+else:
+    print(&quot;Keep connector paused&quot;)</code></pre>
+<p><strong>Expected output</strong></p>
+<pre><code data-language="text">Keep connector paused</code></pre>
+      </details>
+      <details class="fde-setup-answer">
+        <summary>Capstone 02 · AuditMesh</summary>
+        <p>An audit can close only when all checks are done and a reviewer has recorded an ID. Try changing the ID to <code>None</code> after your first run.</p>
+<pre><code data-language="python"># A missing review ID means the reviewer has not signed off.
+checks_left = 0
+review_id = &quot;007&quot;
+if checks_left == 0 and review_id is not None:
+    print(&quot;Ready to close&quot;)
+else:
+    print(&quot;Keep audit open&quot;)</code></pre>
+<p><strong>Expected output</strong></p>
+<pre><code data-language="text">Ready to close</code></pre>
+      </details>
+      <details class="fde-setup-answer">
+        <summary>Project 03 · Self-host an LLM</summary>
+        <p>A model has a budget of 8 GB. The model needs 6 GB and the runtime needs 2 GB. Decide whether the exact fit is allowed. This example uses an inclusive limit.</p>
+<pre><code data-language="python"># Add both memory requirements before checking the limit.
+required_gb = 6 + 2
+available_gb = 8
+if required_gb &lt;= available_gb:
+    print(&quot;Within memory budget&quot;)
+else:
+    print(&quot;Over memory budget&quot;)</code></pre>
+<p><strong>Expected output</strong></p>
+<pre><code data-language="text">Within memory budget</code></pre>
+      </details>
+      <details class="fde-setup-answer">
+        <summary>Project 04 · Run an LLM on mobile devices</summary>
+        <p>The app pauses local inference if the battery drops below 20 percent or battery saver is on. Predict what happens at exactly 20 with saver off.</p>
+<pre><code data-language="python">battery_percent = 20
+battery_saver_on = False
+# Either condition can pause the model.
+if battery_percent &lt; 20 or battery_saver_on:
+    print(&quot;Pause local inference&quot;)
+else:
+    print(&quot;Keep local inference on&quot;)</code></pre>
+<p><strong>Expected output</strong></p>
+<pre><code data-language="text">Keep local inference on</code></pre>
+      </details>
+      <details class="fde-setup-answer">
+        <summary>Project 05 · Multimodal document intelligence</summary>
+        <p>An import is waiting on a failed extraction. Send it to review when the extraction failed or the confidence is below 80 percent.</p>
+<pre><code data-language="python">extraction_failed = True
+confidence_percent = 95
+# High confidence cannot override a recorded extraction failure.
+if extraction_failed or confidence_percent &lt; 80:
+    print(&quot;Send to review&quot;)
+else:
+    print(&quot;Accept extraction&quot;)</code></pre>
+<p><strong>Expected output</strong></p>
+<pre><code data-language="text">Send to review</code></pre>
+      </details>
+      <details class="fde-setup-answer">
+        <summary>Project 06 · Enterprise lead management</summary>
+        <p>A lead qualifies for follow-up at a score of 70 or above if the customer has agreed to be contacted. The score is 85. Decide what happens without consent.</p>
+<pre><code data-language="python">lead_score = 85
+contact_allowed = False
+# Check consent before considering the score.
+if not contact_allowed:
+    print(&quot;Do not contact&quot;)
+elif lead_score &gt;= 70:
+    print(&quot;Schedule follow-up&quot;)
+else:
+    print(&quot;Keep in review&quot;)</code></pre>
+<p><strong>Expected output</strong></p>
+<pre><code data-language="text">Do not contact</code></pre>
+      </details>
+      <details class="fde-setup-answer">
+        <summary>Project 07 · AI receptionist</summary>
+        <p>The appointment system has no booking ID for the caller yet. Route the case to the booking team. Try an ID of <code>"0042"</code> next.</p>
+<pre><code data-language="python">booking_id = None
+# None marks a booking ID that has not been assigned.
+if booking_id is None:
+    print(&quot;Send to booking team&quot;)
+else:
+    print(f&quot;Confirm booking {booking_id}&quot;)</code></pre>
+<p><strong>Expected output</strong></p>
+<pre><code data-language="text">Send to booking team</code></pre>
+      </details>
+      <details class="fde-setup-answer">
+        <summary>Project 08 · AI Voice Productivity SaaS</summary>
+        <p>A user has already processed 55 of their 60 free minutes. An upload needs another 5 minutes. Predict the result when an upload uses the full allowance.</p>
+<pre><code data-language="python">used_minutes = 55
+requested_minutes = 5
+free_minutes = 60
+# Include the new upload when checking the quota.
+if used_minutes + requested_minutes &lt;= free_minutes:
+    print(&quot;Process upload&quot;)
+else:
+    print(&quot;Free quota exceeded&quot;)</code></pre>
+<p><strong>Expected output</strong></p>
+<pre><code data-language="text">Process upload</code></pre>
+      </details>
+
+    </details>
+    <details class="fde-setup-answer" id="condition-job-drills">
+      <summary>Five workplace exercises</summary>
+      <p>Write the decision yourself before opening the solution.</p>
+      <details class="fde-setup-answer">
+        <summary>1. Route a support ticket</summary>
+        <p>Print P1 when the service is down. Otherwise print P2 for a blocked customer and P3 for everything else. What happens when both flags are true?</p>
+<details class="fde-setup-answer"><summary>Show commented solution and output</summary><pre><code data-language="python">service_down = True
+customer_blocked = True
+# An outage takes priority when both flags are true.
+if service_down:
+    print(&quot;P1&quot;)
+elif customer_blocked:
+    print(&quot;P2&quot;)
+else:
+    print(&quot;P3&quot;)</code></pre>
+<p><strong>Expected output</strong></p>
+<pre><code data-language="text">P1</code></pre></details>
+      </details>
+      <details class="fde-setup-answer">
+        <summary>2. Reconcile a daily export</summary>
+        <p>You expected 80 rows but received 79. Print how many are missing. A count equal to the expectation should print Complete. Extra rows should print Review extra rows.</p>
+<details class="fde-setup-answer"><summary>Show commented solution and output</summary><pre><code data-language="python">expected_rows = 80
+received_rows = 79
+# Subtract received rows only in the missing-rows branch.
+if received_rows &lt; expected_rows:
+    print(f&quot;Missing rows: {expected_rows - received_rows}&quot;)
+elif received_rows == expected_rows:
+    print(&quot;Complete&quot;)
+else:
+    print(&quot;Review extra rows&quot;)</code></pre>
+<p><strong>Expected output</strong></p>
+<pre><code data-language="text">Missing rows: 1</code></pre></details>
+      </details>
+      <details class="fde-setup-answer">
+        <summary>3. Schedule full batches</summary>
+        <p>63 records are waiting. Each full batch holds 20. If the last batch has spare records, say so and show both counts.</p>
+<details class="fde-setup-answer"><summary>Show commented solution and output</summary><pre><code data-language="python">records = 63
+batch_size = 20
+# Whole-number division gives full batches. The remainder gives leftovers.
+full_batches = records // batch_size
+leftover = records % batch_size
+if leftover != 0:
+    print(f&quot;{full_batches} full batches, {leftover} records in the final batch&quot;)
+else:
+    print(f&quot;{full_batches} full batches&quot;)</code></pre>
+<p><strong>Expected output</strong></p>
+<pre><code data-language="text">3 full batches, 3 records in the final batch</code></pre></details>
+      </details>
+      <details class="fde-setup-answer">
+        <summary>4. Check a release window</summary>
+        <p>The release can start from hour 9 through hour 16, inclusive. Decide whether hour 17 is allowed.</p>
+<details class="fde-setup-answer"><summary>Show commented solution and output</summary><pre><code data-language="python">hour = 17
+# Check both ends of the window.
+if hour &gt;= 9 and hour &lt;= 16:
+    print(&quot;Release window open&quot;)
+else:
+    print(&quot;Wait for the next release window&quot;)</code></pre>
+<p><strong>Expected output</strong></p>
+<pre><code data-language="text">Wait for the next release window</code></pre></details>
+      </details>
+      <details class="fde-setup-answer">
+        <summary>5. Handle a job with no successful runs</summary>
+        <p>The on-call dashboard needs seconds per successful run. The job spent 45 seconds and completed zero runs. Display a message without dividing by zero.</p>
+<details class="fde-setup-answer"><summary>Show commented solution and output</summary><pre><code data-language="python">elapsed_seconds = 45
+successful_runs = 0
+# Only divide when there is at least one successful run.
+if successful_runs &gt; 0:
+    print(f&quot;{elapsed_seconds / successful_runs:.1f} seconds per run&quot;)
+else:
+    print(&quot;No successful runs yet&quot;)</code></pre>
+<p><strong>Expected output</strong></p>
+<pre><code data-language="text">No successful runs yet</code></pre></details>
+      </details>
+
+    </details>
+    <details class="fde-setup-answer" id="condition-interview-checks">
+      <summary>Eight tricky questions</summary>
+<details class="fde-setup-answer"><summary>Which is true when the payment and balance are both 100, <code>amount &lt; balance</code> or <code>amount &lt;= balance</code>?</summary><p>Only <code>&lt;=</code> is true. Its <code>=</code> includes an exact match.</p></details><details class="fde-setup-answer"><summary>When should you use <code>=</code> or <code>==</code>?</summary><p>Use <code>balance = 100</code> to assign a value. Use <code>balance == 100</code> to ask a question. <code>if balance = 100:</code> raises a syntax error.</p></details><details class="fde-setup-answer"><summary>Why does <code>amount == 10 or 20</code> pass even if <code>amount</code> is <code>5</code>?</summary><p>Python gets <code>False or 20</code>. The number <code>20</code> is treated as true in a condition. Write <code>amount == 10 or amount == 20</code>.</p></details><details class="fde-setup-answer"><summary>What happens when two conditions in one <code>if</code>/<code>elif</code> chain are true?</summary><p>The first matching branch runs. Two separate <code>if</code> statements can both run.</p></details><details class="fde-setup-answer"><summary>What does <code>not (False or True)</code> return?</summary><p><code>False</code>. Work inside the parentheses first. <code>False or True</code> gives <code>True</code> and <code>not</code> flips it.</p></details><details class="fde-setup-answer"><summary>Why can <code>runs &gt; 0 and seconds / runs &gt; 10</code> safely check <code>runs = 0</code>?</summary><p>The left check is false, so Python skips the right side. This is called short-circuiting. Put the guard before the division.</p></details><details class="fde-setup-answer"><summary>What does <code>10 % 3</code> give and how is it useful at work?</summary><p><code>1</code>. Three full batches of three use nine records, leaving one for the final batch.</p></details><details class="fde-setup-answer"><summary>Why does <code>input()</code> give a different result from the number you typed in your code?</summary><p>Input <code>100</code> arrives as the string <code>"100"</code>. <code>"100" == 100</code> is false. Convert the input before comparing numeric amounts.</p></details>
+    </details>
+    <h3 id="condition-mastery">4. Build a voice upload quota check</h3>
+    <p>A teammate needs one message per upload. Use a 60-minute budget and 55 minutes already used. Start with a 5-minute request and an active account. A paused account takes priority, then reject zero or negative requests, then reject requests over the remaining quota. For an approved upload, show the minutes left.</p>
+    <ul>
+      <li><strong>Exact fit.</strong> A 5-minute request prints <code>Upload approved. Minutes remaining: 0</code>.</li>
+      <li><strong>One minute over.</strong> A 6-minute request prints <code>Quota exceeded</code>.</li>
+      <li><strong>Invalid duration.</strong> A 0-minute or negative request prints <code>Enter a positive duration</code>.</li>
+      <li><strong>Rule priority.</strong> Pause the account and request 0 minutes. It should print <code>Account paused</code>.</li>
+    </ul>
+    <details class="fde-setup-answer"><summary>Reveal the commented solution</summary>
+    <pre><code data-language="python">budget_minutes = 60
+used_minutes = 55
+requested_minutes = 5
+account_paused = False
+
+# A paused account takes priority over the other rules.
+if account_paused:
+    print(&quot;Account paused&quot;)
+elif requested_minutes &lt;= 0:
+    print(&quot;Enter a positive duration&quot;)
+elif used_minutes + requested_minutes &gt; budget_minutes:
+    print(&quot;Quota exceeded&quot;)
+else:
+    remaining_minutes = budget_minutes - used_minutes - requested_minutes
+    print(f&quot;Upload approved. Minutes remaining: {remaining_minutes}&quot;)</code></pre><pre><code data-language="text">Upload approved. Minutes remaining: 0</code></pre>
+    </details>
+    <p>Once your program passes all four checks, explain why a 5-minute request is approved. Then continue to <a href="#topic-2">Loops</a> to apply the same decision to several requests.</p>
   </section>
 
   <section class="topic" id="topic-2">
