@@ -27,27 +27,39 @@
 <main id="main" class="fde-setup-lesson">
   <p class="breadcrumbs"><a href="../python-engineering-module-1.html">Python overview</a> / Core Python</p>
   <h1>Variables, data types &amp; strings</h1>
-  <p>Open your <code>python-practice</code> folder. Imagine our first OmniGuard customer has handed us three data sources to connect. We need a quick estimate and a record of whether the work is approved. Let’s build the little tool that prints that summary.</p>
+  <p>Picture your first OmniGuard kickoff call. The customer says, “We’re Northwind. We have three data sources to connect. Each one should take about two and a half minutes.” Your teammate asks you to write a tool that records those details and prints a short update.</p>
 
   <section class="topic" id="variables-and-types">
-    <h2>1. Start with five values</h2>
-    <p>Create <code>kickoff.py</code>. Before we ask anyone to type anything, decide what kind of value each field should hold.</p>
+    <h2>1. Turn a kickoff note into Python values</h2>
+    <p><strong>Variable.</strong> A variable is a name you give to a value so you can use it again. In <code>source_count = 3</code>, <code>source_count</code> is the name and <code>3</code> is the value. If the customer adds a source, you can give that same name an updated value.</p>
+    <p><strong>Data type.</strong> A type tells Python what kind of value it’s working with and what you can do with it. <code>3</code> is an integer, so you can add <code>1</code> to get <code>4</code>. <code>"3"</code> is text. Join it to <code>"1"</code> and you get <code>"31"</code>.</p>
+    <p><strong>String.</strong> A string is a piece of text. In <code>customer = "Northwind"</code>, the quotes tell Python that <code>Northwind</code> is text. A job ID like <code>"007"</code> is also a string. Those zeros are part of the ID.</p>
+    <p>Create <code>kickoff.py</code> and type this with me. Before you run it, predict the final count.</p>
+    <pre><code data-language="python"># Record what we know at the start of the kickoff call.
+customer = "Northwind"
+source_count = 3
+
+# The customer just added one more data source.
+source_count = source_count + 1
+
+print(customer, "has", source_count, "data sources.")</code></pre>
+    <p>The terminal prints <code>Northwind has 4 data sources.</code> because <code>print()</code> puts a space between the items. On the line above it, Python reads the old count on the right of <code>=</code>, adds one and saves the new count on the left.</p>
+    <p>Now decide how to store the rest of the kickoff note.</p>
     <div class="table-scroll"><table>
-      <thead><tr><th scope="col">Type</th><th scope="col">What goes in the kickoff note</th></tr></thead>
+      <thead><tr><th scope="col">Type</th><th scope="col">Why we use it on this job</th></tr></thead>
       <tbody>
-        <tr><th scope="row"><code>str</code></th><td><code>customer = "Northwind"</code> is text.</td></tr>
-        <tr><th scope="row"><code>int</code></th><td><code>source_count = 3</code> is a whole-number count.</td></tr>
-        <tr><th scope="row"><code>float</code></th><td><code>minutes_per_source = 2.5</code> can hold half a minute.</td></tr>
-        <tr><th scope="row"><code>bool</code></th><td><code>approved = False</code> records a yes-or-no decision.</td></tr>
-        <tr><th scope="row"><code>NoneType</code></th><td><code>review_id = None</code> means a review ID hasn’t been assigned yet.</td></tr>
+        <tr><th scope="row"><code>str</code></th><td><code>customer = "Northwind"</code> keeps the customer’s name ready for the report.</td></tr>
+        <tr><th scope="row"><code>int</code></th><td><code>source_count = 3</code> lets us count complete data sources and add more.</td></tr>
+        <tr><th scope="row"><code>float</code></th><td><code>minutes_per_source = 2.5</code> keeps the half minute in our estimate.</td></tr>
+        <tr><th scope="row"><code>bool</code></th><td><code>approved = False</code> records that approval hasn’t arrived.</td></tr>
+        <tr><th scope="row"><code>NoneType</code></th><td><code>review_id = None</code> records that a review ID hasn’t been assigned.</td></tr>
       </tbody>
     </table></div>
-    <p>Read <code>source_count = 3</code> from right to left. Take the value <code>3</code> and give it the name <code>source_count</code>. Put quotes around the customer name. Leave <code>False</code> and <code>None</code> unquoted.</p>
   </section>
 
   <section class="topic" id="input-and-conversion">
     <h2>2. Watch what happens when you type 3</h2>
-    <p>Drop these two lines into <code>kickoff.py</code> and save. Run <code>py -3 kickoff.py</code> on Windows or <code>python3 kickoff.py</code> on Mac or Linux.</p>
+    <p>Replace your first example with these two lines and save. Run <code>py -3 kickoff.py</code> on Windows or <code>python3 kickoff.py</code> on Mac or Linux.</p>
     <pre><code data-language="python">raw_count = input("Data sources: ")
 print(type(raw_count).__name__)</code></pre>
     <p>At the prompt, type <code>3</code>. Pause and guess the output. The terminal prints <code>str</code>. <code>input()</code> gives us text, so we use <code>int(raw_count)</code> before doing maths. Similarly, <code>float("2.5")</code> gives the number <code>2.5</code> and <code>str(3)</code> gives the text <code>"3"</code>.</p>
