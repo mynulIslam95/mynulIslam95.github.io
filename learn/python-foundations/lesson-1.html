@@ -45,12 +45,25 @@ Uses the full balance: False</code></pre>
       <table>
         <thead><tr><th scope="col">Use</th><th scope="col">Operators and examples</th></tr></thead>
         <tbody>
-          <tr><th scope="row">Calculate</th><td><code>+</code> add, <code>-</code> subtract, <code>*</code> multiply, <code>/</code> divide. For counts, <code>10 // 3</code> gives 3 whole groups and <code>10 % 3</code> gives 1 left over.</td></tr>
+          <tr><th scope="row">Calculate</th><td><code>+</code> add, <code>-</code> subtract, <code>*</code> multiply, <code>/</code> divide. <code>**</code> raises a number to a power. <code>2 ** 3</code> gives <code>8</code>. For counts, <code>10 // 3</code> gives 3 whole groups and <code>10 % 3</code> gives 1 left over.</td></tr>
           <tr><th scope="row">Compare</th><td><code>==</code> equal, <code>!=</code> different, <code>&lt;</code> below, <code>&gt;</code> above, <code>&lt;=</code> at most, <code>&gt;=</code> at least.</td></tr>
           <tr><th scope="row">Combine checks</th><td><code>and</code> requires both checks, <code>or</code> requires at least one and <code>not</code> flips a Boolean result.</td></tr>
         </tbody>
       </table>
       <p>Use parentheses when order matters. <code>5 + 2 * 3</code> gives 11. <code>(5 + 2) * 3</code> gives 21.</p>
+    </details>
+    <details class="fde-setup-answer" id="logical-truth-table">
+      <summary>Check all four Boolean combinations</summary>
+      <p>Let <code>a</code> mean “the amount is positive” and <code>b</code> mean “the balance covers it.” A payment passes both checks when <code>a and b</code> is true. Use <code>not a</code> to check whether the amount is zero or negative.</p>
+      <table>
+        <thead><tr><th scope="col"><code>a</code></th><th scope="col"><code>b</code></th><th scope="col"><code>a and b</code></th><th scope="col"><code>a or b</code></th><th scope="col"><code>not a</code></th></tr></thead>
+        <tbody>
+          <tr><td>False</td><td>False</td><td>False</td><td>False</td><td>True</td></tr>
+          <tr><td>False</td><td>True</td><td>False</td><td>True</td><td>True</td></tr>
+          <tr><td>True</td><td>False</td><td>False</td><td>True</td><td>False</td></tr>
+          <tr><td>True</td><td>True</td><td>True</td><td>True</td><td>False</td></tr>
+        </tbody>
+      </table>
     </details>
     <h3>2. Choose which code runs</h3>
     <p>Replace the file contents with the code below. Before running it, read down the checks. <code>if</code> starts the decision. <code>elif</code> means “otherwise, try this check.” <code>else</code> runs when the earlier checks are false. End each branch header with a colon and use four spaces for the lines inside it.</p>
