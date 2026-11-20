@@ -1,0 +1,6 @@
+service,scenario
+Customer records,healthy
+Payments,unavailable
+Inventory,slow
+customer records,healthy
+Support,unknown

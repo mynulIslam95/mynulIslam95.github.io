@@ -378,6 +378,7 @@ asyncio.run(main())</code></pre><h3>Terminal output</h3><pre><code>2</code></pre
 <details><summary>Why does await asyncio.to_thread(load(42)) freeze before offloading?</summary><div><p>Python evaluates load(42) first, on the current thread. Pass the callable and argument separately as asyncio.to_thread(load, 42).</p></div></details>
 </section>
 <section class="topic" id="module-check"><h2>Build an integration checker</h2>
+<p><a href="integration-checker.html">Open the Customer Integration Checker project</a> for the full customer brief, starter data, reference solution and tests.</p>
 <p>Build a checker for three local services. One succeeds, one raises a connection error and one exceeds a deadline. Start checks together, keep the service name with each outcome and print a complete report.</p>
 <details><summary>Check your work</summary><div><p>The final report has three named rows and one distinct outcome per service. Running the checks again produces the same statuses. No test depends on wall-clock timing or the order tasks finish.</p></div></details>
 <p>For a separate foundations project, see the <a href="transaction-tracker.html" id="module-project">Transaction Tracker CLI</a>.</p>

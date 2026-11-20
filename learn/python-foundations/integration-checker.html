@@ -1,0 +1,350 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>Customer Integration Checker | Learn with Mynul</title><meta name="description" content="Build and hand over a simulated customer integration checker in Python."><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=2"><link rel="stylesheet" href="../../assets/css/fde-layout.css?v=19"></head><body class="bootcamp-thesis fde-docs"><div class="reading shell"><a class="fde-skip" href="#main">Skip to content</a><header class="fde-docs-header"><a class="fde-back-button" href="../python-engineering-module-1.html">Python Foundations</a><button class="theme-button" id="reading-theme" type="button" aria-label="Toggle light and dark theme">Light / Dark</button></header><div class="fde-docs-grid">
+<aside class="fde-lesson-menu">
+<p class="fde-lesson-menu-title">Python lessons</p>
+<nav id="lessons" aria-label="Python lessons" data-python-course>
+  <a href="../python-engineering-module-1.html">Course overview</a>
+  <p>Start with Python</p>
+  <ol>
+    <li><a href="setup.html">Python setup &amp; first program</a></li>
+    <li><a href="variables.html">Variables, data types &amp; strings</a></li>
+    <li><a href="lesson-1.html#topic-1">Operators, conditions &amp; loops</a></li>
+    <li><a href="lesson-3.html">Functions &amp; scope</a></li>
+  </ol>
+  <p>Work with data</p>
+  <ol>
+    <li><a href="lesson-2.html#topic-1">Core data structures</a></li>
+    <li><a href="lesson-2.html#topic-3">Memory management fundamentals</a></li>
+    <li><a href="lesson-4.html">Object-oriented programming basics</a></li>
+    <li><a href="lesson-5.html#topic-1">Exception handling &amp; debugging</a></li>
+    <li><a href="lesson-5.html#topic-2">File I/O operations</a></li>
+  </ol>
+  <p>Build maintainable Python</p>
+  <ol>
+    <li><a href="lesson-6.html">Iterators &amp; generators</a></li>
+    <li><a href="lesson-7.html">Type hints, dependencies &amp; project setup</a></li>
+    <li><a href="lesson-8.html">Testing, debugging &amp; logging</a></li>
+    <li><a href="transaction-tracker.html">Transaction Tracker CLI</a></li>
+  </ol>
+  <p>Run work concurrently</p>
+  <ol>
+    <li><a href="lesson-9.html#topic-1">Sequential &amp; concurrent work</a></li>
+    <li><a href="lesson-9.html#topic-2">Threads, processes &amp; futures</a></li>
+    <li><a href="lesson-9.html#topic-3">Coroutines, tasks &amp; the event loop</a></li>
+    <li><a href="lesson-9.html#topic-4">Async HTTP, timeouts &amp; cancellation</a></li>
+    <li><a href="lesson-9.html#topic-5">Blocking code &amp; executors</a></li>
+    <li><a href="../fde-textbook/concurrency-lab.html">Python Concurrency Lab</a></li>
+    <li><a href="integration-checker.html" aria-current="page">Customer Integration Checker</a></li>
+  </ol>
+</nav>
+</aside>
+<main id="main">
+<h1>Customer Integration Checker</h1>
+<p>Imagine the customer just called. Their onboarding dashboard takes too long to open. Payments is down and Inventory is slow. They still need to know whether Customer records works.</p>
+<p>Build a small Python tool that reads a check plan, keeps useful results during failures and gives the next engineer enough information to verify recovery. You can build the first milestone after learning functions and return for each upgrade.</p>
+
+<section class="topic" id="acceptance">
+<h2>Agree on what the customer needs</h2>
+<p>Repeat the request back before writing code. “We’ll give the service checks one shared three-second budget and return one named result for every valid service. We’ll flag which results are missing and why.” Ask whether three seconds also includes reading the input and writing the report. This exercise times the service checks as a group. An end-to-end deadline is a separate acceptance requirement to verify with the customer.</p>
+<ul>
+<li>A valid service appears once as <code>healthy</code>, <code>unavailable</code> or <code>timed_out</code>.</li>
+<li>One slow provider does not erase another provider’s result.</li>
+<li>Invalid CSV rows are reported with a line and a reason. A file that cannot be read exits with status <code>2</code>.</li>
+<li>The default check budget is three seconds. Independent checks share the deadline.</li>
+</ul>
+<figure>
+<img width="1200" height="530" style="max-width:100%;height:auto" src="assets/integration-checker-flow.png" alt="Read the CSV and validate each row. Run valid service checks; send rejected rows with their line and reason into the same JSON report." loading="lazy">
+<figcaption>Trace the invalid Support row first. It goes straight into the rejection list. The three valid checks still run and appear beside it in the report.</figcaption>
+</figure>
+</section>
+
+<section class="topic" id="milestones">
+<h2>Build it in four small passes</h2>
+<ol>
+<li><strong>Print the handoff.</strong> Start with a list of service names. Write a function that formats one status row. Pass three examples through a loop and explain why your function returns a value.</li>
+<li><strong>Read a customer file.</strong> Swap the hard-coded list for CSV. Accept valid rows, trim spaces and flag duplicates. Export JSON. Ask what should happen if the file is missing or every row is invalid.</li>
+<li><strong>Prove the result.</strong> Write a test for an invalid row and a duplicate. Pick one rule, break it deliberately and watch its test fail before restoring the rule.</li>
+<li><strong>Handle a slow dependency.</strong> Add the three simulated scenarios. Run all valid checks together and apply the same deadline to each. Verify concurrency by proving two tasks start before either finishes.</li>
+</ol>
+<details><summary>Hint for the first pass</summary><div>
+<p>Keep the formatting in the function and let the loop print each returned value.</p>
+</div></details>
+<details><summary>Show a working first pass</summary><div>
+<pre><code class="language-python">def format_status(service, status):
+    # Return text so the caller can print it or save it.
+    return f&quot;{service} | {status}&quot;
+
+
+# Each pair contains the display name and its current state.
+checks = [(&quot;Customers&quot;, &quot;healthy&quot;), (&quot;Payments&quot;, &quot;unavailable&quot;)]
+for service, status in checks:
+    print(format_status(service, status))</code></pre>
+<h3>Terminal output</h3>
+<pre><code>Customers | healthy
+Payments | unavailable</code></pre>
+<p><code>def</code> names the function and gives it two parameters. The braces in the f-string fill in those values. <code>return</code> hands that string back to the caller. The list holds two pairs, and the loop unpacks one pair per turn. <code>print()</code> shows the returned line. Add an Inventory pair and predict your third line before you rerun it.</p>
+</div></details>
+</section>
+
+<section class="topic" id="run">
+<h2>Run it and read the terminal</h2>
+<p>Save <a href="files/integration-checker/checker.py" download>checker.py</a>, <a href="files/integration-checker/services.csv" download>services.csv</a> and <a href="files/integration-checker/test_checker.py" download>test_checker.py</a> in the same folder. From that folder, run these commands with Python 3.11 or newer. On Windows, use <code>py -3</code> in place of <code>python3</code> if that is your launcher.</p>
+<pre><code>python3 checker.py services.csv
+python3 -m unittest -v</code></pre>
+<p>The first command reads the CSV and prints JSON. The second runs the tests without depending on a network service. Before you run either command, point to the fixture lines that should be rejected.</p>
+<details><summary>Show the sample input and terminal output</summary><div>
+<h3>Sample input</h3><pre><code>service,scenario
+Customer records,healthy
+Payments,unavailable
+Inventory,slow
+customer records,healthy
+Support,unknown</code></pre>
+<h3>Terminal output</h3><pre><code>{
+  &quot;checks&quot;: [
+    {
+      &quot;service&quot;: &quot;Customer records&quot;,
+      &quot;status&quot;: &quot;healthy&quot;
+    },
+    {
+      &quot;service&quot;: &quot;Payments&quot;,
+      &quot;status&quot;: &quot;unavailable&quot;
+    },
+    {
+      &quot;service&quot;: &quot;Inventory&quot;,
+      &quot;status&quot;: &quot;timed_out&quot;
+    }
+  ],
+  &quot;rejected&quot;: [
+    {
+      &quot;line&quot;: 5,
+      &quot;reason&quot;: &quot;duplicate service&quot;
+    },
+    {
+      &quot;line&quot;: 6,
+      &quot;reason&quot;: &quot;expected a service and a known scenario&quot;
+    }
+  ]
+}</code></pre>
+<p>The case-insensitive duplicate appears on line 5, and Support has an unknown scenario on line 6. Payments is an accepted input and an unavailable provider, so it belongs in <code>checks</code>.</p>
+</div></details>
+<figure>
+<img width="1200" height="530" style="max-width:100%;height:auto" src="assets/integration-checker-deadline.png" alt="All three checks start together. Customer records succeeds and Payments fails before Inventory reaches the shared three-second deadline." loading="lazy">
+<figcaption>The early finish positions are illustrative. Watch where Inventory stops. The same deadline applies to every check, and the other two outcomes remain available for the final report.</figcaption>
+</figure>
+</section>
+
+<section class="topic" id="walkthrough">
+<h2>Walk through the solution</h2>
+<details><summary>Show the reference implementation</summary><div>
+<pre><code class="language-python">&quot;&quot;&quot;Check a simulated customer integration with a shared response deadline.&quot;&quot;&quot;
+
+import argparse
+import asyncio
+import csv
+import json
+import math
+import sys
+from pathlib import Path
+
+FIELDS = [&quot;service&quot;, &quot;scenario&quot;]
+SCENARIOS = {&quot;healthy&quot;, &quot;unavailable&quot;, &quot;slow&quot;}
+
+
+def read_plan(path):
+    &quot;&quot;&quot;Return valid checks and explain which CSV records were rejected.&quot;&quot;&quot;
+    checks = []
+    rejected = []
+    seen = set()
+    with path.open(encoding=&quot;utf-8&quot;, newline=&quot;&quot;) as source:
+        reader = csv.DictReader(source, strict=True)
+        if reader.fieldnames != FIELDS:
+            raise ValueError(&quot;expected CSV header: service,scenario&quot;)
+
+        for row in reader:
+            service = (row[&quot;service&quot;] or &quot;&quot;).strip()
+            scenario = (row[&quot;scenario&quot;] or &quot;&quot;).strip().lower()
+            if None in row or not service or scenario not in SCENARIOS:
+                reason = &quot;expected a service and a known scenario&quot;
+            elif service.casefold() in seen:
+                reason = &quot;duplicate service&quot;
+            else:
+                seen.add(service.casefold())
+                checks.append((service, scenario))
+                continue
+
+            rejected.append({&quot;line&quot;: reader.line_num, &quot;reason&quot;: reason})
+
+    if not checks:
+        raise ValueError(&quot;no valid checks to run&quot;)
+    return checks, rejected
+
+
+async def probe(scenario):
+    &quot;&quot;&quot;Simulate a provider without making a network request.&quot;&quot;&quot;
+    if scenario == &quot;slow&quot;:
+        await asyncio.sleep(10)
+    else:
+        await asyncio.sleep(0)
+    if scenario == &quot;unavailable&quot;:
+        raise ConnectionError(&quot;provider unreachable&quot;)
+
+
+async def check_service(service, scenario, deadline):
+    &quot;&quot;&quot;Give each expected failure a report row and retain the service name.&quot;&quot;&quot;
+    try:
+        async with asyncio.timeout_at(deadline):
+            await probe(scenario)
+    except TimeoutError:
+        status = &quot;timed_out&quot;
+    except ConnectionError:
+        status = &quot;unavailable&quot;
+    else:
+        status = &quot;healthy&quot;
+
+    return {&quot;service&quot;: service, &quot;status&quot;: status}
+
+
+async def run_checks(checks, budget):
+    &quot;&quot;&quot;Derive one deadline and start the independent checks together.&quot;&quot;&quot;
+    deadline = asyncio.get_running_loop().time() + budget
+    return await asyncio.gather(
+        *(check_service(service, scenario, deadline) for service, scenario in checks)
+    )
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(&quot;plan&quot;, type=Path, help=&quot;CSV file listing the services&quot;)
+    parser.add_argument(&quot;--budget&quot;, type=float, default=3.0, help=&quot;seconds for the service checks&quot;)
+    args = parser.parse_args()
+    if not math.isfinite(args.budget) or args.budget &lt;= 0:
+        parser.error(&quot;--budget must be a positive finite number&quot;)
+
+    try:
+        checks, rejected = read_plan(args.plan)
+    except (OSError, UnicodeError, ValueError, csv.Error) as error:
+        print(f&quot;Could not read check plan: {error}&quot;, file=sys.stderr)
+        return 2
+
+    results = asyncio.run(run_checks(checks, args.budget))
+    print(json.dumps({&quot;checks&quot;: results, &quot;rejected&quot;: rejected}, indent=2))
+    return 0
+
+
+if __name__ == &quot;__main__&quot;:
+    raise SystemExit(main())</code></pre>
+<h3>Follow the data through the file</h3>
+<ol>
+<li><code>argparse</code> reads the command-line arguments, <code>Path</code> represents the input file, <code>csv</code> parses it and <code>json</code> formats the report. <code>math.isfinite()</code> rejects infinite or NaN budgets. <code>sys.stderr</code> keeps file errors out of JSON output.</li>
+<li><code>FIELDS</code> records the header contract. <code>SCENARIOS</code> is a set for allowed inputs. <code>read_plan()</code> opens the file with a context manager so it closes even if parsing fails. <code>DictReader</code> names the columns and <code>strict=True</code> raises on malformed CSV syntax.</li>
+<li>The loop trims the fields and checks for extra columns, missing values and unknown scenarios. <code>casefold()</code> gives the seen set a consistent lookup key while preserving the original display name. Valid rows use <code>continue</code> so only rejected rows reach <code>rejected.append()</code>. If no checks survive, the reader raises a clear error.</li>
+<li><code>probe()</code> simulates an easily controlled delay or connection failure. Its sleeps yield to the loop. <code>check_service()</code> wraps the probe in a deadline, catches the two expected failures and turns the outcome into a named row. Other errors can still surface.</li>
+<li><code>run_checks()</code> adds the budget to the event loop’s current clock, then gives every coroutine that same deadline. The starred generator supplies one coroutine per plan entry. <code>gather()</code> starts the checks and returns rows in input order.</li>
+<li><code>main()</code> validates the budget before opening the file. Expected read or parsing errors produce an error message and exit status 2. A successfully produced report exits 0 even if a provider failed. The <code>__main__</code> guard lets tests import the functions without starting the CLI.</li>
+</ol>
+</div></details>
+<details><summary>Show the tests and what they prove</summary><div>
+<pre><code class="language-python">import asyncio
+import unittest
+from pathlib import Path
+from tempfile import TemporaryDirectory
+from unittest.mock import AsyncMock, patch
+
+from checker import check_service, read_plan, run_checks
+
+
+class CheckPlanTests(unittest.TestCase):
+    def test_keeps_good_rows_and_explains_rejections(self):
+        path = Path(__file__).with_name(&quot;services.csv&quot;)
+        checks, rejected = read_plan(path)
+        self.assertEqual(
+            checks,
+            [(&quot;Customer records&quot;, &quot;healthy&quot;), (&quot;Payments&quot;, &quot;unavailable&quot;), (&quot;Inventory&quot;, &quot;slow&quot;)],
+        )
+        self.assertEqual(
+            rejected,
+            [
+                {&quot;line&quot;: 5, &quot;reason&quot;: &quot;duplicate service&quot;},
+                {&quot;line&quot;: 6, &quot;reason&quot;: &quot;expected a service and a known scenario&quot;},
+            ],
+        )
+
+    def test_rejects_a_plan_with_no_valid_rows(self):
+        with TemporaryDirectory() as folder:
+            path = Path(folder) / &quot;bad.csv&quot;
+            path.write_text(&quot;service,scenario\nPayments,unknown\n&quot;, encoding=&quot;utf-8&quot;)
+            with self.assertRaisesRegex(ValueError, &quot;no valid checks&quot;):
+                read_plan(path)
+
+
+class CheckRunnerTests(unittest.IsolatedAsyncioTestCase):
+    async def test_deadline_produces_a_named_timeout(self):
+        # The probe yields, so a deadline that has passed cancels it immediately.
+        deadline = asyncio.get_running_loop().time() - 1
+        self.assertEqual(
+            await check_service(&quot;Inventory&quot;, &quot;slow&quot;, deadline),
+            {&quot;service&quot;: &quot;Inventory&quot;, &quot;status&quot;: &quot;timed_out&quot;},
+        )
+
+    async def test_success_and_expected_failure_both_reach_the_report(self):
+        results = await run_checks([(&quot;Customers&quot;, &quot;healthy&quot;), (&quot;Payments&quot;, &quot;unavailable&quot;)], 3)
+        self.assertEqual(
+            results,
+            [
+                {&quot;service&quot;: &quot;Customers&quot;, &quot;status&quot;: &quot;healthy&quot;},
+                {&quot;service&quot;: &quot;Payments&quot;, &quot;status&quot;: &quot;unavailable&quot;},
+            ],
+        )
+
+    async def test_unexpected_errors_reach_the_caller(self):
+        with patch(&quot;checker.probe&quot;, new=AsyncMock(side_effect=RuntimeError(&quot;broken checker&quot;))):
+            with self.assertRaisesRegex(RuntimeError, &quot;broken checker&quot;):
+                await check_service(&quot;Customers&quot;, &quot;healthy&quot;, asyncio.get_running_loop().time() + 3)
+
+    async def test_checks_can_start_before_any_finishes(self):
+        started = set()
+        both_started = asyncio.Event()
+
+        async def wait_for_both(scenario):
+            started.add(scenario)
+            if len(started) == 2:
+                both_started.set()
+            await both_started.wait()
+
+        with patch(&quot;checker.probe&quot;, new=wait_for_both):
+            results = await run_checks([(&quot;Customers&quot;, &quot;healthy&quot;), (&quot;Payments&quot;, &quot;unavailable&quot;)], 3)
+
+        self.assertEqual([result[&quot;status&quot;] for result in results], [&quot;healthy&quot;, &quot;healthy&quot;])
+
+
+if __name__ == &quot;__main__&quot;:
+    unittest.main()</code></pre>
+<p>The plan tests check valid rows, rejections and empty plans. The async tests turn an already-expired deadline into a named timeout, check partial results and verify that unexpected bugs still fail. The final test gates both probes on an <code>Event</code>. Both must reach the gate before either returns, so it demonstrates overlap without asserting an exact elapsed time.</p>
+</div></details>
+</section>
+
+<section class="topic" id="incident">
+<h2>Investigate an incident and hand it over</h2>
+<p>Make a copy of the CSV and change the Customer records scenario from <code>healthy</code> to <code>slow</code>. Predict which checks should time out, run the tool and compare the two reports. Next, change only Inventory back to <code>healthy</code> and show which part of the report recovers.</p>
+<p>Write a four-sentence customer update that covers the impact, your evidence, what is still unknown and the next verification step. Save one failing report and one recovery report as evidence.</p>
+<details><summary>Compare with a sample customer update</summary><div>
+<p>Customer records and Inventory exceeded the check deadline in the simulated scenario. The rerun confirmed Inventory now passes, while Customer records still times out and Payments remains unavailable. The report gives us the observed outcomes, and we still need provider logs to establish root cause. I’ll confirm recovery by rerunning the same check plan and sending the results when all three providers respond.</p>
+</div></details>
+<p><strong>Readiness check.</strong> A teammate should be able to run your project from your instructions, reproduce the incident and explain why the completed results survived the timeout.</p>
+</section>
+
+<section class="topic" id="homework">
+<h2>Use the lecture homework to extend it</h2>
+<ul>
+<li><strong>Control flow and functions.</strong> Add an <code>if</code> branch for a status, count outcomes with a <code>for</code> loop and build a separate <code>while</code>-loop exercise that lets a learner enter service names until they type <code>done</code>. Format one summary line with <code>str.format()</code> and compare it with an f-string.</li>
+<li><strong>Hashing and built-ins.</strong> Explain why the seen set uses strings. Try a list as a set member and explain the error. Use a comprehension to find timed-out checks, <code>any()</code> for a failure flag and <code>all()</code> to check recovery. Try <code>enumerate()</code> to number a report and <code>zip()</code> to pair names with results. Compare <code>map()</code> and <code>filter()</code> with comprehensions, then sort a display view with <code>sorted(key=...)</code> and a short lambda.</li>
+<li><strong>Files and OOP.</strong> Modify the file reader to recover from a missing file. Compare <code>Path</code> with <code>os.getcwd()</code>, <code>os.listdir()</code> and <code>os.path.join()</code>. Then model a service with a class and explain what is stored on <code>self</code>.</li>
+<li><strong>Modules and packages.</strong> Split the file reader into a separate module, import it from a test and explain what the <code>__main__</code> guard prevents. As a stretch exercise, use a decorator to time a synchronous parser without changing what it returns.</li>
+<li><strong>Linux practice.</strong> Once the Python tests pass, follow <a href="../fde-textbook/linux-for-engineers.html">Linux for Engineers</a> to run them on Ubuntu from a shared practice folder. Record which commands ran on the host and which ran inside the VM.</li>
+</ul>
+</section>
+
+<nav class="lesson-nav" aria-label="Lesson navigation">
+<a href="lesson-9.html#module-check">← Async &amp; Concurrency Essentials</a>
+<a href="../fde-textbook/linux-for-engineers.html">Linux for Engineers →</a>
+</nav>
+</main><aside class="fde-outline" hidden></aside></div><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script><script src="../../assets/js/fde-layout.js?v=25" defer></script></body></html>
