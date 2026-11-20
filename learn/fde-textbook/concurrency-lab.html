@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Python Concurrency Lab | Learn with Mynul</title>
+  <script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script>
+  <link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1">
+  <link rel="stylesheet" href="../../assets/css/python-lessons.css?v=2">
+  <link rel="stylesheet" href="../../assets/css/fde-layout.css?v=18">
+</head>
+<body class="bootcamp-thesis fde-docs">
+<div class="reading shell">
+  <a class="fde-skip" href="#main">Skip to content</a>
+  <header class="fde-docs-header">
+    <a class="fde-back-button" href="../ai-fde-bootcamp.html#roadmap">Go back</a>
+    <button class="theme-button" id="reading-theme" type="button" aria-label="Toggle light and dark theme">Light / Dark</button>
+  </header>
+  <div class="fde-docs-grid">
+    <aside class="fde-lesson-menu">
+      <p class="fde-lesson-menu-title">Topics</p>
+      <nav aria-label="Related topics"><ol>
+        <li><a href="../python-engineering-module-1.html">Python</a></li>
+        <li><a href="advanced-python-async.html">Advanced Python &amp; Async Programming</a></li>
+        <li><a href="concurrency-lab.html" aria-current="page">Python Concurrency Lab</a></li>
+        <li><a href="linux-for-engineers.html">Linux for Engineers</a></li>
+      </ol></nav>
+    </aside>
+    <main id="main" class="fde-setup-lesson">
+<h1>Python Concurrency Lab</h1>
+
+<p>When a morning report is slow, start by asking what the program spends its time doing. Counting primes keeps Python busy calculating. A service check usually spends time waiting for a response. You’ll use a small version of each workload so you can focus on the Python.</p>
+<table>
+<thead><tr><th scope="col">What you observe</th><th scope="col">What to try</th><th scope="col">What to check</th></tr></thead>
+<tbody>
+<tr><td>Repeated calculations use CPU</td><td>Use sequential code as a baseline, then try a process pool</td><td>Compare the same work and include startup time</td></tr>
+<tr><td>Independent calls spend time waiting</td><td>Use a bounded thread pool with a blocking client</td><td>Check per-call timeouts and service limits</td></tr>
+<tr><td>Workers disagree about a shared total</td><td>Aggregate results in the caller or protect a shared update with a lock</td><td>Assert the total and keep the shared update small</td></tr>
+</tbody></table>
+<p>Concurrency means several jobs can be in progress. Parallelism means jobs are executing at the same instant. Processes have separate memory by default. Threads in one process share memory. In a typical CPython build with the GIL enabled, threads can overlap blocking waits, but pure Python CPU work generally calls for processes if you need parallel execution.</p>
+<p>Put <a href="concurrency_lab.py" download>concurrency_lab.py</a> and <a href="test_concurrency_lab.py" download>test_concurrency_lab.py</a> in one folder. Run them as files so spawned workers can import the module. On Windows, replace <code>python3</code> in the terminal commands with <code>py -3</code>. Python 3.11 or newer is enough, and the lab uses only the standard library. The excerpts below come from the downloaded script. Run that full file so the imports, helper functions and main guard are available.</p>
+<pre><code data-language="text">python3 concurrency_lab.py</code></pre><section class="topic" id="multiprocessing-lab">
+<h2>Multiprocessing. Count the same work twice</h2>
+
+<p>Start with one function and a known answer. A prime is a whole number greater than 1 with no divisors other than 1 and itself. Try guessing the count for <code>count_primes(2, 11)</code> before running the tests.</p>
+<pre><code data-language="python">def is_prime(number):
+    if number &lt; 2:
+        return False
+    return all(number % divisor != 0 for divisor in range(2, isqrt(number) + 1))
+
+
+def count_primes(start, stop):
+    return sum(is_prime(number) for number in range(start, stop))</code></pre>
+<ol>
+<li>The first <code>if</code> rules out values below 2.</li>
+<li><code>isqrt(number)</code> gives the whole-number square root. Checking possible divisors up to that number is enough. A factor above the square root would have a partner below it.</li>
+<li>Each prime contributes <code>True</code>, which counts as 1 in <code>sum()</code>. <code>range(start, stop)</code> excludes <code>stop</code>, so the sample counts 2, 3, 5 and 7.</li>
+</ol>
+<p>Next, run that calculation in one child process. The child sends the number back through a queue.</p>
+<pre><code data-language="python">def send_count(start, stop, results):
+    # Send a value to the parent because the processes have separate memory.
+    results.put(count_primes(start, stop))
+
+
+def one_process_count(start, stop):
+    ctx = mp.get_context(&quot;spawn&quot;)
+    results = ctx.Queue()
+    worker = ctx.Process(target=send_count, args=(start, stop, results))
+    try:
+        worker.start()
+        try:
+            # Read before joining. The worker may be waiting for space in the pipe.
+            result = results.get(timeout=10)
+        except Empty as error:
+            raise TimeoutError(&quot;The worker did not send a result.&quot;) from error
+
+        worker.join(timeout=10)
+        if worker.exitcode != 0:
+            raise RuntimeError(f&quot;Worker did not exit cleanly: {worker.exitcode}&quot;)
+        return result
+    finally:
+        if worker.pid is not None and worker.is_alive():
+            worker.kill()
+            worker.join()
+        worker.close()
+        results.close()</code></pre>
+<ol>
+<li><code>get_context("spawn")</code> selects the start method that launches a fresh interpreter when the process starts. The worker function is defined at module level so the child can find it. The <code>__main__</code> guard in the downloaded file keeps a worker import from starting new workers.</li>
+<li><code>Queue()</code> provides a channel. <code>Process()</code> describes what to run and <code>start()</code> launches it. <code>send_count()</code> uses <code>put()</code> to send the return value to the parent.</li>
+<li><code>get(timeout=10)</code> reads the expected result or raises <code>Empty</code> when the wait expires. Read before joining. With a large buffered result, the child may need the parent to read the queue before the child can finish.</li>
+<li><code>join(timeout=10)</code> waits for the child. Check <code>exitcode</code> afterward because <code>join()</code> also returns when its wait expires. In this example the queue belongs to this one job, so cleanup can stop an unfinished worker and discard the queue.</li>
+</ol>
+<p><strong>Job incident.</strong> An image batch hangs after workers start returning larger results. Check whether the parent joins them before reading the queue. Verify the receive order and surface a missing result as a failure. Replacing a missing result with zero would make the batch report misleading.</p>
+<p>Both the sequential run and the one-process run return <code>1229</code> for the integers from 2 up to 9999.</p>
+<p>Try changing the stop to <code>11</code> in both calls. You should get <code>4</code> each time. Restore the bounds before comparing the pool.</p>
+
+</section>
+<section class="topic" id="process-pool-lab">
+<h2>Process pool. Reuse workers across batches</h2>
+
+<p>Now split that same workload into <code>(2, 5000)</code> and <code>(5000, 10000)</code>. The first range stops before 5000, so the second starts exactly where the first leaves off.</p>
+<pre><code data-language="python">def pooled_counts(ranges):
+    # Reuse two workers and keep the counts in the order the jobs were submitted.
+    with ProcessPoolExecutor(max_workers=2, mp_context=mp.get_context(&quot;spawn&quot;)) as pool:
+        futures = [pool.submit(count_primes, start, stop) for start, stop in ranges]
+        return [future.result() for future in futures]</code></pre>
+<ol>
+<li>The <code>with</code> block creates an executor that can run at most two worker processes at once. It waits for pending work at shutdown.</li>
+<li>Each <code>submit()</code> hands one range to the pool and gives you back a <code>Future</code> representing the job.</li>
+<li>After submitting every job, the list gets each <code>result()</code> in submission order. It waits when a result is still pending and re-raises any worker exception.</li>
+</ol>
+<pre><code data-language="text">Process pool: [669, 560] Total: 1229</code></pre>
+<p><strong>Job incident.</strong> A large reporting job pegs one core. Try partitioning independent records, returning a compact result from each batch and combining them in the parent. Compare elapsed time with the sequential run. For tiny batches, sending data and starting processes may cost more than the work itself.</p>
+
+</section>
+<section class="topic" id="thread-pool-lab">
+<h2>Thread pool. Keep the result tied to the service</h2>
+
+<p>Imagine a dashboard checking CRM, Payments and Inventory. Here <code>sleep()</code> simulates I/O waiting and Payments raises <code>OSError</code> so you can practice the failure path without any network calls.</p>
+<pre><code data-language="python">def check_service(name):
+    sleep(0.02)  # Simulated I/O wait. No network request is made.
+    if name == &quot;Payments&quot;:
+        raise OSError(&quot;service unavailable&quot;)
+    return &quot;healthy&quot;
+
+
+def ordered_checks(names):
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        return list(pool.map(check_service, names))</code></pre>
+<p><code>map()</code> yields results in input order. An early slow service can delay the display of later results even if those calls have already finished. To handle each finished job independently, keep a lookup from each future to the service that created it.</p>
+<pre><code data-language="python">def service_report(names):
+    report = {}
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        jobs = {pool.submit(check_service, name): name for name in names}
+        for future in as_completed(jobs):
+            name = jobs[future]
+            try:
+                report[name] = future.result()
+            except OSError as error:
+                report[name] = str(error)
+    return report</code></pre>
+<ol>
+<li><code>submit()</code> loops through the services and stores each future as a dictionary key. Its value is the service name.</li>
+<li><code>as_completed()</code> yields the finished futures. Use the dictionary to recover the name before reading the result. Jobs that finish together have no useful ordering guarantee.</li>
+<li><code>result()</code> returns a healthy status or raises the worker’s exception. Here the handler records the expected service failure and lets the other jobs report their results.</li>
+</ol>
+<pre><code data-language="text">CRM: healthy
+Inventory: healthy
+Payments: service unavailable</code></pre>
+<p>The demo sorts the final report to give you stable console output. For live progress, handle or display the result inside the <code>as_completed()</code> loop.</p>
+<p><strong>Job incident.</strong> A monitoring page freezes when one connection stalls. Keep a worker limit and set a timeout on the actual network call. <code>future.result(timeout=...)</code> only limits how long the caller waits for the future. It doesn’t stop work that’s already running.</p>
+<details class="fde-setup-answer"><summary>Reproduce a lost update and fix it</summary>
+<p>Two threads each add one to the same total. The barrier is a teaching aid. It makes both threads read zero before either writes, so you can reproduce the lost update without guessing thread timing.</p><pre><code data-language="python">def count_completed_checks(protect_update):
+    total = 0
+    both_have_read = Barrier(2)
+    lock = Lock()
+
+    def update():
+        nonlocal total
+        if protect_update:
+            with lock:
+                total += 1
+        else:
+            before = total
+            # Force both threads to read 0 before either writes.
+            both_have_read.wait(timeout=5)
+            total = before + 1
+
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        jobs = [pool.submit(update) for _ in range(2)]
+        for job in jobs:
+            job.result()
+    return total</code></pre>
+<p>Without protection, both workers write 1. With <code>with lock:</code>, each worker finishes its read, add and write before the other enters. The result is 2. The barrier is only used in the unprotected branch. Waiting at a barrier while holding the lock would prevent the second worker from reaching it.</p></details>
+</section>
+<section class="topic" id="concurrency-testing">
+<h2>Testing. Assert outcomes you can rely on</h2>
+
+<p>Run the tests from the same folder as the lab. The test file imports the functions. The main guard keeps the demonstration from running at import time.</p>
+<pre><code data-language="text">python3 -m unittest -v test_concurrency_lab</code></pre>
+<p>The suite should report <code>Ran 7 tests</code> and <code>OK</code>. Read these two tests first. The first compares the pool against a known result and the sequential implementation. The second checks that a failed worker still has a finished future and its exception reaches the caller.</p>
+<pre><code data-language="python">def test_pool_matches_sequential_count(self):
+        ranges = [(2, 5000), (5000, 10000)]
+        counts = pooled_counts(ranges)
+        self.assertEqual(counts, [669, 560])
+        self.assertEqual(sum(counts), count_primes(2, 10000))</code></pre><pre><code data-language="python">def test_future_propagates_worker_error(self):
+        with ThreadPoolExecutor(max_workers=1) as pool:
+            future = pool.submit(check_service, &quot;Payments&quot;)
+            with self.assertRaisesRegex(OSError, &quot;service unavailable&quot;):
+                future.result()
+            self.assertTrue(future.done())</code></pre>
+<ul>
+<li><code>assertEqual(counts, [669, 560])</code> checks the counts for both ranges. Comparing with the sequential count checks that the split covers the same input.</li>
+<li><code>assertRaisesRegex()</code> checks the exception type and message. That tells you the failure was recorded for the expected reason.</li>
+<li><code>assertTrue(future.done())</code> proves that completion alone can include failure. Other tests check ordered results, label association and the shared counter.</li>
+</ul>
+<p><strong>Your turn.</strong> Add a test with an empty list of services. Then make the Payments simulation succeed and update only the assertions whose expected behavior changed. Explain why a test that expects one service to finish first could fail even when the program is correct.</p>
+<details class="fde-setup-answer"><summary>Check your empty input test</summary><pre><code data-language="python">self.assertEqual(service_report([]), {})</code></pre></details>
+</section>
+<section class="topic" id="concurrency-interviews">
+<h2>Work scenarios and interview checks</h2>
+
+<table><thead><tr><th scope="col">Situation</th><th scope="col">First response</th></tr></thead><tbody>
+<tr><td>PDF conversion saturates CPU</td><td>Measure a single document first, then try a small process pool across independent documents. Check memory and avoid sending full document contents when workers can open their own files.</td></tr>
+<tr><td>Partner API starts returning 429</td><td>Reduce the request rate and follow the provider’s retry instructions. A thread pool limits workers, but a worker limit alone does not guarantee a request rate.</td></tr>
+<tr><td>One failed lookup hides successful results</td><td>Track a future per lookup and record failures alongside successes. Test each result against its own input label.</td></tr>
+</tbody></table>
+<details class="fde-setup-answer"><summary>Why not call result() directly after every submit()?</summary><p>Waiting immediately serializes this loop. Submit the independent jobs first, then collect results.</p></details><details class="fde-setup-answer"><summary>Can future.done() be true after cancellation?</summary><p>Yes. A future can be done after returning a value, raising an exception or being cancelled.</p></details><details class="fde-setup-answer"><summary>Why does the process pool need a top-level function?</summary><p>Spawned workers import the module. Use a function they can import and inputs and outputs that can be serialized.</p></details><details class="fde-setup-answer"><summary>Does the GIL prevent lost updates?</summary><p>No. Several steps can form one logical update. Use a lock around the whole update or aggregate in one thread.</p></details><details class="fde-setup-answer"><summary>What changes if you use await with a blocking library?</summary><p>A blocking call still blocks the event-loop thread if you run it directly there. Use an async client or move the blocking call off that thread.</p></details><details class="fde-setup-answer"><summary>Why might adding processes slow the job down?</summary><p>Startup, serialization and scheduling all cost time. Small tasks may spend more time on those costs than on the calculation.</p></details>
+<p><a href="https://docs.python.org/3/library/multiprocessing.html">Python multiprocessing documentation</a> · <a href="https://docs.python.org/3/library/concurrent.futures.html">Python futures documentation</a></p>
+
+</section>
+    </main>
+    <aside class="fde-outline" hidden></aside>
+  </div>
+  <footer>Directed by - Mynul Islam</footer>
+</div>
+<script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script>
+<script src="../../assets/js/fde-layout.js?v=25" defer></script>
+</body>
+</html>
