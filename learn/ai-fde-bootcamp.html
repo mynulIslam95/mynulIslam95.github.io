@@ -26,13 +26,13 @@
 .bootcamp .python-lesson code{font-family:"JetBrains Mono",monospace}
 </style>
 <style>.module-list{display:grid;gap:12px}.module-link{display:block;border:1px solid var(--bc-line);border-radius:8px;padding:16px;margin:0;text-decoration:none}.module-link h3{margin:6px 0;font-size:20px}.bootcamp nav[aria-label="Topics"] li{padding:5px 0}</style><style>.module-list{display:grid;gap:12px}.module-link{display:block;border:1px solid var(--bc-line);border-radius:8px;padding:16px;text-decoration:none;margin:0}.module-link h3{margin:6px 0;font-size:20px}.course-lessons{list-style-type:lower-roman;padding-left:28px}.course-lessons li,#leetcode li{padding:6px 0}.course-note{padding:14px;border:1px solid var(--bc-line);border-radius:8px;margin:14px 0!important}.course-note summary{cursor:pointer;font-weight:600;color:var(--bc-teal)}.course-note p{margin-top:10px}.practice-pattern{display:block;font-size:12px;color:var(--bc-purple)}.course-navigation{display:flex;gap:16px;flex-wrap:wrap;margin-top:24px!important}.breadcrumbs{font-size:14px}#leetcode{margin-top:24px}</style><link rel="stylesheet" href="../assets/css/bootcamp-thesis.css?v=1"><style>.role-section{margin-top:24px;scroll-margin-top:100px}.role-section>summary{cursor:pointer}.role-section>summary h2{display:inline}.role-section>summary .section-kicker{display:block}.role-section[open]>summary{margin-bottom:16px}.curriculum-module summary{cursor:pointer}.curriculum-module summary h3{display:inline;font-size:20px}.curriculum-module summary .section-kicker{display:block;margin:0}.curriculum-module .lesson-heading{scroll-margin-top:100px}.curriculum-module h4{font-size:19px;color:var(--bc-blue)}.curriculum-module:has(:target){border-color:var(--bc-teal)}</style><style>.role-section{margin-top:24px;scroll-margin-top:100px}.role-section>summary{cursor:pointer}.role-section>summary h2{display:inline}.role-section>summary .section-kicker{display:block}.role-section[open]>summary{margin-bottom:16px}.curriculum-module summary{cursor:pointer}.curriculum-module summary h3{display:inline;font-size:20px}.curriculum-module summary .section-kicker{display:block;margin:0}.curriculum-module .lesson-heading{scroll-margin-top:100px}.curriculum-module h4{font-size:19px;color:var(--bc-blue)}.curriculum-module:has(:target){border-color:var(--bc-teal)}</style><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800;900&display=swap">
-<link rel="stylesheet" href="../assets/css/fde-layout.css?v=18">
+<link rel="stylesheet" href="../assets/css/fde-layout.css?v=19">
 <noscript><style>
   html:has(.fde-home .fde-roadmap:target, .fde-home .fde-roadmap :target) { overflow: auto; overscroll-behavior: auto; }
   .fde-home:has(.fde-roadmap:target, .fde-roadmap :target) footer { display: block; }
   .fde-roadmap[hidden]:target, .fde-roadmap[hidden]:has(:target) { display: block; }
   .fde-home:has(.fde-roadmap:target, .fde-roadmap :target) .fde-cover { display: none; }
-  .fde-home:has(.fde-roadmap:target, .fde-roadmap :target) #main { padding-top: 4.5rem; }
+  .fde-home:has(.fde-roadmap:target, .fde-roadmap :target) #main { padding-top: var(--fde-site-header-height); }
 </style></noscript>
 </head>
 <body translate="no" class="flow flow-inner notranslate bootcamp fde-home" data-course-view="home">
@@ -91,7 +91,10 @@
 </div>
 <section id="roadmap" class="fde-roadmap learn-catalogue" aria-labelledby="roadmap-title" hidden>
   <div class="wrap">
-    <h2 id="roadmap-title" tabindex="-1">Bootcamp roadmap</h2>
+    <div class="fde-roadmap-header">
+      <h2 id="roadmap-title" tabindex="-1">Bootcamp roadmap</h2>
+      <a class="fde-launchpad-link" href="ai-fde-bootcamp.html">Return to Launchpad</a>
+    </div>
     <ol class="fde-milestones" role="list">
       <li><span class="fde-roadmap-anchor" id="fde-module-1" aria-hidden="true"></span><span class="fde-roadmap-anchor" id="role-tracks" aria-hidden="true"></span><span class="fde-roadmap-anchor" id="fde" aria-hidden="true"></span><span class="fde-roadmap-anchor" id="fde-title" aria-hidden="true"></span>
         <article id="fde-1-topic-1">
