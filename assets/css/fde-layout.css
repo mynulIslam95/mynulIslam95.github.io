@@ -326,12 +326,13 @@ html:has(.fde-home .fde-cover[hidden]) { overscroll-behavior-y: none; }
 .fde-docs .reading .fde-back-button:hover { background: #19469a; }
 .fde-docs-brand {
   color: var(--th-title);
-  font: 900 clamp(1.32rem, 3vw, 2rem)/1 'Barlow Condensed', Impact, 'Arial Narrow', sans-serif;
+  font: 400 clamp(1.12rem, 2.4vw, 1.6rem)/1.15 var(--th-serif);
+  letter-spacing: .025em;
   text-align: center;
   white-space: nowrap;
 }
 .fde-docs-brand em {
-  font: italic 600 .66em/1 Georgia, serif;
+  font: italic 400 .86em/1 Georgia, serif;
 }
 .fde-docs-brand > span {
   font-size: .74em;
