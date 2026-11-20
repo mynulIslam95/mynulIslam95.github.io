@@ -378,6 +378,22 @@ html:has(.fde-home .fde-cover[hidden]),
   background: var(--fde-active);
 }
 .fde-lesson-menu a[aria-current], .fde-outline a[aria-current] { font-weight: 650; }
+[data-python-course] li a:not([aria-current], .is-reached, :hover) { color: var(--th-title); }
+[data-python-course] li a.is-reached {
+  color: var(--th-green);
+  background: var(--fde-active);
+}
+.fde-outline a.is-complete {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+.fde-outline-check {
+  flex: none;
+  color: var(--th-green);
+  font-weight: 700;
+}
 .fde-outline p { margin-top: 0; }
 .fde-docs .reading .topic, .fde-docs main[id], .fde-docs main [id] { scroll-margin-top: calc(var(--fde-docs-header-height) + 16px); }
 @media (min-width: 1101px) {

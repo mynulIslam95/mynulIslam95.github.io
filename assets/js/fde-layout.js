@@ -3,6 +3,7 @@
 
   const roadmap = document.querySelector('.fde-milestones');
   const outline = document.querySelector('.fde-outline');
+  const courseNav = document.querySelector('[data-python-course]');
   const milestones = roadmap ? [...roadmap.children] : [];
 
   const launch = document.querySelector('[data-fde-launch]');
@@ -116,21 +117,32 @@
     document.body.classList.add('fde-has-outline');
   }
 
-  const courseLinks = [...document.querySelectorAll('[data-python-course] a[href*="#"]')]
-    .filter((link) => link.pathname === location.pathname)
+  const lessonLinks = courseNav ? [...courseNav.querySelectorAll('li a')] : [];
+  const courseLinks = lessonLinks
+    .filter((link) => link.hash && link.pathname === location.pathname)
     .map((link) => ({ link, target: document.getElementById(link.hash.slice(1)) }))
     .filter(({ target }) => target);
-  let currentCourseLink = courseLinks[0]?.link;
+  let currentCourseLink = lessonLinks.find((link) => link.hasAttribute('aria-current'));
+  let completedSection = -1;
+
+  function fillCourseThrough(selected) {
+    const currentIndex = lessonLinks.indexOf(selected);
+    lessonLinks.forEach((link, index) => {
+      link.classList.toggle('is-reached', index <= currentIndex);
+    });
+  }
+
+  fillCourseThrough(currentCourseLink);
 
   let frame;
   let currentMilestone;
   function updatePosition() {
     frame = undefined;
+    const scrollRoot = document.scrollingElement;
+    const atBottom = scrollRoot.scrollTop > 0 &&
+      scrollRoot.scrollHeight - scrollRoot.clientHeight - scrollRoot.scrollTop <= 2;
     let nextMilestone;
     if (roadmap?.getClientRects().length) {
-      const scrollRoot = document.scrollingElement;
-      const atBottom = scrollRoot.scrollTop > 0 &&
-        scrollRoot.scrollHeight - scrollRoot.clientHeight - scrollRoot.scrollTop <= 2;
       const marker = innerHeight * 0.54;
       if (returnedCard && Math.abs(scrollRoot.scrollTop - returnedCard.y) > 2) returnedCard = undefined;
       nextMilestone = returnedCard?.row ?? (atBottom ? milestones.at(-1) :
@@ -142,17 +154,32 @@
       currentMilestone = nextMilestone;
     }
 
-    if (courseLinks.length > 1) {
+    if (courseLinks.length) {
       const visible = courseLinks.findLast(({ target }) => target.getBoundingClientRect().top <= 150);
       const nextLink = (visible ?? courseLinks[0]).link;
       if (nextLink !== currentCourseLink) {
-        currentCourseLink.removeAttribute('aria-current');
+        currentCourseLink?.removeAttribute('aria-current');
         nextLink.setAttribute('aria-current', 'location');
         currentCourseLink = nextLink;
+        fillCourseThrough(nextLink);
       }
     }
 
     const active = sections.findLastIndex((section) => section.getBoundingClientRect().top <= 150);
+    // A section is completed after the reader reaches the next section or the page ends.
+    if (courseNav) {
+      const lastPassed = atBottom ? links.length - 1 : active - 1;
+      while (completedSection < lastPassed) {
+        const link = links[++completedSection];
+        link.classList.add('is-complete');
+        link.setAttribute('aria-label', link.textContent + ' (complete)');
+        const mark = document.createElement('span');
+        mark.className = 'fde-outline-check';
+        mark.setAttribute('aria-hidden', 'true');
+        mark.textContent = '✓';
+        link.append(mark);
+      }
+    }
     links.forEach((link, index) => {
       if (index === active) link.setAttribute('aria-current', 'location');
       else link.removeAttribute('aria-current');
@@ -166,6 +193,7 @@
   if (milestones.length || sections.length) {
     addEventListener('scroll', scheduleUpdate, { passive: true });
     addEventListener('resize', scheduleUpdate);
+    addEventListener('hashchange', scheduleUpdate);
     addEventListener('pageshow', scheduleUpdate);
     updatePosition();
   }

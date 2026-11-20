@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>1.1 Python Basics, Conditions &amp; Loops | Learn with Mynul</title><meta name="description" content="Learn Python conditions, loops and input checks by building a simple payment report."><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=2"><link rel="stylesheet" href="../../assets/css/fde-layout.css?v=16"><style>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>Operators, conditions &amp; loops | Learn with Mynul</title><meta name="description" content="Learn Python conditions, loops and input checks by building a simple payment report."><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=2"><link rel="stylesheet" href="../../assets/css/fde-layout.css?v=19"><style>
 .fde-setup-lesson .topic { margin-top: 1.25rem; padding-top: 0; }
 .fde-setup-lesson .topic h2 { margin-top: .9rem !important; }
 .fde-setup-lesson .topic pre { margin: .55rem 0 !important; }
@@ -9,22 +9,21 @@
 <nav aria-label="Python lessons" data-python-course>
   <a href="../python-engineering-module-1.html">Module overview</a>
   <ol>
-    <li><a href="setup.html">1. Python setup &amp; first program</a></li>
-    <li><a href="variables.html">2. Variables, data types &amp; strings</a></li>
-    <li><a href="lesson-1.html#topic-1" aria-current="location">3. Operators &amp; conditions</a></li>
-    <li><a href="lesson-1.html#topic-2">4. Loops</a></li>
-    <li><a href="lesson-3.html">5. Functions &amp; scope</a></li>
-    <li><a href="lesson-2.html#topic-1">6. Core data structures</a></li>
-    <li><a href="lesson-2.html#topic-3">7. Memory management fundamentals</a></li>
-    <li><a href="lesson-4.html">8. Object-oriented programming basics</a></li>
-    <li><a href="lesson-5.html#topic-1">9. Exception handling &amp; debugging</a></li>
-    <li><a href="lesson-5.html#topic-2">10. File I/O operations</a></li>
+    <li><a href="setup.html">Python setup &amp; first program</a></li>
+    <li><a href="variables.html">Variables, data types &amp; strings</a></li>
+    <li><a href="lesson-1.html#topic-1" aria-current="location">Operators, conditions &amp; loops</a></li>
+    <li><a href="lesson-3.html">Functions &amp; scope</a></li>
+    <li><a href="lesson-2.html#topic-1">Core data structures</a></li>
+    <li><a href="lesson-2.html#topic-3">Memory management fundamentals</a></li>
+    <li><a href="lesson-4.html">Object-oriented programming basics</a></li>
+    <li><a href="lesson-5.html#topic-1">Exception handling &amp; debugging</a></li>
+    <li><a href="lesson-5.html#topic-2">File I/O operations</a></li>
   </ol>
 </nav></aside>
 <main id="main" class="fde-setup-lesson">
-  <p class="breadcrumbs"><a href="../python-engineering-module-1.html">Python overview</a> / Lesson 1.1</p>
-  <h1>1.1 Python Basics, Conditions &amp; Loops</h1>
-  <p>You have EUR 100. Build a program that checks each payment request, accepts the ones you can afford and shows how much money is left.</p>
+  <p class="breadcrumbs"><a href="../python-engineering-module-1.html">Python overview</a> / Core Python</p>
+  <h1>Operators, conditions &amp; loops</h1>
+  <p>Start with one payment. Use operators to calculate the balance and conditions to decide whether it goes through. Then put that decision inside a loop to process a batch.</p>
 
   <section class="topic" id="topic-1">
     <h2>Operators &amp; conditions</h2>
@@ -287,11 +286,11 @@ else:
     remaining_minutes = budget_minutes - used_minutes - requested_minutes
     print(f&quot;Upload approved. Minutes remaining: {remaining_minutes}&quot;)</code></pre><pre><code data-language="text">Upload approved. Minutes remaining: 0</code></pre>
     </details>
-    <p>Once your program passes all four checks, explain why a 5-minute request is approved. Then continue to <a href="#topic-2">Loops</a> to apply the same decision to several requests.</p>
+    <p>Once your program passes all four checks, explain why a 5-minute request is approved. Now use <a href="#topic-2">a loop</a> to make the same kind of decision for several requests.</p>
   </section>
 
   <section class="topic" id="topic-2">
-    <h2>Loops</h2>
+    <h2>Apply the payment rules in a loop</h2>
     <p>A <code>for</code> loop repeats an action for each item. If you need a set number of turns, <code>for turn in range(3):</code> gives you the values <code>0</code>, <code>1</code> and <code>2</code>. The report below loops through payment requests instead.</p>
     <p>Create <code>payments.py</code> in your practice folder. Save the code and run <code>py -3 payments.py</code> on Windows or <code>python3 payments.py</code> on Mac or Linux.</p>
     <pre><code data-language="python">balance = 100
@@ -327,7 +326,7 @@ Balance: EUR 80</code></pre>
   </section>
 
   <section class="topic" id="topic-3">
-    <h2>3. Follow the loop</h2>
+    <h2>Trace the loop</h2>
     <ol>
       <li><code>for raw in requests</code> takes one item at a time. The square brackets hold a list. The indented lines belong to the loop.</li>
       <li><code>" 12 "</code> becomes <code>"12"</code>, then the number <code>12</code>. It passes both checks, so the <code>else</code> block reduces the balance from EUR 100 to EUR 88. <code>balance -= amount</code> means <code>balance = balance - amount</code>.</li>
@@ -344,14 +343,14 @@ while attempts &lt; 3:
   </section>
 
   <section class="topic" id="topic-4">
-    <h2>4. Check input before converting it</h2>
+    <h2>Check input before converting it</h2>
     <p><code>strip()</code> removes spaces at the ends. <code>isascii()</code> and <code>isdigit()</code> together accept digit-only text such as <code>"12"</code>. This example rejects blanks, negative amounts and prices with a decimal point. A second check rejects zero.</p>
     <p><strong>Common mistake.</strong> Keep <code>spent = 0</code> above the loop. Put it inside and you’ll reset the total on every turn.</p>
     <p id="topic-5">If you need a reminder about <code>input()</code>, <code>int()</code> or f-strings, see <a href="variables.html">Variables, data types &amp; strings</a>.</p>
   </section>
 
   <section class="topic" id="practice-2">
-    <h2 id="module-check">5. Try a new set of payments</h2>
+    <h2 id="module-check">Try a new set of payments</h2>
     <p id="practice-1">Set <code>requests = ["12", "0", "-5", "80", "8", "1"]</code>. Predict which payments will pass, then run the code. Can an EUR 8 payment pass when the balance is exactly EUR 8?</p>
     <details class="fde-setup-answer">
       <summary>Check your answer</summary>
@@ -359,4 +358,4 @@ while attempts &lt; 3:
     </details>
   </section>
   <nav class="lesson-nav" aria-label="Lesson navigation"><a href="variables.html">Previous: Variables, data types &amp; strings</a><a href="lesson-3.html">Next: Functions &amp; scope</a></nav>
-</main><aside class="fde-outline" hidden></aside></div><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script><script src="../../assets/js/fde-layout.js?v=23" defer></script></body></html>
+</main><aside class="fde-outline" hidden></aside></div><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script><script src="../../assets/js/fde-layout.js?v=24" defer></script></body></html>
