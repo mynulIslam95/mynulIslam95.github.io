@@ -5,6 +5,38 @@
   const outline = document.querySelector('.fde-outline');
   const milestones = roadmap ? [...roadmap.children] : [];
 
+  const launch = document.querySelector('[data-fde-launch]');
+  const launchScreen = document.querySelector('[data-fde-launch-screen]');
+
+  if (launch && launchScreen) {
+    const cover = launch.closest('.fde-cover');
+    const roadmapSection = document.getElementById('roadmap');
+    const roadmapTitle = document.getElementById('roadmap-title');
+
+    launch.addEventListener('click', async (event) => {
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      if (cover.classList.contains('is-launching')) return;
+
+      const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const pause = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+      cover.classList.add('is-launching');
+      if (!reducedMotion) await pause(250);
+      launchScreen.hidden = false;
+      await pause(reducedMotion ? 1050 : 1450);
+
+      if (location.hash !== launch.hash) history.pushState(null, '', launch.hash);
+      roadmapSection.scrollIntoView({ block: 'start', behavior: 'instant' });
+      roadmapTitle.focus({ preventScroll: true });
+      launchScreen.classList.add('is-leaving');
+      if (!reducedMotion) await pause(400);
+      launchScreen.hidden = true;
+      launchScreen.classList.remove('is-leaving');
+      cover.classList.remove('is-launching');
+    });
+  }
+
   if (outline) {
     const menu = document.querySelector('.fde-lesson-menu');
     const compact = matchMedia('(max-width: 850px)');
