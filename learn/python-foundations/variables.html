@@ -27,14 +27,14 @@
 <main id="main" class="fde-setup-lesson">
   <p class="breadcrumbs"><a href="../python-engineering-module-1.html">Python overview</a> / Core Python</p>
   <h1>Variables, data types &amp; strings</h1>
-  <p>Picture your first OmniGuard kickoff call. The customer says, “We’re Northwind. We have three data sources to connect. Each one should take about two and a half minutes.” Your teammate asks you to write a tool that records those details and prints a short update.</p>
+  <p>Picture your first OmniGuard kickoff call. The customer says, “We’re Northwind. We have three data sources to connect. Each one should take about two and a half minutes.” Your teammate needs a short update for the next call. By the end, you’ll be able to choose a type for each field, calculate an estimate and print a summary someone else can use.</p>
 
   <section class="topic" id="variables-and-types">
     <h2>1. Turn a kickoff note into Python values</h2>
     <p><strong>Variable.</strong> A variable is a name you give to a value so you can use it again. In <code>source_count = 3</code>, <code>source_count</code> is the name and <code>3</code> is the value. If the customer adds a source, you can give that same name an updated value.</p>
     <p><strong>Data type.</strong> A type tells Python what kind of value it’s working with and what you can do with it. <code>3</code> is an integer, so you can add <code>1</code> to get <code>4</code>. <code>"3"</code> is text. Join it to <code>"1"</code> and you get <code>"31"</code>.</p>
     <p><strong>String.</strong> A string is a piece of text. In <code>customer = "Northwind"</code>, the quotes tell Python that <code>Northwind</code> is text. A job ID like <code>"007"</code> is also a string. Those zeros are part of the ID.</p>
-    <p>Create <code>kickoff.py</code> and type this with me. Before you run it, predict the final count.</p>
+    <p>In your <code>python-practice</code> folder, create <code>kickoff.py</code> and type this with me. Save it, then open the terminal in that folder. Run <code>py -3 kickoff.py</code> on Windows or <code>python3 kickoff.py</code> on Mac or Linux. Before you press Enter, predict the final count.</p>
     <pre><code data-language="python"># Record what we know at the start of the kickoff call.
 customer = "Northwind"
 source_count = 3
@@ -43,7 +43,8 @@ source_count = 3
 source_count = source_count + 1
 
 print(customer, "has", source_count, "data sources.")</code></pre>
-    <p>The terminal prints <code>Northwind has 4 data sources.</code> because <code>print()</code> puts a space between the items. On the line above it, Python reads the old count on the right of <code>=</code>, adds one and saves the new count on the left.</p>
+    <pre><code data-language="text">Northwind has 4 data sources.</code></pre>
+    <p>Did you get <code>4</code>? In <code>source_count = source_count + 1</code>, Python reads the old count on the right of <code>=</code>, adds one and saves the new count on the left.</p>
     <p>Now decide how to store the rest of the kickoff note.</p>
     <div class="table-scroll"><table>
       <thead><tr><th scope="col">Type</th><th scope="col">Why we use it on this job</th></tr></thead>
@@ -59,10 +60,13 @@ print(customer, "has", source_count, "data sources.")</code></pre>
 
   <section class="topic" id="input-and-conversion">
     <h2>2. Watch what happens when you type 3</h2>
-    <p>Replace your first example with these two lines and save. Run <code>py -3 kickoff.py</code> on Windows or <code>python3 kickoff.py</code> on Mac or Linux.</p>
-    <pre><code data-language="python">raw_count = input("Data sources: ")
-print(type(raw_count).__name__)</code></pre>
-    <p>At the prompt, type <code>3</code>. Pause and guess the output. The terminal prints <code>str</code>. <code>input()</code> gives us text, so we use <code>int(raw_count)</code> before doing maths. Similarly, <code>float("2.5")</code> gives the number <code>2.5</code> and <code>str(3)</code> gives the text <code>"3"</code>.</p>
+    <p>Replace your first example with this code. Save it and run the same command. When the terminal asks for the count, type <code>3</code>. Pause and guess the type.</p>
+    <pre><code data-language="python"># Check the type before converting the count.
+raw_count = input("Data sources: ")
+print(type(raw_count))</code></pre>
+    <pre><code data-language="text">Data sources: 3
+&lt;class 'str'&gt;</code></pre>
+    <p>See <code>str</code> on the second line? Even though you typed a digit, <code>input()</code> gave Python text. Use <code>int(raw_count)</code> to get a number you can calculate with. <code>float("2.5")</code> gives the number <code>2.5</code> and <code>str(3)</code> gives the text <code>"3"</code>.</p>
     <p>Here’s a common bug you can spot by reading the types. <code>"2" + "3"</code> gives <code>"23"</code>. <code>int("2") + int("3")</code> gives <code>5</code>.</p>
   </section>
 
@@ -98,10 +102,11 @@ print(f"Approved: {approved} | Review ID: {review_id}")</code></pre>
 
   <section class="topic" id="practice-and-debug">
     <h2>4. Change it, break it, fix it</h2>
-    <p>Run it for <code>Acme</code> with <code>4</code> sources at <code>7.5</code> minutes each. Now add a line that shows <code>Estimate in hours: 0.50</code>. Use the value you already calculated.</p>
+    <p>Run it for <code>Acme</code> with <code>4</code> sources at <code>7.5</code> minutes each. Now add a line that shows <code>Estimate: 0.50 hours</code>. Use the value you already calculated.</p>
     <details class="fde-setup-answer">
       <summary>Check your answer</summary>
-      <pre><code data-language="python">print(f"Estimate in hours: {estimated_minutes / 60:.2f}")</code></pre>
+      <pre><code data-language="python"># There are 60 minutes in an hour.
+print(f"Estimate: {estimated_minutes / 60:.2f} hours")</code></pre>
     </details>
     <p>Now type <code>3.0</code> at <strong>Data sources</strong>. Look for <code>ValueError</code> at the start of the last line. That input is decimal text, so <code>int()</code> rejects it. Run again with <code>3</code>. We’ll handle invalid input in a later lesson.</p>
     <p><strong>Two quick checks.</strong> If your output shows <code>{customer}</code>, check the <code>f</code> before the quote. If you try <code>bool("False")</code>, it returns <code>True</code> because the text isn’t empty.</p>
@@ -239,18 +244,17 @@ print(f"Total: {total_seconds:.1f} seconds")</code></pre>
     <p>Open a scenario and try the task. Then reveal the solution, run it and compare the output.</p>
     <details class="fde-setup-answer">
       <summary>1. Enterprise Lead Management</summary>
-      <p>The CRM sends <code>" 0042 "</code> as a lead ID and <code>"2"</code> as the follow-up count. Clean the fields and print a one-line handoff without losing the leading zeros.</p>
+      <p>Two sales reps report <code>"2"</code> and <code>"3"</code> follow-ups for the same lead. Combine the counts for a team handoff. Keep lead ID <code>"0042"</code> as text.</p>
       <details class="fde-setup-answer">
         <summary>Show commented solution and output</summary>
-        <pre><code data-language="python"># Remove the spaces. An ID stays text so 0042 keeps its zeros.
-lead_id = " 0042 ".strip()
+        <pre><code data-language="python"># Keep the CRM identifier as text so its zeros survive.
+lead_id = "0042"
 
-# Convert the count because the team may add more follow-ups.
-follow_ups = int("2")
-
-print(f"Lead {lead_id} | {follow_ups} follow-ups")</code></pre>
+# Convert both reports before adding their counts.
+total_follow_ups = int("2") + int("3")
+print(f"Lead {lead_id} | {total_follow_ups} follow-ups")</code></pre>
         <p><strong>Expected output</strong></p>
-        <pre><code data-language="text">Lead 0042 | 2 follow-ups</code></pre>
+        <pre><code data-language="text">Lead 0042 | 5 follow-ups</code></pre>
       </details>
     </details>
     <details class="fde-setup-answer">
@@ -355,6 +359,39 @@ Stored minutes: 1.2125</code></pre>
       <summary>8. Will <code>0.1 + 0.2 == 0.3</code> print <code>True</code>?</summary>
       <p>No. It prints <code>False</code> because floats store many decimal fractions approximately. Display formatting can hide the difference.</p>
     </details>
+  </section>
+
+  <section class="topic" id="mastery-check">
+    <h2>9. Build an AuditMesh handoff from scratch</h2>
+    <p>Imagine the next reviewer is waiting for your estimate. Create <code>audit_handoff.py</code> and write the program before opening the solution. Ask for a case ID, the number of checks left and the time per check in minutes. Keep the ID as text, calculate the estimate and print it to two decimal places. Include <code>False</code> for review complete and <code>None</code> for the missing review ID.</p>
+    <ul>
+      <li><strong>Normal run.</strong> Type <code> 007 </code>, <code>4</code> and <code>1.25</code>. Your output should keep <code>007</code> and show <code>5.00 minutes</code>.</li>
+      <li><strong>Nothing left to check.</strong> With <code>001</code>, <code>0</code> and <code>1.25</code>, keep <code>001</code> and report <code>0.00 minutes</code>.</li>
+      <li><strong>Wrong input.</strong> Type <code>four</code> for the count. Point to the conversion that fails and explain why you get <code>ValueError</code>. Handling the error comes later.</li>
+    </ul>
+    <details class="fde-setup-answer">
+      <summary>Reveal the commented solution</summary>
+      <pre><code data-language="python"># Keep the case ID as text so 007 stays 007.
+case_id = input("Case ID: ").strip()
+
+# Convert the count and the time before doing the calculation.
+checks_remaining = int(input("Checks remaining: "))
+minutes_per_check = float(input("Minutes per check: "))
+estimated_minutes = checks_remaining * minutes_per_check
+
+# The review hasn't been completed or assigned an ID yet.
+review_complete = False
+review_id = None
+
+print(f"Case {case_id} | Checks left: {checks_remaining}")
+print(f"Estimate: {estimated_minutes:.2f} minutes")
+print(f"Review complete: {review_complete} | Review ID: {review_id}")</code></pre>
+      <p><strong>Output for the normal run</strong></p>
+      <pre><code data-language="text">Case 007 | Checks left: 4
+Estimate: 5.00 minutes
+Review complete: False | Review ID: None</code></pre>
+    </details>
+    <p>You’re ready for the next lesson when you can build the handoff without copying, run all three tests and explain why the ID stays text.</p>
   </section>
 
   <nav class="lesson-nav" aria-label="Lesson navigation"><a href="setup.html">Previous: Python setup &amp; first program</a><a href="lesson-1.html#topic-1">Next: Operators &amp; conditions</a></nav>
