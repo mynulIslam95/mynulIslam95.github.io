@@ -10,7 +10,6 @@
 
   if (launch && launchScreen) {
     const cover = launch.closest('.fde-cover');
-    const roadmapSection = document.getElementById('roadmap');
     const roadmapTitle = document.getElementById('roadmap-title');
 
     launch.addEventListener('click', async (event) => {
@@ -27,7 +26,7 @@
       await pause(reducedMotion ? 1050 : 1450);
 
       if (location.hash !== launch.hash) history.pushState(null, '', launch.hash);
-      roadmapSection.scrollIntoView({ block: 'start', behavior: 'instant' });
+      roadmapTitle.scrollIntoView({ block: 'start', behavior: 'instant' });
       roadmapTitle.focus({ preventScroll: true });
       launchScreen.classList.add('is-leaving');
       if (!reducedMotion) await pause(400);
