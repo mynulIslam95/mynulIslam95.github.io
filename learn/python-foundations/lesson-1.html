@@ -86,6 +86,28 @@ else:
     <p>With a balance of 100, <code>amount &gt; 0 and amount &lt;= balance</code> allows 20 and 100. Add <code>or</code> when either of two reasons is enough, like a low battery or battery saver pausing a model. Use <code>not</code> to ask whether a flag is off. Next, keep the payment rules and repeat them for a batch.</p>
   </section>
 
+  <section class="topic" id="truthiness" lang="en">
+    <h2>Check whether a value is present</h2>
+
+    <p>In an <code>if</code>, Python treats <code>None</code>, zero and empty built-in containers or strings as false. A non-empty string such as <code>"False"</code> is true in a condition. This is called <strong>truthiness</strong>.</p>
+    <pre><code data-language="python">owner = &quot;&quot;
+label = owner if owner else &quot;unassigned&quot;
+print(label)
+
+# Zero is a recorded value. None means no count was supplied.
+for count in [0, None]:
+    if count is None:
+        print(&quot;Count missing&quot;)
+    else:
+        print(f&quot;Count recorded: {count}&quot;)</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">unassigned
+Count recorded: 0
+Count missing</code></pre>
+    <p>Read <code>owner if owner else "unassigned"</code> as “use the owner when it’s true in a condition, otherwise use the fallback.” This conditional expression chooses a value. Use a full <code>if</code> block when a branch needs several steps.</p>
+
+  </section>
+
   <section class="topic" id="topic-2">
     <h2>Apply the payment rules in a loop</h2>
     <p>Now five payment requests arrive. The square brackets hold a list of requests. <code>for raw in requests:</code> picks one request, runs the indented code and repeats for the next request. Each accepted payment changes the balance available for the next turn.</p>
@@ -163,6 +185,31 @@ Connected</code></pre>
     <p><code>strip()</code> removes spaces at the ends. <code>isascii()</code> and <code>isdigit()</code> together accept digit-only text such as <code>"12"</code>. This example rejects blanks, negative amounts and prices with a decimal point. A second check rejects zero.</p>
     <p><strong>Common mistake.</strong> Keep <code>spent = 0</code> above the loop. Put it inside and you’ll reset the total on every turn.</p>
     <p id="topic-5">If you need a reminder about <code>input()</code>, <code>int()</code> or f-strings, see <a href="variables.html">Variables, data types &amp; strings</a>.</p>
+  </section>
+
+  <section class="topic" id="nested-loops" lang="en">
+    <h2>Trace a loop inside another loop</h2>
+
+    <p>Two connectors each get up to three checks. Read <code>range(1, 4)</code> as “start at 1 and stop before 4.” A third argument sets the step, so <code>list(range(1, 6, 2))</code> gives <code>[1, 3, 5]</code>. Predict whether the second connector still runs after the first one passes.</p>
+    <pre><code data-language="python">for connector in [&quot;CRM&quot;, &quot;Docs&quot;]:
+    for attempt in range(1, 4):
+        print(f&quot;{connector}: check {attempt}&quot;)
+        if attempt == 2:
+            break
+    print(f&quot;{connector}: finished&quot;)</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">CRM: check 1
+CRM: check 2
+CRM: finished
+Docs: check 1
+Docs: check 2
+Docs: finished</code></pre>
+    <p><code>break</code> exits the nearest loop, so the next connector still runs. <code>continue</code> skips the rest of the current turn of the nearest loop. <code>pass</code> does nothing and execution moves to the next statement.</p>
+    <details class="fde-setup-answer">
+      <summary>Predict what changes if you use pass instead</summary>
+      <p>Both connectors now print check 3 before “finished” because the inner loop keeps running.</p>
+    </details>
+
   </section>
 
   <section class="topic" id="practice-2">
