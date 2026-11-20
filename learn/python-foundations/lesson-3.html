@@ -41,7 +41,7 @@
   <h1>Functions &amp; scope</h1>
   <p>Reuse the payment rules from the <a href="lesson-1.html#topic-1">control flow lesson</a> without copying the decision for each request. Start with one calculation, then trace the value back to the caller before adding defaults or a loop.</p>
 
-  <p><a href="#function-code-puzzles">Jump to the runnable tricky questions</a>.</p>
+  <p><a href="#function-contracts">Function contracts</a> · <a href="#scope-rules">Scope rules</a> · <a href="#function-code-puzzles">Runnable tricky questions</a></p>
 
   <section class="topic" id="topic-1">
     <h2>Turn one calculation into a function</h2>
@@ -84,6 +84,19 @@ None</code></pre>
     <p>The function prints <code>88</code>. It then reaches the end and gives <code>None</code> back to the caller. The caller’s <code>print(remaining)</code> displays that <code>None</code>. Restore <code>return balance - expense</code> if the caller needs the result for another calculation.</p>
   </section>
 
+  <section class="topic" id="function-contracts">
+    <h2>State the function’s contract</h2>
+    <p>A function’s <strong>contract</strong> tells the caller what inputs are accepted, what comes back and what changes. For the payment example, the caller passes two whole-euro amounts. The function returns a new balance in whole euros and leaves updating the caller’s account to the caller. The subtraction alone would return a negative amount if you asked it to subtract more than the balance. When the function needs to decide whether a request is allowed, specify that rule separately and test it.</p>
+    <pre><code data-language="python">def remaining_balance(balance, expense):
+    """Calculate what remains after an expense already approved, in whole euros."""
+    return balance - expense
+
+assert remaining_balance(100, 12) == 88
+assert remaining_balance(100, 100) == 0
+print("Both checks passed")</code></pre>
+    <p>An <code>assert</code> checks a claim and raises <code>AssertionError</code> if it is false. These two checks describe normal and exact-fit cases. Notice which decisions belong to the caller. The calculation can be tested directly because it returns a value. Printing, writing a file or changing a list are <strong>side effects</strong> you should state if the function performs them.</p>
+  </section>
+
   <section class="topic" id="topic-3">
     <h2>See which balance changes</h2>
     <p>Replace the file with this version. The caller and the function both use the name <code>balance</code>. Predict which line prints 100.</p>
@@ -108,6 +121,40 @@ print(updated)</code></pre>
     <p>Local scope applies to names. If you pass in a list and the function calls <code>append()</code> on it, the caller can see that change. You’ll explore this further in memory management.</p>
   </section>
 
+  <section class="topic" id="scope-rules">
+    <h2>Where Python looks for a name</h2>
+    <p>Inside a function, Python searches for an ordinary name in this order. The order is often called <strong>LEGB</strong>.</p>
+    <ol>
+      <li><strong>Local.</strong> Parameters and names assigned in the current function.</li>
+      <li><strong>Enclosing.</strong> Names in functions that surround this one, starting with the nearest.</li>
+      <li><strong>Global.</strong> Names defined at the top level of the current file.</li>
+      <li><strong>Built-in.</strong> Names Python supplies, such as <code>len</code>.</li>
+    </ol>
+    <pre><code data-language="python">currency = "EUR"
+
+def make_report():
+    source = "Payments"
+
+    def format_line(amount):
+        return f"{source}: {amount} {currency}"
+
+    return format_line(12)
+
+print(make_report())</code></pre>
+    <p>The output is <code>Payments: 12 EUR</code>. From inside <code>format_line()</code>, <code>amount</code> is local, <code>source</code> comes from the enclosing function and <code>currency</code> comes from the file. Each call gets its own local names.</p>
+    <details class="fde-setup-answer">
+      <summary>Why can assigning a name cause UnboundLocalError?</summary>
+    <pre><code data-language="python">balance = 100
+
+def charge():
+    print(balance)
+    balance = 88
+
+charge()</code></pre>
+      <p>The assignment makes <code>balance</code> local throughout <code>charge()</code>. The first line tries to read that local name before it has a value, so Python raises <code>UnboundLocalError</code>. Pass in the amount you need and return the update. <code>global</code> explicitly targets a name at file level. <code>nonlocal</code> explicitly targets an existing name in an enclosing function.</p>
+    </details>
+  </section>
+
   <section class="topic" id="topic-2">
     <h2>Choose a default the caller can override</h2>
     <p>A customer kickoff usually takes five minutes per data source. Put the usual value in the definition. Try both calls so you can see when Python uses the default.</p>
@@ -124,7 +171,20 @@ print(estimated_minutes(3, minutes_per_source=2))</code></pre>
     <p>The first call passes only the source count, so Python uses <code>5</code>. The second passes <code>2</code> for <code>minutes_per_source</code>. Put the required parameter before the one with a default in this definition. Positional arguments fill parameters in order. Keyword arguments choose a parameter by name, so <code>estimated_minutes(minutes_per_source=2, source_count=3)</code> also gives <code>6</code>.</p>
   </section>
 
-    <section class="topic" id="topic-5">
+    <section class="topic" id="argument-rules">
+    <h2>How arguments fill the parameters</h2>
+    <p>Python binds arguments to parameters before the body runs. A positional argument fills the next slot. A keyword argument fills a slot by name. If a required slot is empty or a slot gets two values, Python raises <code>TypeError</code>. Defaults are evaluated when the function is defined. That’s why a mutable default like <code>[]</code> can be shared across calls.</p>
+    <details class="fde-setup-answer">
+      <summary>Read / and * in a function signature</summary>
+    <pre><code data-language="python">def quote(minutes, /, rate=2, *, currency="EUR"):
+    return f"{minutes * rate} {currency}"
+
+print(quote(3, currency="USD"))</code></pre>
+      <p>This prints <code>6 USD</code>. Parameters before <code>/</code> only accept positional arguments. Parameters after the bare <code>*</code> only accept keyword arguments. Here <code>rate</code> accepts either. The markers are optional when defining your own functions. You’ll see them when reading some library signatures.</p>
+    </details>
+  </section>
+
+  <section class="topic" id="topic-5">
     <h2>Reuse the payment rules in a loop</h2>
     <p>Now separate the decision from the report. The function decides the status of one payment. The loop updates the balance and prints the results. Before running this version, predict what happens to the balance after the EUR 120 request.</p>
     <pre><code data-language="python">def payment_status(balance, amount):
