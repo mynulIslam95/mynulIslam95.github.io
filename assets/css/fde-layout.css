@@ -51,11 +51,18 @@
 }
 .fde-home .site-header a, .fde-home .site-header button { color: var(--th-text); }
 .fde-cover[hidden], .fde-roadmap[hidden] { display: none; }
+html:has(.fde-home .fde-cover:not([hidden])) {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+.fde-home:has(.fde-cover:not([hidden])) #main { padding: 4.25rem 0 0; }
+.fde-home:has(.fde-cover:not([hidden])) footer { display: none; }
 .fde-cover {
   display: grid;
   place-items: center;
-  min-height: 78svh;
-  padding: clamp(64px, 9vw, 126px) 24px;
+  box-sizing: border-box;
+  min-height: calc(100dvh - 4.25rem);
+  padding: clamp(10px, 3dvh, 40px) 24px;
   text-align: center;
   background: radial-gradient(ellipse at 50% 15%, var(--fde-active), transparent 64%);
   border-bottom: 1px solid var(--th-line);
@@ -70,9 +77,9 @@
   align-items: baseline;
   gap: .14em;
   color: var(--th-green);
-  font: 900 clamp(2.7rem, 10vw, 8.75rem)/.88 var(--fde-display);
+  font: 900 clamp(2rem, min(10vw, 21dvh), 8.75rem)/.88 var(--fde-display);
   letter-spacing: -.035em;
-  margin: 0 0 clamp(24px, 4vw, 48px) !important;
+  margin: 0 0 clamp(10px, min(4vw, 4dvh), 48px) !important;
 }
 .fde-wordmark span { text-shadow: 0 0 28px color-mix(in srgb, currentColor 48%, transparent); }
 .fde-wordmark em {
@@ -82,7 +89,7 @@
 }
 .fde-home main .fde-cover h1 {
   font-family: var(--fde-display) !important;
-  font-size: clamp(1.14rem, 5.05vw, 4.65rem) !important;
+  font-size: clamp(1rem, min(5.05vw, 11dvh), 4.65rem) !important;
   line-height: .98 !important;
   font-weight: 900 !important;
   letter-spacing: .015em !important;
@@ -109,7 +116,7 @@
 @keyframes fde-glow {
   50% { text-shadow: 0 0 18px currentColor, 0 0 48px color-mix(in srgb, currentColor 62%, transparent); }
 }
-.fde-actions { display: flex; justify-content: center; margin-top: clamp(36px, 6vw, 76px); }
+.fde-actions { display: flex; justify-content: center; margin-top: clamp(14px, min(6vw, 7dvh), 76px); }
 .fde-actions .fde-primary { padding-inline: 1.65rem; }
 .fde-launch[hidden] { display: none; }
 .fde-launch {
