@@ -1,0 +1,161 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>Transaction Tracker CLI | Learn with Mynul</title><meta name="description" content="Build and test a command-line tool that turns a transaction CSV into a JSON balance report."><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=2"><link rel="stylesheet" href="../../assets/css/fde-layout.css?v=19"></head><body class="bootcamp-thesis fde-docs"><div class="reading shell"><a class="fde-skip" href="#main">Skip to content</a><header class="fde-docs-header"><a class="fde-back-button" href="../python-engineering-module-1.html">Python Foundations</a><button class="theme-button" id="reading-theme" type="button" aria-label="Toggle light and dark theme">Light / Dark</button></header><div class="fde-docs-grid">
+<aside class="fde-lesson-menu">
+<p class="fde-lesson-menu-title">Python lessons</p>
+<nav id="lessons" aria-label="Python lessons" data-python-course>
+  <a href="../python-engineering-module-1.html">Module overview</a>
+  <ol>
+    <li><a href="setup.html">Python setup &amp; first program</a></li>
+    <li><a href="variables.html">Variables, data types &amp; strings</a></li>
+    <li><a href="lesson-1.html#topic-1">Operators, conditions &amp; loops</a></li>
+    <li><a href="lesson-3.html">Functions &amp; scope</a></li>
+    <li><a href="lesson-2.html#topic-1">Core data structures</a></li>
+    <li><a href="lesson-2.html#topic-3">Memory management fundamentals</a></li>
+    <li><a href="lesson-4.html">Object-oriented programming basics</a></li>
+    <li><a href="lesson-5.html#topic-1">Exception handling &amp; debugging</a></li>
+    <li><a href="lesson-5.html#topic-2">File I/O operations</a></li>
+      <li><a href="transaction-tracker.html" aria-current="page">Transaction Tracker CLI</a></li>
+  </ol>
+</nav></aside>
+<main id="main"><h1>Transaction Tracker CLI</h1>
+<section id="module-project" class="topic"><h2>Build the transaction tracker</h2><p>Apply the earlier lessons to a transaction tracker. The CLI reads a CSV and reports spending, credits, balance and rejected rows as JSON. This project can run synchronously.</p><h3>How does a row reach the report?</h3><ol><li>argparse reads the filename and opening amount from the terminal and passes them to main().</li><li>money_to_cents validates the opening amount and converts it to integer cents. load_report opens the file and checks the headers.</li><li>DictReader passes each row to summarize_rows. Validate the ID, kind and amount first.</li><li>Add new valid IDs to the seen set. Debits increase spending and credits increase the received total.</li><li>Invalid and duplicate rows leave the total alone. Record each rejected row’s number and reason.</li><li>Compute opening minus spending plus credits. The JSON includes both the summary and the rejected rows.</li></ol><p>Separate parsing and calculation from disk access so you can test the money parser and fake rows by themselves.</p><h3>Input contract</h3><p>Require id, kind and amount headers. Use unique IDs, debit or credit kinds and positive whole-cent euro amounts. Opening balance may be zero. This historical report allows a negative final balance. Duplicate detection applies within one input file.</p><pre><code data-language="csv">id,kind,amount
+T1,debit,12.50
+T2,debit,7.25
+T3,credit,20.00
+T4,debit,oops
+T1,debit,12.50
+</code></pre><p>Try implementing it first. Expect 3 accepted rows, spent_cents 1975, received_cents 2000 and balance_cents 10025. Row 5 has an invalid amount and row 6 has a duplicate ID.</p><details><summary>Project Hint</summary><div><p>Build the money parser, row validator, single-pass summary, file adapter and CLI. Reject a malformed header at the file level and an invalid amount at the row level.</p></div></details><details><summary>See Project Solution: tracker.py</summary><div><pre><code data-language="python">&quot;&quot;&quot;CSV transaction report. Run: python tracker.py transactions.csv --opening 100.00&quot;&quot;&quot;
+import argparse
+import csv
+import json
+from decimal import Decimal, InvalidOperation
+from pathlib import Path
+
+
+def money_to_cents(raw: str, allow_zero: bool = False) -&gt; int:
+    text = raw.strip()
+    if not text or len(text) &gt; 30:
+        raise ValueError(&quot;Invalid amount length&quot;)
+    try:
+        value = Decimal(text)
+    except InvalidOperation as error:
+        raise ValueError(&quot;Invalid decimal amount&quot;) from error
+    if not value.is_finite() or value &lt; 0 or value &gt; Decimal(&quot;1000000&quot;):
+        raise ValueError(&quot;Amount outside allowed range&quot;)
+    if value == 0 and not allow_zero:
+        raise ValueError(&quot;Transaction amount must be positive&quot;)
+    cents = value * 100
+    if cents != cents.to_integral_value():
+        raise ValueError(&quot;Fractional cents are not allowed&quot;)
+    return int(cents)
+
+
+def summarize_rows(rows, opening_cents: int) -&gt; dict:
+    if opening_cents &lt; 0:
+        raise ValueError(&quot;Opening balance cannot be negative&quot;)
+    spent = 0
+    received = 0
+    accepted = 0
+    seen = set()
+    rejected = []
+    for line, row in enumerate(rows, start=2):
+        try:
+            transaction_id = (row.get(&quot;id&quot;) or &quot;&quot;).strip()
+            kind = (row.get(&quot;kind&quot;) or &quot;&quot;).strip().casefold()
+            if not transaction_id or kind not in {&quot;debit&quot;, &quot;credit&quot;}:
+                raise ValueError(&quot;ID and debit/credit kind required&quot;)
+            amount = money_to_cents(row.get(&quot;amount&quot;) or &quot;&quot;)
+            if transaction_id in seen:
+                raise ValueError(&quot;Duplicate transaction ID&quot;)
+        except ValueError as error:
+            rejected.append({&quot;row&quot;: line, &quot;reason&quot;: str(error)})
+            continue
+        seen.add(transaction_id)
+        accepted += 1
+        if kind == &quot;debit&quot;:
+            spent += amount
+        else:
+            received += amount
+    return {
+        &quot;currency&quot;: &quot;EUR&quot;,
+        &quot;accepted&quot;: accepted,
+        &quot;spent_cents&quot;: spent,
+        &quot;received_cents&quot;: received,
+        &quot;balance_cents&quot;: opening_cents - spent + received,
+        &quot;rejected&quot;: rejected,
+    }
+
+
+def load_report(path: Path, opening_cents: int) -&gt; dict:
+    with path.open(encoding=&quot;utf-8&quot;, newline=&quot;&quot;) as handle:
+        reader = csv.DictReader(handle)
+        required = {&quot;id&quot;, &quot;kind&quot;, &quot;amount&quot;}
+        if not required.issubset(reader.fieldnames or []):
+            raise ValueError(&quot;CSV headers must include id, kind, amount&quot;)
+        return summarize_rows(reader, opening_cents)
+
+
+def main() -&gt; None:
+    parser = argparse.ArgumentParser(description=&quot;Build a transaction report&quot;)
+    parser.add_argument(&quot;csv_path&quot;, type=Path)
+    parser.add_argument(&quot;--opening&quot;, default=&quot;0.00&quot;)
+    args = parser.parse_args()
+    try:
+        report = load_report(args.csv_path, money_to_cents(args.opening, allow_zero=True))
+    except (OSError, UnicodeError, csv.Error, ValueError) as error:
+        parser.exit(2, f&quot;Import failed: {error}\n&quot;)
+    print(json.dumps(report, ensure_ascii=False, indent=2, allow_nan=False))
+
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre></div></details><details><summary>See Project Tests: test_tracker.py</summary><div><pre><code data-language="python">import csv
+from io import StringIO
+
+import pytest
+
+from tracker import load_report, money_to_cents, summarize_rows
+
+
+def test_report_separates_spending_and_credits():
+    rows = csv.DictReader(StringIO(&quot;id,kind,amount\nT1,debit,12.50\nT2,debit,7.25\nT3,credit,20.00\n&quot;))
+    report = summarize_rows(rows, 10000)
+    assert report[&quot;spent_cents&quot;] == 1975
+    assert report[&quot;received_cents&quot;] == 2000
+    assert report[&quot;balance_cents&quot;] == 10025
+
+
+def test_bad_and_duplicate_rows_are_reported():
+    rows = [
+        {&quot;id&quot;: &quot;A&quot;, &quot;kind&quot;: &quot;debit&quot;, &quot;amount&quot;: &quot;1.00&quot;},
+        {&quot;id&quot;: &quot;A&quot;, &quot;kind&quot;: &quot;debit&quot;, &quot;amount&quot;: &quot;1.00&quot;},
+        {&quot;id&quot;: &quot;B&quot;, &quot;kind&quot;: &quot;debit&quot;, &quot;amount&quot;: &quot;NaN&quot;},
+    ]
+    report = summarize_rows(rows, 0)
+    assert report[&quot;accepted&quot;] == 1
+    assert report[&quot;spent_cents&quot;] == 100
+    assert [item[&quot;row&quot;] for item in report[&quot;rejected&quot;]] == [3, 4]
+
+
+@pytest.mark.parametrize(&quot;raw&quot;, [&quot;&quot;, &quot;NaN&quot;, &quot;Infinity&quot;, &quot;-1&quot;, &quot;1.001&quot;, &quot;1000001&quot;, &quot;oops&quot;])
+def test_invalid_amount(raw):
+    with pytest.raises(ValueError):
+        money_to_cents(raw)
+
+
+def test_zero_opening_and_empty_report():
+    assert money_to_cents(&quot;0&quot;, allow_zero=True) == 0
+    assert summarize_rows([], 500)[&quot;balance_cents&quot;] == 500
+    with pytest.raises(ValueError):
+        money_to_cents(&quot;0&quot;)
+
+
+def test_load_and_missing_headers(tmp_path):
+    path = tmp_path / &quot;transactions.csv&quot;
+    path.write_text(&quot;id,kind,amount\nT1,debit,1.00\n&quot;, encoding=&quot;utf-8&quot;)
+    assert load_report(path, 200)[&quot;balance_cents&quot;] == 100
+    path.write_text(&quot;id,amount\nT1,1.00\n&quot;, encoding=&quot;utf-8&quot;)
+    with pytest.raises(ValueError, match=&quot;headers&quot;):
+        load_report(path, 0)
+</code></pre></div></details><h3>Check the numbers</h3><p>The opening balance is 10000 cents. T1 and T2 debit 1250 and 725 cents, totaling 1975. T3 credits 2000 cents. The final balance is 10025 cents. Neither rejected row changes the total.</p><h3>Run locally</h3><pre><code data-language="shell">python tracker.py transactions.csv --opening 100.00
+python -m pytest -q test_tracker.py
+</code></pre><p>Save the sample as <code>transactions.csv</code>, the implementation as <code>tracker.py</code> and the tests as <code>test_tracker.py</code> in the same directory. Activate the environment from the <a href="lesson-7.html#topic-4">virtual environments lesson</a>. A missing file exits with code 2. A valid file can produce a successful report with rejected rows, so check the rejection count.</p><p><a download href="files/tracker.py">Download tracker.py</a> · <a download href="files/test_tracker.py">Download test_tracker.py</a> · <a download href="files/transactions.csv">Download sample CSV</a></p><h3>What counts as done?</h3><ul><li>Explain every number in the sample output.</li><li>Check empty files, missing headers, repeated IDs, NaN, zero, negatives and fractional cents.</li><li>Document setup, usage, tests and known limits in the README.</li><li>Record one bug, how you reproduced it, how you fixed it and the regression test.</li><li>Close the reference solution and write the parser or summary for a different input.</li></ul></section></main><aside class="fde-outline" hidden></aside></div><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script><script src="../../assets/js/fde-layout.js?v=25" defer></script></body></html>
