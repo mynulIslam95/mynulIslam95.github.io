@@ -16,6 +16,8 @@
   --fde-active: #233b31;
   --fde-button-bg: #a9e6c6;
   --fde-button-text: #11251a;
+  --fde-hover-bg: #8b4518;
+  --fde-hover-text: #fff4e8;
   font-family: var(--th-serif);
 }
 [data-theme="light"] .fde-home.bootcamp, [data-theme="light"] .fde-docs.bootcamp-thesis {
@@ -44,7 +46,10 @@
   font-weight: 700;
   text-decoration: none;
 }
-.fde-primary:hover { filter: brightness(.9); }
+.fde-primary:hover {
+  background: var(--fde-hover-bg);
+  color: var(--fde-hover-text) !important;
+}
 .fde-home .site-header {
   background: var(--th-bg);
   border-bottom: 1px solid var(--th-line);
@@ -231,7 +236,19 @@ html:has(.fde-home .fde-cover[hidden]) { overscroll-behavior-y: none; }
   border-radius: 11px;
   text-decoration: none;
 }
-.fde-milestones .fde-step-link:hover { background: color-mix(in srgb, var(--th-title) 4%, transparent); }
+.fde-milestones > li:not(.is-current) .fde-step-link:hover {
+  background: var(--fde-hover-bg);
+}
+.fde-milestones > li:not(.is-current) .fde-step-link:hover :is(.fde-step-name, .fde-project-label, .fde-step-number) {
+  color: var(--fde-hover-text);
+}
+.fde-milestones > li:not(.is-current) .fde-step-link:hover .fde-step-number {
+  background: #643013;
+  border-color: #d68b58;
+}
+.fde-milestones > li:not(.is-current) .fde-step-link:hover::after {
+  border-color: var(--fde-hover-text);
+}
 .fde-milestones .fde-step-link::after {
   content: '';
   width: 7px;
@@ -319,7 +336,11 @@ html:has(.fde-home .fde-cover[hidden]) { overscroll-behavior-y: none; }
   font-size: .875rem;
   font-weight: 700;
 }
-.fde-docs .reading .fde-back-button:hover { background: #19469a; }
+.fde-docs .reading .fde-back-button:hover,
+.fde-docs .reading .theme-button:hover {
+  background: var(--fde-hover-bg);
+  color: var(--fde-hover-text);
+}
 .fde-docs .reading main { padding: 0 0 44px; }
 .fde-docs .reading h1 { font-weight: 700 !important; line-height: 1.13 !important; text-wrap: pretty; }
 .fde-docs .reading .topic h2 { color: var(--th-title) !important; }
@@ -354,7 +375,12 @@ html:has(.fde-home .fde-cover[hidden]) { overscroll-behavior-y: none; }
   text-decoration: none;
   border-radius: 5px;
 }
-.fde-lesson-menu a:hover, .fde-outline a:hover, .fde-lesson-menu a[aria-current], .fde-outline a[aria-current] {
+.fde-lesson-menu a:not([aria-current]):hover,
+.fde-outline a:not([aria-current]):hover {
+  color: var(--fde-hover-text);
+  background: var(--fde-hover-bg);
+}
+.fde-lesson-menu a[aria-current], .fde-outline a[aria-current] {
   color: var(--th-green);
   background: var(--fde-active);
 }
