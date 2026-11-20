@@ -71,13 +71,6 @@
     compact.addEventListener('change', sizeMenu);
   }
 
-  // A roadmap link may target a topic inside two collapsed disclosures.
-  roadmap?.addEventListener('click', (event) => {
-    const link = event.target.closest('a');
-    const target = link && document.getElementById(link.hash.slice(1));
-    if (target instanceof HTMLDetailsElement) target.open = true;
-  });
-
   const headings = outline ? [...document.querySelectorAll(
     'main h2[id], main section[id] > h2, main .debug-box[id] > h2'
   )] : [];
@@ -106,7 +99,11 @@
     const roadmapMarker = innerHeight * 0.68;
     const roadmapVisible = Boolean(roadmap?.getClientRects().length);
     const entered = (element) => roadmapVisible && element.getBoundingClientRect().top <= roadmapMarker;
-    milestones.forEach((milestone) => milestone.classList.toggle('is-reached', entered(milestone)));
+    const current = milestones.findLastIndex(entered);
+    milestones.forEach((milestone, index) => {
+      milestone.classList.toggle('is-reached', index <= current);
+      milestone.classList.toggle('is-current', index === current);
+    });
 
     const active = sections.findLastIndex((section) => section.getBoundingClientRect().top <= 150);
     links.forEach((link, index) => {
@@ -120,6 +117,7 @@
   }
 
   if (milestones.length || sections.length) {
+    roadmap?.addEventListener('toggle', scheduleUpdate, true);
     addEventListener('scroll', scheduleUpdate, { passive: true });
     addEventListener('resize', scheduleUpdate);
     addEventListener('pageshow', scheduleUpdate);
