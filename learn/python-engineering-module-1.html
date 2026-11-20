@@ -40,6 +40,7 @@
   <h1>Python for Forward Deployed Engineers</h1>
   <p>Write your first Python script, turn customer data into a usable report and build a service checker that can handle slow or failed requests.</p>
   <p><a class="fde-primary" href="python-foundations/setup.html">Start learning Python</a></p>
+  <p><a href="#study-route">Study route</a> · <a href="#lecture-coverage">Lecture and assignment map</a></p>
   <section id="python-topics">
     <h2>What you’ll build</h2>
     <ul>
@@ -48,8 +49,37 @@
       <li><a href="python-foundations/integration-checker.html">Customer Integration Checker</a>, a project you can start with functions and build through testing, concurrency and customer handoff.</li>
     </ul>
   </section>
+  <section id="study-route">
+    <h2>Study route and checkpoints</h2>
+    <ol>
+      <li><strong>Get moving.</strong> Start with <a href="python-foundations/setup.html">setup</a> and <a href="python-foundations/variables.html">variables</a>, then practice <a href="python-foundations/lesson-1.html#topic-1">conditions and loops</a>. Close the answer and trace a payment at the exact balance.</li>
+      <li><strong>Structure a small program.</strong> Learn <a href="python-foundations/lesson-3.html">functions</a>, <a href="python-foundations/lesson-2.html#topic-1">collections</a> and <a href="python-foundations/lesson-4.html">objects</a>. Explain a returned value and fix a shared-list bug.</li>
+      <li><strong>Handle customer data.</strong> Do the worked labs for <a href="python-foundations/lesson-5.html#lecture-worked-lab">exceptions and files</a>, <a href="python-foundations/lesson-6.html#lecture-worked-lab">generators</a>, <a href="python-foundations/lesson-7.html#lecture-worked-lab">modules</a> and <a href="python-foundations/lesson-8.html#lecture-worked-lab">testing</a>. Prove a bad record is reported and an off-by-one bug fails a test.</li>
+      <li><strong>Run concurrent checks and hand them over.</strong> Work through <a href="python-foundations/lesson-9.html#topic-1">async and concurrency</a> and the <a href="fde-textbook/concurrency-lab.html">worker-pool lab</a>. Finish with the <a href="python-foundations/integration-checker.html">Customer Integration Checker</a> and explain its partial results to the next engineer.</li>
+    </ol>
+    <p>Before opening a solution, predict the output or error. Run the code, compare the result and use the line-by-line walkthrough when a step is unclear. Rerun it with one changed input.</p>
+  </section>
+  <section id="lecture-coverage">
+    <h2>Lecture and assignment map</h2>
+    <p>Times are approximate checkpoints in the nine supplied transcripts. Use them to revisit the live demonstration alongside the tested course example.</p>
+    <div class="table-scroll"><table>
+      <thead><tr><th scope="col">Lecture</th><th scope="col">Demonstration or assignment</th><th scope="col">Where to practice</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">1</th><td><code>uv</code> and environments from about 00:50. Jupyter setup discussion around 03:08.</td><td><a href="python-foundations/setup.html">Run a script, create a project and match the Jupyter kernel</a></td></tr>
+        <tr><th scope="row">2</th><td>Variables around 00:18, precedence around 02:17 and tuples around 02:29.</td><td><a href="python-foundations/variables.html">Variables and strings</a>, <a href="python-foundations/lesson-1.html#topic-1">operators</a> and <a href="python-foundations/lesson-2.html#topic-1">collections</a></td></tr>
+        <tr><th scope="row">3</th><td>Formatting around 03:01. Homework on hashing, control flow and basic functions around 03:17.</td><td><a href="python-foundations/lesson-2.html#hashable-keys">Hashable keys</a>, <a href="python-foundations/lesson-1.html#first-loop">loops</a> and <a href="python-foundations/lesson-3.html#topic-1">functions</a></td></tr>
+        <tr><th scope="row">4</th><td>OOP recall around 00:07. Homework discussion around 03:25 on OOP, files, exceptions, comprehensions and built-ins.</td><td><a href="python-foundations/lesson-4.html">Ticket design and worked cases</a>, <a href="python-foundations/lesson-5.html#lecture-worked-lab">CSV intake</a> and <a href="python-foundations/lesson-6.html">Pythonic code</a></td></tr>
+        <tr><th scope="row">5</th><td>Installing into an environment with <code>uv</code> around 00:56. Generators and <code>yield</code> around 02:18–02:22.</td><td><a href="python-foundations/lesson-7.html#uv-project-lab">Dependencies</a> and <a href="python-foundations/lesson-6.html#lecture-worked-lab">trace a lazy page stream</a></td></tr>
+        <tr><th scope="row">6</th><td>Exception handling early in class, <code>finally</code> around 00:33 and file practice discussion around 01:04.</td><td><a href="python-foundations/lesson-5.html">Exceptions, paths, CSV and JSON</a></td></tr>
+        <tr><th scope="row">7</th><td>Threads around 00:09. Modules and packages around 02:09. Decorator homework discussed near 04:43.</td><td><a href="python-foundations/lesson-7.html#lecture-worked-lab">Package and decorator lab</a>, <a href="fde-textbook/concurrency-lab.html">worker pools</a> and <a href="python-foundations/lesson-8.html#lecture-worked-lab">testing</a></td></tr>
+        <tr><th scope="row">8</th><td>Process pool choice around 00:17, <code>gather()</code> around 01:41 and HTTPX around 03:06.</td><td><a href="python-foundations/lesson-9.html#topic-1">Compare sequential and concurrent checks</a> and <a href="python-foundations/lesson-9.html#topic-4">async HTTP, failures and cancellation</a></td></tr>
+        <tr><th scope="row">9</th><td>Custom executors from about 00:18, CPU-bound process example around 00:51. The lecture switches to Linux around 01:06.</td><td><a href="python-foundations/lesson-9.html#topic-5">Offload blocking code</a> and <a href="python-foundations/lesson-9.html#practice-2">workplace concurrency drills</a>. Linux is taught in Section 2.</td></tr>
+      </tbody>
+    </table></div>
+  </section>
   <section id="concurrency">
     <h2>Already comfortable with Python?</h2>
     <p><a href="python-foundations/lesson-9.html#topic-1">Start with concurrency</a> to compare sequential code, asyncio, worker threads and processes.</p>
   </section>
 </main><aside class="fde-outline" hidden></aside></div><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script><script>(function(){var h=location.hash;var m=h.match(/^#l([1-9])$/);if(m)location.replace('python-foundations/lesson-'+m[1]+'.html');else if(h==='#project'||h==='#exam')location.replace('python-foundations/transaction-tracker.html#module-project');else if(h==='#fde-1-topic-2')location.replace('python-foundations/lesson-9.html#topic-1');else if(h==='#fde-1-topic-3')location.replace('fde-textbook/linux-for-engineers.html');})();</script><script src="../assets/js/fde-layout.js?v=25" defer></script></body></html>
+

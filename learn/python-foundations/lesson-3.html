@@ -361,7 +361,7 @@ T2
 
 
 print(can_launch(True, False))
-print(can_launch(True, True))</code></pre>
+print(can_launch(True, True))</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code>def can_launch(owner_approved, review_passed):</code><p>Define the function <code>can_launch</code> with inputs <code>owner_approved, review_passed</code>.</p></li><li value="2"><code># Require both approvals for every caller.</code><p>Comment for the reader. Python skips this line.</p></li><li value="3"><code>return owner_approved and review_passed</code><p>Give owner_approved and review_passed back to the caller.</p></li><li value="6"><code>print(can_launch(True, False))</code><p>Display call can_launch with True, False.</p></li><li value="7"><code>print(can_launch(True, True))</code><p>Display call can_launch with True, True.</p></li></ol></div></details>
     <p><strong>Expected output</strong></p>
     <pre><code data-language="text">False
 True</code></pre>
@@ -376,7 +376,7 @@ True</code></pre>
 
 
 print(audit_status(0, None))
-print(audit_status(0, &quot;007&quot;))</code></pre>
+print(audit_status(0, &quot;007&quot;))</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code>def audit_status(checks_left, review_id):</code><p>Define the function <code>audit_status</code> with inputs <code>checks_left, review_id</code>.</p></li><li value="2"><code># A missing ID means the review is still pending.</code><p>Comment for the reader. Python skips this line.</p></li><li value="3"><code>if checks_left == 0 and review_id is not None:</code><p>Run the indented branch when <code>checks_left == 0 and review_id is not None</code> is truthy.</p></li><li value="4"><code>return &quot;Ready to close&quot;</code><p>Give &#x27;Ready to close&#x27; back to the caller.</p></li><li value="5"><code>return &quot;Keep open&quot;</code><p>Give &#x27;Keep open&#x27; back to the caller.</p></li><li value="8"><code>print(audit_status(0, None))</code><p>Display call audit_status with 0, None.</p></li><li value="9"><code>print(audit_status(0, &quot;007&quot;))</code><p>Display call audit_status with 0, &#x27;007&#x27;.</p></li></ol></div></details>
     <p><strong>Expected output</strong></p>
     <pre><code data-language="text">Keep open
 Ready to close</code></pre>
@@ -389,7 +389,7 @@ Ready to close</code></pre>
 
 
 print(memory_left(8, 6))
-print(memory_left(8, 6, runtime_gb=1))</code></pre>
+print(memory_left(8, 6, runtime_gb=1))</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code>def memory_left(available_gb, model_gb, runtime_gb=2):</code><p>Define the function <code>memory_left</code> with inputs <code>available_gb, model_gb, runtime_gb</code>.</p></li><li value="2"><code># Subtract both requirements from the available memory.</code><p>Comment for the reader. Python skips this line.</p></li><li value="3"><code>return available_gb - model_gb - runtime_gb</code><p>Subtract runtime gb from available_gb - model_gb and give the result back to the caller.</p></li><li value="6"><code>print(memory_left(8, 6))</code><p>Display call memory_left with 8, 6.</p></li><li value="7"><code>print(memory_left(8, 6, runtime_gb=1))</code><p>Display call memory_left with 8, 6.</p></li></ol></div></details>
     <p><strong>Expected output</strong></p>
     <pre><code data-language="text">0
 1</code></pre>
@@ -402,7 +402,7 @@ print(memory_left(8, 6, runtime_gb=1))</code></pre>
 
 
 print(can_run_locally(20))
-print(can_run_locally(20, minimum_percent=25))</code></pre>
+print(can_run_locally(20, minimum_percent=25))</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code>def can_run_locally(battery_percent, minimum_percent=20):</code><p>Define the function <code>can_run_locally</code> with inputs <code>battery_percent, minimum_percent</code>.</p></li><li value="2"><code># The exact cutoff is allowed.</code><p>Comment for the reader. Python skips this line.</p></li><li value="3"><code>return battery_percent &gt;= minimum_percent</code><p>Give battery_percent &gt;= minimum_percent back to the caller.</p></li><li value="6"><code>print(can_run_locally(20))</code><p>Display call can_run_locally with 20.</p></li><li value="7"><code>print(can_run_locally(20, minimum_percent=25))</code><p>Display call can_run_locally with 20.</p></li></ol></div></details>
     <p><strong>Expected output</strong></p>
     <pre><code data-language="text">True
 False</code></pre>
@@ -415,7 +415,7 @@ False</code></pre>
 
 
 print(needs_review(92, True))
-print(needs_review(80, False))</code></pre>
+print(needs_review(80, False))</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code>def needs_review(confidence_percent, extraction_failed):</code><p>Define the function <code>needs_review</code> with inputs <code>confidence_percent, extraction_failed</code>.</p></li><li value="2"><code># A failed extraction needs review regardless of confidence.</code><p>Comment for the reader. Python skips this line.</p></li><li value="3"><code>return extraction_failed or confidence_percent &lt; 80</code><p>Give extraction_failed or confidence_percent &lt; 80 back to the caller.</p></li><li value="6"><code>print(needs_review(92, True))</code><p>Display call needs_review with 92, True.</p></li><li value="7"><code>print(needs_review(80, False))</code><p>Display call needs_review with 80, False.</p></li></ol></div></details>
     <p><strong>Expected output</strong></p>
     <pre><code data-language="text">True
 False</code></pre>
@@ -428,7 +428,7 @@ False</code></pre>
 
 
 print(follow_up_allowed(90, False))
-print(follow_up_allowed(70, True))</code></pre>
+print(follow_up_allowed(70, True))</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code>def follow_up_allowed(score, consent):</code><p>Define the function <code>follow_up_allowed</code> with inputs <code>score, consent</code>.</p></li><li value="2"><code># The score matters only when the lead has consented.</code><p>Comment for the reader. Python skips this line.</p></li><li value="3"><code>return consent and score &gt;= 70</code><p>Give consent and score &gt;= 70 back to the caller.</p></li><li value="6"><code>print(follow_up_allowed(90, False))</code><p>Display call follow_up_allowed with 90, False.</p></li><li value="7"><code>print(follow_up_allowed(70, True))</code><p>Display call follow_up_allowed with 70, True.</p></li></ol></div></details>
     <p><strong>Expected output</strong></p>
     <pre><code data-language="text">False
 True</code></pre>
@@ -443,7 +443,7 @@ True</code></pre>
 
 
 print(booking_message(None))
-print(booking_message(&quot;0042&quot;))</code></pre>
+print(booking_message(&quot;0042&quot;))</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code>def booking_message(booking_id):</code><p>Define the function <code>booking_message</code> with inputs <code>booking_id</code>.</p></li><li value="2"><code># Keep identifiers like 0042 intact in the message.</code><p>Comment for the reader. Python skips this line.</p></li><li value="3"><code>if booking_id is None:</code><p>Run the indented branch when <code>booking_id is None</code> is truthy.</p></li><li value="4"><code>return &quot;Send to booking team&quot;</code><p>Give &#x27;Send to booking team&#x27; back to the caller.</p></li><li value="5"><code>return f&quot;Confirm booking {booking_id}&quot;</code><p>Give text formatted with booking id back to the caller.</p></li><li value="8"><code>print(booking_message(None))</code><p>Display call booking_message with None.</p></li><li value="9"><code>print(booking_message(&quot;0042&quot;))</code><p>Display call booking_message with &#x27;0042&#x27;.</p></li></ol></div></details>
     <p><strong>Expected output</strong></p>
     <pre><code data-language="text">Send to booking team
 Confirm booking 0042</code></pre>
@@ -458,7 +458,7 @@ total_mb = 0
 for seconds in [3, 7]:
     # Add each returned estimate to the batch total.
     total_mb += estimated_size_mb(seconds)
-print(f&quot;Estimated size: {total_mb} MB&quot;)</code></pre>
+print(f&quot;Estimated size: {total_mb} MB&quot;)</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code>def estimated_size_mb(seconds, mb_per_second=2):</code><p>Define the function <code>estimated_size_mb</code> with inputs <code>seconds, mb_per_second</code>.</p></li><li value="2"><code>return seconds * mb_per_second</code><p>Multiply seconds by mb per second and give the result back to the caller.</p></li><li value="5"><code>total_mb = 0</code><p>Store 0 in <code>total_mb</code>.</p></li><li value="6"><code>for seconds in [3, 7]:</code><p>Take one item from <code>[3, 7]</code> at a time and bind it to <code>seconds</code> for this turn.</p></li><li value="7"><code># Add each returned estimate to the batch total.</code><p>Comment for the reader. Python skips this line.</p></li><li value="8"><code>total_mb += estimated_size_mb(seconds)</code><p>Update <code>total_mb</code> in place where the type permits, then retain the result under that name.</p></li><li value="9"><code>print(f&quot;Estimated size: {total_mb} MB&quot;)</code><p>Display text formatted with total mb.</p></li></ol></div></details>
     <p><strong>Expected output</strong></p>
     <pre><code data-language="text">Estimated size: 20 MB</code></pre>
     </details>
@@ -477,7 +477,7 @@ print(f&quot;Estimated size: {total_mb} MB&quot;)</code></pre>
 
 
 print(missing_rows(80, 79))
-print(missing_rows(80, 81))</code></pre>
+print(missing_rows(80, 81))</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code>def missing_rows(expected, received):</code><p>Define the function <code>missing_rows</code> with inputs <code>expected, received</code>.</p></li><li value="2"><code># Extra rows do not count as missing rows.</code><p>Comment for the reader. Python skips this line.</p></li><li value="3"><code>if received &gt;= expected:</code><p>Run the indented branch when <code>received &gt;= expected</code> is truthy.</p></li><li value="4"><code>return 0</code><p>Give 0 back to the caller.</p></li><li value="5"><code>return expected - received</code><p>Subtract received from expected and give the result back to the caller.</p></li><li value="8"><code>print(missing_rows(80, 79))</code><p>Display call missing_rows with 80, 79.</p></li><li value="9"><code>print(missing_rows(80, 81))</code><p>Display call missing_rows with 80, 81.</p></li></ol></div></details>
     <p><strong>Expected output</strong></p>
     <pre><code data-language="text">1
 0</code></pre>
@@ -494,7 +494,7 @@ print(missing_rows(80, 81))</code></pre>
 # Store the first result so it can be added to the second.
 morning = review_minutes(3)
 afternoon = review_minutes(2, minutes_per_item=5)
-print(morning + afternoon)</code></pre>
+print(morning + afternoon)</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code>def review_minutes(items, minutes_per_item=4):</code><p>Define the function <code>review_minutes</code> with inputs <code>items, minutes_per_item</code>.</p></li><li value="2"><code>return items * minutes_per_item</code><p>Multiply items by minutes per item and give the result back to the caller.</p></li><li value="5"><code># Store the first result so it can be added to the second.</code><p>Comment for the reader. Python skips this line.</p></li><li value="6"><code>morning = review_minutes(3)</code><p>For <code>morning</code>, call review_minutes with 3 and store the result.</p></li><li value="7"><code>afternoon = review_minutes(2, minutes_per_item=5)</code><p>For <code>afternoon</code>, call review_minutes with 2 and store the result.</p></li><li value="8"><code>print(morning + afternoon)</code><p>Display add morning to afternoon.</p></li></ol></div></details>
     <p><strong>Expected output</strong></p>
     <pre><code data-language="text">22</code></pre>
     </details>
@@ -513,7 +513,7 @@ print(morning + afternoon)</code></pre>
 
 
 print(count_blocked([True, False, True]))
-print(count_blocked([]))</code></pre>
+print(count_blocked([]))</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code>def count_blocked(blocked_flags):</code><p>Define the function <code>count_blocked</code> with inputs <code>blocked_flags</code>.</p></li><li value="2"><code># Start fresh for each queue.</code><p>Comment for the reader. Python skips this line.</p></li><li value="3"><code>count = 0</code><p>Store 0 in <code>count</code>.</p></li><li value="4"><code>for blocked in blocked_flags:</code><p>Take one item from <code>blocked_flags</code> at a time and bind it to <code>blocked</code> for this turn.</p></li><li value="5"><code>if blocked:</code><p>Run the indented branch when <code>blocked</code> is truthy.</p></li><li value="6"><code>count += 1</code><p>Update <code>count</code> in place where the type permits, then retain the result under that name.</p></li><li value="7"><code>return count</code><p>Give count back to the caller.</p></li><li value="10"><code>print(count_blocked([True, False, True]))</code><p>Display call count_blocked with [True, False, True].</p></li><li value="11"><code>print(count_blocked([]))</code><p>Display call count_blocked with [].</p></li></ol></div></details>
     <p><strong>Expected output</strong></p>
     <pre><code data-language="text">2
 0</code></pre>
@@ -533,7 +533,7 @@ print(count_blocked([]))</code></pre>
 
 
 print(choose_queue(True, True))
-print(choose_queue(False, True))</code></pre>
+print(choose_queue(False, True))</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code>def choose_queue(outage, billing):</code><p>Define the function <code>choose_queue</code> with inputs <code>outage, billing</code>.</p></li><li value="2"><code># Returning early leaves the function immediately.</code><p>Comment for the reader. Python skips this line.</p></li><li value="3"><code>if outage:</code><p>Run the indented branch when <code>outage</code> is truthy.</p></li><li value="4"><code>return &quot;incident&quot;</code><p>Give &#x27;incident&#x27; back to the caller.</p></li><li value="5"><code>if billing:</code><p>Run the indented branch when <code>billing</code> is truthy.</p></li><li value="6"><code>return &quot;billing&quot;</code><p>Give &#x27;billing&#x27; back to the caller.</p></li><li value="7"><code>return &quot;general&quot;</code><p>Give &#x27;general&#x27; back to the caller.</p></li><li value="10"><code>print(choose_queue(True, True))</code><p>Display call choose_queue with True, True.</p></li><li value="11"><code>print(choose_queue(False, True))</code><p>Display call choose_queue with False, True.</p></li></ol></div></details>
     <p><strong>Expected output</strong></p>
     <pre><code data-language="text">incident
 billing</code></pre>
@@ -553,7 +553,7 @@ billing</code></pre>
 old = [&quot;received&quot;]
 print(append_event(&quot;validated&quot;, old))
 print(old)
-print(append_event(&quot;new&quot;))</code></pre>
+print(append_event(&quot;new&quot;))</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code>def append_event(event, history=None):</code><p>Define the function <code>append_event</code> with inputs <code>event, history</code>.</p></li><li value="2"><code># Copy the existing list before updating it.</code><p>Comment for the reader. Python skips this line.</p></li><li value="3"><code>result = [] if history is None else history.copy()</code><p>Store [] if history is None else history.copy() in <code>result</code>.</p></li><li value="4"><code>result.append(event)</code><p>Append event to result in place.</p></li><li value="5"><code>return result</code><p>Give result back to the caller.</p></li><li value="8"><code>old = [&quot;received&quot;]</code><p>Store the ordered list shown in <code>old</code>.</p></li><li value="9"><code>print(append_event(&quot;validated&quot;, old))</code><p>Display call append_event with &#x27;validated&#x27;, old.</p></li><li value="10"><code>print(old)</code><p>Display old.</p></li><li value="11"><code>print(append_event(&quot;new&quot;))</code><p>Display call append_event with &#x27;new&#x27;.</p></li></ol></div></details>
     <p><strong>Expected output</strong></p>
     <pre><code data-language="text">[&#x27;received&#x27;, &#x27;validated&#x27;]
 [&#x27;received&#x27;]
@@ -663,3 +663,4 @@ Second ticket: [&#x27;urgent&#x27;]</code></pre>
 
   <nav class="lesson-nav" aria-label="Lesson navigation"><a href="lesson-1.html#topic-1">Previous: Operators, conditions &amp; loops</a><a href="lesson-2.html#topic-1">Next: Core data structures</a></nav>
 </main><aside class="fde-outline" hidden></aside></div><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script><script src="../../assets/js/fde-layout.js?v=25" defer></script></body></html>
+

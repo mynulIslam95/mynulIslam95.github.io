@@ -124,6 +124,13 @@ print(f"{customer} | {estimated_minutes:.1f} minutes")</code></pre>
     <p><code>:.1f</code> displays one decimal place. Change it to <code>:.2f</code> and predict the output before running it. The displayed result becomes <code>7.50</code>. The value stored in <code>estimated_minutes</code> remains <code>7.5</code>.</p>
   </section>
 
+  <details><summary>Optional homework: compare f-strings with str.format()</summary><div>
+<p>You may see <code>str.format()</code> in existing code. The placeholder <code>{:.1f}</code> uses the first supplied argument and shows one decimal place, just like the f-string above.</p>
+<pre><code data-language="python">print("Northwind | {:.1f} minutes".format(7.5))</code></pre>
+<pre><code data-language="text">Northwind | 7.5 minutes</code></pre>
+<p>Change the number to <code>2</code> and predict the text. The number itself stays an integer.</p>
+</div></details>
+
   <section class="topic" id="build-a-receipt">
     <h2>Build the kickoff tool</h2>
     <p>Put the steps together in <code>kickoff.py</code>. Save and run the same command. At each prompt, type one value and press Enter. Use <code>Northwind</code>, then <code>3</code>, then <code>2.5</code>. Predict the total before the last Enter.</p>
@@ -216,7 +223,7 @@ minutes_per_source = 7.5
 
 # Multiply the count by the time for one source.
 estimated_minutes = source_count * minutes_per_source
-print(f"{customer} | {source_count} sources | {estimated_minutes:.1f} minutes")</code></pre>
+print(f"{customer} | {source_count} sources | {estimated_minutes:.1f} minutes")</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code># Give each part of the estimate a name.</code><p>Comment for the reader. Python skips this line.</p></li><li value="2"><code>customer = &quot;Acme&quot;</code><p>Store &#x27;Acme&#x27; in <code>customer</code>.</p></li><li value="3"><code>source_count = 4</code><p>Store 4 in <code>source_count</code>.</p></li><li value="4"><code>minutes_per_source = 7.5</code><p>Store 7.5 in <code>minutes_per_source</code>.</p></li><li value="6"><code># Multiply the count by the time for one source.</code><p>Comment for the reader. Python skips this line.</p></li><li value="7"><code>estimated_minutes = source_count * minutes_per_source</code><p>For <code>estimated_minutes</code>, multiply source count by minutes per source and store the result.</p></li><li value="8"><code>print(f&quot;{customer} | {source_count} sources | {estimated_minutes:.1f} minutes&quot;)</code><p>Display text formatted with customer, source count, estimated minutes.</p></li></ol></div></details>
       <h3>Expected terminal output</h3>
       <pre><code data-language="text">Acme | 4 sources | 30.0 minutes</code></pre>
     </details>
@@ -230,7 +237,7 @@ checks_completed = 3
 
 # No one has assigned a review ID yet.
 review_id = None
-print(f"{case_id} | {checks_completed} checks | Review ID: {review_id}")</code></pre>
+print(f"{case_id} | {checks_completed} checks | Review ID: {review_id}")</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code># This is an identifier, so keep the leading zeros.</code><p>Comment for the reader. Python skips this line.</p></li><li value="2"><code>case_id = &quot;007&quot;</code><p>Store &#x27;007&#x27; in <code>case_id</code>.</p></li><li value="3"><code>checks_completed = 3</code><p>Store 3 in <code>checks_completed</code>.</p></li><li value="5"><code># No one has assigned a review ID yet.</code><p>Comment for the reader. Python skips this line.</p></li><li value="6"><code>review_id = None</code><p>Store None in <code>review_id</code>.</p></li><li value="7"><code>print(f&quot;{case_id} | {checks_completed} checks | Review ID: {review_id}&quot;)</code><p>Display text formatted with case id, checks completed, review id.</p></li></ol></div></details>
       <h3>Expected terminal output</h3>
       <pre><code data-language="text">007 | 3 checks | Review ID: None</code></pre>
     </details>
@@ -242,7 +249,7 @@ print(f"{case_id} | {checks_completed} checks | Review ID: {review_id}")</code><
 requests_per_second = float(input("Requests per second: "))
 
 # Use one decimal place in the benchmark note.
-print(f"Throughput: {requests_per_second:.1f} requests/sec")</code></pre>
+print(f"Throughput: {requests_per_second:.1f} requests/sec")</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code># input() gives text. A rate can include a decimal part.</code><p>Comment for the reader. Python skips this line.</p></li><li value="2"><code>requests_per_second = float(input(&quot;Requests per second: &quot;))</code><p>For <code>requests_per_second</code>, read a response and convert it to a floating-point number and store the result.</p></li><li value="4"><code># Use one decimal place in the benchmark note.</code><p>Comment for the reader. Python skips this line.</p></li><li value="5"><code>print(f&quot;Throughput: {requests_per_second:.1f} requests/sec&quot;)</code><p>Display text formatted with requests per second.</p></li></ol></div></details>
       <h3>Expected terminal output</h3>
       <pre><code data-language="text">Requests per second: 12.5
 Throughput: 12.5 requests/sec</code></pre>
@@ -257,7 +264,7 @@ battery_after = 77.5
 
 # Subtract the after reading from the before reading.
 battery_drop = battery_before - battery_after
-print(f"Battery drop: {battery_drop:.1f} percentage points")</code></pre>
+print(f"Battery drop: {battery_drop:.1f} percentage points")</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code># Store the two battery readings from the same phone.</code><p>Comment for the reader. Python skips this line.</p></li><li value="2"><code>battery_before = 80.0</code><p>Store 80.0 in <code>battery_before</code>.</p></li><li value="3"><code>battery_after = 77.5</code><p>Store 77.5 in <code>battery_after</code>.</p></li><li value="5"><code># Subtract the after reading from the before reading.</code><p>Comment for the reader. Python skips this line.</p></li><li value="6"><code>battery_drop = battery_before - battery_after</code><p>For <code>battery_drop</code>, subtract battery after from battery before and store the result.</p></li><li value="7"><code>print(f&quot;Battery drop: {battery_drop:.1f} percentage points&quot;)</code><p>Display text formatted with battery drop.</p></li></ol></div></details>
       <h3>Expected terminal output</h3>
       <pre><code data-language="text">Battery drop: 2.5 percentage points</code></pre>
     </details>
@@ -269,7 +276,7 @@ print(f"Battery drop: {battery_drop:.1f} percentage points")</code></pre>
 document_count = int(input("Documents in this upload: "))
 
 # Show the count so the operator can check it before importing.
-print(f"Ready to import {document_count} documents")</code></pre>
+print(f"Ready to import {document_count} documents")</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code># Convert the typed count before storing it in the import record.</code><p>Comment for the reader. Python skips this line.</p></li><li value="2"><code>document_count = int(input(&quot;Documents in this upload: &quot;))</code><p>For <code>document_count</code>, read a response and convert it to a whole number and store the result.</p></li><li value="4"><code># Show the count so the operator can check it before importing.</code><p>Comment for the reader. Python skips this line.</p></li><li value="5"><code>print(f&quot;Ready to import {document_count} documents&quot;)</code><p>Display text formatted with document count.</p></li></ol></div></details>
       <h3>Expected terminal output</h3>
       <pre><code data-language="text">Documents in this upload: 4
 Ready to import 4 documents</code></pre>
@@ -283,7 +290,7 @@ lead_id = input("Lead ID: ").strip()
 
 # The follow-up count is a number we can add.
 follow_ups = int(input("Follow-ups due: "))
-print(f"{lead_id} | {follow_ups} follow-ups")</code></pre>
+print(f"{lead_id} | {follow_ups} follow-ups")</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code># Trim spaces without removing the zeros from the ID.</code><p>Comment for the reader. Python skips this line.</p></li><li value="2"><code>lead_id = input(&quot;Lead ID: &quot;).strip()</code><p>For <code>lead_id</code>, trim whitespace from both ends of the text and store the result.</p></li><li value="4"><code># The follow-up count is a number we can add.</code><p>Comment for the reader. Python skips this line.</p></li><li value="5"><code>follow_ups = int(input(&quot;Follow-ups due: &quot;))</code><p>For <code>follow_ups</code>, read a response and convert it to a whole number and store the result.</p></li><li value="6"><code>print(f&quot;{lead_id} | {follow_ups} follow-ups&quot;)</code><p>Display text formatted with lead id, follow ups.</p></li></ol></div></details>
       <h3>Expected terminal output</h3>
       <pre><code data-language="text">Lead ID:  0042 
 Follow-ups due: 2
@@ -299,7 +306,7 @@ call_answered = False
 # A booking ID appears only after a booking is created.
 booking_id = None
 
-print(f"Answered: {call_answered} | Booking ID: {booking_id}")</code></pre>
+print(f"Answered: {call_answered} | Booking ID: {booking_id}")</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code># A Boolean records whether the call was answered.</code><p>Comment for the reader. Python skips this line.</p></li><li value="2"><code>call_answered = False</code><p>Store False in <code>call_answered</code>.</p></li><li value="4"><code># A booking ID appears only after a booking is created.</code><p>Comment for the reader. Python skips this line.</p></li><li value="5"><code>booking_id = None</code><p>Store None in <code>booking_id</code>.</p></li><li value="7"><code>print(f&quot;Answered: {call_answered} | Booking ID: {booking_id}&quot;)</code><p>Display text formatted with call answered, booking id.</p></li></ol></div></details>
       <h3>Expected terminal output</h3>
       <pre><code data-language="text">Answered: False | Booking ID: None</code></pre>
     </details>
@@ -313,7 +320,7 @@ seconds_per_clip = 12.5
 
 # Multiply to get the combined duration for this batch.
 total_seconds = clip_count * seconds_per_clip
-print(f"Total: {total_seconds:.1f} seconds")</code></pre>
+print(f"Total: {total_seconds:.1f} seconds")</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code># Keep the count and time per clip separate.</code><p>Comment for the reader. Python skips this line.</p></li><li value="2"><code>clip_count = 3</code><p>Store 3 in <code>clip_count</code>.</p></li><li value="3"><code>seconds_per_clip = 12.5</code><p>Store 12.5 in <code>seconds_per_clip</code>.</p></li><li value="5"><code># Multiply to get the combined duration for this batch.</code><p>Comment for the reader. Python skips this line.</p></li><li value="6"><code>total_seconds = clip_count * seconds_per_clip</code><p>For <code>total_seconds</code>, multiply clip count by seconds per clip and store the result.</p></li><li value="7"><code>print(f&quot;Total: {total_seconds:.1f} seconds&quot;)</code><p>Display text formatted with total seconds.</p></li></ol></div></details>
       <h3>Expected terminal output</h3>
       <pre><code data-language="text">Total: 37.5 seconds</code></pre>
     </details>
@@ -342,7 +349,7 @@ lead_id = "0042"
 
 # Convert both reports before adding their counts.
 total_follow_ups = int("2") + int("3")
-print(f"Lead {lead_id} | {total_follow_ups} follow-ups")</code></pre>
+print(f"Lead {lead_id} | {total_follow_ups} follow-ups")</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code># Keep the CRM identifier as text so its zeros survive.</code><p>Comment for the reader. Python skips this line.</p></li><li value="2"><code>lead_id = &quot;0042&quot;</code><p>Store &#x27;0042&#x27; in <code>lead_id</code>.</p></li><li value="4"><code># Convert both reports before adding their counts.</code><p>Comment for the reader. Python skips this line.</p></li><li value="5"><code>total_follow_ups = int(&quot;2&quot;) + int(&quot;3&quot;)</code><p>For <code>total_follow_ups</code>, add int(&#x27;2&#x27;) to int(&#x27;3&#x27;) and store the result.</p></li><li value="6"><code>print(f&quot;Lead {lead_id} | {total_follow_ups} follow-ups&quot;)</code><p>Display text formatted with lead id, total follow ups.</p></li></ol></div></details>
         <p><strong>Expected output</strong></p>
         <pre><code data-language="text">Lead 0042 | 5 follow-ups</code></pre>
       </details>
@@ -358,7 +365,7 @@ rate_per_worker = float("12.5")
 
 # Multiply the count by the rate. This is a planning estimate.
 estimated_rate = workers * rate_per_worker
-print(f"Estimated capacity: {estimated_rate:.1f} requests/sec")</code></pre>
+print(f"Estimated capacity: {estimated_rate:.1f} requests/sec")</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code># Use an integer for a count and a float for a rate.</code><p>Comment for the reader. Python skips this line.</p></li><li value="2"><code>workers = int(&quot;3&quot;)</code><p>For <code>workers</code>, convert &#x27;3&#x27; to a whole number and store the result.</p></li><li value="3"><code>rate_per_worker = float(&quot;12.5&quot;)</code><p>For <code>rate_per_worker</code>, convert &#x27;12.5&#x27; to a floating-point number and store the result.</p></li><li value="5"><code># Multiply the count by the rate. This is a planning estimate.</code><p>Comment for the reader. Python skips this line.</p></li><li value="6"><code>estimated_rate = workers * rate_per_worker</code><p>For <code>estimated_rate</code>, multiply workers by rate per worker and store the result.</p></li><li value="7"><code>print(f&quot;Estimated capacity: {estimated_rate:.1f} requests/sec&quot;)</code><p>Display text formatted with estimated rate.</p></li></ol></div></details>
         <p><strong>Expected output</strong></p>
         <pre><code data-language="text">Estimated capacity: 37.5 requests/sec</code></pre>
       </details>
@@ -374,7 +381,7 @@ approval_text = " NO ".strip().lower()
 # Compare the answer itself. bool("no") would be True.
 approved = approval_text == "yes"
 
-print(f"Approved: {approved}")</code></pre>
+print(f"Approved: {approved}")</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code># Clean the text before checking the answer.</code><p>Comment for the reader. Python skips this line.</p></li><li value="2"><code>approval_text = &quot; NO &quot;.strip().lower()</code><p>For <code>approval_text</code>, call &#x27; NO &#x27;.strip().lower and store the result.</p></li><li value="4"><code># Compare the answer itself. bool(&quot;no&quot;) would be True.</code><p>Comment for the reader. Python skips this line.</p></li><li value="5"><code>approved = approval_text == &quot;yes&quot;</code><p>Store approval_text == &#x27;yes&#x27; in <code>approved</code>.</p></li><li value="7"><code>print(f&quot;Approved: {approved}&quot;)</code><p>Display text formatted with approved.</p></li></ol></div></details>
         <p><strong>Expected output</strong></p>
         <pre><code data-language="text">Approved: False</code></pre>
       </details>
@@ -389,7 +396,7 @@ waiting_calls = 0
 booking_id = None
 
 print(f"Waiting calls: {waiting_calls}")
-print(f"Booking ID: {booking_id}")</code></pre>
+print(f"Booking ID: {booking_id}")</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code># Zero is a known count. None means a booking ID is missing.</code><p>Comment for the reader. Python skips this line.</p></li><li value="2"><code>waiting_calls = 0</code><p>Store 0 in <code>waiting_calls</code>.</p></li><li value="3"><code>booking_id = None</code><p>Store None in <code>booking_id</code>.</p></li><li value="5"><code>print(f&quot;Waiting calls: {waiting_calls}&quot;)</code><p>Display text formatted with waiting calls.</p></li><li value="6"><code>print(f&quot;Booking ID: {booking_id}&quot;)</code><p>Display text formatted with booking id.</p></li></ol></div></details>
         <p><strong>Expected output</strong></p>
         <pre><code data-language="text">Waiting calls: 0
 Booking ID: None</code></pre>
@@ -406,7 +413,7 @@ minutes = seconds / 60
 
 # Format the report. The number stored in minutes stays the same.
 print(f"Displayed minutes: {minutes:.2f}")
-print(f"Stored minutes: {minutes}")</code></pre>
+print(f"Stored minutes: {minutes}")</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code># Calculate the duration in minutes before formatting it.</code><p>Comment for the reader. Python skips this line.</p></li><li value="2"><code>seconds = float(&quot;72.75&quot;)</code><p>For <code>seconds</code>, convert &#x27;72.75&#x27; to a floating-point number and store the result.</p></li><li value="3"><code>minutes = seconds / 60</code><p>For <code>minutes</code>, divide seconds by 60 and store the result.</p></li><li value="5"><code># Format the report. The number stored in minutes stays the same.</code><p>Comment for the reader. Python skips this line.</p></li><li value="6"><code>print(f&quot;Displayed minutes: {minutes:.2f}&quot;)</code><p>Display text formatted with minutes.</p></li><li value="7"><code>print(f&quot;Stored minutes: {minutes}&quot;)</code><p>Display text formatted with minutes.</p></li></ol></div></details>
         <p><strong>Expected output</strong></p>
         <pre><code data-language="text">Displayed minutes: 1.21
 Stored minutes: 1.2125</code></pre>
@@ -486,3 +493,4 @@ Review complete: False | Review ID: None</code></pre>
 
   <nav class="lesson-nav" aria-label="Lesson navigation"><a href="setup.html">Previous: Python setup &amp; first program</a><a href="lesson-1.html#topic-1">Next: Operators, conditions &amp; loops</a></nav>
 </main><aside class="fde-outline" hidden></aside></div><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script><script src="../../assets/js/fde-layout.js?v=25" defer></script></body></html>
+

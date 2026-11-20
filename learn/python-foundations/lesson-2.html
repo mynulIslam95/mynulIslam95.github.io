@@ -418,7 +418,7 @@ print(counts)</code></pre>
 <pre><code data-language="python"># Check whether a connector is approved for launch.
 approved = {&quot;crm&quot;, &quot;docs&quot;}
 print(&quot;crm&quot; in approved)
-print(&quot;billing&quot; in approved)</code></pre>
+print(&quot;billing&quot; in approved)</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code># Check whether a connector is approved for launch.</code><p>Comment for the reader. Python skips this line.</p></li><li value="2"><code>approved = {&quot;crm&quot;, &quot;docs&quot;}</code><p>Store the set of unique values shown in <code>approved</code>.</p></li><li value="3"><code>print(&quot;crm&quot; in approved)</code><p>Display &#x27;crm&#x27; in approved.</p></li><li value="4"><code>print(&quot;billing&quot; in approved)</code><p>Display &#x27;billing&#x27; in approved.</p></li></ol></div></details>
     <p><strong>Expected output</strong></p>
     <pre><code data-language="text">True
 False</code></pre>
@@ -428,7 +428,7 @@ False</code></pre>
       <p>Use a tuple to unpack the case ID and its check count.</p>
 <pre><code data-language="python"># Use a tuple to unpack the case ID and its check count.
 case_id, checks_left = (&quot;007&quot;, 2)
-print(f&quot;{case_id} | {checks_left} checks left&quot;)</code></pre>
+print(f&quot;{case_id} | {checks_left} checks left&quot;)</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code># Use a tuple to unpack the case ID and its check count.</code><p>Comment for the reader. Python skips this line.</p></li><li value="2"><code>case_id, checks_left = (&quot;007&quot;, 2)</code><p>Store the tuple shown in <code>(case_id, checks_left)</code>.</p></li><li value="3"><code>print(f&quot;{case_id} | {checks_left} checks left&quot;)</code><p>Display text formatted with case id, checks left.</p></li></ol></div></details>
     <p><strong>Expected output</strong></p>
     <pre><code data-language="text">007 | 2 checks left</code></pre>
     </details>
@@ -438,7 +438,7 @@ print(f&quot;{case_id} | {checks_left} checks left&quot;)</code></pre>
 <pre><code data-language="python"># Store memory limits by model name and use a fallback for an unknown model.
 limits_gb = {&quot;small&quot;: 8, &quot;medium&quot;: 16}
 print(limits_gb.get(&quot;medium&quot;, 0))
-print(limits_gb.get(&quot;large&quot;, 0))</code></pre>
+print(limits_gb.get(&quot;large&quot;, 0))</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code># Store memory limits by model name and use a fallback for an unknown model.</code><p>Comment for the reader. Python skips this line.</p></li><li value="2"><code>limits_gb = {&quot;small&quot;: 8, &quot;medium&quot;: 16}</code><p>Store a dictionary of the named fields shown in <code>limits_gb</code>.</p></li><li value="3"><code>print(limits_gb.get(&quot;medium&quot;, 0))</code><p>Display look up &#x27;medium&#x27;, 0 in limits gb using the supplied fallback when present.</p></li><li value="4"><code>print(limits_gb.get(&quot;large&quot;, 0))</code><p>Display look up &#x27;large&#x27;, 0 in limits gb using the supplied fallback when present.</p></li></ol></div></details>
     <p><strong>Expected output</strong></p>
     <pre><code data-language="text">16
 0</code></pre>
@@ -448,7 +448,7 @@ print(limits_gb.get(&quot;large&quot;, 0))</code></pre>
       <p>Keep battery samples in arrival order and inspect the last two.</p>
 <pre><code data-language="python"># Keep battery samples in arrival order and inspect the last two.
 battery = [90, 85, 80, 75]
-print(battery[-2:])</code></pre>
+print(battery[-2:])</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code># Keep battery samples in arrival order and inspect the last two.</code><p>Comment for the reader. Python skips this line.</p></li><li value="2"><code>battery = [90, 85, 80, 75]</code><p>Store the ordered list shown in <code>battery</code>.</p></li><li value="3"><code>print(battery[-2:])</code><p>Display look up -2: in battery.</p></li></ol></div></details>
     <p><strong>Expected output</strong></p>
     <pre><code data-language="text">[80, 75]</code></pre>
     </details>
@@ -457,7 +457,7 @@ print(battery[-2:])</code></pre>
       <p>Read a field inside a file’s nested metadata.</p>
 <pre><code data-language="python"># Read a field inside a file’s nested metadata.
 file = {&quot;id&quot;: &quot;D7&quot;, &quot;metadata&quot;: {&quot;pages&quot;: 12}}
-print(file[&quot;metadata&quot;][&quot;pages&quot;])</code></pre>
+print(file[&quot;metadata&quot;][&quot;pages&quot;])</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code># Read a field inside a file’s nested metadata.</code><p>Comment for the reader. Python skips this line.</p></li><li value="2"><code>file = {&quot;id&quot;: &quot;D7&quot;, &quot;metadata&quot;: {&quot;pages&quot;: 12}}</code><p>Store a dictionary of the named fields shown in <code>file</code>.</p></li><li value="3"><code>print(file[&quot;metadata&quot;][&quot;pages&quot;])</code><p>Display look up &#x27;pages&#x27; in file[&#x27;metadata&#x27;].</p></li></ol></div></details>
     <p><strong>Expected output</strong></p>
     <pre><code data-language="text">12</code></pre>
     </details>
@@ -467,7 +467,7 @@ print(file[&quot;metadata&quot;][&quot;pages&quot;])</code></pre>
 <pre><code data-language="python"># Keep IDs as text and find the leads both teams have seen.
 sales = {&quot;0042&quot;, &quot;0060&quot;}
 support = {&quot;0042&quot;, &quot;0091&quot;}
-print(sorted(sales &amp; support))</code></pre>
+print(sorted(sales &amp; support))</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code># Keep IDs as text and find the leads both teams have seen.</code><p>Comment for the reader. Python skips this line.</p></li><li value="2"><code>sales = {&quot;0042&quot;, &quot;0060&quot;}</code><p>Store the set of unique values shown in <code>sales</code>.</p></li><li value="3"><code>support = {&quot;0042&quot;, &quot;0091&quot;}</code><p>Store the set of unique values shown in <code>support</code>.</p></li><li value="4"><code>print(sorted(sales &amp; support))</code><p>Display create a sorted list from sales &amp; support.</p></li></ol></div></details>
     <p><strong>Expected output</strong></p>
     <pre><code data-language="text">[&#x27;0042&#x27;]</code></pre>
     </details>
@@ -478,7 +478,7 @@ print(sorted(sales &amp; support))</code></pre>
 callbacks = [&quot;C1&quot;, &quot;C2&quot;, &quot;C3&quot;]
 next_call = callbacks.pop(0)
 print(next_call)
-print(callbacks)</code></pre>
+print(callbacks)</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code># Take the oldest callback off a small queue.</code><p>Comment for the reader. Python skips this line.</p></li><li value="2"><code>callbacks = [&quot;C1&quot;, &quot;C2&quot;, &quot;C3&quot;]</code><p>Store the ordered list shown in <code>callbacks</code>.</p></li><li value="3"><code>next_call = callbacks.pop(0)</code><p>For <code>next_call</code>, call callbacks.pop with 0 and store the result.</p></li><li value="4"><code>print(next_call)</code><p>Display next call.</p></li><li value="5"><code>print(callbacks)</code><p>Display callbacks.</p></li></ol></div></details>
     <p><strong>Expected output</strong></p>
     <pre><code data-language="text">C1
 [&#x27;C2&#x27;, &#x27;C3&#x27;]</code></pre>
@@ -489,7 +489,7 @@ print(callbacks)</code></pre>
 <pre><code data-language="python"># Keep only clips long enough to transcribe.
 durations = [1, 4, 2, 7]
 ready = [seconds for seconds in durations if seconds &gt;= 3]
-print(ready)</code></pre>
+print(ready)</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code># Keep only clips long enough to transcribe.</code><p>Comment for the reader. Python skips this line.</p></li><li value="2"><code>durations = [1, 4, 2, 7]</code><p>Store the ordered list shown in <code>durations</code>.</p></li><li value="3"><code>ready = [seconds for seconds in durations if seconds &gt;= 3]</code><p>Store [seconds for seconds in durations if seconds &gt;= 3] in <code>ready</code>.</p></li><li value="4"><code>print(ready)</code><p>Display ready.</p></li></ol></div></details>
     <p><strong>Expected output</strong></p>
     <pre><code data-language="text">[4, 7]</code></pre>
     </details>
@@ -504,7 +504,7 @@ print(ready)</code></pre>
       <pre><code data-language="python"># Update the owner field and keep the ticket ID intact.
 ticket = {&quot;id&quot;: &quot;T7&quot;, &quot;owner&quot;: &quot;unassigned&quot;}
 ticket[&quot;owner&quot;] = &quot;Mia&quot;
-print(f&quot;{ticket[&#x27;id&#x27;]}: {ticket[&#x27;owner&#x27;]}&quot;)</code></pre>
+print(f&quot;{ticket[&#x27;id&#x27;]}: {ticket[&#x27;owner&#x27;]}&quot;)</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code># Update the owner field and keep the ticket ID intact.</code><p>Comment for the reader. Python skips this line.</p></li><li value="2"><code>ticket = {&quot;id&quot;: &quot;T7&quot;, &quot;owner&quot;: &quot;unassigned&quot;}</code><p>Store a dictionary of the named fields shown in <code>ticket</code>.</p></li><li value="3"><code>ticket[&quot;owner&quot;] = &quot;Mia&quot;</code><p>Store &#x27;Mia&#x27; in <code>ticket[&#x27;owner&#x27;]</code>.</p></li><li value="4"><code>print(f&quot;{ticket[&#x27;id&#x27;]}: {ticket[&#x27;owner&#x27;]}&quot;)</code><p>Display text formatted with ticket[&#x27;id&#x27;], ticket[&#x27;owner&#x27;].</p></li></ol></div></details>
     <p><strong>Expected output</strong></p>
     <pre><code data-language="text">T7: Mia</code></pre>
     </details>
@@ -517,7 +517,7 @@ print(f&quot;{ticket[&#x27;id&#x27;]}: {ticket[&#x27;owner&#x27;]}&quot;)</code>
       <pre><code data-language="python"># Show up to two jobs without removing either from the queue.
 jobs = [&quot;sync&quot;, &quot;audit&quot;, &quot;report&quot;]
 print(jobs[:2])
-print(len(jobs))</code></pre>
+print(len(jobs))</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code># Show up to two jobs without removing either from the queue.</code><p>Comment for the reader. Python skips this line.</p></li><li value="2"><code>jobs = [&quot;sync&quot;, &quot;audit&quot;, &quot;report&quot;]</code><p>Store the ordered list shown in <code>jobs</code>.</p></li><li value="3"><code>print(jobs[:2])</code><p>Display look up :2 in jobs.</p></li><li value="4"><code>print(len(jobs))</code><p>Display count the items in jobs.</p></li></ol></div></details>
     <p><strong>Expected output</strong></p>
     <pre><code data-language="text">[&#x27;sync&#x27;, &#x27;audit&#x27;]
 3</code></pre>
@@ -531,7 +531,7 @@ print(len(jobs))</code></pre>
       <pre><code data-language="python"># Find the expected jobs that did not complete.
 expected = {&quot;users&quot;, &quot;payments&quot;, &quot;tickets&quot;}
 completed = {&quot;users&quot;, &quot;tickets&quot;}
-print(sorted(expected - completed))</code></pre>
+print(sorted(expected - completed))</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code># Find the expected jobs that did not complete.</code><p>Comment for the reader. Python skips this line.</p></li><li value="2"><code>expected = {&quot;users&quot;, &quot;payments&quot;, &quot;tickets&quot;}</code><p>Store the set of unique values shown in <code>expected</code>.</p></li><li value="3"><code>completed = {&quot;users&quot;, &quot;tickets&quot;}</code><p>Store the set of unique values shown in <code>completed</code>.</p></li><li value="4"><code>print(sorted(expected - completed))</code><p>Display create a sorted list from expected - completed.</p></li></ol></div></details>
     <p><strong>Expected output</strong></p>
     <pre><code data-language="text">[&#x27;payments&#x27;]</code></pre>
     </details>
@@ -546,7 +546,7 @@ counts = {}
 for status in [&quot;open&quot;, &quot;done&quot;, &quot;open&quot;]:
     counts[status] = counts.get(status, 0) + 1
 print(counts[&quot;open&quot;])
-print(counts.get(&quot;waiting&quot;, 0))</code></pre>
+print(counts.get(&quot;waiting&quot;, 0))</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code># Return the count for each status, including an unseen status.</code><p>Comment for the reader. Python skips this line.</p></li><li value="2"><code>counts = {}</code><p>Store a dictionary of the named fields shown in <code>counts</code>.</p></li><li value="3"><code>for status in [&quot;open&quot;, &quot;done&quot;, &quot;open&quot;]:</code><p>Take one item from <code>[&#x27;open&#x27;, &#x27;done&#x27;, &#x27;open&#x27;]</code> at a time and bind it to <code>status</code> for this turn.</p></li><li value="4"><code>counts[status] = counts.get(status, 0) + 1</code><p>For <code>counts[status]</code>, add counts.get(status, 0) to 1 and store the result.</p></li><li value="5"><code>print(counts[&quot;open&quot;])</code><p>Display look up &#x27;open&#x27; in counts.</p></li><li value="6"><code>print(counts.get(&quot;waiting&quot;, 0))</code><p>Display look up &#x27;waiting&#x27;, 0 in counts using the supplied fallback when present.</p></li></ol></div></details>
     <p><strong>Expected output</strong></p>
     <pre><code data-language="text">2
 0</code></pre>
@@ -559,7 +559,7 @@ print(counts.get(&quot;waiting&quot;, 0))</code></pre>
       <summary>Reveal the commented solution</summary>
       <pre><code data-language="python"># Look up the currency code without relying on the order of the fields.
 invoice = {&quot;amount&quot;: 30, &quot;currency&quot;: {&quot;code&quot;: &quot;EUR&quot;}}
-print(invoice[&quot;currency&quot;][&quot;code&quot;])</code></pre>
+print(invoice[&quot;currency&quot;][&quot;code&quot;])</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code># Look up the currency code without relying on the order of the fields.</code><p>Comment for the reader. Python skips this line.</p></li><li value="2"><code>invoice = {&quot;amount&quot;: 30, &quot;currency&quot;: {&quot;code&quot;: &quot;EUR&quot;}}</code><p>Store a dictionary of the named fields shown in <code>invoice</code>.</p></li><li value="3"><code>print(invoice[&quot;currency&quot;][&quot;code&quot;])</code><p>Display look up &#x27;code&#x27; in invoice[&#x27;currency&#x27;].</p></li></ol></div></details>
     <p><strong>Expected output</strong></p>
     <pre><code data-language="text">EUR</code></pre>
     </details>
@@ -613,3 +613,4 @@ print(invoice[&quot;currency&quot;][&quot;code&quot;])</code></pre>
   </section>
 
 <nav class="lesson-nav" aria-label="Lesson navigation"><a href="lesson-3.html">Previous: Functions &amp; scope</a><a href="lesson-4.html">Next: Object-oriented programming basics</a></nav></main><aside class="fde-outline" hidden></aside></div><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script><script src="../../assets/js/fde-layout.js?v=25" defer></script></body></html>
+

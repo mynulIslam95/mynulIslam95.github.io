@@ -368,7 +368,7 @@ data_review_passed = False
 if owner_approved and data_review_passed:
     print(&quot;Ready to launch&quot;)
 else:
-    print(&quot;Keep connector paused&quot;)</code></pre>
+    print(&quot;Keep connector paused&quot;)</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code># Both approvals are required for launch.</code><p>Comment for the reader. Python skips this line.</p></li><li value="2"><code>owner_approved = True</code><p>Store True in <code>owner_approved</code>.</p></li><li value="3"><code>data_review_passed = False</code><p>Store False in <code>data_review_passed</code>.</p></li><li value="4"><code>if owner_approved and data_review_passed:</code><p>Run the indented branch when <code>owner_approved and data_review_passed</code> is truthy.</p></li><li value="5"><code>print(&quot;Ready to launch&quot;)</code><p>Display &#x27;Ready to launch&#x27;.</p></li><li value="6"><code>else:</code><p>Run this branch only when the preceding checks did not match.</p></li><li value="7"><code>print(&quot;Keep connector paused&quot;)</code><p>Display &#x27;Keep connector paused&#x27;.</p></li></ol></div></details>
 <p><strong>Expected output</strong></p>
 <pre><code data-language="text">Keep connector paused</code></pre>
       </details>
@@ -381,7 +381,7 @@ review_id = &quot;007&quot;
 if checks_left == 0 and review_id is not None:
     print(&quot;Ready to close&quot;)
 else:
-    print(&quot;Keep audit open&quot;)</code></pre>
+    print(&quot;Keep audit open&quot;)</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code># A missing review ID means the reviewer has not signed off.</code><p>Comment for the reader. Python skips this line.</p></li><li value="2"><code>checks_left = 0</code><p>Store 0 in <code>checks_left</code>.</p></li><li value="3"><code>review_id = &quot;007&quot;</code><p>Store &#x27;007&#x27; in <code>review_id</code>.</p></li><li value="4"><code>if checks_left == 0 and review_id is not None:</code><p>Run the indented branch when <code>checks_left == 0 and review_id is not None</code> is truthy.</p></li><li value="5"><code>print(&quot;Ready to close&quot;)</code><p>Display &#x27;Ready to close&#x27;.</p></li><li value="6"><code>else:</code><p>Run this branch only when the preceding checks did not match.</p></li><li value="7"><code>print(&quot;Keep audit open&quot;)</code><p>Display &#x27;Keep audit open&#x27;.</p></li></ol></div></details>
 <p><strong>Expected output</strong></p>
 <pre><code data-language="text">Ready to close</code></pre>
       </details>
@@ -394,7 +394,7 @@ available_gb = 8
 if required_gb &lt;= available_gb:
     print(&quot;Within memory budget&quot;)
 else:
-    print(&quot;Over memory budget&quot;)</code></pre>
+    print(&quot;Over memory budget&quot;)</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code># Add both memory requirements before checking the limit.</code><p>Comment for the reader. Python skips this line.</p></li><li value="2"><code>required_gb = 6 + 2</code><p>For <code>required_gb</code>, add 6 to 2 and store the result.</p></li><li value="3"><code>available_gb = 8</code><p>Store 8 in <code>available_gb</code>.</p></li><li value="4"><code>if required_gb &lt;= available_gb:</code><p>Run the indented branch when <code>required_gb &lt;= available_gb</code> is truthy.</p></li><li value="5"><code>print(&quot;Within memory budget&quot;)</code><p>Display &#x27;Within memory budget&#x27;.</p></li><li value="6"><code>else:</code><p>Run this branch only when the preceding checks did not match.</p></li><li value="7"><code>print(&quot;Over memory budget&quot;)</code><p>Display &#x27;Over memory budget&#x27;.</p></li></ol></div></details>
 <p><strong>Expected output</strong></p>
 <pre><code data-language="text">Within memory budget</code></pre>
       </details>
@@ -407,7 +407,7 @@ battery_saver_on = False
 if battery_percent &lt; 20 or battery_saver_on:
     print(&quot;Pause local inference&quot;)
 else:
-    print(&quot;Keep local inference on&quot;)</code></pre>
+    print(&quot;Keep local inference on&quot;)</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code>battery_percent = 20</code><p>Store 20 in <code>battery_percent</code>.</p></li><li value="2"><code>battery_saver_on = False</code><p>Store False in <code>battery_saver_on</code>.</p></li><li value="3"><code># Either condition can pause the model.</code><p>Comment for the reader. Python skips this line.</p></li><li value="4"><code>if battery_percent &lt; 20 or battery_saver_on:</code><p>Run the indented branch when <code>battery_percent &lt; 20 or battery_saver_on</code> is truthy.</p></li><li value="5"><code>print(&quot;Pause local inference&quot;)</code><p>Display &#x27;Pause local inference&#x27;.</p></li><li value="6"><code>else:</code><p>Run this branch only when the preceding checks did not match.</p></li><li value="7"><code>print(&quot;Keep local inference on&quot;)</code><p>Display &#x27;Keep local inference on&#x27;.</p></li></ol></div></details>
 <p><strong>Expected output</strong></p>
 <pre><code data-language="text">Keep local inference on</code></pre>
       </details>
@@ -420,7 +420,7 @@ confidence_percent = 95
 if extraction_failed or confidence_percent &lt; 80:
     print(&quot;Send to review&quot;)
 else:
-    print(&quot;Accept extraction&quot;)</code></pre>
+    print(&quot;Accept extraction&quot;)</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code>extraction_failed = True</code><p>Store True in <code>extraction_failed</code>.</p></li><li value="2"><code>confidence_percent = 95</code><p>Store 95 in <code>confidence_percent</code>.</p></li><li value="3"><code># High confidence cannot override a recorded extraction failure.</code><p>Comment for the reader. Python skips this line.</p></li><li value="4"><code>if extraction_failed or confidence_percent &lt; 80:</code><p>Run the indented branch when <code>extraction_failed or confidence_percent &lt; 80</code> is truthy.</p></li><li value="5"><code>print(&quot;Send to review&quot;)</code><p>Display &#x27;Send to review&#x27;.</p></li><li value="6"><code>else:</code><p>Run this branch only when the preceding checks did not match.</p></li><li value="7"><code>print(&quot;Accept extraction&quot;)</code><p>Display &#x27;Accept extraction&#x27;.</p></li></ol></div></details>
 <p><strong>Expected output</strong></p>
 <pre><code data-language="text">Send to review</code></pre>
       </details>
@@ -435,7 +435,7 @@ if not contact_allowed:
 elif lead_score &gt;= 70:
     print(&quot;Schedule follow-up&quot;)
 else:
-    print(&quot;Keep in review&quot;)</code></pre>
+    print(&quot;Keep in review&quot;)</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code>lead_score = 85</code><p>Store 85 in <code>lead_score</code>.</p></li><li value="2"><code>contact_allowed = False</code><p>Store False in <code>contact_allowed</code>.</p></li><li value="3"><code># Check consent before considering the score.</code><p>Comment for the reader. Python skips this line.</p></li><li value="4"><code>if not contact_allowed:</code><p>Run the indented branch when <code>not contact_allowed</code> is truthy.</p></li><li value="5"><code>print(&quot;Do not contact&quot;)</code><p>Display &#x27;Do not contact&#x27;.</p></li><li value="6"><code>elif lead_score &gt;= 70:</code><p>Run the indented branch when <code>lead_score &gt;= 70</code> is truthy.</p></li><li value="7"><code>print(&quot;Schedule follow-up&quot;)</code><p>Display &#x27;Schedule follow-up&#x27;.</p></li><li value="8"><code>else:</code><p>Run this branch only when the preceding checks did not match.</p></li><li value="9"><code>print(&quot;Keep in review&quot;)</code><p>Display &#x27;Keep in review&#x27;.</p></li></ol></div></details>
 <p><strong>Expected output</strong></p>
 <pre><code data-language="text">Do not contact</code></pre>
       </details>
@@ -447,7 +447,7 @@ else:
 if booking_id is None:
     print(&quot;Send to booking team&quot;)
 else:
-    print(f&quot;Confirm booking {booking_id}&quot;)</code></pre>
+    print(f&quot;Confirm booking {booking_id}&quot;)</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code>booking_id = None</code><p>Store None in <code>booking_id</code>.</p></li><li value="2"><code># None marks a booking ID that has not been assigned.</code><p>Comment for the reader. Python skips this line.</p></li><li value="3"><code>if booking_id is None:</code><p>Run the indented branch when <code>booking_id is None</code> is truthy.</p></li><li value="4"><code>print(&quot;Send to booking team&quot;)</code><p>Display &#x27;Send to booking team&#x27;.</p></li><li value="5"><code>else:</code><p>Run this branch only when the preceding checks did not match.</p></li><li value="6"><code>print(f&quot;Confirm booking {booking_id}&quot;)</code><p>Display text formatted with booking id.</p></li></ol></div></details>
 <p><strong>Expected output</strong></p>
 <pre><code data-language="text">Send to booking team</code></pre>
       </details>
@@ -461,7 +461,7 @@ free_minutes = 60
 if used_minutes + requested_minutes &lt;= free_minutes:
     print(&quot;Process upload&quot;)
 else:
-    print(&quot;Free quota exceeded&quot;)</code></pre>
+    print(&quot;Free quota exceeded&quot;)</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code>used_minutes = 55</code><p>Store 55 in <code>used_minutes</code>.</p></li><li value="2"><code>requested_minutes = 5</code><p>Store 5 in <code>requested_minutes</code>.</p></li><li value="3"><code>free_minutes = 60</code><p>Store 60 in <code>free_minutes</code>.</p></li><li value="4"><code># Include the new upload when checking the quota.</code><p>Comment for the reader. Python skips this line.</p></li><li value="5"><code>if used_minutes + requested_minutes &lt;= free_minutes:</code><p>Run the indented branch when <code>used_minutes + requested_minutes &lt;= free_minutes</code> is truthy.</p></li><li value="6"><code>print(&quot;Process upload&quot;)</code><p>Display &#x27;Process upload&#x27;.</p></li><li value="7"><code>else:</code><p>Run this branch only when the preceding checks did not match.</p></li><li value="8"><code>print(&quot;Free quota exceeded&quot;)</code><p>Display &#x27;Free quota exceeded&#x27;.</p></li></ol></div></details>
 <p><strong>Expected output</strong></p>
 <pre><code data-language="text">Process upload</code></pre>
       </details>
@@ -481,7 +481,7 @@ if service_down:
 elif customer_blocked:
     print(&quot;P2&quot;)
 else:
-    print(&quot;P3&quot;)</code></pre>
+    print(&quot;P3&quot;)</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code>service_down = True</code><p>Store True in <code>service_down</code>.</p></li><li value="2"><code>customer_blocked = True</code><p>Store True in <code>customer_blocked</code>.</p></li><li value="3"><code># An outage takes priority when both flags are true.</code><p>Comment for the reader. Python skips this line.</p></li><li value="4"><code>if service_down:</code><p>Run the indented branch when <code>service_down</code> is truthy.</p></li><li value="5"><code>print(&quot;P1&quot;)</code><p>Display &#x27;P1&#x27;.</p></li><li value="6"><code>elif customer_blocked:</code><p>Run the indented branch when <code>customer_blocked</code> is truthy.</p></li><li value="7"><code>print(&quot;P2&quot;)</code><p>Display &#x27;P2&#x27;.</p></li><li value="8"><code>else:</code><p>Run this branch only when the preceding checks did not match.</p></li><li value="9"><code>print(&quot;P3&quot;)</code><p>Display &#x27;P3&#x27;.</p></li></ol></div></details>
 <p><strong>Expected output</strong></p>
 <pre><code data-language="text">P1</code></pre></details>
       </details>
@@ -496,7 +496,7 @@ if received_rows &lt; expected_rows:
 elif received_rows == expected_rows:
     print(&quot;Complete&quot;)
 else:
-    print(&quot;Review extra rows&quot;)</code></pre>
+    print(&quot;Review extra rows&quot;)</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code>expected_rows = 80</code><p>Store 80 in <code>expected_rows</code>.</p></li><li value="2"><code>received_rows = 79</code><p>Store 79 in <code>received_rows</code>.</p></li><li value="3"><code># Subtract received rows only in the missing-rows branch.</code><p>Comment for the reader. Python skips this line.</p></li><li value="4"><code>if received_rows &lt; expected_rows:</code><p>Run the indented branch when <code>received_rows &lt; expected_rows</code> is truthy.</p></li><li value="5"><code>print(f&quot;Missing rows: {expected_rows - received_rows}&quot;)</code><p>Display text formatted with expected_rows - received_rows.</p></li><li value="6"><code>elif received_rows == expected_rows:</code><p>Run the indented branch when <code>received_rows == expected_rows</code> is truthy.</p></li><li value="7"><code>print(&quot;Complete&quot;)</code><p>Display &#x27;Complete&#x27;.</p></li><li value="8"><code>else:</code><p>Run this branch only when the preceding checks did not match.</p></li><li value="9"><code>print(&quot;Review extra rows&quot;)</code><p>Display &#x27;Review extra rows&#x27;.</p></li></ol></div></details>
 <p><strong>Expected output</strong></p>
 <pre><code data-language="text">Missing rows: 1</code></pre></details>
       </details>
@@ -511,7 +511,7 @@ leftover = records % batch_size
 if leftover != 0:
     print(f&quot;{full_batches} full batches, {leftover} records in the final batch&quot;)
 else:
-    print(f&quot;{full_batches} full batches&quot;)</code></pre>
+    print(f&quot;{full_batches} full batches&quot;)</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code>records = 63</code><p>Store 63 in <code>records</code>.</p></li><li value="2"><code>batch_size = 20</code><p>Store 20 in <code>batch_size</code>.</p></li><li value="3"><code># Whole-number division gives full batches. The remainder gives leftovers.</code><p>Comment for the reader. Python skips this line.</p></li><li value="4"><code>full_batches = records // batch_size</code><p>For <code>full_batches</code>, count whole groups in records of size batch size and store the result.</p></li><li value="5"><code>leftover = records % batch_size</code><p>For <code>leftover</code>, find the remainder of records divided by batch size and store the result.</p></li><li value="6"><code>if leftover != 0:</code><p>Run the indented branch when <code>leftover != 0</code> is truthy.</p></li><li value="7"><code>print(f&quot;{full_batches} full batches, {leftover} records in the final batch&quot;)</code><p>Display text formatted with full batches, leftover.</p></li><li value="8"><code>else:</code><p>Run this branch only when the preceding checks did not match.</p></li><li value="9"><code>print(f&quot;{full_batches} full batches&quot;)</code><p>Display text formatted with full batches.</p></li></ol></div></details>
 <p><strong>Expected output</strong></p>
 <pre><code data-language="text">3 full batches, 3 records in the final batch</code></pre></details>
       </details>
@@ -523,7 +523,7 @@ else:
 if hour &gt;= 9 and hour &lt;= 16:
     print(&quot;Release window open&quot;)
 else:
-    print(&quot;Wait for the next release window&quot;)</code></pre>
+    print(&quot;Wait for the next release window&quot;)</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code>hour = 17</code><p>Store 17 in <code>hour</code>.</p></li><li value="2"><code># Check both ends of the window.</code><p>Comment for the reader. Python skips this line.</p></li><li value="3"><code>if hour &gt;= 9 and hour &lt;= 16:</code><p>Run the indented branch when <code>hour &gt;= 9 and hour &lt;= 16</code> is truthy.</p></li><li value="4"><code>print(&quot;Release window open&quot;)</code><p>Display &#x27;Release window open&#x27;.</p></li><li value="5"><code>else:</code><p>Run this branch only when the preceding checks did not match.</p></li><li value="6"><code>print(&quot;Wait for the next release window&quot;)</code><p>Display &#x27;Wait for the next release window&#x27;.</p></li></ol></div></details>
 <p><strong>Expected output</strong></p>
 <pre><code data-language="text">Wait for the next release window</code></pre></details>
       </details>
@@ -536,7 +536,7 @@ successful_runs = 0
 if successful_runs &gt; 0:
     print(f&quot;{elapsed_seconds / successful_runs:.1f} seconds per run&quot;)
 else:
-    print(&quot;No successful runs yet&quot;)</code></pre>
+    print(&quot;No successful runs yet&quot;)</code></pre><details><summary>Line-by-line explanation</summary><div><ol><li value="1"><code>elapsed_seconds = 45</code><p>Store 45 in <code>elapsed_seconds</code>.</p></li><li value="2"><code>successful_runs = 0</code><p>Store 0 in <code>successful_runs</code>.</p></li><li value="3"><code># Only divide when there is at least one successful run.</code><p>Comment for the reader. Python skips this line.</p></li><li value="4"><code>if successful_runs &gt; 0:</code><p>Run the indented branch when <code>successful_runs &gt; 0</code> is truthy.</p></li><li value="5"><code>print(f&quot;{elapsed_seconds / successful_runs:.1f} seconds per run&quot;)</code><p>Display text formatted with elapsed_seconds / successful_runs.</p></li><li value="6"><code>else:</code><p>Run this branch only when the preceding checks did not match.</p></li><li value="7"><code>print(&quot;No successful runs yet&quot;)</code><p>Display &#x27;No successful runs yet&#x27;.</p></li></ol></div></details>
 <p><strong>Expected output</strong></p>
 <pre><code data-language="text">No successful runs yet</code></pre></details>
       </details>
@@ -572,3 +572,4 @@ else:
   </section>
   <nav class="lesson-nav" aria-label="Lesson navigation"><a href="variables.html">Previous: Variables, data types &amp; strings</a><a href="lesson-3.html">Next: Functions &amp; scope</a></nav>
 </main><aside class="fde-outline" hidden></aside></div><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script><script src="../../assets/js/fde-layout.js?v=25" defer></script></body></html>
+
