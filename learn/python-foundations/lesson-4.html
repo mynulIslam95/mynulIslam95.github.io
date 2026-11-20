@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>Object-Oriented Programming | Learn with Mynul</title><meta name="description" content="Learn Python with transactions, customer data and service workflows. Includes runnable examples and practice solutions."><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=2"><link rel="stylesheet" href="../../assets/css/fde-layout.css?v=19"></head><body class="bootcamp-thesis fde-docs"><div class="reading shell"><a class="fde-skip" href="#main">Skip to content</a><header class="fde-docs-header"><a class="fde-back-button" href="../python-engineering-module-1.html">Go back</a><button class="theme-button" id="reading-theme" type="button" aria-label="Toggle light and dark theme">Light / Dark</button></header><div class="fde-docs-grid">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>Object-Oriented Programming | Learn with Mynul</title><meta name="description" content="Learn Python with transactions, customer data and service workflows. Includes runnable examples and practice solutions."><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=2"><link rel="stylesheet" href="../../assets/css/fde-layout.css?v=26"></head><body class="bootcamp-thesis fde-docs"><div class="reading shell"><a class="fde-skip" href="#main">Skip to content</a><header class="fde-docs-header"><a class="fde-back-button" href="../python-engineering-module-1.html">Go back</a><button class="theme-button" id="reading-theme" type="button" aria-label="Toggle light and dark theme">Light / Dark</button></header><div class="fde-docs-grid">
 <aside class="fde-lesson-menu">
 <p class="fde-lesson-menu-title">Python lessons</p>
 <nav id="lessons" aria-label="Python lessons" data-python-course>
@@ -36,92 +36,79 @@
   </ol>
 </nav>
 </aside>
-<main id="main"><p class="breadcrumbs"><a href="../python-engineering-module-1.html">Python Foundations</a></p><h1>Object-Oriented Programming</h1><div class="scenario"><p>Model an account balance and its debit rules together. Keep ticket creation separate from database code so you can change and test each part independently.</p></div><p><strong>By the end of this lesson</strong> You can model state and rules together, use composition and replace a dependency in a test.</p><nav class="topic-nav" aria-label="Lesson topics"><ul><li><a href="#topic-1">Classes and instances</a></li><li><a href="#topic-2">Methods and constructors</a></li><li><a href="#topic-3">Encapsulation</a></li><li><a href="#topic-4">Composition vs inheritance</a></li><li><a href="#topic-5">Dataclasses</a></li></ul></nav><section class="topic" id="topic-1"><h2>Classes and instances</h2><p>A class defines how to create an object. An instance is one account made from that definition. Each account has its own owner and balance. <code>__init__</code> sets the initial values for each new instance.</p><h3>Run the code</h3><pre><code data-language="python">class Account:
-    def __init__(self, owner, balance):
-        self.owner = owner
-        self.balance = balance
+<main id="main">
+<p class="breadcrumbs"><a href="../python-engineering-module-1.html">Course overview</a> / Core Python</p>
+<h1>Object-Oriented Programming</h1>
+<p>A support team needs to open tickets, update each ticket independently and tell someone when a new ticket arrives. You’ll build those pieces around one <code>Ticket</code> class. If you need a refresher on lists or references, see <a href="lesson-2.html#topic-3">names, references and mutation</a>.</p>
+<p><a href="#topic-1">Start with two tickets</a> · <a href="#topic-3">Protect ticket status</a> · <a href="#topic-4">Connect a notifier</a> · <a href="#oop-code-puzzles">Runnable tricky questions</a> · <a href="#practice-2">Build the service</a></p>
+<p>Save the first example as <code>support_tickets.py</code> in your practice folder. Run it with <code>uv run python support_tickets.py</code>, or use the plain Python command from <a href="setup.html">setup</a>. Each example tells you whether to replace the file or append code.</p>
 
-first = Account(&quot;Mynul&quot;, 100)
-second = Account(&quot;Lena&quot;, 50)
-print(first.owner, first.balance)
-print(second.owner, second.balance)
-</code></pre><h4>Output</h4><pre><code data-language="text">Mynul 100
-Lena 50
-</code></pre><h3>How it works</h3><ol><li>Calling Account(...) creates an instance. Python passes that object to __init__ as self.</li><li>self.owner and self.balance belong to that particular instance.</li><li>Both accounts use the same class and start with different values.</li></ol><div class="concept-check"><strong>Common mistake</strong><p>self is the conventional name for the first method parameter. A mutable list defined on the class can be shared across accounts. Create a fresh list in __init__ for each account.</p></div><section class="try-change"><h3>Try a change</h3><p>Set first.balance = 80 and print second.balance.</p><details><summary>Check your reasoning</summary><div><p>second.balance stays at 50 because each instance owns its balance.</p></div></details></section></section><section class="topic" id="topic-2"><h2>Methods and constructors</h2><p>A method is a function defined on a class. This deposit example assumes a positive amount. The next lesson adds validation with ValueError.</p><h3>Run the code</h3><pre><code data-language="python">class Account:
-    def __init__(self, balance):
-        self.balance = balance
-
-    def deposit(self, amount):
-        self.balance = self.balance + amount
-        return self.balance
-
-account = Account(100)
-print(account.deposit(20))
-print(account.balance)
-</code></pre><h4>Output</h4><pre><code data-language="text">120
-120
-</code></pre><h3>How it works</h3><ol><li>In account.deposit(20), Python passes account as self and 20 as the amount.</li><li>The method changes that account’s balance from 100 to 120.</li><li>The method also returns 120. Printing account.balance shows the updated state.</li></ol><div class="concept-check"><strong>Common mistake</strong><p>If a method changes an object, make that part of its contract. This example accepts negative amounts. Validate them before using the pattern in a payment service.</p></div><section class="try-change"><h3>Try a change</h3><p>What happens if you call account.deposit(5) again? What if you create a new Account(100)?</p><details><summary>Check your reasoning</summary><div><p>The same account reaches 125. A new account starts at 100 with its own state.</p></div></details></section></section><section class="topic" id="topic-3"><h2>Encapsulation</h2><p>Let callers read the balance through a property and change it through the deposit method. A leading underscore signals internal use by convention.</p><h3>Run the code</h3><pre><code data-language="python">class Account:
-    def __init__(self):
-        self._balance = 0
-
-    @property
-    def balance(self):
-        return self._balance
-
-    def deposit(self, amount):
-        self._balance += amount
-
-account = Account()
-account.deposit(20)
-print(account.balance)
-</code></pre><h4>Output</h4><pre><code data-language="text">20
-</code></pre><h3>How it works</h3><ol><li>The @property decorator lets callers read balance like an attribute.</li><li>Reading account.balance calls the getter without parentheses.</li><li>deposit changes _balance. The property has no setter, so assigning to account.balance raises AttributeError.</li></ol><div class="concept-check"><strong>Common mistake</strong><p>Python still allows direct access to _balance. Treat encapsulation as an interface design technique and enforce authorization and tenant isolation at the appropriate boundary.</p></div><section class="try-change"><h3>Try a change</h3><p>What happens if you pass a negative deposit? Where should the validation go?</p><details><summary>Check your reasoning</summary><div><p>It currently reduces the balance. Reject the amount at the start of deposit, before updating state. Exceptions and files shows how to raise an exception.</p></div></details></section></section><section class="topic" id="topic-4"><h2>Composition vs inheritance</h2><p>TicketService calls notifier.send(title) without depending on a specific email provider. This is composition. A fake notifier lets you observe the call in a test.</p><h3>Run the code</h3><pre><code data-language="python">class FakeNotifier:
-    def __init__(self):
-        self.messages = []
-    def send(self, title):
-        self.messages.append(title)
-
-class TicketService:
-    def __init__(self, notifier):
-        self.notifier = notifier
-    def create(self, title):
-        self.notifier.send(title)
-
-fake = FakeNotifier()
-service = TicketService(fake)
-service.create(&quot;Payment failed&quot;)
-print(fake.messages)
-</code></pre><h4>Output</h4><pre><code data-language="text">[&#x27;Payment failed&#x27;]
-</code></pre><h3>How it works</h3><ol><li>The fake notifier stores messages in a list without sending them.</li><li>Giving the service its notifier through the constructor is dependency injection.</li><li>The service depends on the send contract. The notifier owns its connection details.</li></ol><div class="concept-check"><strong>Common mistake</strong><p>Use inheritance when a subtype can stand in for its parent and preserve the expected behavior.</p></div><p>This example illustrates the boundary between creating a ticket and sending a notification. Persistence and recovery are covered in the backend project.</p><section class="try-change"><h3>Try a change</h3><p>Create another notifier whose send method prints the title. Do you need to change the service?</p><details><summary>Check your reasoning</summary><div><p>The service can use the new notifier as long as it supports send(title). This keeps validation, storage and delivery easier to change.</p></div></details></section></section><section class="topic" id="topic-5"><h2>Dataclasses</h2><p>A dataclass can generate the constructor for a class that mainly carries data. The dataclasses module is part of the standard library.</p><h3>Run the code</h3><pre><code data-language="python">from dataclasses import dataclass, field
-
-@dataclass
-class Ticket:
-    title: str
-    tags: list[str] = field(default_factory=list)
+<section class="topic" id="topic-1"><h2>Create two independent tickets</h2>
+<p>A <strong>class</strong> defines what its objects can do and how they start. An <strong>instance</strong> is one object made from that class. An <strong>attribute</strong> is a named value on an object, such as <code>first.title</code>. Python calls <code>__init__</code> to initialize the new object after creating it.</p>
+<p>Before running the code, predict which ticket gets the tag.</p><pre><code data-language="python">class Ticket:
+    def __init__(self, title):
+        self.title = title
+        self.status = &quot;open&quot;
+        self.tags = []
 
 first = Ticket(&quot;Refund&quot;)
 second = Ticket(&quot;Delivery&quot;)
 first.tags.append(&quot;billing&quot;)
-print(first.title)
-print(second.tags)
-</code></pre><h4>Output</h4><pre><code data-language="text">Refund
-[]
-</code></pre><h3>How it works</h3><ol><li>@dataclass generates a constructor from annotated fields. title: str documents the expected type.</li><li>default_factory=list creates a fresh empty list for every instance.</li><li>Changing first.tags leaves second.tags empty because the lists are independent.</li></ol><div class="concept-check"><strong>Common mistake</strong><p>Type annotations do not validate values at runtime. frozen=True blocks ordinary field reassignment, while nested mutable objects can still change.</p></div><section class="try-change"><h3>Try a change</h3><p>What happens to first.tags if you call second.tags.append("shipping")?</p><details><summary>Check your reasoning</summary><div><p>first.tags still contains billing. second.tags contains shipping.</p></div></details></section></section><section class="debug-box"><h2>Where to start debugging</h2><p>If instances share state, check for a mutable class attribute. If unit tests need a real database, look for a boundary between business rules and storage. Judge the design by how easily you can change and test it.</p></section><section class="practice" id="practice-1"><h3>Practice 1. Keep two accounts independent</h3><p>Create an Account class with balance and deposit. Make two accounts and deposit 20 into the first. Assume positive deposits for this exercise.</p><details><summary>Hint</summary><div><p>Store each account’s state on self.</p></div></details><details><summary>See Solution</summary><div><p>Two constructor calls create two independent accounts.</p><h4>Walk through the solution</h4><p>The constructor sets a balance for each instance. The deposit changes only the first account.</p><pre><code data-language="python">class Account:
+print(first.title, first.tags)
+print(second.title, second.tags)</code></pre><p><strong>Expected output</strong></p><pre><code data-language="text">Refund [&#x27;billing&#x27;]
+Delivery []</code></pre>
+<p>Each call to <code>Ticket(...)</code> runs <code>__init__</code> for a different object. Python passes that object as <code>self</code>. Each execution of <code>self.tags = []</code> creates a fresh list. If you put <code>tags = []</code> on the class itself, instances can end up sharing it.</p>
+<p><strong>Checkpoint.</strong> Add one tag to the second ticket and confirm that the first still contains only <code>billing</code>.</p>
+</section>
 
-    def __init__(self, balance):
-        self.balance = balance
+<section class="topic" id="topic-2"><h2>Use a method to change one ticket</h2>
+<p>A <strong>method</strong> is a function defined on a class. When you call <code>first.close()</code>, Python supplies <code>first</code> as <code>self</code>. That’s why the method updates the first ticket. Replace the previous file with this version.</p><pre><code data-language="python">class Ticket:
+    def __init__(self, title):
+        self.title = title
+        self.status = &quot;open&quot;
+        self.tags = []
 
-    def deposit(self, amount):
-        self.balance += amount
-        return self.balance
-first = Account(100)
-second = Account(50)
-print(first.deposit(20))
-print(second.balance)
-</code></pre><h4>Output</h4><pre><code data-language="text">120
-50
-</code></pre></div></details><h4>Check your work</h4><p>Expect 120 and 50. Add input validation after the exceptions lesson.</p></section><section class="practice" id="practice-2"><h3>Practice 2. Replace the notifier</h3><p>Inject a fake notifier into TicketService. Send two titles and check that both appear in the fake’s messages list.</p><details><summary>Hint</summary><div><p>Have the fake send method append the title to its messages list.</p></div></details><details><summary>See Solution</summary><div><p>The business service can run without the provider’s connection details.</p><h4>Walk through the solution</h4><p>The fake records each call so you can check how the service used it.</p><pre><code data-language="python">class FakeNotifier:
+    def close(self):
+        self.status = &quot;closed&quot;
 
+first = Ticket(&quot;Refund&quot;)
+second = Ticket(&quot;Delivery&quot;)
+first.tags.append(&quot;billing&quot;)
+first.close()
+print(first.status, first.tags)
+print(second.status, second.tags)</code></pre><p><strong>Expected output</strong></p><pre><code data-language="text">closed [&#x27;billing&#x27;]
+open []</code></pre>
+<figure><img src="assets/oop-ticket-instances.png" width="960" height="430" loading="lazy" alt="A Ticket class initializes first and second separately. Closing first leaves second open and its tags empty."><figcaption>Both objects use the same method definition. Only the object supplied as <code>self</code> is changed.</figcaption></figure>
+<p><code>close()</code> changes state and reaches the end without returning a value, so the call returns <code>None</code>. To check that it worked, read the ticket’s status.</p>
+</section>
+
+<section class="topic" id="topic-3"><h2>Give the ticket one way to change status</h2>
+<p><strong>Encapsulation</strong> means giving callers a clear way to use the object and putting the rule for changing its state in one place. Here every ticket starts open and can be closed. Calling <code>close()</code> twice has the same final effect as calling it once.</p><p>Replace the file with this version. <code>@property</code> lets the caller read <code>ticket.status</code> like an attribute while Python calls the getter method.</p><pre><code data-language="python">class Ticket:
+    def __init__(self, title):
+        self.title = title
+        self._status = &quot;open&quot;
+        self.tags = []
+
+    @property
+    def status(self):
+        return self._status
+
+    def close(self):
+        self._status = &quot;closed&quot;
+
+ticket = Ticket(&quot;Refund&quot;)
+print(ticket.status)
+ticket.close()
+ticket.close()
+print(ticket.status)</code></pre><p><strong>Expected output</strong></p><pre><code data-language="text">open
+closed</code></pre>
+<p>There’s no setter, so assigning to <code>ticket.status</code> raises <code>AttributeError</code>. The leading underscore on <code>_status</code> signals internal use. Python still allows direct access to <code>_status</code>, so the underscore is a convention.</p>
+<p><strong>Checkpoint.</strong> Try <code>ticket.status = "open"</code> on a copy of the file. Explain why calling a method keeps the rule in one place.</p>
+</section>
+
+<section class="topic" id="topic-4"><h2>Give the service a notifier it can swap</h2>
+<p>A ticket stores its own state. A service can create tickets and decide when to send a message. <strong>Composition</strong> lets the service use another object to do that work. Pass the notifier into <code>TicketService(...)</code> so the service can use a real notifier later or a recording one in a test. Passing it in is called <strong>dependency injection</strong>.</p>
+<p>Append the following after the previous example. It uses the <code>Ticket</code> class you already defined. The output below shows the two new lines.</p><pre><code data-language="python">class RecordingNotifier:
     def __init__(self):
         self.messages = []
 
@@ -129,16 +116,133 @@ print(second.balance)
         self.messages.append(title)
 
 class TicketService:
-
     def __init__(self, notifier):
         self.notifier = notifier
 
     def create(self, title):
-        self.notifier.send(title)
-fake = FakeNotifier()
-service = TicketService(fake)
-service.create(&#x27;Refund&#x27;)
-service.create(&#x27;Delivery&#x27;)
-print(fake.messages)
-</code></pre><h4>Output</h4><pre><code data-language="text">[&#x27;Refund&#x27;, &#x27;Delivery&#x27;]
-</code></pre></div></details><h4>Check your work</h4><p>Expect ["Refund", "Delivery"]. Try a console notifier and see whether the service needs any changes.</p></section><section class="completion" id="module-check"><h2>Before you move on</h2><ul><li>Explain the main idea in your own words.</li><li>Change the input and solve both exercises again with the solutions closed.</li><li>Show a failing case and explain what went wrong and how to fix it.</li></ul></section><details><summary>Further reading</summary><div><ul><li><a href="https://docs.python.org/3/tutorial/classes.html">Python: classes</a></li><li><a href="https://docs.python.org/3/library/dataclasses.html">Python: dataclasses</a></li></ul></div></details><nav class="lesson-nav" aria-label="Lesson navigation"><a href="lesson-2.html#topic-3">Previous: Memory management fundamentals</a><a href="lesson-5.html#topic-1">Next: Exception handling &amp; debugging</a></nav></main><aside class="fde-outline" hidden></aside></div><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script><script src="../../assets/js/fde-layout.js?v=25" defer></script></body></html>
+        ticket = Ticket(title)
+        self.notifier.send(ticket.title)
+        return ticket
+
+notifier = RecordingNotifier()
+service = TicketService(notifier)
+ticket = service.create(&quot;Refund&quot;)
+print(ticket.title, ticket.status)
+print(notifier.messages)</code></pre><p><strong>Expected output</strong></p><pre><code data-language="text">Refund open
+[&#x27;Refund&#x27;]</code></pre>
+<p>The service can use any notifier that supplies <code>send(title)</code> with the expected behavior. The recording notifier gives you a way to verify the title without sending a real message.</p><details><summary>When does inheritance fit?</summary><p><strong>Inheritance</strong> lets a subclass use or override behavior from a parent class. Use it when the subclass can stand in for its parent. Here a specialized console notifier still accepts the same <code>send(title)</code> call. <code>super()</code> looks for the next implementation in the class hierarchy.</p><pre><code data-language="python">class ConsoleNotifier:
+    def send(self, title):
+        print(title)
+
+class PrefixedNotifier(ConsoleNotifier):
+    def send(self, title):
+        super().send(f&quot;[Support] {title}&quot;)
+
+PrefixedNotifier().send(&quot;Refund&quot;)</code></pre><p><strong>Expected output</strong></p><pre><code data-language="text">[Support] Refund</code></pre></details>
+</section>
+
+<section class="topic" id="topic-5"><h2>Use a dataclass for a summary</h2>
+<p>A lightweight <strong>dataclass</strong> works well for a record that mainly holds values, such as a report row. Python generates methods including an initializer and a readable representation from the declared fields. The application’s <code>Ticket</code> class still owns the rule for closing a ticket. Try this example separately.</p><pre><code data-language="python">from dataclasses import dataclass, field
+
+@dataclass
+class TicketSummary:
+    title: str
+    tags: list[str] = field(default_factory=list)
+
+first = TicketSummary(&quot;Refund&quot;)
+second = TicketSummary(&quot;Delivery&quot;)
+first.tags.append(&quot;billing&quot;)
+print(first)
+print(second.tags)</code></pre><p><strong>Expected output</strong></p><pre><code data-language="text">TicketSummary(title=&#x27;Refund&#x27;, tags=[&#x27;billing&#x27;])
+[]</code></pre>
+<p><code>field(default_factory=list)</code> calls <code>list()</code> for every summary that omits its tags. The annotations describe the expected types. They don’t enforce those types at runtime. A frozen dataclass blocks ordinary field assignment, but an object stored in a field can still be mutable.</p>
+</section>
+
+<section class="topic" id="oop-code-puzzles"><h2>Tricky OOP questions you can run</h2>
+<p>Predict the exact output or error before you run each example.</p><h3>Why do both tickets get the tag?</h3><pre><code data-language="python">class Ticket:
+    tags = []
+
+first = Ticket()
+second = Ticket()
+first.tags.append(&quot;urgent&quot;)
+print(second.tags)</code></pre><details><summary>Show answer</summary><p>It prints <code>['urgent']</code>. Both instances look up the same class-level list. Use <code>self.tags = []</code> inside <code>__init__</code> for one list per instance.</p></details><h3>Why is closing printed as None?</h3><pre><code data-language="python">class Ticket:
+    def close(self):
+        self.status = &quot;closed&quot;
+
+ticket = Ticket()
+print(ticket.close())
+print(ticket.status)</code></pre><details><summary>Show answer</summary><p>It prints <code>None</code> and then <code>closed</code>. The method changes the object and has no explicit return.</p></details><h3>Does another name create another object?</h3><pre><code data-language="python">class Ticket:
+    pass
+
+first = Ticket()
+alias = first
+alias.status = &quot;closed&quot;
+print(first.status)
+print(first is alias)</code></pre><details><summary>Show answer</summary><p>It prints <code>closed</code> and <code>True</code>. Assignment binds a second name to the same object. Call <code>Ticket()</code> again to create another instance.</p></details><h3>Why does assigning the property fail?</h3><pre><code data-language="python">class Ticket:
+    @property
+    def status(self):
+        return &quot;open&quot;
+
+ticket = Ticket()
+ticket.status = &quot;closed&quot;</code></pre><details><summary>Show answer</summary><p>The last line raises <code>AttributeError</code>. The property has a getter and no setter.</p></details><h3>Can two different classes work with the same service?</h3><pre><code data-language="python">class Recorder:
+    def send(self, title):
+        return f&quot;recorded {title}&quot;
+
+class Preview:
+    def send(self, title):
+        return f&quot;preview {title}&quot;
+
+def notify(provider):
+    return provider.send(&quot;Refund&quot;)
+
+print(notify(Recorder()))
+print(notify(Preview()))</code></pre><details><summary>Show answer</summary><p>It prints <code>recorded Refund</code> and <code>preview Refund</code>. Both objects offer the method the caller needs. Neither has to inherit from the other.</p></details><h3>Does frozen stop a nested list from changing?</h3><pre><code data-language="python">from dataclasses import dataclass, field
+
+@dataclass(frozen=True)
+class Summary:
+    tags: list[str] = field(default_factory=list)
+
+row = Summary()
+row.tags.append(&quot;urgent&quot;)
+print(row.tags)</code></pre><details><summary>Show answer</summary><p>It prints <code>['urgent']</code>. Appending modifies the list itself. Assigning a new list to <code>row.tags</code> is what the frozen dataclass would reject.</p></details>
+</section>
+
+<section class="topic" id="practice-1"><h2>Close one ticket without changing another</h2>
+<p>Using the ticket class above, create two tickets, close only the first and add a tag to it. Before running your solution, predict the second ticket’s status and tags.</p><details><summary>Show the check</summary><pre><code data-language="python">first = Ticket(&quot;Refund&quot;)
+second = Ticket(&quot;Delivery&quot;)
+first.close()
+first.tags.append(&quot;billing&quot;)
+assert first.status == &quot;closed&quot;
+assert second.status == &quot;open&quot;
+assert second.tags == []</code></pre><p>Run the check below the ticket class. If both tickets gain a tag, look for a list on the class or two names that refer to the same ticket.</p></details>
+</section>
+
+<section class="topic" id="practice-2"><h2>Swap the notifier and check the service</h2>
+<p>With <code>Ticket</code>, <code>RecordingNotifier</code> and <code>TicketService</code> defined, create two tickets. Check that the service returns independent tickets and the notifier records both titles in order. Then swap in <code>ConsoleNotifier</code> from the inheritance example. Keep the service code as it is.</p><details><summary>Show the check</summary><pre><code data-language="python">notifier = RecordingNotifier()
+service = TicketService(notifier)
+first = service.create(&quot;Refund&quot;)
+second = service.create(&quot;Delivery&quot;)
+first.close()
+
+assert second.status == &quot;open&quot;
+assert notifier.messages == [&quot;Refund&quot;, &quot;Delivery&quot;]</code></pre><p>The assertions check object state and what the service asked its dependency to do.</p></details>
+</section>
+
+<section class="topic" id="oop-project-drills"><h2>Try the design in a bootcamp project</h2>
+<p>Choose one project. Define what belongs to the object and what belongs behind a replaceable dependency.</p><details><summary>OmniGuard</summary><p>Model a connector and pass a fake health checker to the service. Verify that checking one connector leaves a second connector’s status alone.</p></details><details><summary>AuditMesh</summary><p>Model one review and inject an audit sink. Verify that recording a decision produces exactly one entry with the review ID.</p></details><details><summary>Self-hosted LLM</summary><p>Model a model configuration record with a dataclass. Create two configurations and verify their stop-token lists are independent.</p></details><details><summary>On-device LLM</summary><p>Give the inference runner a replaceable backend. Use a fake backend to verify the prompt reaches it without loading a model.</p></details><details><summary>Multimodal document intelligence</summary><p>Give an ingestion service a parser object. Swap a PDF parser for a fake parser with the same method and compare the returned summary.</p></details><details><summary>Enterprise lead management</summary><p>Model a lead with a controlled state change. Record a contact on one lead and confirm another lead’s state stays unchanged.</p></details><details><summary>AI receptionist</summary><p>Give a booking service a recorder instead of a live calendar. Check that the customer name and time reach it once.</p></details><details><summary>Voice productivity</summary><p>Use a dataclass for a transcript preview. Give each preview its own labels list and test edits to two previews.</p></details>
+</section>
+
+<section class="topic" id="oop-workplace-cases"><h2>Five workplace design decisions</h2><p>Explain what you would change and what test would prove it.</p>
+<details><summary>A tag appears on unrelated tickets</summary><p>Two new tickets start with the same list. Move allocation into the initializer and check that first.tags is not second.tags before mutating one.</p></details>
+<details><summary>A report can reopen a closed ticket</summary><p>Make status a read-only property and let the caller use an explicit method for state transitions. Test the allowed transition and check that assigning to the property raises AttributeError.</p></details>
+<details><summary>A test tries to send a real email</summary><p>Inject a recording notifier into the service in the test. Assert that it receives the intended title once. Keep real delivery in a separate integration test.</p></details>
+<details><summary>The exported ticket needs fewer fields</summary><p>Create a TicketSummary dataclass with only the report fields. Copy the tags list when building the summary if later edits to the original ticket should stay out of the report.</p></details>
+<details><summary>Two providers expose different method names</summary><p>Wrap one provider in a small adapter that offers send(title) and translates it into the provider’s call. Use composition to swap the adapter into the existing service.</p></details>
+</section>
+
+<section class="topic" id="module-check"><h2>Check what you can explain</h2>
+<ul><li>Point to the class, an instance and a bound method in the payment-support example.</li><li>Explain where a mutable class attribute lives and how to give each instance its own list.</li><li>Replace a notifier and explain which contract the replacement must honor.</li></ul>
+<p>Once you can write the two checks with the answers closed, continue with exceptions to learn how to reject invalid data explicitly.</p>
+</section><nav class="lesson-nav" aria-label="Lesson navigation"><a href="lesson-2.html#topic-3">Previous: Memory management fundamentals</a><a href="lesson-5.html#topic-1">Next: Exception handling &amp; debugging</a></nav>
+</main><aside class="fde-outline" hidden></aside></div><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script><script src="../../assets/js/fde-layout.js?v=25" defer></script></body></html>
+
