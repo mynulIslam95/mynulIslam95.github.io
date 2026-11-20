@@ -28,7 +28,9 @@
       returnedCard = undefined;
       if (!target) return;
 
-      const textbookLink = target.matches('article') && target.querySelector('.fde-step-link');
+      const textbookLink = target.matches('a[data-fde-legacy-link]')
+        ? target
+        : target.matches('article') && target.querySelector('.fde-step-link');
       if (textbookLink) {
         location.replace(textbookLink.href);
         return;
