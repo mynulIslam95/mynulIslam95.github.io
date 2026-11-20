@@ -50,6 +50,7 @@
   background: var(--fde-hover-bg);
   color: var(--fde-hover-text) !important;
 }
+.fde-home { --fde-site-header-height: 65px; }
 .fde-home .site-header {
   background: var(--th-bg);
   border-bottom: 1px solid var(--th-line);
@@ -197,19 +198,47 @@ html:has(.fde-home .fde-cover:not([hidden])) {
   from { opacity: 0; transform: translateY(14px) scale(.97); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
-html:has(.fde-home .fde-cover[hidden]) { overscroll-behavior-y: none; }
-.fde-home #main:has(> .fde-roadmap:not([hidden])) { padding-top: 4.5rem; }
+html:has(.fde-home .fde-cover[hidden]),
+.fde-home:has(.fde-cover[hidden]) { overscroll-behavior-y: none; }
+.fde-home #main:has(> .fde-roadmap:not([hidden])) { padding-top: var(--fde-site-header-height); }
 .fde-home #main { padding-bottom: 0; }
-.fde-home .fde-roadmap { padding: clamp(20px, 3vw, 32px) 0 14px !important; }
+.fde-home .fde-roadmap { padding: 0 0 14px !important; }
 .fde-home footer { margin: 0; padding: 14px 0; }
 .fde-home footer p { margin: 0; }
-.fde-home #roadmap-title { margin-top: 0 !important; }
+.fde-roadmap-header {
+  position: sticky;
+  z-index: 10;
+  top: var(--fde-site-header-height);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  min-height: 62px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--th-line);
+  background: var(--th-bg);
+}
+.fde-home #roadmap-title {
+  margin: 0 !important;
+  font-size: clamp(1.12rem, 3.2vw, 1.8rem) !important;
+}
+.fde-home .fde-roadmap .fde-launchpad-link {
+  padding: 8px clamp(8px, 1.5vw, 14px);
+  border: 1px solid var(--th-line);
+  border-radius: 7px;
+  background: var(--th-panel);
+  color: var(--th-title);
+  font-size: clamp(.75rem, 1.5vw, .9rem);
+  font-weight: 650;
+  line-height: 1.35;
+  text-decoration: none;
+}
 .fde-home main .fde-roadmap .wrap { max-width: 1000px !important; }
 .fde-home main .fde-roadmap h2 { font-weight: 700 !important; }
 .fde-home main .fde-milestones {
   list-style: none;
   padding: 0;
-  margin: 26px 0 0;
+  margin: 14px 0 0;
 }
 .fde-home main .fde-milestones > li {
   position: relative;
@@ -218,7 +247,7 @@ html:has(.fde-home .fde-cover[hidden]) { overscroll-behavior-y: none; }
   scroll-margin-top: 12px;
 }
 .fde-home main .fde-milestones > li:last-child { margin-bottom: 0; }
-.fde-roadmap-anchor { position: absolute; top: 0; }
+.fde-roadmap-anchor { position: absolute; top: 0; scroll-margin-top: 45px; }
 .fde-milestones article {
   border: 1px solid var(--th-line);
   border-radius: 12px;
@@ -235,19 +264,6 @@ html:has(.fde-home .fde-cover[hidden]) { overscroll-behavior-y: none; }
   padding: 8px clamp(12px, 2vw, 20px);
   border-radius: 11px;
   text-decoration: none;
-}
-.fde-milestones > li:not(.is-current) .fde-step-link:hover {
-  background: var(--fde-hover-bg);
-}
-.fde-milestones > li:not(.is-current) .fde-step-link:hover :is(.fde-step-name, .fde-project-label, .fde-step-number) {
-  color: var(--fde-hover-text);
-}
-.fde-milestones > li:not(.is-current) .fde-step-link:hover .fde-step-number {
-  background: #643013;
-  border-color: #d68b58;
-}
-.fde-milestones > li:not(.is-current) .fde-step-link:hover::after {
-  border-color: var(--fde-hover-text);
 }
 .fde-milestones .fde-step-link::after {
   content: '';
