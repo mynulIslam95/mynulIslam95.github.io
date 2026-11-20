@@ -76,6 +76,47 @@ True
     <p>Braces with <code>key: value</code> pairs make a dictionary. Braces with values alone make a set. Use <code>{}</code> for an empty dictionary and <code>set()</code> for an empty set. Adding <code>"T2"</code> twice still keeps one copy. For two sets, <code>a &amp; b</code> gives the items in both and <code>a - b</code> gives the items only in <code>a</code>.</p>
   </section>
 
+  <section class="topic" id="collection-methods" lang="en">
+    <h2>Edit a ticket queue and preview its order</h2>
+
+    <p>Two entries show ticket <code>T3</code>. Remove its first occurrence, take the next ticket for work and make a sorted preview. Before you run this, guess which steps change the original queue.</p>
+    <pre><code data-language="python">queue = [&quot;T3&quot;, &quot;T1&quot;, &quot;T3&quot;, &quot;T2&quot;]
+
+queue.remove(&quot;T3&quot;)        # Remove the first matching value.
+print(queue)
+
+next_ticket = queue.pop(0)  # Remove the first item and return it.
+print(next_ticket)
+print(queue)
+
+preview = sorted(queue)   # A new list for display.
+print(preview)
+print(queue)
+
+queue.sort()              # Reorder the queue itself.
+print(queue)</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">[&#x27;T1&#x27;, &#x27;T3&#x27;, &#x27;T2&#x27;]
+T1
+[&#x27;T3&#x27;, &#x27;T2&#x27;]
+[&#x27;T2&#x27;, &#x27;T3&#x27;]
+[&#x27;T3&#x27;, &#x27;T2&#x27;]
+[&#x27;T2&#x27;, &#x27;T3&#x27;]</code></pre>
+    <table>
+      <thead><tr><th scope="col">Call</th><th scope="col">Changes the list?</th><th scope="col">Returns</th></tr></thead>
+      <tbody>
+        <tr><th scope="row"><code>queue.remove(value)</code></th><td>Yes, removes the first match</td><td><code>None</code></td></tr>
+        <tr><th scope="row"><code>queue.pop(index)</code></th><td>Yes, removes by position</td><td>The item removed</td></tr>
+        <tr><th scope="row"><code>sorted(queue)</code></th><td>No</td><td>A new sorted list</td></tr>
+        <tr><th scope="row"><code>queue.sort()</code></th><td>Yes, reorders it</td><td><code>None</code></td></tr>
+      </tbody>
+    </table>
+    <details class="fde-setup-answer">
+      <summary>Predict and check two common mistakes</summary>
+      <p><code>queue = queue.sort()</code> reorders the original list, then assigns <code>None</code> to <code>queue</code>. Use <code>queue.sort()</code> on its own. <code>queue.remove("T9")</code> raises <code>ValueError</code> if <code>"T9"</code> is absent. <code>pop(0)</code> on an empty list raises <code>IndexError</code>.</p>
+    </details>
+
+  </section>
   <section class="topic" id="topic-5">
     <h2>Read nested records and filter lists</h2>
     <p>A list can hold several dictionaries. Each dictionary can contain another dictionary. Follow one step at a time. <code>tickets[0]</code> finds the first record, <code>["customer"]</code> finds its customer field and <code>["id"]</code> reads the ID inside it.</p>
