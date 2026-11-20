@@ -116,14 +116,6 @@
     });
   }
 
-  if (outline) {
-    const menu = document.querySelector('.fde-lesson-menu');
-    const compact = matchMedia('(max-width: 850px)');
-    const sizeMenu = () => { menu.open = !compact.matches; };
-    sizeMenu();
-    compact.addEventListener('change', sizeMenu);
-  }
-
   const headings = outline ? [...document.querySelectorAll(
     'main h2[id], main section[id] > h2, main .debug-box[id] > h2'
   )] : [];
