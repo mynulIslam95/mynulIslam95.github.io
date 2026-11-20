@@ -182,6 +182,30 @@ print(sorted(adjustments, key=lambda amount: abs(amount), reverse=True))</code><
     </details>
   </section>
 
+  <section class="topic" id="flexible-arguments" lang="en">
+    <h2>Accept extra arguments with *args and **kwargs</h2>
+
+    <p>Use named parameters for inputs you know in advance. When a callback or other interface deliberately accepts extra inputs, <code>*args</code> collects the extra positional arguments into a tuple and <code>**kwargs</code> collects extra keyword arguments into a dictionary. The stars do the work. <code>args</code> and <code>kwargs</code> are conventional names.</p>
+    <pre><code data-language="python">def intake(ticket_id, *tags, **details):
+    print(ticket_id)
+    print(tags)
+    print(details)
+
+
+# Only the extra arguments go into tags and details.
+intake(&quot;T1&quot;, &quot;urgent&quot;, &quot;billing&quot;, owner=&quot;Mia&quot;)
+intake(&quot;T2&quot;)</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">T1
+(&#x27;urgent&#x27;, &#x27;billing&#x27;)
+{&#x27;owner&#x27;: &#x27;Mia&#x27;}
+T2
+()
+{}</code></pre>
+    <p>In a call, the stars go the other way. <code>intake("T1", *["urgent", "billing"], **{"owner": "Mia"})</code> sends the same values as the first call above. For a fixed input such as <code>owner</code>, an explicit parameter makes the contract easier to read.</p>
+
+  </section>
+
   <section class="topic" id="functions-practice">
     <h2>Project and workplace practice</h2>
     <p>Choose a scenario, write the function and call it with the sample inputs before checking the solution.</p>

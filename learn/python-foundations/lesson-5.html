@@ -37,7 +37,31 @@ with TemporaryDirectory() as folder:
         receipt = handle.read()
     print(receipt)
 </code></pre><h4>Output</h4><pre><code data-language="text">Penny: EUR 12
-</code></pre><h3>কীভাবে এই result হলো?</h3><ol><li>Path(folder) / filename cross-platform path join করছে।</li><li>"w" mode file লিখতে খুলেছে; write text পাঠিয়েছে। First with শেষ হলে handle close হয়েছে।</li><li>দ্বিতীয় with default read mode-এ content পড়েছে। read() returned string receipt-এ আছে।</li></ol><div class="concept-check"><strong>এখানে যেটা ভুল হতে পারে</strong><p>"w" existing file truncate করে। File handle variable file-এর contents না। Relative path current working directory থেকে resolve হয়, script folder থেকে automatically নয়।</p></div><p>with cleanup handle করে, তাই file close করতে ভুল হওয়ার chance কমে। গুরুত্বপূর্ণ report update-এ same-directory temporary file + replace useful pattern; atomic rename একা backups বা power-loss durability guarantee করে না।</p><section class="try-change"><h3>এবার তুমি বদলে দেখো</h3><p>receipt.txt-এর বদলে report.txt দিলে কোথায় file হবে? encoding explicit কেন?</p><details><summary>Reasoning মিলিয়ে দেখো</summary><div><p>একই temporary folder-এ নতুন নাম হবে। UTF-8 explicit রাখলে Bangla text different machines-এ consistent encoding-এ read/write করা যায়।</p></div></details></section></section><section class="topic" id="topic-3"><h2>1.5.3 CSV parsing</h2><p>CSV-এর একটি merchant name-এ comma আছে: "Shop, Berlin"। Manual split(",") করলে field ভেঙে যাবে। DictReader header names দিয়ে প্রতিটি row-এর dict দেয়। এখানে disk file-এর বদলে StringIO দিয়ে text-কে file-like stream বানাচ্ছি।</p><h3>Code-টা run করি</h3><pre><code data-language="python">import csv
+</code></pre><h3>কীভাবে এই result হলো?</h3><ol><li>Path(folder) / filename cross-platform path join করছে।</li><li>"w" mode file লিখতে খুলেছে; write text পাঠিয়েছে। First with শেষ হলে handle close হয়েছে।</li><li>দ্বিতীয় with default read mode-এ content পড়েছে। read() returned string receipt-এ আছে।</li></ol><div class="concept-check"><strong>এখানে যেটা ভুল হতে পারে</strong><p>"w" existing file truncate করে। File handle variable file-এর contents না। Relative path current working directory থেকে resolve হয়, script folder থেকে automatically নয়।</p></div><p>with cleanup handle করে, তাই file close করতে ভুল হওয়ার chance কমে। গুরুত্বপূর্ণ report update-এ same-directory temporary file + replace useful pattern; atomic rename একা backups বা power-loss durability guarantee করে না।</p><section class="try-change"><h3>এবার তুমি বদলে দেখো</h3><p>receipt.txt-এর বদলে report.txt দিলে কোথায় file হবে? encoding explicit কেন?</p><details><summary>Reasoning মিলিয়ে দেখো</summary><div><p>একই temporary folder-এ নতুন নাম হবে। UTF-8 explicit রাখলে Bangla text different machines-এ consistent encoding-এ read/write করা যায়।</p></div></details></section></section>  <section class="topic" id="inspect-your-folder" lang="en">
+    <h2>Inspect a project folder with os and pathlib</h2>
+
+    <p>A relative path starts from the current working directory. An absolute path identifies a location from the filesystem root. If your file can’t be found, print the working directory first. Running a script from a different folder can change that directory.</p>
+    <pre><code data-language="python">import os
+from pathlib import Path
+from tempfile import TemporaryDirectory
+
+# Use an isolated folder so the same example works on any machine.
+with TemporaryDirectory() as folder:
+    report = os.path.join(folder, &quot;report.txt&quot;)
+    Path(report).write_text(&quot;ready&quot;, encoding=&quot;utf-8&quot;)
+
+    print(sorted(os.listdir(folder)))
+    print(Path(report).is_absolute())
+    print((Path(folder) / &quot;report.txt&quot;).read_text(encoding=&quot;utf-8&quot;))</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">[&#x27;report.txt&#x27;]
+True
+ready</code></pre>
+    <p>For your own project, run <code>print(os.getcwd())</code> or <code>print(Path.cwd())</code> to see the current folder. Both <code>os.path.join(folder, "report.txt")</code> and <code>Path(folder) / "report.txt"</code> build a path with the right separator for your system. Missing files can raise <code>FileNotFoundError</code>. The exception section shows how to handle it.</p>
+
+  </section>
+
+<section class="topic" id="topic-3"><h2>1.5.3 CSV parsing</h2><p>CSV-এর একটি merchant name-এ comma আছে: "Shop, Berlin"। Manual split(",") করলে field ভেঙে যাবে। DictReader header names দিয়ে প্রতিটি row-এর dict দেয়। এখানে disk file-এর বদলে StringIO দিয়ে text-কে file-like stream বানাচ্ছি।</p><h3>Code-টা run করি</h3><pre><code data-language="python">import csv
 from io import StringIO
 
 source = StringIO(&#x27;id,merchant,amount\nT1,&quot;Shop, Berlin&quot;,12\n&#x27;)
