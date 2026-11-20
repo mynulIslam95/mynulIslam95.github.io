@@ -168,7 +168,13 @@
     const active = sections.findLastIndex((section) => section.getBoundingClientRect().top <= 150);
     // A section is completed after the reader reaches the next section or the page ends.
     if (courseNav) {
-      const lastPassed = atBottom ? links.length - 1 : active - 1;
+      const lastPassed = atBottom ? links.length - 1 : Math.max(-1, active - 1);
+      while (completedSection > lastPassed) {
+        const link = links[completedSection--];
+        link.classList.remove('is-complete');
+        link.removeAttribute('aria-label');
+        link.querySelector('.fde-outline-check').remove();
+      }
       while (completedSection < lastPassed) {
         const link = links[++completedSection];
         link.classList.add('is-complete');
