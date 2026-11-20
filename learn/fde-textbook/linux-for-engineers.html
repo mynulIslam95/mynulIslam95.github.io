@@ -7,9 +7,9 @@
   <script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script>
   <link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1">
   <link rel="stylesheet" href="../../assets/css/python-lessons.css?v=2">
-  <link rel="stylesheet" href="../../assets/css/fde-layout.css?v=18">
+  <link rel="stylesheet" href="../../assets/css/fde-layout.css?v=26">
 </head>
-<body class="bootcamp-thesis fde-docs fde-docs-overview">
+<body class="bootcamp-thesis fde-docs">
 <div class="reading shell">
   <a class="fde-skip" href="#main">Skip to content</a>
   <header class="fde-docs-header">
@@ -17,45 +17,201 @@
     <button class="theme-button" id="reading-theme" type="button" aria-label="Toggle light and dark theme">Light / Dark</button>
   </header>
   <div class="fde-docs-grid">
-    <aside class="fde-lesson-menu">
-      <p class="fde-lesson-menu-title">Topics</p>
-      <nav aria-label="Related topics"><ol>
-        <li><a href="../python-engineering-module-1.html">Python</a></li>
-        <li><a href="advanced-python-async.html">Advanced Python &amp; Async Programming</a></li>
-        <li><a href="linux-for-engineers.html" aria-current="page">Linux for Engineers</a></li>
-      </ol></nav>
-    </aside>
+    <aside class="fde-lesson-menu"><p class="fde-lesson-menu-title">Section 2 · Linux</p><nav aria-label="Linux lessons"><ol><li><a href="#multipass-lab">Start an Ubuntu VM</a></li><li><a href="#host-files">Share a practice file</a></li><li><a href="#paths">Navigate and inspect files</a></li><li><a href="#permissions">Read users and permissions</a></li><li><a href="#processes">Read processes, ports and logs</a></li><li><a href="#shell-config">Write a Bash check and pass configuration</a></li><li><a href="#incident-lab">Lab: Diagnose an unhealthy service</a></li><li><a href="#linux-puzzles">Tricky Linux questions</a></li><li><a href="#linux-handoff">Hand over what you found</a></li></ol></nav></aside>
     <main id="main">
-      <h1>Linux for Engineers</h1>
-      <p>Practice Linux for Engineers using the concepts and tools below.</p><p>Navigating the file system, Permission and user management, Process monitoring, Shell scripting basics, Environment variable configurations</p>
+<p class="breadcrumbs"><a href="../ai-fde-bootcamp.html#roadmap">Bootcamp roadmap</a> / Section 2</p>
+<h1>Linux for Engineers</h1>
+<p>A customer says a service has started but its health check fails. You’ll reproduce that locally, work out what Linux can tell you about it and show when it’s healthy again.</p>
+<p><strong>By the end:</strong> You can distinguish your laptop from an Ubuntu VM, find files and diagnose permissions, inspect a process and listening port, then verify a service with a small Bash script.</p>
+<p><a href="#incident-lab">Jump to the incident lab</a> · <a href="#linux-puzzles">Try the tricky questions</a></p>
 
-      <section class="topic" id="multipass-lab" lang="en">
-        <h2>Run Ubuntu with Multipass</h2>
-        <p>In this lab you’ll open an Ubuntu shell and confirm that it can read a file from your computer. Your computer is the <strong>host</strong>. Ubuntu runs as the <strong>guest</strong> inside the virtual machine.</p>
-    <h3>Start the guest from your host terminal</h3>
-    <p>Install Multipass using <a href="https://canonical.com/multipass/install">Canonical’s instructions for your operating system</a>. Use a fresh terminal and list the available images. The lecture uses Ubuntu 24.04 and allocates two CPU cores, 2 GB of memory and 15 GB of guest disk space. Check your host’s available resources before launching.</p>
-    <pre><code data-language="text">multipass version
+<nav class="topic-nav" aria-label="Linux lesson topics"><ol><li><a href="#multipass-lab">Start an Ubuntu VM</a></li><li><a href="#host-files">Share a practice file</a></li><li><a href="#paths">Navigate and inspect files</a></li><li><a href="#permissions">Read users and permissions</a></li><li><a href="#processes">Read processes, ports and logs</a></li><li><a href="#shell-config">Write a Bash check and pass configuration</a></li><li><a href="#incident-lab">Lab: Diagnose an unhealthy service</a></li><li><a href="#linux-puzzles">Tricky Linux questions</a></li><li><a href="#linux-handoff">Hand over what you found</a></li></ol></nav>
+
+<section class="topic" id="multipass-lab"><h2>Start an Ubuntu VM</h2>
+
+<p>Your <strong>host</strong> is the computer you sit at. Multipass creates a virtual machine, or <strong>guest</strong>, that runs its own Ubuntu system. A server can have a different filesystem, users and running programs from your laptop. Keeping track of which system you’re on is your first debugging habit.</p>
+<figure><img src="assets/linux-host-guest.png" width="900" height="402" loading="lazy" alt="Multipass commands run on the host. Multipass shell enters the Ubuntu guest, where Linux commands run. Exit returns to the host."><figcaption>Read the terminal label before copying a command. Once you enter the guest, its shell runs the commands you type.</figcaption></figure>
+<p>Install Multipass using <a href="https://canonical.com/multipass/docs/latest/how-to-guides/install-multipass/">Canonical’s instructions for your host OS</a>. On a managed device, use a VM or Linux environment your organization provides if you lack installation or virtualization permissions.</p>
+<p><strong>On the host:</strong> Open a fresh terminal and run:</p><pre><code data-language="bash">multipass version
 multipass find
 multipass launch --name linuxbox --cpus 2 --memory 2G --disk 15G 24.04
-multipass info linuxbox</code></pre>
-    <h3>Share a practice folder</h3>
-    <p>On the host, create a <code>linux-class</code> folder in your home directory and save a file named <code>hello.txt</code> inside. Use the mount command for your host shell.</p>
-    <p><strong>Windows PowerShell</strong></p>
-    <pre><code data-language="text">multipass mount &quot;$HOME\linux-class&quot; linuxbox:/home/ubuntu/class-files</code></pre>
-    <p><strong>macOS or Linux</strong></p>
-    <pre><code data-language="text">multipass mount &quot;$HOME/linux-class&quot; linuxbox:/home/ubuntu/class-files</code></pre>
-    <p>From the host, run <code>multipass shell linuxbox</code>. At the Ubuntu prompt, run the following commands.</p>
-    <pre><code data-language="text">cd /home/ubuntu/class-files
-ls
-cat hello.txt
+multipass list
+multipass shell linuxbox</code></pre>
+<p><code>version</code> checks that the client is available. <code>find</code> lists images. <code>launch</code> creates an Ubuntu 24.04 guest named <code>linuxbox</code> with two virtual CPUs, 2 GB of guest RAM and a 15 GB virtual disk. <code>list</code> shows the instance state. <code>shell</code> takes you into it. If <code>linuxbox</code> is already your practice VM, start it with <code>multipass start linuxbox</code>, then open its shell.</p>
+<p><strong>Inside Ubuntu:</strong></p><pre><code data-language="bash">hostname
+whoami
+pwd
+grep &#x27;^PRETTY_NAME=&#x27; /etc/os-release</code></pre>
+<p><strong>Checkpoint.</strong> The release line identifies Ubuntu 24.04. <code>whoami</code> identifies your user and <code>pwd</code> shows the guest’s current directory. Type <code>exit</code> to return to your host. Your prompt and exact version can differ from the lecture.</p>
+</section>
+
+<section class="topic" id="host-files"><h2>Share a practice file</h2>
+
+<p>A <strong>mount</strong> lets the guest access a host folder at a path inside Ubuntu. A change through a writable mount can affect the host copy, so use a dedicated practice folder with a harmless <code>hello.txt</code> in it.</p>
+<p><strong>On the host:</strong> Create a folder named <code>linux-class</code> in your home directory and save a file called <code>hello.txt</code>. Choose your host’s mount command.</p>
+<h3>Windows PowerShell</h3><pre><code data-language="powershell">multipass mount &quot;$HOME\linux-class&quot; linuxbox:/home/ubuntu/class-files</code></pre>
+<p>If Windows reports that mounts are disabled, transfer the single file instead. Open <a href="https://canonical.com/multipass/docs/latest/reference/settings/local-privileged-mounts/">Canonical’s mounts setting reference</a> if you need a writable share. Enabling that setting allows privileged access to the host folder, so the lab can use a transfer instead.</p><pre><code data-language="powershell">multipass exec linuxbox -- mkdir -p /home/ubuntu/class-files
+multipass transfer &quot;$HOME\linux-class\hello.txt&quot; linuxbox:/home/ubuntu/class-files/hello.txt</code></pre>
+<h3>macOS or Linux</h3><pre><code data-language="bash">multipass mount &quot;$HOME/linux-class&quot; linuxbox:/home/ubuntu/class-files</code></pre>
+<p><strong>Inside Ubuntu:</strong> Enter with <code>multipass shell linuxbox</code> first, then run:</p><pre><code data-language="bash">ls -l /home/ubuntu/class-files
+cat /home/ubuntu/class-files/hello.txt</code></pre>
+<p><strong>Checkpoint.</strong> You see the text you saved. If you used <code>transfer</code>, Ubuntu has a copy and edits stay in the guest. If you used a mount, the two systems see the same shared folder. Run the remaining exercises inside Ubuntu, in the guest’s own home folder.</p>
+</section>
+
+<section class="topic" id="paths"><h2>Navigate and inspect files</h2>
+
+<p>An <strong>absolute path</strong> begins at <code>/</code>, such as <code>/etc/os-release</code>. A <strong>relative path</strong> begins in the current directory. <code>.</code> means here, <code>..</code> is the parent directory and <code>~</code> expands to your home folder. Linux filenames are usually case-sensitive.</p>
+<div class="table-scroll"><table><thead><tr><th>Path</th><th>What you typically find</th></tr></thead><tbody>
+<tr><td><code>/home</code></td><td>Regular users’ home directories.</td></tr>
+<tr><td><code>/etc</code></td><td>System and application configuration.</td></tr>
+<tr><td><code>/var/log</code></td><td>Many system logs. Some services write to the system journal.</td></tr>
+<tr><td><code>/tmp</code> and <code>/usr/bin</code></td><td>Temporary files and commonly installed executables, respectively.</td></tr>
+</tbody></table></div>
+<p>Create a small directory that you can inspect and later serve over a local HTTP port.</p><pre id="lab-files-code"><code data-language="bash">mkdir -p &quot;$HOME/fde-linux-lab/site&quot;
+cd &quot;$HOME/fde-linux-lab&quot;
+printf &#x27;%s\n&#x27; &#x27;ready&#x27; &gt; site/health.txt
+pwd
+ls -la site
+find . -maxdepth 2 -type f -name &#x27;*.txt&#x27;
+cat site/health.txt</code></pre>
+<ol>
+<li><code>mkdir -p</code> creates the parent directories as needed. <code>cd</code> changes your current directory.</li>
+<li><code>printf</code> writes the word and a newline. <code>&gt;</code> creates or replaces the file.</li>
+<li><code>ls -la</code> shows details and hidden names. <code>find</code> looks up to two levels below here for regular files matching the quoted pattern.</li>
+<li><code>cat</code> prints the file. Expect <code>ready</code>.</li>
+</ol>
+</section>
+
+<section class="topic" id="permissions"><h2>Read users and permissions</h2>
+
+<p>Linux checks which <strong>user</strong> a process runs as and which <strong>groups</strong> it belongs to. Each file has an owner, a group and separate permissions for owner, group and others. Read <code>r</code>, write <code>w</code> and execute <code>x</code> correspond to 4, 2 and 1.</p><pre id="lab-permissions-code"><code data-language="bash">whoami
+id
+getent passwd &quot;$(whoami)&quot;
+getent group &quot;$(id -gn)&quot;
+ls -ld site
+ls -l site/health.txt
+chmod 640 site/health.txt
+stat -c &#x27;%A %a %U %G %n&#x27; site/health.txt</code></pre>
+<p><code>id</code> shows the user and group IDs. <code>getent</code> queries the account and group records that the system knows about. <code>ls -ld</code> inspects the directory itself. <code>chmod 640</code> gives the file owner read and write (6), the group read (4) and others no access (0). The final line starts with <code>-rw-r----- 640</code>, followed by your user, group and filename.</p>
+<p>A directory’s <code>x</code> lets you <strong>traverse</strong> it to reach a name inside. A readable file can still be inaccessible if a parent directory blocks traversal. <code>chmod</code> changes permission bits. <code>chown</code> changes the owner or group and may require an administrator.</p><details><summary>Practice user and group management in this VM</summary><div>
+<p>Use a fresh practice VM where the <code>fde-app</code> account and group don’t exist. Observe the account without giving it administrative access.</p><pre><code data-language="bash">sudo groupadd fde-app
+sudo useradd --no-create-home --gid fde-app fde-app
+getent passwd fde-app
+getent group fde-app
+sudo -u fde-app id</code></pre>
+<p>The first two commands create the group and user. <code>getent</code> shows their records. <code>sudo -u fde-app id</code> runs only <code>id</code> under that identity so you can verify it.</p></div></details>
+</section>
+
+<section class="topic" id="processes"><h2>Read processes, ports and logs</h2>
+
+<p>A <strong>process</strong> is a running program identified by a <code>PID</code>. Its <code>PPID</code> identifies its parent. A <strong>listening socket</strong> is a program waiting for traffic on an address and port. A process can exist while its expected socket or route is missing.</p>
+<p>In Ubuntu, check for Python and curl, which the lab uses to start a local server and send it an HTTP request. If one is missing, install it in the guest.</p><pre><code data-language="bash">command -v python3
+command -v curl</code></pre><details><summary>Install a missing lab command</summary><div><pre><code data-language="bash">sudo apt update
+sudo apt install python3 curl</code></pre><p>The first command refreshes package metadata. The second installs the tools. Run both in Ubuntu.</p></div></details>
+<p>Start your practice service. Use <code>ss</code> first to check port 8765. If another process already owns it, leave it running and choose a free port, then use the same port throughout.</p><pre><code data-language="bash">ss -ltn &#x27;sport = :8765&#x27;</code></pre>
+<p>If that lists no listening row, start the service and save its PID in the same Ubuntu terminal.</p><pre id="lab-server-code"><code data-language="bash">nohup python3 -u -m http.server 8765 --bind 127.0.0.1 --directory &quot;$PWD/site&quot; &gt; server.log 2&gt;&amp;1 &lt; /dev/null &amp;
+server_pid=$!</code></pre>
+<p><code>--bind 127.0.0.1</code> listens only inside the guest. <code>--directory</code> points at the files you prepared. <code>&gt; server.log 2&gt;&amp;1</code> puts normal output and errors into one log. <code>&amp;</code> runs the command in the background, <code>$!</code> is its PID and <code>nohup</code> keeps the command from receiving the usual terminal hangup behavior. This setup is for practice. A managed service can handle restarts and structured logs.</p><pre id="lab-observe-code"><code data-language="bash">ps -p &quot;$server_pid&quot; -o pid,ppid,stat,args
+ss -ltnp &#x27;sport = :8765&#x27;
+curl --max-time 3 -fsS http://127.0.0.1:8765/health.txt
+tail -n 5 server.log</code></pre>
+<p><strong>Example result from the Linux test run</strong> (PID and timestamps vary).</p><pre><code data-language="text">LISTEN 0 0 127.0.0.1:8765 0.0.0.0:* users:(("python3",pid=22,fd=3))
+ready
+127.0.0.1 - - [...] "GET /health.txt HTTP/1.1" 200 -</code></pre>
+<p><strong>Checkpoint.</strong> <code>ps</code> shows your server, <code>ss</code> shows the local listener and <code>curl</code> prints <code>ready</code>. If the server is still starting, repeat the check after it shows a listener. The log records the request and its HTTP status. Keep this server running for the next two sections.</p><details><summary>Read the wider process and socket views</summary><div><pre><code data-language="bash">ps -ef -o pid,ppid,cmd
+ps aux
+pstree -p
+top
+ss -tulnp</code></pre>
+<p><code>ps</code> gives a snapshot and <code>pstree</code> groups processes by parent. <code>top</code> refreshes the view continuously. Press <code>q</code> to exit. <code>htop</code> is an optional interactive tool if installed. In <code>ss</code>, <code>-t</code> and <code>-u</code> choose TCP and UDP, <code>-l</code> shows listening sockets, <code>-n</code> keeps numeric addresses and <code>-p</code> requests process details, when you have permission to see them.</p></div></details>
+</section>
+
+<section class="topic" id="shell-config"><h2>Write a Bash check and pass configuration</h2>
+
+<p>A script turns the manual check into something another engineer can rerun. A shell variable belongs to its shell. Export it or put it before a command to pass it to that command’s environment. A child process can inherit those values when it starts.</p>
+<p>In <code>~/fde-linux-lab</code>, paste this whole block to create <code>check.sh</code>.</p><pre id="lab-check-script"><code data-language="bash">cat &gt; check.sh &lt;&lt;&#x27;BASH&#x27;
+#!/usr/bin/env bash
+url=&quot;${HEALTH_URL:-http://127.0.0.1:8765/health.txt}&quot;
+
+if ! body=$(curl --max-time 3 -fsS &quot;$url&quot;); then
+    printf &#x27;%s\n&#x27; &#x27;Health check failed&#x27; &gt;&amp;2
+    exit 1
+fi
+
+if [[ &quot;$body&quot; != ready ]]; then
+    printf &#x27;Unexpected body: %s\n&#x27; &quot;$body&quot; &gt;&amp;2
+    exit 1
+fi
+
+printf &#x27;%s\n&#x27; &#x27;Health check passed&#x27;
+BASH</code></pre>
+<ol>
+<li>The quoted <code>BASH</code> delimiter writes the lines into a file without expanding variables as you create it. The first line inside the file declares Bash as the interpreter for a direct execution.</li>
+<li><code>${HEALTH_URL:-…}</code> uses the local default when the environment variable is empty or absent.</li>
+<li><code>curl</code> has a three-second time limit and <code>-f</code> treats HTTP errors such as 404 as failures. The first branch handles a failed request and writes its own message to standard error via <code>&gt;&amp;2</code>.</li>
+<li>The second branch checks the response body after the command succeeded. Both failures exit with status 1. A successful run prints the final line and exits with status 0.</li>
+</ol><details><summary>Read check.sh line by line</summary><div><ol><li value="1"><code>#!/usr/bin/env bash</code><p>Choose Bash when this executable is run directly.</p></li><li value="2"><code>url=&quot;${HEALTH_URL:-http://127.0.0.1:8765/health.txt}&quot;</code><p>Read HEALTH_URL or use the default lab address.</p></li><li value="4"><code>if ! body=$(curl --max-time 3 -fsS &quot;$url&quot;); then</code><p>Capture the response body. Enter the branch if the request fails.</p></li><li value="5"><code>printf &#x27;%s\n&#x27; &#x27;Health check failed&#x27; &gt;&amp;2</code><p>Send the failure message to standard error.</p></li><li value="6"><code>exit 1</code><p>Stop and report a failed check.</p></li><li value="7"><code>fi</code><p>Close the request failure branch.</p></li><li value="9"><code>if [[ &quot;$body&quot; != ready ]]; then</code><p>Enter this branch if the response is anything other than ready.</p></li><li value="10"><code>printf &#x27;Unexpected body: %s\n&#x27; &quot;$body&quot; &gt;&amp;2</code><p>Print what the server returned so you have evidence to debug.</p></li><li value="11"><code>exit 1</code><p>Stop with a failing status even though the HTTP request succeeded.</p></li><li value="12"><code>fi</code><p>Close the body validation branch.</p></li><li value="14"><code>printf &#x27;%s\n&#x27; &#x27;Health check passed&#x27;</code><p>Print the success message. The command succeeds, so the script finishes with status zero.</p></li></ol></div></details>
+<pre id="lab-check-run"><code data-language="bash">bash check.sh
+HEALTH_URL=http://127.0.0.1:8765/missing.txt bash check.sh
+printf &#x27;Exit status: %s\n&#x27; &quot;$?&quot;</code></pre>
+<p><strong>Checkpoint.</strong> The first command prints <code>Health check passed</code>. The second reports a 404 and <code>Health check failed</code>. The last line prints <code>Exit status: 1</code> because it reads the result immediately after the failed check. If you changed the lab port, use the correct <code>HEALTH_URL</code> on each invocation.</p>
+</section>
+
+<section class="topic" id="incident-lab"><h2>Lab: Diagnose an unhealthy service</h2>
+
+<p>Leave the server running. Your customer says the service is up but the health check is failing. Work from evidence. Check the process first, then the listener, then the HTTP response and finally the file or configuration. Before opening each answer, predict what should remain healthy and what should fail.</p><details><summary>Case 1 · The process listens but the file is missing</summary><div><pre id="lab-case-missing"><code data-language="bash">mv site/health.txt site/health.backup
+ss -ltn &#x27;sport = :8765&#x27;
+bash check.sh
+tail -n 3 server.log
+mv site/health.backup site/health.txt
+bash check.sh</code></pre>
+<p><code>mv</code> hides the expected path without stopping the server. The listener remains. The failed check and log show 404. Restore the original filename and rerun the check. The service should report healthy again.</p></div></details><details><summary>Case 2 · The file exists but the response is wrong</summary><div><pre id="lab-case-body"><code data-language="bash">printf &#x27;%s\n&#x27; &#x27;starting&#x27; &gt; site/health.txt
+curl --max-time 3 -sS -w &#x27;HTTP %{http_code}\n&#x27; http://127.0.0.1:8765/health.txt
+bash check.sh
+printf &#x27;%s\n&#x27; &#x27;ready&#x27; &gt; site/health.txt
+bash check.sh</code></pre>
+<p>The file is readable and HTTP returns 200, but the response says <code>starting</code>. The script rejects that body. Restore the expected value and confirm <code>Health check passed</code>.</p></div></details><details><summary>Case 3 · The probe is pointed at the wrong URL</summary><div><pre id="lab-case-config"><code data-language="bash">HEALTH_URL=http://127.0.0.1:8765/wrong bash check.sh
+printf &#x27;Exit status: %s\n&#x27; &quot;$?&quot;
+HEALTH_URL=http://127.0.0.1:8765/health.txt bash check.sh</code></pre>
+<p>The environment override changes where this invocation looks. The first probe fails with status 1. Correct the URL and rerun it. The process and file need no changes.</p></div></details>
+<details><summary>Case 4 · The file exists but the service can’t read it</summary><div>
+<p>Run this as the ordinary guest user who started the practice server.</p>
+<pre id="lab-case-permission"><code data-language="bash">chmod 000 site/health.txt
+stat -c '%A %a %n' site/health.txt
+bash check.sh
+chmod 640 site/health.txt
+bash check.sh</code></pre>
+<p>The first command removes read access. The file still exists, but this practice server returns 404 when it cannot open it. Restoring mode <code>640</code> gives the server’s user read access and the check passes again. Compare <code>stat</code> with <code>ps -p "$server_pid" -o user,args</code> before changing permissions in a real incident.</p>
+</div></details>
+<p><strong>Try without the solution.</strong> A teammate wants to start a second copy at the same address and port. Explain what you would measure first, how you’d identify the existing process and what would prove that a second instance can run independently. Use a different free port for the second copy.</p><details><summary>Show how to verify the port conflict</summary><div><pre id="lab-case-port"><code data-language="bash">ss -ltnp &#x27;sport = :8765&#x27;
+python3 -m http.server 8765 --bind 127.0.0.1 --directory &quot;$PWD/site&quot;</code></pre>
+<p>With the first server still bound to that port, the second command fails with <code>Address already in use</code>. The first listener and its health response still work. Verify a different free port with <code>ss</code>, run the second instance bound to that port and probe both addresses separately.</p></div></details>
+</section>
+
+<section class="topic" id="linux-puzzles"><h2>Tricky Linux questions</h2>
+<p>Predict first. Use the scratch VM to verify when a command is provided.</p><details><summary>Why can cat fail even when the file is readable?</summary><div><p>Every parent directory must permit traversal for the user running the command. Check the directory chain and the process identity before changing file permissions.</p></div></details><details><summary>A service appears in ps. Is its HTTP route healthy?</summary><div><p>A process listing confirms a process exists. Use ss to check the expected listener, then curl to check the route and response.</p></div></details><details><summary>Why did a second write remove the first log line?</summary><div><p>The <code>&gt;</code> operator truncates an existing file before writing. Use <code>&gt;&gt;</code> to append when history should remain.</p></div></details><details><summary>Why did a Bash script ignore a variable I just set?</summary><div><p>A script started in a new process receives exported variables. Use <code>export NAME=value</code> or a one-command environment assignment like <code>NAME=value bash check.sh</code>.</p></div></details><details><summary>What is the difference between a refused connection and HTTP 404?</summary><div><p>A refused connection failed before an HTTP response. A 404 means an HTTP server responded but could not find the requested route or file.</p></div></details><details><summary>Why did editing Ubuntu’s shared hello.txt change the laptop copy?</summary><div><p>A writable mount exposes the same host folder to both systems. A file sent with transfer is a separate copy.</p></div></details>
+</section>
+
+<section class="topic" id="linux-handoff"><h2>Hand over what you found</h2>
+
+<p>Write four lines for the next engineer. State the observed symptom, the evidence that isolated it, what you changed and which command proved recovery. For the missing file case, include the original 404 and the successful rerun of <code>bash check.sh</code>.</p>
+<p>When finished, stop only the practice process you started. Use the same guest terminal where <code>server_pid</code> was set and verify the command before sending the signal. Proceed only if the listing matches your practice HTTP server.</p><pre><code data-language="bash">ps -p &quot;$server_pid&quot; -o pid,args</code></pre>
+<pre id="lab-cleanup"><code data-language="bash">kill &quot;$server_pid&quot;
+wait &quot;$server_pid&quot; 2&gt;/dev/null || true
+ss -ltn &#x27;sport = :8765&#x27;
 exit</code></pre>
-    <p>The listing should include <code>hello.txt</code> and <code>cat</code> should show what you saved. Files edited through this mount change in the host folder too. When finished, run <code>multipass unmount linuxbox:/home/ubuntu/class-files</code> and <code>multipass stop linuxbox</code> from the host.</p>
-    <p><a href="https://canonical.com/multipass/docs/latest/reference/command-line-interface/launch/">Launch reference</a> · <a href="https://canonical.com/multipass/docs/latest/reference/command-line-interface/mount/">Mount reference</a></p>
-      </section>
-    </main>
+<p>Back on the host, unmount if you mounted a folder, then stop the guest. <code>stop</code> lets you start the same guest later and keeps its disk.</p><pre><code data-language="bash">multipass unmount linuxbox:/home/ubuntu/class-files
+multipass stop linuxbox</code></pre>
+<details><summary>Lecture and reference notes</summary><div>
+<p>November 15 lecture checkpoints: VM and Multipass setup from about 01:06, filesystem navigation around 01:53, users and permissions from about 02:18, processes and sockets around 03:18 and background jobs around 03:34. The Bash health check and incident lab connect these concepts in one exercise.</p>
+<p><a href="https://canonical.com/multipass/docs/latest/reference/command-line-interface/launch/">Multipass launch reference</a> · <a href="https://canonical.com/multipass/docs/latest/reference/command-line-interface/mount/">Mount reference</a></p></div></details>
+</section>
+</main><aside class="fde-outline" hidden></aside>
   </div>
   <footer>Directed by - Mynul Islam</footer>
 </div>
 <script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script>
+<script src="../../assets/js/fde-layout.js?v=25" defer></script>
 </body>
 </html>
+
