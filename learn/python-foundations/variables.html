@@ -121,6 +121,39 @@ print(f"Estimate: {estimated_minutes / 60:.2f} hours")</code></pre>
     <p><strong>Two quick checks.</strong> If your output shows <code>{customer}</code>, check the <code>f</code> before the quote. If you try <code>bool("False")</code>, it returns <code>True</code> because the text isn’t empty.</p>
   </section>
 
+  <section class="topic" id="string-cleanup">
+    <h2>Clean a support message</h2>
+    <p>A teammate enters <code>"  Ticket_0042   OPEN  "</code>. The report needs <code>ticket-0042 | open</code>. Save this as <code>clean_message.py</code> and run it like the earlier examples. Predict how many pieces <code>split()</code> will return.</p>
+    <pre><code data-language="python">raw = &quot;  Ticket_0042   OPEN  &quot;
+
+# Keep the cleaned text and split it into fields.
+clean = raw.strip().lower().replace(&quot;_&quot;, &quot;-&quot;)
+fields = clean.split()
+print(fields)
+print(&quot; | &quot;.join(fields))
+
+# The ID starts after &quot;ticket-&quot;. Keep it as text to preserve the zeros.
+ticket_id = fields[0][7:]
+print(ticket_id)</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">[&#x27;ticket-0042&#x27;, &#x27;open&#x27;]
+ticket-0042 | open
+0042</code></pre>
+    <p><code>strip()</code> trims the ends. <code>lower()</code> and <code>replace()</code> return new strings. <code>split()</code> with no separator groups consecutive whitespace. The separator goes before <code>.join()</code> and is placed between the strings. The slice <code>[7:]</code> starts at index 7 and reads through the end.</p>
+    <details class="fde-setup-answer">
+      <summary>Try joining text and a number</summary>
+      <p><code>" | ".join(["open", 2])</code> raises <code>TypeError</code>. Convert the number with <code>str(2)</code> first. For two fields whose meaning you already know, an f-string such as <code>f"{status} | {count}"</code> is also a good fit.</p>
+      <pre><code data-language="python">status = &quot;open&quot;
+count = 2
+print(&quot; | &quot;.join([status, str(count)]))
+print(f&quot;{status} | {count}&quot;)</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">open | 2
+open | 2</code></pre>
+    </details>
+    <p>Triple quotes let a string span several lines. Use <code>#</code> for comments. A string at the start of a function can serve as its docstring.</p>
+  </section>
+
   <section class="topic" id="project-drills">
     <h2>5. Use these skills in the eight projects</h2>
     <p>Open a project and picture the request coming from a teammate. Read the situation, follow the code and check what your terminal prints.</p>

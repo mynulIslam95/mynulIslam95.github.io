@@ -76,6 +76,31 @@ True
     <p>Braces with <code>key: value</code> pairs make a dictionary. Braces with values alone make a set. Use <code>{}</code> for an empty dictionary and <code>set()</code> for an empty set. Adding <code>"T2"</code> twice still keeps one copy. For two sets, <code>a &amp; b</code> gives the items in both and <code>a - b</code> gives the items only in <code>a</code>.</p>
   </section>
 
+  <section class="topic" id="dictionary-methods">
+    <h2>Update a ticket register</h2>
+    <p>The keys are ticket IDs and the values are ticket records. Use <code>.items()</code> to unpack each key and value in the loop. Predict whether the owner of <code>T1</code> will survive the update.</p>
+    <pre><code data-language="python">tickets = {
+    &quot;T1&quot;: {&quot;status&quot;: &quot;open&quot;, &quot;owner&quot;: &quot;Mia&quot;},
+    &quot;T2&quot;: {&quot;status&quot;: &quot;closed&quot;},
+}
+
+# Replacing T1&#x27;s value replaces its whole record.
+tickets.update({&quot;T1&quot;: {&quot;status&quot;: &quot;waiting&quot;}})
+removed = tickets.pop(&quot;T2&quot;, None)
+
+print(removed)
+for ticket_id, record in tickets.items():
+    print(ticket_id, record[&quot;status&quot;], record.get(&quot;owner&quot;, &quot;unassigned&quot;))</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">{&#x27;status&#x27;: &#x27;closed&#x27;}
+T1 waiting unassigned</code></pre>
+    <p><code>.pop(key, default)</code> removes the key and returns its value. If the key is missing, it returns the supplied default. To keep the owner while changing just the status, use <code>tickets["T1"]["status"] = "waiting"</code> in place of the <code>update()</code> call.</p>
+    <details class="fde-setup-answer">
+      <summary>Why does a list fail as a dictionary key?</summary>
+      <p>A dictionary key must be <strong>hashable</strong>. Python uses its hash to look it up. A hashable object keeps the same hash during its lifetime and equal keys must have the same hash. A string works as a key. A list is unhashable and using it as a key raises <code>TypeError</code>. A tuple of strings works when you need a key with two parts.</p>
+    </details>
+  </section>
+
   <section class="topic" id="collection-methods" lang="en">
     <h2>Edit a ticket queue and preview its order</h2>
 
@@ -417,30 +442,89 @@ print(invoice[&quot;currency&quot;][&quot;code&quot;])</code></pre>
     <p>Continue with <a href="#topic-3">Memory management fundamentals</a> to see what happens when two names refer to the same list.</p>
   </section>
 
-<section lang="bn" class="topic" id="topic-3"><h2>1.2.3 Mutability and references</h2><p>একটা list অন্য variable-এ assign করলেই কি independent copy হবে? আগে output predict করো। Assignment আসলে আরেকটা name দিয়ে একই object refer করতে পারে।</p><h3>Code-টা run করি</h3><pre><code data-language="python">first = [&quot;T1&quot;]
-second = first
-second.append(&quot;T2&quot;)
-print(first)
-print(first is second)
-print(first == [&quot;T1&quot;, &quot;T2&quot;])
-</code></pre><h4>Output</h4><pre><code data-language="text">[&#x27;T1&#x27;, &#x27;T2&#x27;]
+  <section class="topic" id="topic-3">
+    <h2>Names, references and mutation</h2>
+    <p>Assignment lets two names refer to one object. A mutation edits that object. Reassignment points a name at a different object. Predict what the original queue shows after each step.</p>
+    <pre><code data-language="python">original = [&quot;T1&quot;]
+alias = original
+
+alias.append(&quot;T2&quot;)
+print(original)
+print(alias is original)
+
+alias = [&quot;T1&quot;, &quot;T2&quot;]
+print(alias == original)
+print(alias is original)</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">[&#x27;T1&#x27;, &#x27;T2&#x27;]
 True
 True
-</code></pre><h3>কীভাবে এই result হলো?</h3><ol><li>first ও second একই list object refer করে।</li><li>append সেই shared list বদলায়। তাই first দিয়েও T2 দেখা যায়।</li><li>is same object check করে; == values compare করে। দুই question এক না।</li></ol><div class="concept-check"><strong>এখানে যেটা ভুল হতে পারে</strong><p>String/number value compare করতে is ব্যবহার করবে না। <code>is None</code> absent value check করার conventional form। Shared mutable data customer records মিশিয়ে দিতে পারে।</p></div><p>Object জীবিত থাকতে পারে যতক্ষণ অন্য references আছে। <code>del first</code> শুধু সেই name-এর binding সরায়। এতে process memory সঙ্গে সঙ্গে OS-এ ফিরে যাবে, এমন guarantee নেই।</p><section lang="bn" class="try-change"><h3>এবার তুমি বদলে দেখো</h3><p>second = first.copy() দিয়ে আবার প্রথম থেকে run করো।</p><details><summary>Reasoning মিলিয়ে দেখো</summary><div><p>এবার first ["T1"] থাকবে, second ["T1", "T2"] হবে। first is second False।</p></div></details></section></section><section lang="bn" class="topic" id="topic-4"><h2>1.2.4 Shallow copying</h2><p>Outer dict copy করলাম, কিন্তু তার tags list-ও copy হয়েছে কি? Nested data-এর bug ধরতে outer object আর inner object আলাদাভাবে ভাবতে হবে।</p><h3>Code-টা run করি</h3><pre><code data-language="python">original = {&quot;tags&quot;: [&quot;billing&quot;]}
-draft = original.copy()
-draft[&quot;tags&quot;].append(&quot;urgent&quot;)
-print(original[&quot;tags&quot;])
-print(original is draft)
-print(original[&quot;tags&quot;] is draft[&quot;tags&quot;])
-</code></pre><h4>Output</h4><pre><code data-language="text">[&#x27;billing&#x27;, &#x27;urgent&#x27;]
-False
-True
-</code></pre><h3>কীভাবে এই result হলো?</h3><ol><li>Dict.copy নতুন outer dict বানায়, তাই original is draft False।</li><li>কিন্তু inner tags value এখনো একই list-এর reference।</li><li>draft দিয়ে append করায় original-এর tags-এও urgent দেখা যায়।</li></ol><div class="concept-check"><strong>এখানে যেটা ভুল হতে পারে</strong><p>Shallow copy-কে পুরো nested structure-এর independence ভাবলে bug থাকবে। শুধু edited field copy করো, অথবা প্রয়োজন অনুযায়ী deepcopy ব্যবহার করো।</p></div><p>deepcopy recursive data copy করতে পারে, কিন্তু বড় shared structure অকারণে copy করলে time ও memory খরচ বাড়ে। File handles/network connections-কে সাধারণ data-এর মতো copy করে independent resource পাওয়া যায় না।</p><section lang="bn" class="try-change"><h3>এবার তুমি বদলে দেখো</h3><p>append-এর আগে draft["tags"] = original["tags"].copy() বসাও।</p><details><summary>Reasoning মিলিয়ে দেখো</summary><div><p>এবার original tags শুধু billing, draft tags billing ও urgent। Inner references আর একই না।</p></div></details></section></section>
-<section lang="bn" class="debug-box"><h2>Debugging: কোথা থেকে শুরু করবে?</h2><p>দুই record একসাথে বদলালে values দেখার পাশাপাশি <code>a is b</code> দিয়ে shared object check করো। Nested field-এর reference-ও দেখবে। Garbage collector tune করার আগে নিজের retained references আর collection growth investigate করো।</p></section>
-<section lang="bn" class="practice" id="practice-2"><h3>Practice 2: Independent Customer Tags</h3><p>দুই customer-এর tags list যেন independent থাকে। একজনকে urgent tag দিলে অন্যজন unchanged থাকবে।</p><details><summary>Hint</summary><div><p>একটা common empty list assign না করে প্রতিবার নতুন list তৈরি করো।</p></div></details><details><summary>See Solution</summary><div><p>প্রতিটি record-এর mutable field আলাদাভাবে initialize করো।</p><h4>Solution-টা বুঝে নিই</h4><p>প্রতি customer-এর tags আলাদা list। প্রথমটির append দ্বিতীয়টির reference touch করছে না। নিচের checks True হলে expected invariant মিলেছে।</p><pre><code data-language="python">customers = [{&#x27;id&#x27;: 1, &#x27;tags&#x27;: []}, {&#x27;id&#x27;: 2, &#x27;tags&#x27;: []}]
-customers[0][&#x27;tags&#x27;].append(&#x27;urgent&#x27;)
-print(&#x27;Check:&#x27;, customers[1][&#x27;tags&#x27;] == [])
-print(&#x27;Check:&#x27;, customers[0][&#x27;tags&#x27;] is not customers[1][&#x27;tags&#x27;])
-</code></pre><h4>Output</h4><pre><code data-language="text">Check: True
-Check: True
-</code></pre></div></details><h4>নিজের কাজ মিলিয়ে দেখো</h4><p>আগে একই shared list দিয়ে bug reproduce করো। তারপর fresh list দিয়ে fix verify করো।</p></section><section lang="bn" class="completion" id="module-check"><h2>পরের Lesson-এ যাওয়ার আগে</h2><ul><li>নিজের ভাষায় main concept explain করো।</li><li>দুই practice-এর solution বন্ধ করে একটা changed-input version solve করো।</li><li>একটা failing case দেখিয়ে কেন fail করে এবং fix কী হবে বলো।</li></ul></section><details lang="bn"><summary>আরও পড়তে চাইলে</summary><div><ul><li><a href="https://docs.python.org/3/library/copy.html">Python: references ও copying</a></li></ul></div></details><nav class="lesson-nav" aria-label="Lesson navigation"><a href="lesson-3.html">Previous: Functions &amp; scope</a><a href="lesson-4.html">Next: Object-oriented programming basics</a></nav></main><aside class="fde-outline" hidden></aside></div><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script><script src="../../assets/js/fde-layout.js?v=25" defer></script></body></html>
+False</code></pre>
+    <p><code>==</code> compares values and <code>is</code> checks whether two names refer to the same object. Integers and strings are immutable. Appending to a list is a mutation because the same list changes.</p>
+  </section>
+
+  <section class="topic" id="topic-4">
+    <h2>Compare assignment, shallow copy and deep copy</h2>
+    <p>You’re preparing a draft of a ticket with a list of tags. Predict which versions will show <code>"urgent"</code> after the original changes.</p>
+    <pre><code data-language="python">from copy import deepcopy
+
+original = {&quot;id&quot;: &quot;T1&quot;, &quot;tags&quot;: [&quot;billing&quot;]}
+alias = original
+shallow = original.copy()
+deep = deepcopy(original)
+
+# Change the nested list in the original ticket.
+original[&quot;tags&quot;].append(&quot;urgent&quot;)
+
+print(&quot;Assignment:&quot;, alias[&quot;tags&quot;])
+print(&quot;Shallow copy:&quot;, shallow[&quot;tags&quot;])
+print(&quot;Deep copy:&quot;, deep[&quot;tags&quot;])</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">Assignment: [&#x27;billing&#x27;, &#x27;urgent&#x27;]
+Shallow copy: [&#x27;billing&#x27;, &#x27;urgent&#x27;]
+Deep copy: [&#x27;billing&#x27;]</code></pre>
+    <table>
+      <thead><tr><th scope="col">Version</th><th scope="col">Shares the original dictionary?</th><th scope="col">Shares its tags list?</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Assignment</th><td>Yes</td><td>Yes</td></tr>
+        <tr><th scope="row">Shallow copy</th><td>No</td><td>Yes</td></tr>
+        <tr><th scope="row">Deep copy</th><td>No</td><td>No</td></tr>
+      </tbody>
+    </table>
+    <p>For this ticket, <code>deepcopy()</code> copies the dictionary and its nested list. If only the tags need an independent copy, copy that list directly. If an object is still reachable through another name or container, reassigning one variable doesn’t make that object disappear.</p>
+  </section>
+
+  <section class="topic" id="practice-2">
+    <h2>Give each ticket its own tags</h2>
+    <p>Two tickets start with the same <code>shared_tags</code> list. Predict both outputs, then run the example. Change the setup so only the first ticket gains <code>"urgent"</code>.</p>
+    <pre><code data-language="python">shared_tags = []
+tickets = [{"id": "T1", "tags": shared_tags}, {"id": "T2", "tags": shared_tags}]
+tickets[0]["tags"].append("urgent")
+print(tickets[0]["tags"])
+print(tickets[1]["tags"])</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">['urgent']
+['urgent']</code></pre>
+    <details class="fde-setup-answer">
+      <summary>Reveal the commented solution</summary>
+      <pre><code data-language="python"># Each [] creates a separate list.
+tickets = [{&quot;id&quot;: &quot;T1&quot;, &quot;tags&quot;: []}, {&quot;id&quot;: &quot;T2&quot;, &quot;tags&quot;: []}]
+tickets[0][&quot;tags&quot;].append(&quot;urgent&quot;)
+print(tickets[0][&quot;tags&quot;])
+print(tickets[1][&quot;tags&quot;])</code></pre>
+    <p><strong>Expected output</strong></p>
+    <pre><code data-language="text">[&#x27;urgent&#x27;]
+[]</code></pre>
+    </details>
+  </section>
+
+  <section class="topic" id="module-check">
+    <h2>Check what you can explain</h2>
+    <ul>
+      <li>Explain why two equal lists can be different objects.</li>
+      <li>Describe which copy changes when you append to a nested list.</li>
+      <li>Show why changing a ticket’s top-level status in a shallow copy leaves the original status alone.</li>
+    </ul>
+  </section>
+
+<nav class="lesson-nav" aria-label="Lesson navigation"><a href="lesson-3.html">Previous: Functions &amp; scope</a><a href="lesson-4.html">Next: Object-oriented programming basics</a></nav></main><aside class="fde-outline" hidden></aside></div><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script><script src="../../assets/js/fde-layout.js?v=25" defer></script></body></html>
