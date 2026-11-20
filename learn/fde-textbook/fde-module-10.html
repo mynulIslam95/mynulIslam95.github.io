@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Advanced Agent Orchestration | Learn with Mynul</title>
+  <script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script>
+  <link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1">
+  <link rel="stylesheet" href="../../assets/css/python-lessons.css?v=2">
+  <link rel="stylesheet" href="../../assets/css/fde-layout.css?v=18">
+</head>
+<body class="bootcamp-thesis fde-docs fde-docs-overview">
+<div class="reading shell">
+  <a class="fde-skip" href="#main">Skip to content</a>
+  <header class="fde-docs-header">
+    <a class="fde-back-button" href="../ai-fde-bootcamp.html#fde-module-10">Go back</a>
+    <button class="theme-button" id="reading-theme" type="button" aria-label="Toggle light and dark theme">Light / Dark</button>
+  </header>
+  <div class="fde-docs-grid">
+    <aside class="fde-lesson-menu">
+      <p class="fde-lesson-menu-title">Topics</p>
+      <nav aria-label="Topics in this overview"><ol>
+        <li><a href="#fde-10-topic-1">29. Memory &amp; Human-in-the-Loop Workflows</a></li>
+        <li><a href="#fde-10-topic-2">30. Error Handling &amp; AWS Bedrock AgentCore</a></li>
+        <li><a href="#fde-10-topic-3">31. Model Context Protocol (MCP)</a></li>
+      </ol></nav>
+    </aside>
+    <main id="main">
+      <h1>Advanced Agent Orchestration</h1>
+      <p lang="bn">Agent Memory, Human Approval আর Error Recovery যোগ করবো। MCP দিয়ে external tools-এর access সীমিত রাখবো।</p>
+      <section id="fde-10-topic-1" class="topic">
+        <h2>29. Memory &amp; Human-in-the-Loop Workflows</h2>
+        <p lang="bn">Memory &amp; Human-in-the-Loop Workflows নিয়ে Step by Step শিখবো। নিচের Concepts আর Tools হাতে-কলমে Practice করবো।</p><p>Check-pointing graph states, Semantic long-term memory retrieval, Interrupting graph execution, Requesting manual state approval</p>
+      </section>
+      <section id="fde-10-topic-2" class="topic">
+        <h2>30. Error Handling &amp; AWS Bedrock AgentCore</h2>
+        <p lang="bn">Error Handling &amp; AWS Bedrock AgentCore নিয়ে Step by Step শিখবো। নিচের Concepts আর Tools হাতে-কলমে Practice করবো।</p><p>Detecting infinite ReAct loops, Self-correction prompting mechanisms, Managed agent provisioning, Integrating knowledge bases</p>
+      </section>
+      <section id="fde-10-topic-3" class="topic">
+        <h2>31. Model Context Protocol (MCP)</h2>
+        <p lang="bn">Model Context Protocol (MCP) নিয়ে Step by Step শিখবো। নিচের Concepts আর Tools হাতে-কলমে Practice করবো।</p><p>Connecting agents to external tools safely, Host/Client/Server architectures, Standardizing tool access boundaries</p>
+      </section>
+    </main>
+  </div>
+  <footer>Directed by - Mynul Islam</footer>
+</div>
+<script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script>
+</body>
+</html>

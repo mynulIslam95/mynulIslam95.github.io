@@ -14,55 +14,35 @@
     const cover = launch.closest('.fde-cover');
     const course = document.getElementById('roadmap');
     const roadmapTitle = document.getElementById('roadmap-title');
-    const topicView = document.querySelector('.fde-topic-view');
-    const topicTitle = document.getElementById('fde-topic-title');
-    const topicLabel = topicView.querySelector('[data-fde-topic-label]');
-    const topicContent = topicView.querySelector('[data-fde-topic-content]');
-    const returnLink = topicView.querySelector('[data-fde-return]');
-
     function syncCourseView() {
       const target = document.getElementById(location.hash.slice(1));
       const inCourse = Boolean(target && course.contains(target));
-      const topic = inCourse && target.matches('.fde-milestones article') ? target : null;
       cover.hidden = inCourse;
-      course.hidden = !inCourse || Boolean(topic);
-      topicView.hidden = !topic;
-
-      if (topic) {
-        topicTitle.textContent = topic.querySelector('.fde-step-name').textContent;
-        topicLabel.textContent = topic.querySelector('.fde-project-label')?.textContent ??
-          'Topic ' + topic.querySelector('.fde-step-number').textContent;
-        const copy = topic.querySelector('.fde-step-copy').cloneNode(true);
-        copy.hidden = false;
-        topicContent.replaceChildren(...copy.childNodes);
-      }
+      course.hidden = !inCourse;
       return inCourse ? target : null;
     }
 
     function navigateCourseView() {
-      if (location.hash === '#fde-1-topic-1') {
-        const pythonLink = document.querySelector('#fde-1-topic-1 .fde-step-link');
-        location.replace(pythonLink.href);
-        return;
-      }
       const target = syncCourseView();
       returnedCard = undefined;
+      if (!target) return;
 
-      if (!topicView.hidden) {
+      const textbookLink = target.matches('article') && target.querySelector('.fde-step-link');
+      if (textbookLink) {
+        location.replace(textbookLink.href);
+        return;
+      }
+
+      const saved = history.state?.fdeRoadmapReturn;
+      const link = saved && document.getElementById(saved.id)?.querySelector('.fde-step-link');
+      if (link) {
+        window.scrollTo({ top: saved.y, behavior: 'instant' });
+        returnedCard = { row: link.closest('li'), y: window.scrollY };
+        link.focus({ preventScroll: true });
+      } else if (target === course || target === roadmapTitle) {
         window.scrollTo({ top: 0, behavior: 'instant' });
-        topicTitle.focus({ preventScroll: true });
-      } else if (!course.hidden) {
-        const saved = history.state?.fdeRoadmapReturn;
-        const link = saved && document.getElementById(saved.id)?.querySelector('.fde-step-link');
-        if (link) {
-          window.scrollTo({ top: saved.y, behavior: 'instant' });
-          returnedCard = { row: link.closest('li'), y: window.scrollY };
-          link.focus({ preventScroll: true });
-        } else if (target === course || target === roadmapTitle) {
-          window.scrollTo({ top: 0, behavior: 'instant' });
-        } else {
-          target.scrollIntoView({ block: 'start', behavior: 'instant' });
-        }
+      } else {
+        target.scrollIntoView({ block: 'start', behavior: 'instant' });
       }
     }
 
@@ -75,24 +55,17 @@
       navigateCourseView();
       scheduleUpdate();
     });
+    addEventListener('pageshow', (event) => {
+      if (event.persisted && history.state?.fdeRoadmapReturn) navigateCourseView();
+    });
 
     roadmap.addEventListener('click', (event) => {
       const link = event.target.closest('.fde-step-link');
-      if (!link?.hash || !isPlainClick(event)) return;
-      event.preventDefault();
+      if (!link || !isPlainClick(event)) return;
       history.replaceState({
         ...history.state,
-        fdeRoadmapReturn: { id: link.hash.slice(1), y: window.scrollY }
+        fdeRoadmapReturn: { id: link.closest('article').id, y: window.scrollY }
       }, '');
-      history.pushState({ fdeTopicFromRoadmap: true }, '', link.hash);
-      navigateCourseView();
-      scheduleUpdate();
-    });
-
-    returnLink.addEventListener('click', (event) => {
-      if (!isPlainClick(event) || !history.state?.fdeTopicFromRoadmap) return;
-      event.preventDefault();
-      history.back();
     });
 
     launch.addEventListener('click', async (event) => {

@@ -55,7 +55,7 @@
   border-bottom: 1px solid var(--th-line);
 }
 .fde-home .site-header a, .fde-home .site-header button { color: var(--th-text); }
-.fde-cover[hidden], .fde-roadmap[hidden], .fde-topic-view[hidden] { display: none; }
+.fde-cover[hidden], .fde-roadmap[hidden] { display: none; }
 html:has(.fde-home .fde-cover:not([hidden])) {
   overflow: hidden;
   overscroll-behavior: none;
@@ -198,7 +198,7 @@ html:has(.fde-home .fde-cover:not([hidden])) {
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 html:has(.fde-home .fde-cover[hidden]) { overscroll-behavior-y: none; }
-.fde-home #main:has(> :is(.fde-roadmap, .fde-topic-view):not([hidden])) { padding-top: 4.5rem; }
+.fde-home #main:has(> .fde-roadmap:not([hidden])) { padding-top: 4.5rem; }
 .fde-home #main { padding-bottom: 0; }
 .fde-home .fde-roadmap { padding: clamp(20px, 3vw, 32px) 0 14px !important; }
 .fde-home footer { margin: 0; padding: 14px 0; }
@@ -271,13 +271,6 @@ html:has(.fde-home .fde-cover[hidden]) { overscroll-behavior-y: none; }
   font-variant-numeric: tabular-nums;
 }
 .fde-step-name { color: var(--th-title); font-size: clamp(1rem, 2vw, 1.12rem); font-weight: 600; line-height: 1.4; }
-.fde-step-copy {
-  margin: 0 clamp(12px, 2vw, 20px) 10px;
-  padding: 12px 0 0;
-  border-top: 1px solid var(--th-line);
-  color: var(--fde-muted);
-  font-size: 1rem;
-}
 .fde-project-step .fde-step-link { grid-template-columns: minmax(0, 1fr) 12px; gap: 3px 16px; padding-block: 12px; }
 .fde-project-step .fde-step-name { grid-column: 1; }
 .fde-project-step .fde-step-link::after { grid-column: 2; grid-row: 1 / 3; }
@@ -299,19 +292,6 @@ html:has(.fde-home .fde-cover[hidden]) { overscroll-behavior-y: none; }
 @keyframes fde-step-glow {
   from { text-shadow: 0 0 14px color-mix(in srgb, var(--th-green) 65%, transparent); }
 }
-
-.fde-home .fde-topic-view { padding: 28px 0 38px; }
-.fde-home main .fde-topic-view .wrap { max-width: 760px !important; }
-.fde-home .fde-topic-label { color: var(--th-teal); font-weight: 700; }
-.fde-home .fde-topic-view .fde-return-link { display: inline-block; margin: 0 0 24px; }
-.fde-home #fde-topic-title { margin: 0 0 20px !important; font-size: clamp(1.75rem, 5vw, 2.5rem) !important; }
-.fde-topic-content {
-  padding: 18px clamp(16px, 3vw, 28px);
-  border: 1px solid var(--th-line);
-  border-radius: 12px;
-  background: var(--th-panel);
-}
-.fde-topic-content p:last-child { margin-bottom: 0 !important; }
 
 .fde-docs .reading.shell {
   --fde-docs-header-height: 4rem;
