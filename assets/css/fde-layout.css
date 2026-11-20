@@ -81,10 +81,10 @@ html:has(.fde-home .fde-cover:not([hidden])) {
   display: flex;
   justify-content: center;
   align-items: baseline;
-  gap: .14em;
+  gap: .17em;
   color: var(--th-green);
   font: 900 clamp(2rem, min(10vw, 21dvh), 8.75rem)/.88 var(--fde-display);
-  letter-spacing: -.035em;
+  letter-spacing: .012em;
   margin: 0 0 clamp(10px, min(4vw, 4dvh), 48px) !important;
 }
 .fde-wordmark span { text-shadow: 0 0 28px color-mix(in srgb, currentColor 48%, transparent); }
