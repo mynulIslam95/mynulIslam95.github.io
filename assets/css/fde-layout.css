@@ -334,7 +334,30 @@ html:has(.fde-home .fde-cover[hidden]),
   background: var(--fde-hover-bg);
   color: var(--fde-hover-text);
 }
-.fde-docs .reading main { padding: 0 0 44px; }
+.fde-docs .reading main {
+  min-inline-size: 0;
+  padding: 0 0 44px;
+}
+.fde-docs .reading main figure {
+  inline-size: min(100%, 42rem);
+  margin: 1.5rem auto;
+}
+.fde-docs .reading main figure img {
+  display: block;
+  max-inline-size: 100%;
+  block-size: auto;
+}
+.fde-docs .reading main figcaption {
+  margin-block-start: .6rem;
+  color: var(--fde-muted);
+  font-size: .9rem;
+}
+.fde-docs .reading main pre {
+  inline-size: 100%;
+  max-inline-size: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
 .fde-docs .reading h1 { font-weight: 700 !important; line-height: 1.13 !important; text-wrap: pretty; }
 .fde-docs .reading .topic h2 { color: var(--th-title) !important; }
 .fde-skip { position: fixed; z-index: 5; top: 8px; left: 8px; padding: .5rem; background: var(--th-bg); transform: translateY(-150%); }
