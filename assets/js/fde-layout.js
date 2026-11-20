@@ -116,6 +116,12 @@
     document.body.classList.add('fde-has-outline');
   }
 
+  const courseLinks = [...document.querySelectorAll('[data-python-course] a[href*="#"]')]
+    .filter((link) => link.pathname === location.pathname)
+    .map((link) => ({ link, target: document.getElementById(link.hash.slice(1)) }))
+    .filter(({ target }) => target);
+  let currentCourseLink = courseLinks[0]?.link;
+
   let frame;
   let currentMilestone;
   function updatePosition() {
@@ -134,6 +140,16 @@
       currentMilestone?.classList.remove('is-current');
       nextMilestone?.classList.add('is-current');
       currentMilestone = nextMilestone;
+    }
+
+    if (courseLinks.length > 1) {
+      const visible = courseLinks.findLast(({ target }) => target.getBoundingClientRect().top <= 150);
+      const nextLink = (visible ?? courseLinks[0]).link;
+      if (nextLink !== currentCourseLink) {
+        currentCourseLink.removeAttribute('aria-current');
+        nextLink.setAttribute('aria-current', 'location');
+        currentCourseLink = nextLink;
+      }
     }
 
     const active = sections.findLastIndex((section) => section.getBoundingClientRect().top <= 150);

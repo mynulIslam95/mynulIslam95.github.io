@@ -6,26 +6,47 @@
 </style></head><body class="bootcamp-thesis fde-docs"><div class="reading shell"><a class="fde-skip" href="#main">Skip to content</a><header class="fde-docs-header"><a class="fde-back-button" href="../python-engineering-module-1.html">Go back</a><button class="theme-button" id="reading-theme" type="button" aria-label="Toggle light and dark theme">Light / Dark</button></header><div class="fde-docs-grid">
 <aside class="fde-lesson-menu">
 <p class="fde-lesson-menu-title">Python lessons</p>
-<nav aria-label="Python lessons"><a href="../python-engineering-module-1.html">Module overview</a>
-<a href="setup.html">Python setup &amp; first program</a>
-<a href="variables.html">Variables, data types &amp; strings</a>
-<p>Core Python</p><ol><li><a href="lesson-1.html" aria-current="page">1.1 Python Basics, Conditions &amp; Loops</a></li><li><a href="lesson-2.html">1.2 Data Structures &amp; Memory</a></li><li><a href="lesson-3.html">1.3 Functions, Scope &amp; Modules</a></li></ol>
-<p>Objects, files &amp; iteration</p><ol><li><a href="lesson-4.html">1.4 Object-Oriented Programming</a></li><li><a href="lesson-5.html">1.5 Exceptions, Files, CSV &amp; JSON</a></li><li><a href="lesson-6.html">1.6 Iterators, Generators &amp; Pythonic Code</a></li></ol>
-<p>Code quality &amp; concurrency</p><ol><li><a href="lesson-7.html">1.7 Type Hints, Clean Code &amp; Dependencies</a></li><li><a href="lesson-8.html">1.8 pytest, Debugging &amp; Logging</a></li><li><a href="lesson-9.html">1.9 Async &amp; Concurrency Essentials</a></li></ol></nav></aside>
+<nav aria-label="Python lessons" data-python-course>
+  <a href="../python-engineering-module-1.html">Module overview</a>
+  <ol>
+    <li><a href="setup.html">1. Python setup &amp; first program</a></li>
+    <li><a href="variables.html">2. Variables, data types &amp; strings</a></li>
+    <li><a href="lesson-1.html#topic-1" aria-current="location">3. Operators &amp; conditions</a></li>
+    <li><a href="lesson-1.html#topic-2">4. Loops</a></li>
+    <li><a href="lesson-3.html">5. Functions &amp; scope</a></li>
+    <li><a href="lesson-2.html#topic-1">6. Core data structures</a></li>
+    <li><a href="lesson-2.html#topic-3">7. Memory management fundamentals</a></li>
+    <li><a href="lesson-4.html">8. Object-oriented programming basics</a></li>
+    <li><a href="lesson-5.html#topic-1">9. Exception handling &amp; debugging</a></li>
+    <li><a href="lesson-5.html#topic-2">10. File I/O operations</a></li>
+  </ol>
+</nav></aside>
 <main id="main" class="fde-setup-lesson">
   <p class="breadcrumbs"><a href="../python-engineering-module-1.html">Python overview</a> / Lesson 1.1</p>
   <h1>1.1 Python Basics, Conditions &amp; Loops</h1>
   <p>You have EUR 100. Build a program that checks each payment request, accepts the ones you can afford and shows how much money is left.</p>
 
   <section class="topic" id="topic-1">
-    <h2>1. Compare before you subtract</h2>
+    <h2>Operators &amp; conditions</h2>
     <p><code>balance - amount</code> gives the money left. <code>amount &gt; balance</code> asks whether the payment is too large. A comparison gives <code>True</code> or <code>False</code>.</p>
     <p>Use <code>=</code> to assign a value and <code>==</code> to compare two values. <code>amount &lt;= balance</code> allows a payment equal to the balance.</p>
     <p><code>and</code> needs both checks to be true. <code>or</code> needs at least one to be true. <code>not</code> reverses a result.</p>
+    <p>To decide whether a single payment can go through, use <code>if</code>, <code>elif</code> and <code>else</code>. Python runs the first branch whose condition is true.</p>
+    <pre><code data-language="python">balance = 100
+amount = 120
+if amount &lt;= 0:
+    print("Amount must be positive")
+elif amount &gt; balance:
+    print("Not enough balance")
+else:
+    print("Payment approved")</code></pre>
+    <p>This prints <code>Not enough balance</code>. Change <code>amount</code> to <code>100</code> and predict what happens.</p>
+    <p>Next: <a href="lesson-1.html#topic-2">Loops</a></p>
   </section>
 
   <section class="topic" id="topic-2">
-    <h2>2. Run the payment report</h2>
+    <h2>Loops</h2>
+    <p>A <code>for</code> loop repeats an action for each item. If you need a set number of turns, <code>for turn in range(3):</code> gives you the values <code>0</code>, <code>1</code> and <code>2</code>. The report below loops through payment requests instead.</p>
     <p>Create <code>payments.py</code> in your practice folder. Save the code and run <code>py -3 payments.py</code> on Windows or <code>python3 payments.py</code> on Mac or Linux.</p>
     <pre><code data-language="python">balance = 100
 requests = [" 12 ", "oops", "120", "8", "0"]
@@ -91,8 +112,5 @@ while attempts &lt; 3:
       <p>Yes. <code>8 &gt; 8</code> is false, so EUR 8 is accepted. The last EUR 1 payment is declined. The report ends with <code>Spent: EUR 100</code> and <code>Balance: EUR 0</code>.</p>
     </details>
   </section>
-  <nav class="lesson-nav" aria-label="Lesson navigation">
-    <a href="variables.html">Previous: Variables, data types &amp; strings</a>
-    <a href="lesson-2.html">Next: Data Structures &amp; Memory</a>
-  </nav>
-</main><aside class="fde-outline" hidden></aside></div><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script><script src="../../assets/js/fde-layout.js?v=15" defer></script></body></html>
+  <nav class="lesson-nav" aria-label="Lesson navigation"><a href="variables.html">Previous: Variables, data types &amp; strings</a><a href="lesson-3.html">Next: Functions &amp; scope</a></nav>
+</main><aside class="fde-outline" hidden></aside></div><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script><script src="../../assets/js/fde-layout.js?v=23" defer></script></body></html>
