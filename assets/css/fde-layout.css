@@ -59,20 +59,54 @@
   background: radial-gradient(ellipse at 50% 15%, var(--fde-active), transparent 64%);
   border-bottom: 1px solid var(--th-line);
 }
-.fde-cover-inner { width: min(100%, 940px); }
+.fde-cover-inner {
+  --fde-display: 'Barlow Condensed', Impact, 'Arial Narrow', sans-serif;
+  width: min(100%, 940px);
+}
 .fde-home p.fde-wordmark {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: .14em;
   color: var(--th-green);
-  font-size: clamp(96px, 23vw, 275px);
-  line-height: .86;
-  letter-spacing: -.09em;
-  font-weight: 800;
-  margin: 0 .09em 30px 0 !important;
+  font: 900 clamp(2.7rem, 10vw, 8.75rem)/.88 var(--fde-display);
+  letter-spacing: -.035em;
+  margin: 0 0 clamp(24px, 4vw, 48px) !important;
+}
+.fde-wordmark span { text-shadow: 0 0 28px color-mix(in srgb, currentColor 48%, transparent); }
+.fde-wordmark em {
+  color: var(--th-title);
+  font: italic 600 .32em/1 Georgia, serif;
+  letter-spacing: 0;
 }
 .fde-home main .fde-cover h1 {
-  font-size: clamp(2.15rem, 5.3vw, 4.5rem) !important;
-  line-height: 1.06 !important;
-  font-weight: 700 !important;
-  letter-spacing: -.058em !important;
+  font-family: var(--fde-display) !important;
+  font-size: clamp(1.14rem, 5.05vw, 4.65rem) !important;
+  line-height: .98 !important;
+  font-weight: 900 !important;
+  letter-spacing: .015em !important;
+  margin: 0 !important;
+  text-transform: uppercase;
+}
+.fde-cover h1 span { display: block; }
+.fde-title-line { text-shadow: 0 .045em 0 var(--fde-active), 0 .11em .24em var(--th-bg); }
+.fde-title-join {
+  margin-block: .55em;
+  color: var(--th-green);
+  font-size: .36em;
+  letter-spacing: .16em;
+}
+.fde-title-bootcamp { margin-top: .32em; font-size: .66em; letter-spacing: .11em; }
+@media (prefers-reduced-motion: no-preference) {
+  .fde-wordmark { animation: fde-cover-arrive .8s ease-out both; }
+  .fde-wordmark span { animation: fde-glow 2s ease-in-out 2; }
+}
+@keyframes fde-cover-arrive {
+  from { opacity: .6; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fde-glow {
+  50% { text-shadow: 0 0 18px currentColor, 0 0 48px color-mix(in srgb, currentColor 62%, transparent); }
 }
 .fde-home .fde-cover .fde-intro { max-width: 47ch; margin: 18px auto !important; }
 .fde-actions { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 14px 24px; margin: 27px 0 18px; }
