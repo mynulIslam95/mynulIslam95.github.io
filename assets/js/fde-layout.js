@@ -25,8 +25,11 @@
     function navigateCourseView() {
       const target = syncCourseView();
       if (target && !course.hidden) {
-        const heading = target === course ? roadmapTitle : target;
-        heading.scrollIntoView({ block: 'start', behavior: 'instant' });
+        if (target === course || target === roadmapTitle) {
+          window.scrollTo({ top: 0, behavior: 'instant' });
+        } else {
+          target.scrollIntoView({ block: 'start', behavior: 'instant' });
+        }
       }
     }
 
@@ -49,7 +52,7 @@
 
       if (location.hash !== launch.hash) history.pushState(null, '', launch.hash);
       syncCourseView();
-      roadmapTitle.scrollIntoView({ block: 'start', behavior: 'instant' });
+      window.scrollTo({ top: 0, behavior: 'instant' });
       roadmapTitle.focus({ preventScroll: true });
       scheduleUpdate();
       launchScreen.classList.add('is-leaving');
