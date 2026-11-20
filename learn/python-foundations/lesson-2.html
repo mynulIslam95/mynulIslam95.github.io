@@ -230,6 +230,10 @@ print(alias is original)</code></pre>
 True
 True
 False</code></pre>
+    <figure>
+      <img src="assets/list-reference-trace.png" width="840" height="535" alt="Before reassignment, original and alias point to the same list. After alias is reassigned, each name points to its own list with the same items." loading="lazy">
+      <figcaption>First both arrows point to one list, so appending through <code>alias</code> also changes what you see through <code>original</code>. After reassignment the arrows point to separate lists. Their contents match, so <code>==</code> is true, while <code>is</code> is false.</figcaption>
+    </figure>
     <p><code>==</code> compares values and <code>is</code> checks whether two names refer to the same object. Integers and strings are immutable. Appending to a list is a mutation because the same list changes.</p>
   </section>
 
