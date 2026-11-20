@@ -1,118 +1,386 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>Async &amp; Concurrency Essentials | Learn with Mynul</title><meta name="description" content="Learn Python with transactions, customer data and service workflows. Includes runnable examples and practice solutions."><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=2"><link rel="stylesheet" href="../../assets/css/fde-layout.css?v=19"><style>.fde-project-relocated:not(:target) { display: none; }</style></head><body class="bootcamp-thesis fde-docs"><div class="reading shell"><a class="fde-skip" href="#main">Skip to content</a><header class="fde-docs-header"><a class="fde-back-button" href="../fde-textbook/advanced-python-async.html">Advanced Python overview</a><button class="theme-button" id="reading-theme" type="button" aria-label="Toggle light and dark theme">Light / Dark</button></header><div class="fde-docs-grid">
 <aside class="fde-lesson-menu">
-      <p class="fde-lesson-menu-title">Advanced Python</p>
-      <nav aria-label="Advanced Python lessons" data-python-course><ol>
-        <li><a href="../fde-textbook/advanced-python-async.html">Overview</a></li>
-        <li><a href="../fde-textbook/concurrency-lab.html">Python Concurrency Lab</a></li>
-        <li><a href="lesson-9.html" aria-current="page">Async &amp; Concurrency Essentials</a></li>
-      </ol></nav>
-    </aside>
-<main id="main"><h1>Async &amp; Concurrency Essentials</h1><div class="scenario"><p>After the <a href="../fde-textbook/concurrency-lab.html">Python Concurrency Lab</a>, use the same lookup problem to see where coroutines fit. Work through async waiting, timeouts and shared state using simulated I/O.</p></div><p><strong>By the end of this lesson</strong> You can distinguish async waits from blocking work, limit concurrent tasks and explain timeouts and race conditions.</p><nav class="topic-nav" aria-label="Lesson topics"><ul><li><a href="#topic-1">Sequential vs concurrent work</a></li><li><a href="#topic-2">Threads, processes and coroutines</a></li><li><a href="#topic-3">async and await</a></li><li><a href="#topic-4">Timeouts and cancellation</a></li><li><a href="#topic-5">Race condition awareness</a></li></ul></nav><section class="topic" id="topic-1"><h2>Sequential vs concurrent work</h2><p>In a sequential loop, each lookup finishes before the next starts. Use this as your baseline. The sleep simulates waiting for I/O without a network call.</p><h3>Run the code</h3><pre><code data-language="python">import time
+<p class="fde-lesson-menu-title">Python lessons</p>
+<nav id="lessons" aria-label="Python lessons" data-python-course>
+  <a href="../python-engineering-module-1.html">Course overview</a>
+  <p>Start with Python</p>
+  <ol>
+    <li><a href="setup.html">Python setup &amp; first program</a></li>
+    <li><a href="variables.html">Variables, data types &amp; strings</a></li>
+    <li><a href="lesson-1.html#topic-1">Operators, conditions &amp; loops</a></li>
+    <li><a href="lesson-3.html">Functions &amp; scope</a></li>
+  </ol>
+  <p>Work with data</p>
+  <ol>
+    <li><a href="lesson-2.html#topic-1">Core data structures</a></li>
+    <li><a href="lesson-2.html#topic-3">Memory management fundamentals</a></li>
+    <li><a href="lesson-4.html">Object-oriented programming basics</a></li>
+    <li><a href="lesson-5.html#topic-1">Exception handling &amp; debugging</a></li>
+    <li><a href="lesson-5.html#topic-2">File I/O operations</a></li>
+  </ol>
+  <p>Build maintainable Python</p>
+  <ol>
+    <li><a href="lesson-6.html">Iterators &amp; generators</a></li>
+    <li><a href="lesson-7.html">Type hints, dependencies &amp; project setup</a></li>
+    <li><a href="lesson-8.html">Testing, debugging &amp; logging</a></li>
+    <li><a href="transaction-tracker.html">Transaction Tracker CLI</a></li>
+  </ol>
+  <p>Run work concurrently</p>
+  <ol>
+    <li><a href="lesson-9.html#topic-1" aria-current="location">Sequential &amp; concurrent work</a></li>
+    <li><a href="lesson-9.html#topic-2">Threads, processes &amp; futures</a></li>
+    <li><a href="lesson-9.html#topic-3">Coroutines, tasks &amp; the event loop</a></li>
+    <li><a href="lesson-9.html#topic-4">Async HTTP, timeouts &amp; cancellation</a></li>
+    <li><a href="lesson-9.html#topic-5">Blocking code &amp; executors</a></li>
+    <li><a href="../fde-textbook/concurrency-lab.html">Python Concurrency Lab</a></li>
+  </ol>
+</nav>
+</aside>
+<main id="main">
+<h1>Async &amp; Concurrency Essentials</h1>
+<p>Find out why an integration checker feels slow, then make it responsive without losing track of individual failures.</p>
+<nav class="topic-nav" aria-label="Lesson topics"><ul><li><a href="#topic-1">Sequential &amp; concurrent work</a></li><li><a href="#topic-2">Threads, processes &amp; futures</a></li><li><a href="#topic-3">Coroutines, tasks &amp; the event loop</a></li><li><a href="#topic-4">Async HTTP, timeouts &amp; cancellation</a></li><li><a href="#topic-5">Blocking code &amp; executors</a></li><li><a href="#practice-1">Eight project drills</a></li><li><a href="#practice-2">Five workplace scenarios</a></li><li><a href="#interview-check">Tricky interview questions</a></li></ul></nav>
+<section class="topic" id="topic-1"><h2>Sequential &amp; concurrent work</h2>
+<p>A customer dashboard needs two independent replies. Each takes two seconds. Before you run this script, predict when check B starts in each version.</p>
+<p><strong>Sequential</strong> work finishes one check before starting the next. <strong>Concurrent</strong> work lets their lifetimes overlap. <strong>Parallel</strong> work actually runs at the same instant, such as two CPU jobs on separate cores.</p>
+<h3>Run the code</h3><pre><code class="language-python">import asyncio
+from time import perf_counter
 
-def lookup(customer_id):
-    time.sleep(0.01)
-    return customer_id
+async def check_customer(name):
+    print(f&quot;Start {name}&quot;)   # Show when the check begins.
+    await asyncio.sleep(2)   # Stand in for a slow network reply.
+    print(f&quot;Done {name}&quot;)    # Show when the reply comes back.
 
-results = []
-for customer_id in [1, 2, 3]:
-    results.append(lookup(customer_id))
-print(results)
-</code></pre><h4>Output</h4><pre><code data-language="text">[1, 2, 3]
-</code></pre><h3>How it works</h3><ol><li>The first lookup sleeps, then returns a result.</li><li>The second lookup starts afterward. The waits are separate.</li><li>Results follow input order because the loop performs each call in turn.</li></ol><div class="concept-check"><strong>Common mistake</strong><p>Concurrency means jobs overlap in progress. Parallelism means jobs execute at the same instant. A concurrent design does not automatically speed up CPU calculations.</p></div><p>Identify whether the work spends time calculating or waiting for disk or network I/O. The next sections use threads for blocking calls and coroutines for async-aware I/O.</p><section class="try-change"><h3>Try a change</h3><p>If each lookup waits one second, how long would three sequential lookups take? What if their waits overlap?</p><details><summary>Check your reasoning</summary><div><p>Expect roughly three seconds plus overhead for sequential work. Overlapping waits can approach the longest wait plus overhead. Measure with realistic connection limits, failures and scheduling.</p></div></details></section></section><section class="topic" id="topic-2"><h2>Threads, processes and coroutines</h2><p>When a library supplies a synchronous call, a thread pool can overlap independent I/O waits. Try it with the simulated lookup.</p><h3>Run the code</h3><pre><code data-language="python">from concurrent.futures import ThreadPoolExecutor
-import time
+async def main():
+    start = perf_counter()   # Start the stopwatch for the first run.
+    await check_customer(&quot;A&quot;)
+    await check_customer(&quot;B&quot;)
+    print(f&quot;Sequential: {perf_counter() - start:.1f}s&quot;)
 
-def lookup(customer_id):
-    time.sleep(0.01)
-    return customer_id
+    start = perf_counter()   # Reset the stopwatch for the second run.
+    first = asyncio.create_task(check_customer(&quot;A&quot;))
+    second = asyncio.create_task(check_customer(&quot;B&quot;))
+    await first              # Both checks have already been scheduled.
+    await second
+    print(f&quot;Concurrent: {perf_counter() - start:.1f}s&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    asyncio.run(main())</code></pre><h3>Terminal output</h3><pre><code>Start A
+Done A
+Start B
+Done B
+Sequential: 4.0s
+Start A
+Start B
+Done A
+Done B
+Concurrent: 2.0s</code></pre>
+<h3>Walk through it</h3><ol><li><code>asyncio</code> supplies the event loop and task helpers. <code>perf_counter()</code> measures elapsed time between two readings.</li><li><code>async def</code> declares a coroutine function. Within <code>check_customer()</code>, the first print marks the start, the sleep models the wait and the final print marks the finish.</li><li>The first two <code>await</code> lines are sequential. B is called after A completes, so the two waits add up to roughly four seconds.</li><li>In the second run, both <code>create_task()</code> calls happen before either task is awaited. The waits overlap, so the run takes roughly two seconds. Actual timing varies.</li><li>The final guard makes the file runnable as a script. <code>asyncio.run(main())</code> starts the event loop and runs the entry coroutine.</li></ol>
+<figure><img src="assets/customer-check-timeline.png" alt="Two time bars for sequential checks with a total of four seconds and two overlapping bars with a total of two seconds." width="1200" height="496" loading="lazy"><figcaption>Watch for <code>Start B</code> in the terminal. It appears after <code>Done A</code> in the first run and before either check finishes in the second.</figcaption></figure>
+</section>
+<section class="topic" id="topic-2"><h2>Threads, processes &amp; futures</h2>
+<p>An old integration library can only make blocking calls. A thread pool supplies a limited number of worker threads for those calls. A process pool gives workers separate processes and is a practical option for CPU-heavy Python work.</p>
+<h3>Run the code</h3><pre><code class="language-python">from concurrent.futures import ThreadPoolExecutor, as_completed
+
+def check(name):
+    return f&quot;{name}: healthy&quot;  # Replace the stub with the blocking client.
 
 with ThreadPoolExecutor(max_workers=2) as pool:
-    results = list(pool.map(lookup, [1, 2, 3]))
-print(results)
-</code></pre><h4>Output</h4><pre><code data-language="text">[1, 2, 3]
-</code></pre><h3>How it works</h3><ol><li>The pool uses up to two worker threads. Pending jobs start as workers become free.</li><li>map() yields results in input order. Jobs may finish in a different order.</li><li>The with block shuts down the pool. list() stores the three outputs, so consider its memory cost with larger inputs.</li></ol><div class="concept-check"><strong>Common mistake</strong><p>On a typical GIL-enabled CPython build, threads generally do not speed up pure Python CPU work across cores. Native code and other builds can behave differently. Processes have startup, serialization and memory costs.</p></div><p>Coroutines cooperate in an event loop, threads are scheduled by the operating system and processes have separate address spaces.</p><section class="try-change"><h3>Try a change</h3><p>How does max_workers=1 change the behavior? What can go wrong with max_workers=1000?</p><details><summary>Check your reasoning</summary><div><p>A single worker runs one lookup at a time. Choose a worker limit based on available resources and the external service’s capacity.</p></div></details></section></section><section class="topic" id="topic-3"><h2>async and await</h2><p>Calling an async def function creates a coroutine. When awaited or scheduled, it can run and yield control during an async wait. Compare sequential awaits with gather().</p><h3>Run the code</h3><pre><code data-language="python">import asyncio
+    jobs = {pool.submit(check, name): name for name in (&quot;Customer&quot;, &quot;Inventory&quot;)}
+    report = []
+    for future in as_completed(jobs):
+        report.append((jobs[future], future.result()))
+    print(sorted(report))      # Sort only the final report.</code></pre><h3>Terminal output</h3><pre><code>[(&#x27;Customer&#x27;, &#x27;Customer: healthy&#x27;), (&#x27;Inventory&#x27;, &#x27;Inventory: healthy&#x27;)]</code></pre>
+<h3>Walk through it</h3><ol><li>The import provides a managed pool and a way to iterate over finished jobs. <code>check()</code> is the function a worker calls.</li><li><code>submit(check, name)</code> schedules one call and returns a <strong>future</strong>, a handle to its eventual outcome. The dictionary keeps the service name beside that handle.</li><li><code>as_completed()</code> yields finished futures. <code>future.result()</code> returns the result or raises the worker’s exception. The sorted print keeps the example reproducible regardless of finish order.</li><li>The <code>with</code> block shuts down the executor on exit. A real checker can catch an expected error around <code>future.result()</code> and record it against the stored service name.</li></ol>
+<p>Try the <a href="../fde-textbook/concurrency-lab.html">Python Concurrency Lab</a> for runnable thread and process pool examples and tests.</p>
+</section>
+<section class="topic" id="topic-3"><h2>Coroutines, tasks &amp; the event loop</h2>
+<p>A coroutine object represents a call you can wait for. A task schedules that coroutine and gives you a handle to it. Watch when the body actually starts.</p>
+<h3>Run the code</h3><pre><code class="language-python">import asyncio
 
-async def lookup(customer_id):
-    await asyncio.sleep(0.01)
-    return customer_id
-
-async def main():
-    first = await lookup(1)
-    second = await lookup(2)
-    print(&quot;Sequential:&quot;, [first, second])
-    together = await asyncio.gather(lookup(1), lookup(2))
-    print(&quot;Concurrent:&quot;, together)
-
-asyncio.run(main())
-</code></pre><h4>Output</h4><pre><code data-language="text">Sequential: [1, 2]
-Concurrent: [1, 2]
-</code></pre><h3>How it works</h3><ol><li>The first await completes lookup(1) before the code starts lookup(2).</li><li>gather() schedules both awaitables. During a sleep, another task can run.</li><li>gather() returns results in the order of its arguments. asyncio.run() manages the event loop for a standalone script.</li></ol><div class="concept-check"><strong>Common mistake</strong><p>time.sleep() inside an async function blocks the event loop. Schedule or await the coroutine and use operations that cooperate with the loop.</p></div><p>In a notebook with an active event loop, use <code>await main()</code> directly. For many requests, use <code>asyncio.Semaphore(2)</code> with async with to limit in-flight work. Try the two-task limit by acquiring the semaphore inside each lookup.</p><section class="try-change"><h3>Try a change</h3><p>If the printed results match, does performance match? What would you measure?</p><details><summary>Check your reasoning</summary><div><p>The waits overlap differently. Measure elapsed time for the same workload and avoid asserting an exact duration in portable tests.</p></div></details></section></section><section class="topic" id="topic-4"><h2>Timeouts and cancellation</h2><p>Waiting indefinitely on an external call can stall the user request. In Python 3.11 and newer, the timeout context uses cancellation to limit the wait.</p><h3>Run the code</h3><pre><code data-language="python">import asyncio
-
-async def slow_lookup():
-    await asyncio.sleep(1)
-    return &quot;late&quot;
+async def fetch():
+    print(&quot;Inside fetch&quot;)
+    return &quot;ready&quot;
 
 async def main():
-    try:
-        async with asyncio.timeout(0.01):
-            result = await slow_lookup()
-    except TimeoutError:
-        result = &quot;timeout&quot;
+    coroutine = fetch()                  # Make a coroutine object.
+    print(&quot;Coroutine created&quot;)
+    task = asyncio.create_task(coroutine)  # Schedule it on the running loop.
+    status = await task                   # Wait for the scheduled result.
+    print(status)
+
+asyncio.run(main())</code></pre><h3>Terminal output</h3><pre><code>Coroutine created
+Inside fetch
+ready</code></pre>
+<h3>Walk through it</h3><ol><li><code>fetch()</code> returns a coroutine object. Its body has not run when <code>Coroutine created</code> prints.</li><li><code>create_task()</code> schedules the coroutine and returns a task. When <code>main()</code> waits on that pending task, the loop can run <code>fetch()</code>.</li><li><code>fetch()</code> prints, then returns the string. <code>await task</code> gives that string back to <code>main()</code>. The last line runs <code>main()</code> on a new event loop.</li></ol>
+<p>Use <code>await fetch()</code> directly when the caller needs its result before it can continue. Running that line still uses the event loop.</p>
+</section>
+<section class="topic" id="topic-4"><h2>Async HTTP, timeouts &amp; cancellation</h2>
+<p>AuditMesh checks three services before a reviewer opens a case. The report should identify the failed check and keep the two successful results.</p>
+<h3>Run the code</h3><pre><code class="language-python">import asyncio
+
+async def check(name):
+    await asyncio.sleep(0)  # Model one point where the check can yield.
+    if name == &quot;Payments&quot;:
+        raise ConnectionError(&quot;upstream unavailable&quot;)
+    return &quot;healthy&quot;
+
+async def main():
+    names = (&quot;Customers&quot;, &quot;Payments&quot;, &quot;Inventory&quot;)
+    results = await asyncio.gather(
+        *(check(name) for name in names),
+        return_exceptions=True,
+    )
+    for name, result in zip(names, results):
+        if isinstance(result, ConnectionError):
+            print(f&quot;{name}: failed ({result})&quot;)
+        elif isinstance(result, BaseException):
+            raise result  # Preserve unexpected errors and cancellation.
+        else:
+            print(f&quot;{name}: {result}&quot;)
+
+asyncio.run(main())</code></pre><h3>Terminal output</h3><pre><code>Customers: healthy
+Payments: failed (upstream unavailable)
+Inventory: healthy</code></pre>
+<h3>Walk through it</h3><ol><li><code>check()</code> is a local stand-in for an API call. Payments raises a connection error and the other checks return a status.</li><li><code>gather()</code> schedules the supplied operations and returns results in input order. <code>return_exceptions=True</code> includes each child’s error in its result slot.</li><li><code>zip()</code> pairs the results with the matching names. The first branch reports the expected connection error, the second lets unexpected failures propagate and the final branch prints a successful result.</li><li>In a real async HTTP checker, reuse one <code>httpx.AsyncClient</code> inside <code>async with</code>, use <code>await client.get(url)</code> and check the response status separately from connection errors.</li></ol>
+<figure><img src="assets/partial-service-results.png" alt="Customers and Inventory return healthy. Payments returns a connection error. All three entries reach the report." width="1200" height="496" loading="lazy"><figcaption>Read the middle result first. The payment failure has its own slot, so the report can still show the results for Customers and Inventory.</figcaption></figure>
+<details><summary>Run the HTTP version with local test responses</summary><div><p>Install <code>httpx</code> in your project environment. These responses are simulated locally so every learner sees the same result.</p>
+<h3>Run the code</h3><pre><code class="language-python">import asyncio
+import httpx
+
+def respond(request):
+    code = 500 if request.url.path == &quot;/payments&quot; else 200
+    return httpx.Response(code)  # Keep the exercise offline.
+
+async def check(client, path):
+    response = await client.get(path)
+    return f&quot;{path}: {response.status_code}&quot;
+
+async def main():
+    transport = httpx.MockTransport(respond)
+    async with httpx.AsyncClient(
+        base_url=&quot;https://services.example&quot;, transport=transport, timeout=5.0
+    ) as client:
+        paths = (&quot;/customers&quot;, &quot;/payments&quot;, &quot;/inventory&quot;)
+        for status in await asyncio.gather(*(check(client, path) for path in paths)):
+            print(status)
+
+asyncio.run(main())</code></pre><h3>Terminal output</h3><pre><code>/customers: 200
+/payments: 500
+/inventory: 200</code></pre>
+<h3>Walk through it</h3><ol><li>The mock response gives payments status 500 and the other routes 200. No connection is opened.</li><li>All checks reuse the same client. The context manager closes it, and <code>await client.get(path)</code> is the point where real HTTP work would wait.</li><li>The report displays each status code. The HTTP 500 still counts as a received response. With a live client, catch <code>httpx.RequestError</code> for connection failures.</li></ol></div></details>
+<p>Choose a deadline with <code>asyncio.timeout()</code> on Python 3.11+. When cancelling a task directly, call <code>task.cancel()</code> and await it so its cleanup can run. The desktop voice drill below shows the terminal sequence.</p>
+</section>
+<section class="topic" id="topic-5"><h2>Blocking code &amp; executors</h2>
+<p>A customer dashboard freezes during an old database lookup. The old function waits synchronously, so calling it on the event-loop thread prevents other tasks from running there.</p>
+<h3>Run the code</h3><pre><code class="language-python">import asyncio
+import time
+
+def legacy_lookup(customer_id):
+    time.sleep(0.1)             # This blocks the thread running the function.
+    return f&quot;Customer {customer_id} loaded&quot;
+
+async def main():
+    result = await asyncio.to_thread(legacy_lookup, 101)
     print(result)
 
-asyncio.run(main())
-</code></pre><h4>Output</h4><pre><code data-language="text">timeout
-</code></pre><h3>How it works</h3><ol><li>async with enters and exits the asynchronous context manager.</li><li>When the deadline expires, the awaited work receives cancellation. Handle TimeoutError outside the timeout context.</li><li>The caller learns that the local wait expired. You need separate evidence to tell what the remote service did.</li></ol><div class="concept-check"><strong>Common mistake</strong><p>The remote operation may still have happened. Check for an existing effect before retrying and account for already-running threads.</p></div><p>Put cleanup in finally. If you catch CancelledError, usually re-raise it after cleanup. The backend module covers idempotent handling of side effects.</p><section class="try-change"><h3>Try a change</h3><p>Change the delay in slow_lookup to zero. What should happen?</p><details><summary>Check your reasoning</summary><div><p>The operation should finish within the deadline in this example, so it prints late. Use a controllable delay if you test this behavior.</p></div></details></section></section><section class="topic" id="topic-5"><h2>Race condition awareness</h2><p>When an await falls between a read and a write, another task can read the same old value. The example yields control deliberately to reproduce a lost update.</p><h3>Run the code</h3><pre><code data-language="python">import asyncio
-
+asyncio.run(main())</code></pre><h3>Terminal output</h3><pre><code>Customer 101 loaded</code></pre>
+<h3>Walk through it</h3><ol><li><code>time.sleep()</code> stands in for a blocking library call. <code>legacy_lookup()</code> is a regular function and returns a string.</li><li><code>to_thread(legacy_lookup, 101)</code> passes the function and its argument for a worker thread to call. Calling <code>legacy_lookup(101)</code> in the argument list would block the loop before <code>to_thread()</code> took over.</li><li><code>await</code> waits for the result while the event-loop thread stays available. The last two lines print the returned string and start the async entry point.</li></ol>
+<figure><img src="assets/event-loop-heartbeat.png" alt="A direct blocking lookup keeps the heartbeat waiting. A worker thread runs the same blocking lookup while the loop runs the heartbeat." width="1200" height="496" loading="lazy"><figcaption>Try the heartbeat drill below. Its first output is <code>Heartbeat</code>. Call the lookup directly and <code>Lookup finished</code> prints before the heartbeat.</figcaption></figure>
+<figure><img src="assets/choose-concurrency-worker.png" alt="Native async calls wait on the event loop, synchronous I/O uses a worker thread and CPU-heavy Python work can use a process." width="1200" height="496" loading="lazy"><figcaption>Ask what the work is waiting for. Use an async client for network I/O where available, a worker thread for a blocking client and a worker process for CPU-heavy Python work when the extra overhead is justified.</figcaption></figure>
+<p>Use <code>loop.run_in_executor(pool, function, argument)</code> when you need an explicit worker limit or a process pool. Keep process workers at module level and put the entry point under <code>if __name__ == "__main__"</code> so subprocesses can safely import the file. Cancelling the async wait does not automatically stop a blocking function that is already running.</p>
+</section>
+<section class="topic" id="practice-1"><h2>Eight project drills</h2>
+<p>Choose a project and predict the terminal output before opening its worked example.</p>
+<details><summary>OmniGuard · Skip an optional check when it misses its deadline</summary><div><p>A customer dashboard can show the secure integration status even when an optional lookup stalls.</p>
+<h3>Run the code</h3><pre><code class="language-python">import asyncio
+async def lookup():
+    await asyncio.sleep(10)  # Simulate a provider that stalls.
 async def main():
-    counter = 0
-    async def increment():
-        nonlocal counter
-        old = counter
+    try:
+        async with asyncio.timeout(0):  # Trigger the deadline in this demo.
+            await lookup()
+    except TimeoutError:
+        print(&quot;Optional provider timed out&quot;)
+asyncio.run(main())</code></pre><h3>Terminal output</h3><pre><code>Optional provider timed out</code></pre>
+<h3>Walk through it</h3><ol><li>The coroutine yields during the simulated wait. The deadline interrupts it, and the timeout context converts its cancellation into <code>TimeoutError</code> outside the block. The handler prints a fallback.</li></ol></div></details>
+<details><summary>AuditMesh · Schedule independent checks</summary><div><p>An audit reviewer needs identity and retention checks before signing off a batch.</p>
+<h3>Run the code</h3><pre><code class="language-python">import asyncio
+async def check(name):
+    await asyncio.sleep(0)  # Stand in for a response boundary.
+    return f&quot;{name} ready&quot;
+async def main():
+    results = await asyncio.gather(check(&quot;Identity&quot;), check(&quot;Retention&quot;))
+    print(&quot; | &quot;.join(results))
+asyncio.run(main())</code></pre><h3>Terminal output</h3><pre><code>Identity ready | Retention ready</code></pre>
+<h3>Walk through it</h3><ol><li><code>check()</code> returns one label per input. <code>gather()</code> schedules both operations and keeps their results in the supplied order. <code>join()</code> turns both labels into one report line.</li></ol></div></details>
+<details><summary>Self-hosted LLM · Offload a CPU job</summary><div><p>The dashboard needs a simple token-count estimate from an offline worker before showing an ingestion summary.</p>
+<h3>Run the code</h3><pre><code class="language-python">import asyncio
+from concurrent.futures import ProcessPoolExecutor
+def count_words(text):
+    return len(text.split())  # Tiny stand-in for CPU-heavy preprocessing.
+async def main(pool):
+    loop = asyncio.get_running_loop()
+    count = await loop.run_in_executor(pool, count_words, &quot;model data ready&quot;)
+    print(f&quot;{count} words&quot;)
+if __name__ == &quot;__main__&quot;:
+    with ProcessPoolExecutor(max_workers=1) as pool:
+        asyncio.run(main(pool))</code></pre><h3>Terminal output</h3><pre><code>3 words</code></pre>
+<h3>Walk through it</h3><ol><li>Keep the worker at module level. <code>split()</code> produces three words and <code>len()</code> counts them. The loop submits that function to the explicit process pool. The guard prevents subprocess imports from starting another pool.</li></ol></div></details>
+<details><summary>On-device LLM · Limit simultaneous requests</summary><div><p>A mobile app queues local inference requests. Set a one-job limit for this demonstration so two requests cannot occupy the same slot.</p>
+<h3>Run the code</h3><pre><code class="language-python">import asyncio
+async def infer(name, slot):
+    async with slot:         # Hold one slot through the simulated request.
         await asyncio.sleep(0)
-        counter = old + 1
-    await asyncio.gather(increment(), increment())
-    print(counter)
-
-asyncio.run(main())
-</code></pre><h4>Output</h4><pre><code data-language="text">1
-</code></pre><h3>How it works</h3><ol><li>The first task reads old=0 and yields control at sleep(0).</li><li>The second task also reads old=0.</li><li>Both write old+1, so the final count is 1 after two attempted increments.</li></ol><div class="concept-check"><strong>Common mistake</strong><p>Tasks in one thread can still race. nonlocal lets the function reassign the enclosing variable and provides no synchronization.</p></div><p>An asyncio.Lock protects cooperating tasks that use it. Keep slow network calls outside the protected block when possible and enforce shared database invariants in the database.</p><section class="try-change"><h3>Try a change</h3><p>Protect the read, wait and write with async with lock. What is the final count?</p><details><summary>Check your reasoning</summary><div><p>The first task changes 0 to 1. The second reads 1 and writes 2 after it gets the lock.</p></div></details></section></section><section class="debug-box"><h2>Where to start debugging</h2><p>If an async endpoint is slow, look for blocking calls inside it. <code>time.sleep()</code> blocks the event loop, while <code>await asyncio.sleep()</code> lets other tasks run. If a coroutine was never awaited, check how it is scheduled. After a timeout, verify which task owns cleanup.</p></section><section class="practice" id="practice-1"><h3>Practice 1: Concurrent Customer Checks</h3><p>Look up IDs [1,2,3] concurrently. Simulate an async wait in each lookup and return its ID. Collect results in input order.</p><details><summary>Hint</summary><div><p>asyncio.gather() returns results in argument order.</p></div></details><details><summary>See Solution</summary><div><p>Use gather() for independent coroutines. Assume every call succeeds for this exercise and decide how your real code should report failures.</p><h4>Walk through the solution</h4><p>gather() schedules the independent calls and preserves requested ID order. asyncio.run() owns the event loop for the standalone script.</p><pre><code data-language="python">import asyncio
-
-async def check(customer_id):
-    await asyncio.sleep(0.01)
-    return customer_id
-
+        return name
 async def main():
-    ids = [1, 2, 3]
-    results = await asyncio.gather(*(check(i) for i in ids))
-    assert results == ids
-
-asyncio.run(main())
-</code></pre><p>Save these test functions and run the pytest command below.</p></div></details><h4>Check your work</h4><p>Write the sequential version and compare elapsed time. Exact timing varies with the execution environment.</p></section><section class="practice" id="practice-2"><h3>Practice 2: Reproduce and Fix a Lost Update</h3><p>Have two tasks increment a shared counter. Add an await between read and write to reproduce the problem, then fix it with a lock.</p><details><summary>Hint</summary><div><p>If both tasks read zero, both write one. The correct total is two.</p></div></details><details><summary>See Solution</summary><div><p>Protect the entire read, modify and write sequence with the lock. This lock applies to cooperating tasks in the same event loop.</p><h4>Walk through the solution</h4><p>The unsafe version reads the old count twice. The safe version makes the second task wait, so it reads the updated count and the final total is two.</p><pre><code data-language="python">import asyncio
-
-async def demonstrate(use_lock):
+    slot = asyncio.Semaphore(1)
+    print(await asyncio.gather(infer(&quot;A&quot;, slot), infer(&quot;B&quot;, slot)))
+asyncio.run(main())</code></pre><h3>Terminal output</h3><pre><code>[&#x27;A&#x27;, &#x27;B&#x27;]</code></pre>
+<h3>Walk through it</h3><ol><li>Both calls share the same semaphore. <code>async with</code> acquires a permit and releases it on exit. The limit controls simultaneous work, while <code>gather()</code> returns names in input order.</li></ol></div></details>
+<details><summary>Multimodal intelligence · Keep good parses</summary><div><p>An ingestion report should still include a good file when another parser rejects its input.</p>
+<h3>Run the code</h3><pre><code class="language-python">import asyncio
+async def parse(file):
+    if file.endswith(&quot;.bad&quot;):  # Simulate a malformed upload.
+        raise ValueError(&quot;Malformed artefact&quot;)
+    return file
+async def main():
+    files = [&quot;invoice.pdf&quot;, &quot;broken.bad&quot;]
+    results = await asyncio.gather(*(parse(file) for file in files), return_exceptions=True)
+    for file, result in zip(files, results):
+        print(f&quot;{file}: rejected&quot; if isinstance(result, ValueError) else result)
+asyncio.run(main())</code></pre><h3>Terminal output</h3><pre><code>invoice.pdf
+broken.bad: rejected</code></pre>
+<h3>Walk through it</h3><ol><li><code>parse()</code> returns the filename or raises the simulated validation error. The starred expression passes one coroutine per file. <code>zip()</code> ties each result to its input, so the report names the rejected file.</li></ol></div></details>
+<details><summary>Enterprise lead management · Use a legacy CRM client</summary><div><p>The async intake service calls an older synchronous CRM client to retrieve a lead.</p>
+<h3>Run the code</h3><pre><code class="language-python">import asyncio
+import time
+def find_lead(lead_id):
+    time.sleep(0.05)  # A stand-in for blocking CRM I/O.
+    return {&quot;id&quot;: lead_id}
+async def main():
+    lead = await asyncio.to_thread(find_lead, &quot;0042&quot;)
+    print(lead[&quot;id&quot;])
+asyncio.run(main())</code></pre><h3>Terminal output</h3><pre><code>0042</code></pre>
+<h3>Walk through it</h3><ol><li>The worker runs <code>find_lead()</code> and returns a dictionary. The loop can run other tasks during the worker’s sleep. The final lookup preserves the leading zeroes because the lead ID is text.</li></ol></div></details>
+<details><summary>AI receptionist · Run independent pre-call lookups</summary><div><p>Before taking a call, the receptionist needs opening hours and booking availability.</p>
+<h3>Run the code</h3><pre><code class="language-python">import asyncio
+async def lookup(value):
+    await asyncio.sleep(0)  # Give another ready operation a turn.
+    return value
+async def main():
+    hours = asyncio.create_task(lookup(&quot;Open until 18:00&quot;))
+    booking = asyncio.create_task(lookup(&quot;Two slots&quot;))
+    print(await hours)
+    print(await booking)
+asyncio.run(main())</code></pre><h3>Terminal output</h3><pre><code>Open until 18:00
+Two slots</code></pre>
+<h3>Walk through it</h3><ol><li>Create both tasks before waiting. Each coroutine can finish while the other is pending. The print order comes from the two <code>await</code> lines.</li></ol></div></details>
+<details><summary>Voice productivity SaaS · Cancel recording cleanup safely</summary><div><p>The user closes a recording. Stop its background task and release the recording resource.</p>
+<h3>Run the code</h3><pre><code class="language-python">import asyncio
+async def record(started):
+    try:
+        started.set()  # Tell the caller that cleanup is now in place.
+        await asyncio.sleep(60)
+    finally:
+        print(&quot;Released microphone&quot;)
+async def main():
+    started = asyncio.Event()
+    task = asyncio.create_task(record(started))
+    await started.wait()
+    task.cancel()
+    try:
+        await task
+    except asyncio.CancelledError:
+        print(&quot;Recording cancelled&quot;)
+asyncio.run(main())</code></pre><h3>Terminal output</h3><pre><code>Released microphone
+Recording cancelled</code></pre>
+<h3>Walk through it</h3><ol><li>The event makes the example deterministic: the caller cancels after the recording coroutine has entered its <code>try</code> block. Waiting on the cancelled task lets <code>finally</code> print first. The outer handler then records the expected cancellation.</li></ol></div></details>
+</section>
+<section class="topic" id="practice-2"><h2>Five situations you might see at work</h2>
+<p>Decide how you would handle each failure or constraint, then compare your approach with the worked example.</p>
+<details><summary>Legacy client blocks the heartbeat</summary><div><p>A dashboard stops updating while a synchronous lookup runs. Prove that a background heartbeat can still finish when the call runs in a worker.</p>
+<h3>Run the code</h3><pre><code class="language-python">import asyncio
+import time
+def lookup():
+    time.sleep(0.1)  # Blocking operation.
+    return &quot;Lookup finished&quot;
+async def heartbeat():
+    await asyncio.sleep(0)
+    print(&quot;Heartbeat&quot;)
+async def main():
+    beat = asyncio.create_task(heartbeat())
+    print(await asyncio.to_thread(lookup))
+    await beat
+asyncio.run(main())</code></pre><h3>Terminal output</h3><pre><code>Heartbeat
+Lookup finished</code></pre>
+<h3>Walk through it</h3><ol><li>Schedule the heartbeat before awaiting the worker. The worker sleeps on its own thread while the loop can run the heartbeat. For a deliberate failure demo, call <code>lookup()</code> directly and compare the print order.</li></ol></div></details>
+<details><summary>The customer wants the first completed result</summary><div><p>A status view should display a fast check before a slower one, even when the slow check was submitted first.</p>
+<h3>Run the code</h3><pre><code class="language-python">import asyncio
+async def check(name, delay):
+    await asyncio.sleep(delay)  # Simulate a different response time.
+    return name
+async def main():
+    jobs = [check(&quot;slow&quot;, 0.1), check(&quot;fast&quot;, 0)]
+    for next_result in asyncio.as_completed(jobs):
+        print(await next_result)
+asyncio.run(main())</code></pre><h3>Terminal output</h3><pre><code>fast
+slow</code></pre>
+<h3>Walk through it</h3><ol><li>The two delays model staggered completion. <code>asyncio.as_completed()</code> exposes results as they finish. Each await retrieves the next completed result, so the fast check prints first in this run.</li></ol></div></details>
+<details><summary>The database allows only two concurrent lookups</summary><div><p>Eight onboarding records arrive at once, but the synchronous database pool must stay at two workers.</p>
+<h3>Run the code</h3><pre><code class="language-python">import asyncio
+from concurrent.futures import ThreadPoolExecutor
+def load(customer_id):
+    return f&quot;Loaded {customer_id}&quot;  # Stand-in for the synchronous database call.
+async def main(pool):
+    loop = asyncio.get_running_loop()
+    jobs = [loop.run_in_executor(pool, load, i) for i in range(1, 9)]
+    results = await asyncio.gather(*jobs)
+    print(len(results))
+if __name__ == &quot;__main__&quot;:
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        asyncio.run(main(pool))</code></pre><h3>Terminal output</h3><pre><code>8</code></pre>
+<h3>Walk through it</h3><ol><li>The list submits eight jobs. The pool limits active worker threads to two and queues the rest. <code>gather()</code> waits for every result. The report confirms all eight jobs finished.</li></ol></div></details>
+<details><summary>A test fails because it assumes finish order</summary><div><p>Two checks can finish in either order. Test which checks succeeded without asserting their timing.</p>
+<h3>Run the code</h3><pre><code class="language-python">import asyncio
+async def check(name):
+    await asyncio.sleep(0)
+    return name
+async def main():
+    jobs = [check(&quot;inventory&quot;), check(&quot;payments&quot;)]
+    observed = [await result for result in asyncio.as_completed(jobs)]
+    assert sorted(observed) == [&quot;inventory&quot;, &quot;payments&quot;]  # Includes count.
+    print(&quot;Both checks passed&quot;)
+asyncio.run(main())</code></pre><h3>Terminal output</h3><pre><code>Both checks passed</code></pre>
+<h3>Walk through it</h3><ol><li>The comprehension awaits completed results as they arrive. Sorting the collected values compares the contents independently of scheduling order and still detects missing or duplicate results.</li></ol></div></details>
+<details><summary>Two tasks take the same counter value</summary><div><p>Two jobs issue updates to one shared counter. Prevent a lost update when the read and write straddle an await.</p>
+<h3>Run the code</h3><pre><code class="language-python">import asyncio
+async def main():
     count = 0
     lock = asyncio.Lock()
-
-    async def update():
+    async def increment():
         nonlocal count
-        old = count
-        await asyncio.sleep(0)
-        count = old + 1
-
-    async def worker():
-        if use_lock:
-            async with lock:
-                await update()
-        else:
-            await update()
-
-    await asyncio.gather(worker(), worker())
-    return count
-
-async def main():
-    assert await demonstrate(False) == 1
-    assert await demonstrate(True) == 2
-
-asyncio.run(main())
-</code></pre><p>Save these test functions and run the pytest command below.</p></div></details><h4>Check your work</h4><p>Reproduce the wrong result and verify that the fix produces two. Explain why a database balance update needs a database-level guarantee.</p></section><p id="module-project" class="fde-project-relocated"><a href="transaction-tracker.html#module-project">Open the Transaction Tracker CLI project</a></p>
-<section class="completion" id="module-check"><h2>Before you move on</h2><ul><li>Explain the main idea in your own words.</li><li>Change the input and solve both exercises again with the solutions closed.</li><li>Show a failing case and explain what went wrong and how to fix it.</li></ul></section><details><summary>Further reading</summary><div><ul><li><a href="https://docs.python.org/3/library/asyncio-task.html">Python tasks, timeouts and running blocking work in threads</a></li></ul></div></details><nav class="lesson-nav" aria-label="Lesson navigation"><a href="../fde-textbook/concurrency-lab.html">← Python Concurrency Lab</a><a href="../fde-textbook/advanced-python-async.html">Advanced Python overview</a></nav></main><aside class="fde-outline" hidden></aside></div><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script><script src="../../assets/js/fde-layout.js?v=25" defer></script></body></html>
+        async with lock:        # Hold the lock through both read and write.
+            snapshot = count
+            await asyncio.sleep(0)
+            count = snapshot + 1
+    await asyncio.gather(increment(), increment())
+    print(count)
+asyncio.run(main())</code></pre><h3>Terminal output</h3><pre><code>2</code></pre>
+<h3>Walk through it</h3><ol><li>Both calls share one counter through <code>nonlocal</code> and share one lock. One call can pause inside the block while the other waits for the lock. Each call reads the latest value, adds one and releases the lock on exit.</li></ol></div></details>
+</section>
+<section class="topic" id="interview-check"><h2>Tricky interview questions</h2>
+<details><summary>When does a coroutine function’s body start?</summary><div><p>Calling it creates a coroutine object. It starts when it is driven by an await or scheduled on a running loop. An unused coroutine can produce a never-awaited warning.</p></div></details>
+<details><summary>If I await task A before task B, can B still finish first?</summary><div><p>Yes. If you schedule both first, the order you collect results is independent of the order the tasks finish.</p></div></details>
+<details><summary>With default gather(), does one exception cancel the other checks?</summary><div><p>The first raised exception is forwarded to the caller. Other submitted checks are not cancelled by gather() on that account. If the caller lets the exception escape asyncio.run(), loop shutdown can cancel remaining tasks.</p></div></details>
+<details><summary>Does a server response with HTTP 500 mean the same thing as a connection error?</summary><div><p>No. A 500 is a response from the server. An async HTTP checker should either handle the status explicitly or call raise_for_status(), and give connection failures their own error handling.</p></div></details>
+<details><summary>Does cancelling await asyncio.to_thread(...) stop the worker?</summary><div><p>A blocking call already running in the worker can continue. Choose cooperative stop signals, timeouts in the underlying client or another execution strategy when the work itself must stop.</p></div></details>
+<details><summary>Why does await asyncio.to_thread(load(42)) freeze before offloading?</summary><div><p>Python evaluates load(42) first, on the current thread. Pass the callable and argument separately as asyncio.to_thread(load, 42).</p></div></details>
+</section>
+<section class="topic" id="module-check"><h2>Build an integration checker</h2>
+<p>Build a checker for three local services. One succeeds, one raises a connection error and one exceeds a deadline. Start checks together, keep the service name with each outcome and print a complete report.</p>
+<details><summary>Check your work</summary><div><p>The final report has three named rows and one distinct outcome per service. Running the checks again produces the same statuses. No test depends on wall-clock timing or the order tasks finish.</p></div></details>
+<p>For a separate foundations project, see the <a href="transaction-tracker.html" id="module-project">Transaction Tracker CLI</a>.</p>
+</section>
+<nav class="lesson-nav" aria-label="Lesson navigation"><a href="lesson-8.html">← Testing, debugging &amp; logging</a><a href="../fde-textbook/concurrency-lab.html">Python Concurrency Lab →</a></nav>
+</main><aside class="fde-outline" hidden></aside></div><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script><script src="../../assets/js/fde-layout.js?v=25" defer></script></body></html>

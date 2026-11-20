@@ -6,29 +6,50 @@
 </style></head><body class="bootcamp-thesis fde-docs"><div class="reading shell"><a class="fde-skip" href="#main">Skip to content</a><header class="fde-docs-header"><a class="fde-back-button" href="../python-engineering-module-1.html">Go back</a><button class="theme-button" id="reading-theme" type="button" aria-label="Toggle light and dark theme">Light / Dark</button></header><div class="fde-docs-grid">
 <aside class="fde-lesson-menu">
 <p class="fde-lesson-menu-title">Python lessons</p>
-<nav aria-label="Python lessons" data-python-course>
-  <a href="../python-engineering-module-1.html">Module overview</a>
+<nav id="lessons" aria-label="Python lessons" data-python-course>
+  <a href="../python-engineering-module-1.html">Course overview</a>
+  <p>Start with Python</p>
   <ol>
     <li><a href="setup.html">Python setup &amp; first program</a></li>
     <li><a href="variables.html">Variables, data types &amp; strings</a></li>
     <li><a href="lesson-1.html#topic-1" aria-current="location">Operators, conditions &amp; loops</a></li>
     <li><a href="lesson-3.html">Functions &amp; scope</a></li>
+  </ol>
+  <p>Work with data</p>
+  <ol>
     <li><a href="lesson-2.html#topic-1">Core data structures</a></li>
     <li><a href="lesson-2.html#topic-3">Memory management fundamentals</a></li>
     <li><a href="lesson-4.html">Object-oriented programming basics</a></li>
     <li><a href="lesson-5.html#topic-1">Exception handling &amp; debugging</a></li>
     <li><a href="lesson-5.html#topic-2">File I/O operations</a></li>
   </ol>
-</nav></aside>
+  <p>Build maintainable Python</p>
+  <ol>
+    <li><a href="lesson-6.html">Iterators &amp; generators</a></li>
+    <li><a href="lesson-7.html">Type hints, dependencies &amp; project setup</a></li>
+    <li><a href="lesson-8.html">Testing, debugging &amp; logging</a></li>
+    <li><a href="transaction-tracker.html">Transaction Tracker CLI</a></li>
+  </ol>
+  <p>Run work concurrently</p>
+  <ol>
+    <li><a href="lesson-9.html#topic-1">Sequential &amp; concurrent work</a></li>
+    <li><a href="lesson-9.html#topic-2">Threads, processes &amp; futures</a></li>
+    <li><a href="lesson-9.html#topic-3">Coroutines, tasks &amp; the event loop</a></li>
+    <li><a href="lesson-9.html#topic-4">Async HTTP, timeouts &amp; cancellation</a></li>
+    <li><a href="lesson-9.html#topic-5">Blocking code &amp; executors</a></li>
+    <li><a href="../fde-textbook/concurrency-lab.html">Python Concurrency Lab</a></li>
+  </ol>
+</nav>
+</aside>
 <main id="main" class="fde-setup-lesson">
-  <p class="breadcrumbs"><a href="../python-engineering-module-1.html">Python overview</a> / Core Python</p>
+  <p class="breadcrumbs"><a href="../python-engineering-module-1.html">Course overview</a> / Core Python</p>
   <h1>Operators, conditions &amp; loops</h1>
   <p>Start with one payment. Use operators to calculate the balance and conditions to decide whether it goes through. Then put that decision inside a loop to process a batch.</p>
 
   <section class="topic" id="topic-1">
     <h2>Operators &amp; conditions</h2>
     <p>You’re building a payment check for a customer. They have EUR 100. Try EUR 20 first. How much will be left? Then try a payment of exactly EUR 100. Should it go through?</p>
-    <h3>1. Start with a calculation and a question</h3>
+    <h3>Start with a calculation and a question</h3>
     <p>In your practice folder, create <code>payment_check.py</code>. Save the code below. From that folder, run <code>py -3 payment_check.py</code> on Windows or <code>python3 payment_check.py</code> on Mac or Linux.</p>
     <pre><code data-language="python">balance = 100
 amount = 20
@@ -65,7 +86,7 @@ Uses the full balance: False</code></pre>
         </tbody>
       </table>
     </details>
-    <h3>2. Choose which code runs</h3>
+    <h3>Choose which code runs</h3>
     <p>Replace the file contents with the code below. Before running it, read down the checks. <code>if</code> starts the decision. <code>elif</code> means “otherwise, try this check.” <code>else</code> runs when the earlier checks are false. End each branch header with a colon and use four spaces for the lines inside it.</p>
     <pre><code data-language="python">balance = 100
 amount = 100
@@ -82,7 +103,7 @@ else:
     <pre><code data-language="text">Payment approved. Balance: EUR 0</code></pre>
     <p>Watch why the exact balance works. <code>100 &lt;= 0</code> is false, and so is <code>100 &gt; 100</code>. Python reaches <code>else</code> and subtracts EUR 100. Try <code>120</code>, <code>0</code> and <code>-1</code> one at a time. Predict the message before each run.</p>
     <details class="fde-setup-answer"><summary>Check your predictions</summary><ul><li><code>120</code> prints <code>Not enough balance</code>.</li><li><code>0</code> and <code>-1</code> print <code>Amount must be positive</code>.</li></ul></details>
-    <h3>3. Combine rules</h3>
+    <h3>Combine rules</h3>
     <p>With a balance of 100, <code>amount &gt; 0 and amount &lt;= balance</code> allows 20 and 100. Add <code>or</code> when either of two reasons is enough, like a low battery or battery saver pausing a model. Use <code>not</code> to ask whether a flag is off. Next, keep the payment rules and repeat them for a batch.</p>
   </section>
 

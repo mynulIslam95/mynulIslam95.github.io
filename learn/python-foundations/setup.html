@@ -10,37 +10,58 @@
 </style></head><body class="bootcamp-thesis fde-docs"><div class="reading shell"><a class="fde-skip" href="#main">Skip to content</a><header class="fde-docs-header"><a class="fde-back-button" href="../python-engineering-module-1.html">Go back</a><button class="theme-button" id="reading-theme" type="button" aria-label="Toggle light and dark theme">Light / Dark</button></header><div class="fde-docs-grid">
 <aside class="fde-lesson-menu">
 <p class="fde-lesson-menu-title">Python lessons</p>
-<nav aria-label="Python lessons" data-python-course>
-  <a href="../python-engineering-module-1.html">Module overview</a>
+<nav id="lessons" aria-label="Python lessons" data-python-course>
+  <a href="../python-engineering-module-1.html">Course overview</a>
+  <p>Start with Python</p>
   <ol>
     <li><a href="setup.html" aria-current="page">Python setup &amp; first program</a></li>
     <li><a href="variables.html">Variables, data types &amp; strings</a></li>
     <li><a href="lesson-1.html#topic-1">Operators, conditions &amp; loops</a></li>
     <li><a href="lesson-3.html">Functions &amp; scope</a></li>
+  </ol>
+  <p>Work with data</p>
+  <ol>
     <li><a href="lesson-2.html#topic-1">Core data structures</a></li>
     <li><a href="lesson-2.html#topic-3">Memory management fundamentals</a></li>
     <li><a href="lesson-4.html">Object-oriented programming basics</a></li>
     <li><a href="lesson-5.html#topic-1">Exception handling &amp; debugging</a></li>
     <li><a href="lesson-5.html#topic-2">File I/O operations</a></li>
   </ol>
-</nav></aside>
+  <p>Build maintainable Python</p>
+  <ol>
+    <li><a href="lesson-6.html">Iterators &amp; generators</a></li>
+    <li><a href="lesson-7.html">Type hints, dependencies &amp; project setup</a></li>
+    <li><a href="lesson-8.html">Testing, debugging &amp; logging</a></li>
+    <li><a href="transaction-tracker.html">Transaction Tracker CLI</a></li>
+  </ol>
+  <p>Run work concurrently</p>
+  <ol>
+    <li><a href="lesson-9.html#topic-1">Sequential &amp; concurrent work</a></li>
+    <li><a href="lesson-9.html#topic-2">Threads, processes &amp; futures</a></li>
+    <li><a href="lesson-9.html#topic-3">Coroutines, tasks &amp; the event loop</a></li>
+    <li><a href="lesson-9.html#topic-4">Async HTTP, timeouts &amp; cancellation</a></li>
+    <li><a href="lesson-9.html#topic-5">Blocking code &amp; executors</a></li>
+    <li><a href="../fde-textbook/concurrency-lab.html">Python Concurrency Lab</a></li>
+  </ol>
+</nav>
+</aside>
 <main id="main" class="fde-setup-lesson">
-  <p class="breadcrumbs"><a href="../python-engineering-module-1.html">Python overview</a> / Getting started</p>
+  <p class="breadcrumbs"><a href="../python-engineering-module-1.html">Course overview</a> / Getting started</p>
   <h1>Python setup &amp; first program</h1>
   <p>Write one line of code and make Python show a message on your screen.</p>
   <section class="topic" id="install-python">
-    <h2>1. Install Python and VS Code</h2>
+    <h2>Install Python and VS Code</h2>
     <p><strong>Python</strong> runs your code. <strong>VS Code</strong> is the editor where you write it.</p>
     <p>On Windows or Mac, get Python 3 from <a href="https://www.python.org/downloads/">python.org</a>. On Linux, Python may already be installed. If <code>python3 --version</code> fails in your terminal, install <code>python3</code> using your system’s software manager. Then <a href="https://code.visualstudio.com/download">install VS Code</a>.</p>
   </section>
   <section class="topic" id="create-file">
-    <h2>2. Create <code>hello.py</code></h2>
+    <h2>Create <code>hello.py</code></h2>
     <p>Create a folder named <code>python-practice</code>. In VS Code, use <strong>File → Open Folder</strong> to open it. In the left panel, click <strong>New File</strong> and name it <code>hello.py</code>.</p>
     <pre><code data-language="python">print("Hello, world!")</code></pre>
     <p>Save the file. <code>print()</code> shows the words inside the quotes. The <code>.py</code> ending tells you it’s a Python file.</p>
   </section>
   <section class="topic" id="run-program">
-    <h2>3. Run your program</h2>
+    <h2>Run your program</h2>
     <p>In VS Code, choose <strong>Terminal → New Terminal</strong>. A terminal is where you type commands. Run the first command to check Python, then the second to run your file.</p>
     <div class="fde-setup-commands">
       <div><strong>Windows</strong><pre><code>py -3 --version
@@ -54,7 +75,7 @@ python3 hello.py</code></pre></div>
     </figure>
   </section>
   <section class="topic" id="try-it">
-    <h2>4. Try one change</h2>
+    <h2>Try one change</h2>
     <p>Change the message to <code>Hello, future coder!</code>. Save the file and run it again. You should see your new message.</p>
     <p><strong>Stuck?</strong> If the command isn’t found, close and reopen VS Code after installing Python. If Python can’t find the file, check that you opened <code>python-practice</code> and saved the file as <code>hello.py</code>.</p>
   </section>

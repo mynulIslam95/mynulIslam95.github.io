@@ -9,27 +9,48 @@
 </style></head><body class="bootcamp-thesis fde-docs"><div class="reading shell"><a class="fde-skip" href="#main">Skip to content</a><header class="fde-docs-header"><a class="fde-back-button" href="../python-engineering-module-1.html">Go back</a><button class="theme-button" id="reading-theme" type="button" aria-label="Toggle light and dark theme">Light / Dark</button></header><div class="fde-docs-grid">
 <aside class="fde-lesson-menu">
 <p class="fde-lesson-menu-title">Python lessons</p>
-<nav aria-label="Python lessons" data-python-course>
-  <a href="../python-engineering-module-1.html">Module overview</a>
+<nav id="lessons" aria-label="Python lessons" data-python-course>
+  <a href="../python-engineering-module-1.html">Course overview</a>
+  <p>Start with Python</p>
   <ol>
     <li><a href="setup.html">Python setup &amp; first program</a></li>
     <li><a href="variables.html" aria-current="page">Variables, data types &amp; strings</a></li>
     <li><a href="lesson-1.html#topic-1">Operators, conditions &amp; loops</a></li>
     <li><a href="lesson-3.html">Functions &amp; scope</a></li>
+  </ol>
+  <p>Work with data</p>
+  <ol>
     <li><a href="lesson-2.html#topic-1">Core data structures</a></li>
     <li><a href="lesson-2.html#topic-3">Memory management fundamentals</a></li>
     <li><a href="lesson-4.html">Object-oriented programming basics</a></li>
     <li><a href="lesson-5.html#topic-1">Exception handling &amp; debugging</a></li>
     <li><a href="lesson-5.html#topic-2">File I/O operations</a></li>
   </ol>
-</nav></aside>
+  <p>Build maintainable Python</p>
+  <ol>
+    <li><a href="lesson-6.html">Iterators &amp; generators</a></li>
+    <li><a href="lesson-7.html">Type hints, dependencies &amp; project setup</a></li>
+    <li><a href="lesson-8.html">Testing, debugging &amp; logging</a></li>
+    <li><a href="transaction-tracker.html">Transaction Tracker CLI</a></li>
+  </ol>
+  <p>Run work concurrently</p>
+  <ol>
+    <li><a href="lesson-9.html#topic-1">Sequential &amp; concurrent work</a></li>
+    <li><a href="lesson-9.html#topic-2">Threads, processes &amp; futures</a></li>
+    <li><a href="lesson-9.html#topic-3">Coroutines, tasks &amp; the event loop</a></li>
+    <li><a href="lesson-9.html#topic-4">Async HTTP, timeouts &amp; cancellation</a></li>
+    <li><a href="lesson-9.html#topic-5">Blocking code &amp; executors</a></li>
+    <li><a href="../fde-textbook/concurrency-lab.html">Python Concurrency Lab</a></li>
+  </ol>
+</nav>
+</aside>
 <main id="main" class="fde-setup-lesson">
-  <p class="breadcrumbs"><a href="../python-engineering-module-1.html">Python overview</a> / Core Python</p>
+  <p class="breadcrumbs"><a href="../python-engineering-module-1.html">Course overview</a> / Core Python</p>
   <h1>Variables, data types &amp; strings</h1>
   <p>Picture your first OmniGuard kickoff call. The customer says, “We’re Northwind. We have three data sources to connect. Each one should take about two and a half minutes.” Your teammate needs a short update for the next call. By the end, you’ll be able to choose a type for each field, calculate an estimate and print a summary someone else can use.</p>
 
   <section class="topic" id="variables-and-types">
-    <h2>1. Turn a kickoff note into Python values</h2>
+    <h2>Turn a kickoff note into Python values</h2>
     <p><strong>Variable.</strong> A variable is a name you give to a value so you can use it again. In <code>source_count = 3</code>, <code>source_count</code> is the name and <code>3</code> is the value. If the customer adds a source, you can give that same name an updated value.</p>
     <p><strong>Data type.</strong> A type tells Python what kind of value it’s working with and what you can do with it. <code>3</code> is an integer, so you can add <code>1</code> to get <code>4</code>. <code>"3"</code> is text. Join it to <code>"1"</code> and you get <code>"31"</code>.</p>
     <p><strong>String.</strong> A string is a piece of text. In <code>customer = "Northwind"</code>, the quotes tell Python that <code>Northwind</code> is text. A job ID like <code>"007"</code> is also a string. Those zeros are part of the ID.</p>
@@ -68,7 +89,7 @@ print(customer, "has", source_count, "data sources.")</code></pre>
   </section>
 
   <section class="topic" id="input-and-conversion">
-    <h2>2. Watch what happens when you type 3</h2>
+    <h2>Watch what happens when you type 3</h2>
     <p>Replace your first example with this code. Save it and run the same command. When the terminal asks for the count, type <code>3</code>. Pause and guess the type.</p>
     <pre><code data-language="python"># Check the type before converting the count.
 raw_count = input("Data sources: ")
@@ -80,7 +101,7 @@ print(type(raw_count))</code></pre>
   </section>
 
   <section class="topic" id="build-a-receipt">
-    <h2>3. Build it with me</h2>
+    <h2>Build it with me</h2>
     <p>Replace those two lines with the program below. Save and run the same command. When it asks, type <code>Northwind</code>, <code>3</code> and <code>2.5</code>. Before pressing Enter on the last input, guess the total.</p>
     <pre><code data-language="python"># Ask for the customer name and trim spaces from the ends.
 customer = input("Customer: ").strip()
@@ -110,7 +131,7 @@ print(f"Approved: {approved} | Review ID: {review_id}")</code></pre>
   </section>
 
   <section class="topic" id="practice-and-debug">
-    <h2>4. Change it, break it, fix it</h2>
+    <h2>Change it, break it, fix it</h2>
     <p>Run it for <code>Acme</code> with <code>4</code> sources at <code>7.5</code> minutes each. Now add a line that shows <code>Estimate: 0.50 hours</code>. Use the value you already calculated.</p>
     <details class="fde-setup-answer">
       <summary>Check your answer</summary>
@@ -155,7 +176,7 @@ open | 2</code></pre>
   </section>
 
   <section class="topic" id="project-drills">
-    <h2>5. Use these skills in the eight projects</h2>
+    <h2>Use these skills in the eight projects</h2>
     <p>Open a project and picture the request coming from a teammate. Read the situation, follow the code and check what your terminal prints.</p>
     <details class="fde-setup-answer">
       <summary>Capstone 01 · OmniGuard</summary>
@@ -272,7 +293,7 @@ print(f"Total: {total_seconds:.1f} seconds")</code></pre>
   </section>
 
   <section class="topic" id="interview-practice">
-    <h2>6. Say it out loud</h2>
+    <h2>Say it out loud</h2>
     <p>Imagine an interviewer hands you <code>"007"</code> and calls it a case ID. Which type would you use and why? Then explain what happens when someone types <code>0</code> or <code>oops</code> as the source count.</p>
     <details class="fde-setup-answer">
       <summary>Compare your reasoning</summary>
@@ -282,7 +303,7 @@ print(f"Total: {total_seconds:.1f} seconds")</code></pre>
   </section>
 
   <section class="topic" id="job-scenarios">
-    <h2>7. Five situations you might see on the job</h2>
+    <h2>Five situations you might see on the job</h2>
     <p>Open a scenario and try the task. Then reveal the solution, run it and compare the output.</p>
     <details class="fde-setup-answer">
       <summary>1. Enterprise Lead Management</summary>
@@ -367,7 +388,7 @@ Stored minutes: 1.2125</code></pre>
   </section>
 
   <section class="topic" id="tricky-questions">
-    <h2>8. Tricky questions</h2>
+    <h2>Tricky questions</h2>
     <p>Predict the result and explain your reason before opening the answer. Then check in Python.</p>
     <details class="fde-setup-answer">
       <summary>1. What happens when you run <code>int("3.0")</code> or <code>int(3.9)</code>?</summary>
@@ -404,7 +425,7 @@ Stored minutes: 1.2125</code></pre>
   </section>
 
   <section class="topic" id="mastery-check">
-    <h2>9. Build an AuditMesh handoff from scratch</h2>
+    <h2>Build an AuditMesh handoff from scratch</h2>
     <p>Imagine the next reviewer is waiting for your estimate. Create <code>audit_handoff.py</code> and write the program before opening the solution. Ask for a case ID, the number of checks left and the time per check in minutes. Keep the ID as text, calculate the estimate and print it to two decimal places. Include <code>False</code> for review complete and <code>None</code> for the missing review ID.</p>
     <ul>
       <li><strong>Normal run.</strong> Type <code> 007 </code>, <code>4</code> and <code>1.25</code>. Your output should keep <code>007</code> and show <code>5.00 minutes</code>.</li>

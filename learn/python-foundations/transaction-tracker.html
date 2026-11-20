@@ -2,20 +2,40 @@
 <aside class="fde-lesson-menu">
 <p class="fde-lesson-menu-title">Python lessons</p>
 <nav id="lessons" aria-label="Python lessons" data-python-course>
-  <a href="../python-engineering-module-1.html">Module overview</a>
+  <a href="../python-engineering-module-1.html">Course overview</a>
+  <p>Start with Python</p>
   <ol>
     <li><a href="setup.html">Python setup &amp; first program</a></li>
     <li><a href="variables.html">Variables, data types &amp; strings</a></li>
     <li><a href="lesson-1.html#topic-1">Operators, conditions &amp; loops</a></li>
     <li><a href="lesson-3.html">Functions &amp; scope</a></li>
+  </ol>
+  <p>Work with data</p>
+  <ol>
     <li><a href="lesson-2.html#topic-1">Core data structures</a></li>
     <li><a href="lesson-2.html#topic-3">Memory management fundamentals</a></li>
     <li><a href="lesson-4.html">Object-oriented programming basics</a></li>
     <li><a href="lesson-5.html#topic-1">Exception handling &amp; debugging</a></li>
     <li><a href="lesson-5.html#topic-2">File I/O operations</a></li>
-      <li><a href="transaction-tracker.html" aria-current="page">Transaction Tracker CLI</a></li>
   </ol>
-</nav></aside>
+  <p>Build maintainable Python</p>
+  <ol>
+    <li><a href="lesson-6.html">Iterators &amp; generators</a></li>
+    <li><a href="lesson-7.html">Type hints, dependencies &amp; project setup</a></li>
+    <li><a href="lesson-8.html">Testing, debugging &amp; logging</a></li>
+    <li><a href="transaction-tracker.html" aria-current="page">Transaction Tracker CLI</a></li>
+  </ol>
+  <p>Run work concurrently</p>
+  <ol>
+    <li><a href="lesson-9.html#topic-1">Sequential &amp; concurrent work</a></li>
+    <li><a href="lesson-9.html#topic-2">Threads, processes &amp; futures</a></li>
+    <li><a href="lesson-9.html#topic-3">Coroutines, tasks &amp; the event loop</a></li>
+    <li><a href="lesson-9.html#topic-4">Async HTTP, timeouts &amp; cancellation</a></li>
+    <li><a href="lesson-9.html#topic-5">Blocking code &amp; executors</a></li>
+    <li><a href="../fde-textbook/concurrency-lab.html">Python Concurrency Lab</a></li>
+  </ol>
+</nav>
+</aside>
 <main id="main"><h1>Transaction Tracker CLI</h1>
 <section id="module-project" class="topic"><h2>Build the transaction tracker</h2><p>Apply the earlier lessons to a transaction tracker. The CLI reads a CSV and reports spending, credits, balance and rejected rows as JSON. This project can run synchronously.</p><h3>How does a row reach the report?</h3><ol><li>argparse reads the filename and opening amount from the terminal and passes them to main().</li><li>money_to_cents validates the opening amount and converts it to integer cents. load_report opens the file and checks the headers.</li><li>DictReader passes each row to summarize_rows. Validate the ID, kind and amount first.</li><li>Add new valid IDs to the seen set. Debits increase spending and credits increase the received total.</li><li>Invalid and duplicate rows leave the total alone. Record each rejected row’s number and reason.</li><li>Compute opening minus spending plus credits. The JSON includes both the summary and the rejected rows.</li></ol><p>Separate parsing and calculation from disk access so you can test the money parser and fake rows by themselves.</p><h3>Input contract</h3><p>Require id, kind and amount headers. Use unique IDs, debit or credit kinds and positive whole-cent euro amounts. Opening balance may be zero. This historical report allows a negative final balance. Duplicate detection applies within one input file.</p><pre><code data-language="csv">id,kind,amount
 T1,debit,12.50
