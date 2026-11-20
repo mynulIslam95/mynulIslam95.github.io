@@ -1,0 +1,82 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="google" content="notranslate"><title>Variables, data types &amp; strings | Learn with Mynul</title><meta name="description" content="Learn Python variables, basic types, input, conversion and f-strings by building a receipt."><script>(function(){try{var t=localStorage.getItem('mynul-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})();</script><link rel="stylesheet" href="../../assets/css/bootcamp-thesis.css?v=1"><link rel="stylesheet" href="../../assets/css/python-lessons.css?v=2"><link rel="stylesheet" href="../../assets/css/fde-layout.css?v=16"><style>
+.fde-setup-lesson .topic { margin-top: 1.25rem; padding-top: 0; }
+.fde-setup-lesson .topic h2 { margin-top: .9rem !important; }
+.fde-setup-lesson .topic pre { margin: .55rem 0 !important; }
+.fde-setup-lesson figure { margin: .65rem 0 .4rem; }
+.fde-setup-lesson figure img { display: block; width: min(100%, 540px); height: auto; border-radius: 7px; }
+.fde-setup-lesson figcaption { margin-top: .35rem; color: var(--fde-muted); font-size: .875rem; }
+.fde-setup-answer summary { cursor: pointer; }
+</style></head><body class="bootcamp-thesis fde-docs"><div class="reading shell"><a class="fde-skip" href="#main">Skip to content</a><header class="fde-docs-header"><a class="fde-back-button" href="../python-engineering-module-1.html">Go back</a><button class="theme-button" id="reading-theme" type="button" aria-label="Toggle light and dark theme">Light / Dark</button></header><div class="fde-docs-grid">
+<aside class="fde-lesson-menu">
+<p class="fde-lesson-menu-title">Python lessons</p>
+<nav aria-label="Python lessons"><a href="../python-engineering-module-1.html">Module overview</a>
+<a href="setup.html">Python setup &amp; first program</a>
+<a href="variables.html" aria-current="page">Variables, data types &amp; strings</a>
+<p>Core Python</p><ol><li><a href="lesson-1.html">1.1 Python Basics, Conditions &amp; Loops</a></li><li><a href="lesson-2.html">1.2 Data Structures &amp; Memory</a></li><li><a href="lesson-3.html">1.3 Functions, Scope &amp; Modules</a></li></ol>
+<p>Objects, files &amp; iteration</p><ol><li><a href="lesson-4.html">1.4 Object-Oriented Programming</a></li><li><a href="lesson-5.html">1.5 Exceptions, Files, CSV &amp; JSON</a></li><li><a href="lesson-6.html">1.6 Iterators, Generators &amp; Pythonic Code</a></li></ol>
+<p>Code quality &amp; concurrency</p><ol><li><a href="lesson-7.html">1.7 Type Hints, Clean Code &amp; Dependencies</a></li><li><a href="lesson-8.html">1.8 pytest, Debugging &amp; Logging</a></li><li><a href="lesson-9.html">1.9 Async &amp; Concurrency Essentials</a></li></ol></nav></aside>
+<main id="main" class="fde-setup-lesson">
+  <p class="breadcrumbs"><a href="../python-engineering-module-1.html">Python overview</a> / Core Python</p>
+  <h1>Variables, data types &amp; strings</h1>
+  <p>Build a tiny shop receipt. Your program will ask for a name, a quantity and a price, then calculate the total.</p>
+
+  <section class="topic" id="variables-and-types">
+    <h2>1. Give each value a name</h2>
+    <p>In <code>quantity = 3</code>, <code>quantity</code> is a <strong>variable</strong>. Think of it as a name for a value. The <code>=</code> assigns the value on the right to the name on the left.</p>
+    <div class="table-scroll">
+    <table>
+      <thead><tr><th scope="col">Type</th><th scope="col">Example and meaning</th></tr></thead>
+      <tbody>
+        <tr><th scope="row"><code>int</code></th><td><code>quantity = 3</code> • A whole number</td></tr>
+        <tr><th scope="row"><code>float</code></th><td><code>unit_price = 2.50</code> • A number that can have a decimal part</td></tr>
+        <tr><th scope="row"><code>str</code></th><td><code>name = "Mia"</code> • Text inside quotes</td></tr>
+        <tr><th scope="row"><code>bool</code></th><td><code>needs_bag = False</code> • A yes/no value, written <code>True</code> or <code>False</code></td></tr>
+        <tr><th scope="row"><code>NoneType</code></th><td><code>coupon_code = None</code> • No value has been supplied</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p>Try <code>print(type(3))</code> and <code>print(type("3"))</code>. The first shows <code>int</code>. The second shows <code>str</code>.</p>
+  </section>
+
+  <section class="topic" id="input-and-conversion">
+    <h2>2. Turn typed text into numbers</h2>
+    <p><code>input()</code> always gives you text, even when you type digits. Use <code>int("3")</code> for a whole number, <code>float("2.50")</code> for a decimal and <code>str(3)</code> to turn a number into text.</p>
+    <p><strong>Quick check.</strong> <code>"2" + "3"</code> joins text and gives <code>"23"</code>. <code>int("2") + int("3")</code> adds numbers and gives <code>5</code>.</p>
+  </section>
+
+  <section class="topic" id="build-a-receipt">
+    <h2>3. Build and run the receipt</h2>
+    <p>In your <code>python-practice</code> folder, create <code>receipt.py</code>. Copy the code, save it and run <code>py -3 receipt.py</code> on Windows or <code>python3 receipt.py</code> on Mac or Linux.</p>
+    <pre><code data-language="python">name = input("Name: ")
+quantity = int(input("How many apples? "))
+unit_price = float(input("Price per apple: "))
+
+total = quantity * unit_price
+print(f"{name}: {quantity} apples")
+print(f"Total: €{total:.2f}")</code></pre>
+    <p>An <strong>f-string</strong> starts with <code>f</code> before the opening quote. Python fills in the braces with values. In <code>{total:.2f}</code>, <code>.2f</code> shows two digits after the decimal point.</p>
+    <figure>
+      <img src="assets/receipt-terminal.png" width="760" height="284" alt="Receipt program run with Mia, 3 apples and a price of 2.50. The program prints Mia: 3 apples and Total: €7.50.">
+      <figcaption>Type <code>Mia</code>, <code>3</code> and <code>2.50</code> when asked. The total should be <code>€7.50</code>.</figcaption>
+    </figure>
+  </section>
+
+  <section class="topic" id="practice-and-debug">
+    <h2>4. Practice and debug</h2>
+    <p>Run it with <code>Leo</code>, <code>4</code> and <code>1.25</code>. You should see <code>Total: €5.00</code>. Then add a line that shows <code>Each apple: €1.25</code>.</p>
+    <details class="fde-setup-answer">
+      <summary>Check your answer</summary>
+      <pre><code data-language="python">print(f"Each apple: €{unit_price:.2f}")</code></pre>
+    </details>
+    <ul>
+      <li><strong>Quantity error?</strong> Type <code>3</code> for quantity. <code>int("3.0")</code> raises an error. Use a decimal point for the price.</li>
+      <li><strong>Seeing <code>{name}</code> on screen?</strong> Check for the <code>f</code> before the quote.</li>
+      <li><strong>Testing yes/no input?</strong> <code>bool("False")</code> gives <code>True</code> because the text isn’t empty. Write <code>False</code> without quotes when you mean the Boolean value.</li>
+    </ul>
+  </section>
+
+  <nav class="lesson-nav" aria-label="Lesson navigation">
+    <a href="setup.html">Previous: Python setup</a>
+    <a href="lesson-1.html">Next: Python Basics</a>
+  </nav>
+</main><aside class="fde-outline" hidden></aside></div><footer>Directed by - Mynul Islam</footer></div><script>document.getElementById('reading-theme').addEventListener('click',function(){var t=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=t;try{localStorage.setItem('mynul-theme',t)}catch(e){}});</script><script src="../../assets/js/fde-layout.js?v=15" defer></script></body></html>
